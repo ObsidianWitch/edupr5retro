@@ -1,3 +1,5 @@
+import types
+
 a = 5
 b = 4.3
 
@@ -51,3 +53,31 @@ def executeFunction(f): f()
 def someFunction(): print("someFunction")
 executeFunction(someFunction)
 executeFunction(lambda: print("lambda"))
+
+# class
+class MyClass:
+    b = [] # class variable shared by all instances
+
+    def __init__(self):
+        self.a = "attr a" # instance variable unique to each instance
+obj1 = MyClass()
+obj1.c = "attr c" # add attribute to object
+print(obj1.a)
+print(obj1.b)
+print(obj1.c)
+
+obj2 = MyClass()
+obj2.b.append("attr b1")
+MyClass.b.append("attr b2")
+print(obj1.b)
+print(obj2.b)
+
+
+# simple namespace
+ball = types.SimpleNamespace(
+    x  = 5,
+    y  = 5,
+    dx = 3,
+    dy = 3,
+    r  = 5
+)
