@@ -1,12 +1,5 @@
 import sys, pygame
 
-# Define some colors
-BLACK = [0, 0, 0]
-WHITE = [255, 255, 255]
-GREEN = [0, 255, 0]
-RED   = [255, 0, 0]
-BLUE  = [0 , 0 , 255]
-
 class Window:
     def __init__(self):
         pygame.init()
@@ -30,60 +23,78 @@ class Window:
 
             pygame.display.flip() # update display Surface
 
+class Ball:
+    def __init__(self, window):
+        self.window = window
+
+        self.x = 50
+        self.y = self.window.height // 2
+
+        self.dx = 3
+        self.dy = 3
+
+        self.radius = 10
+
+        self.outer_circle_color = pygame.Color("blue")
+        self.inner_circle_color = pygame.Color("red")
+
+        self.bounce_state = 0
+
+    def bounce(self, dx_mul = 1, dy_mul = 1):
+        ball.dx *= dx_mul
+        ball.dy *= dy_mul
+
+        if self.inner_circle_color == pygame.Color("red"):
+            self.inner_circle_color = pygame.Color("green")
+        else:
+            self.inner_circle_color = pygame.Color("red")
+
+    def update(self):
+        self.x += self.dx
+        self.y += self.dy
+
+    def draw(self):
+        pygame.draw.circle(
+            self.window.screen,      # surface
+            self.outer_circle_color, # color
+            [self.x, self.y],        # position
+            self.radius * 2          # radius
+        )
+        pygame.draw.circle(
+            self.window.screen,      # surface
+            self.inner_circle_color, # color
+            [self.x, self.y],        # position
+            self.radius              # radius
+        )
+
 # Initialization
 window = Window()
 
-# Starting position
-box_x = 50
-box_y = window.height // 2
+ball = Ball(window)
 
-# Speed and direction
-box_change_x = 3
-box_change_y = 3
+def game_update():
+    # Update
+    ball.update()
 
-box_rayon = 10
+    ## Collisions
+    if ball.y > window.height or ball.y < 0: ball.bounce(dy_mul = -1)
+    if ball.x > window.width or ball.x < 0:  ball.bounce(dx_mul = -1)
 
-box_state = 0
+    # Draw
+    ## Background
+    window.screen.fill(pygame.Color("white"))
 
-def game_logic():
-    # TEMP The global statement is a declaration which holds for the entire current
-    # code block. It means that the listed identifiers are to be interpreted as
-    # globals.
-    global box_x
-    global box_y
-    global box_change_y
-    global box_change_x
-    global box_state
+    ## Screen border
+    pygame.draw.rect(
+        window.screen,                       # surface
+        pygame.Color("green"),               # color
+        [0, 0, window.width, window.height], # rect
+        5                                    # width
+    )
 
-    # LOGIQUE
-    # Move the rectangle
-    box_x += box_change_x
-    box_y += box_change_y
+    ball.draw()
 
-    # Rebond
-    if box_y > window.height or box_y < 0:
-        box_change_y = box_change_y * -1
-        box_state = 1 - box_state
-    if box_x > window.width or box_x < 0:
-        box_change_x = box_change_x * -1
-        box_state = 1 - box_state
+    # Debug
+    print(f"position: ({ball.x}, {ball.y})\tspeed: ({ball.dx}, {ball.dy})")
 
-    #DESSIN
-    # Set the screen background
-    window.screen.fill(WHITE)
-
-    # Draw screen border
-    pygame.draw.rect(window.screen,GREEN,[0, 0, window.width, window.height], 5)
-
-    #dessine le palet
-    pygame.draw.circle(window.screen, BLUE, [box_x, box_y], box_rayon *2)
-    pygame.draw.circle(window.screen, RED if box_state == 0 else GREEN, [box_x, box_y], box_rayon )
-
-    #debug
-    print('position ({0:3d},{1:3d}) and (dx,dy): ({2},{3})'.format(box_x,box_y,box_change_x,box_change_y))
-
-window.loop(game_logic)
-
-
-# Close everything down
-pygame.quit()
+window.loop(game_update)
