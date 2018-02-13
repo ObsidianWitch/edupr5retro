@@ -1,7 +1,7 @@
 import pygame
 
-from ball import Ball
-from window import Window
+from bouncing_ball.ball import Ball
+from shared.window import Window
 
 window = Window(
     width  = 800,
@@ -11,7 +11,7 @@ window = Window(
 
 ball = Ball(window)
 
-def game_update():
+def game():
     # Update
     ball.update()
 
@@ -28,4 +28,4 @@ def game_update():
     # Debug
     print(f"position: ({ball.x}, {ball.y})\tspeed: ({ball.dx}, {ball.dy})")
 
-window.loop(game_update)
+window.loop(game)
