@@ -41,8 +41,13 @@ class Ball:
         self.bounce_state = 0
 
     def bounce(self, dx_mul = 1, dy_mul = 1):
-        ball.dx *= dx_mul
-        ball.dy *= dy_mul
+        y_collision = (self.y > self.window.height or self.y < 0)
+        x_collision = (self.x > self.window.width or self.x < 0)
+
+        if not y_collision and not x_collision: return
+
+        if y_collision: self.dy *= -1
+        if x_collision: self.dx *= -1
 
         if self.inner_circle_color == pygame.Color("red"):
             self.inner_circle_color = pygame.Color("green")
@@ -52,6 +57,7 @@ class Ball:
     def update(self):
         self.x += self.dx
         self.y += self.dy
+        self.bounce()
 
     def draw(self):
         pygame.draw.circle(
@@ -67,34 +73,29 @@ class Ball:
             self.radius              # radius
         )
 
-# Initialization
-window = Window()
+# main function to avoid namespace pollution (global variables)
+def main():
+    window = Window()
 
-ball = Ball(window)
+    ball = Ball(window)
 
-def game_update():
-    # Update
-    ball.update()
+    def game_update():
+        # Update
+        ball.update()
 
-    ## Collisions
-    if ball.y > window.height or ball.y < 0: ball.bounce(dy_mul = -1)
-    if ball.x > window.width or ball.x < 0:  ball.bounce(dx_mul = -1)
+        # Draw
+        window.screen.fill(pygame.Color("white"))
+        pygame.draw.rect(
+            window.screen,                       # surface
+            pygame.Color("green"),               # color
+            [0, 0, window.width, window.height], # rect
+            5                                    # width
+        )
+        ball.draw()
 
-    # Draw
-    ## Background
-    window.screen.fill(pygame.Color("white"))
+        # Debug
+        print(f"position: ({ball.x}, {ball.y})\tspeed: ({ball.dx}, {ball.dy})")
 
-    ## Screen border
-    pygame.draw.rect(
-        window.screen,                       # surface
-        pygame.Color("green"),               # color
-        [0, 0, window.width, window.height], # rect
-        5                                    # width
-    )
+    window.loop(game_update)
 
-    ball.draw()
-
-    # Debug
-    print(f"position: ({ball.x}, {ball.y})\tspeed: ({ball.dx}, {ball.dy})")
-
-window.loop(game_update)
+main()
