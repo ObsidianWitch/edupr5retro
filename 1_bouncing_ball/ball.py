@@ -1,27 +1,4 @@
-import sys, pygame
-
-class Window:
-    def __init__(self):
-        pygame.init()
-
-        self.width  = 800
-        self.height = 600
-        self.screen = pygame.display.set_mode([self.width, self.height])
-
-        pygame.display.set_caption("Bouncing Ball !!!")
-
-        self.clock = pygame.time.Clock()
-
-    def loop(self, instructions):
-        while 1:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT: sys.exit()
-
-            instructions()
-
-            self.clock.tick(30) # 30 FPS
-
-            pygame.display.flip() # update display Surface
+import pygame
 
 class Ball:
     def __init__(self, window):
@@ -72,30 +49,3 @@ class Ball:
             [self.x, self.y],        # position
             self.radius              # radius
         )
-
-# main function to avoid namespace pollution (global variables)
-def main():
-    window = Window()
-
-    ball = Ball(window)
-
-    def game_update():
-        # Update
-        ball.update()
-
-        # Draw
-        window.screen.fill(pygame.Color("white"))
-        pygame.draw.rect(
-            window.screen,                       # surface
-            pygame.Color("green"),               # color
-            [0, 0, window.width, window.height], # rect
-            5                                    # width
-        )
-        ball.draw()
-
-        # Debug
-        print(f"position: ({ball.x}, {ball.y})\tspeed: ({ball.dx}, {ball.dy})")
-
-    window.loop(game_update)
-
-main()
