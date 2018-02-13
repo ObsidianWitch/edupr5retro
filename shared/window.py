@@ -13,9 +13,12 @@ class Window:
 
         self.clock = pygame.time.Clock()
 
+        self.events = []
+
     def loop(self, instructions):
         while 1:
-            for event in pygame.event.get():
+            self.events = pygame.event.get()
+            for event in self.events:
                 if event.type == pygame.QUIT: sys.exit()
 
             instructions()

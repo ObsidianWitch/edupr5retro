@@ -15,8 +15,6 @@ class Ball:
         self.outer_circle_color = pygame.Color("blue")
         self.inner_circle_color = pygame.Color("red")
 
-        self.bounce_state = 0
-
     def bounce(self, dx_mul = 1, dy_mul = 1):
         y_collision = (self.y > self.window.height or self.y < 0)
         x_collision = (self.x > self.window.width or self.x < 0)
