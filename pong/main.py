@@ -18,8 +18,6 @@ def text_centerpos(font, text):
 font1 = pygame.font.SysFont("arial", 24)
 font2 = pygame.font.SysFont("arial", 42)
 
-pygame.mouse.set_visible(0) # hide cursor
-
 p1 = Paddle(
     window   = window,
     position = Position.LEFT

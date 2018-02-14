@@ -2,7 +2,7 @@ import sys
 import pygame
 
 class Window:
-    def __init__(self, width, height, title):
+    def __init__(self, width, height, title, cursor = False):
         pygame.init()
 
         self.width  = width
@@ -10,6 +10,7 @@ class Window:
         self.screen = pygame.display.set_mode([self.width, self.height])
 
         pygame.display.set_caption(title)
+        pygame.mouse.set_visible(cursor)
 
         self.clock = pygame.time.Clock()
 

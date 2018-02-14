@@ -1,90 +1,104 @@
-import pygame
 import os, inspect
-from pygame.transform import scale
 
-#recherche du répertoire de travail
-scriptPATH = os.path.abspath(inspect.getsourcefile(lambda:0)) # compatible interactive Python Shell
-scriptDIR  = os.path.dirname(scriptPATH)
-assets = os.path.join(scriptDIR,"data")
+import pygame
 
+from aquarium.fish import Fish
+from shared.window import Window
+from shared.sprite import Sprite
 
-# Setup
-pygame.init()
+asset_path = lambda filename: os.path.join("aquarium/data", filename)
 
-# Define some colors
-BLACK = [0, 0, 0]
-WHITE = [255, 255, 255]
-GREEN = [0, 255, 0]
-RED   = [255, 0, 0]
-BLUE  = [0 , 0 , 255]
+bg = Sprite(
+    image_path = asset_path("fond.png"),
+    position   = (0, 0)
+)
 
-police = pygame.font.SysFont("arial", 15)
+window = Window(
+    width  = bg.rect.width,
+    height = bg.rect.height,
+    title  = "Aquarium"
+)
 
+fish1 = Fish(
+    window = window,
+    speed  = (-2, 0),
+    move   = Fish.move1,
+    sprite = Sprite(
+        image_path = asset_path("fish1.bmp"),
+        position   = (100, 200),
+        colorkey   = (170, 238, 255),
+        scale      = 0.5
+    )
+)
 
-print(scriptDIR)
+fish2 = Fish(
+    window = window,
+    speed  = (2, 1),
+    move   = Fish.move2,
+    sprite = Sprite(
+        image_path = asset_path("fish2.bmp"),
+        position   = (200, 300),
+        colorkey   = (170, 238, 255)
+    )
+)
 
+fish3 = Fish(
+    window = window,
+    speed  = (2, 2),
+    move   = Fish.move3,
+    sprite = Sprite(
+        image_path = asset_path("fish3.bmp"),
+        position   = (200, 200),
+        colorkey   = (170, 255, 238),
+        scale      = 1.1
+    )
+)
 
-# Set the width and height of the screen [width,height]
-screeenWidth = 400
-screenHeight = 400
-screen = pygame.display.set_mode((screeenWidth,screenHeight))
+plant1 = Sprite(
+    image_path = asset_path("plant1.bmp"),
+    position   = (100, 170),
+    colorkey   = (255, 7 ,0),
+    scale      = 0.5
+)
 
-pygame.display.set_caption("My Game")
+plant2 = Sprite(
+    image_path = asset_path("plant2.bmp"),
+    position   = (360, 170),
+    colorkey   = (255, 7 ,0),
+    scale      = 0.7
+)
 
-# Loop until the user clicks the close button.
-done = False
+decor1 = Sprite(
+    image_path = asset_path("decor1.bmp"),
+    position   = (500, 175),
+    colorkey   = (255, 0 ,0),
+    scale      = 0.7
+)
 
-# Used to manage how fast the screen updates
-clock = pygame.time.Clock()
+decor2 = Sprite(
+    image_path = asset_path("decor2.bmp"),
+    position   = (260, 260),
+    colorkey   = (255, 7 ,0),
+    scale      = 0.3
+)
 
-# Hide the mouse cursor
-pygame.mouse.set_visible(True)
+layers = [pygame.sprite.Group()] * 5
+layers[0].add(bg)
+layers[1].add(fish1.sprite)
+layers[1].add(fish2.sprite)
+layers[2].add(plant1)
+layers[2].add(plant2)
+layers[3].add(fish3.sprite)
+layers[4].add(decor1)
+layers[4].add(decor2)
 
-fond = pygame.image.load(os.path.join(assets, "fond.png"))
-poisson = pygame.image.load(os.path.join(assets, "fish1.bmp"))
+def game():
+    # Update
+    fish1.update()
+    fish2.update()
+    fish3.update()
 
+    # Draw
+    for layer in layers: layer.draw(window.screen)
 
-
-poisson1_x  = 100
-poisson1_y  = 200
-poisson1_vx = -2
-
-
-# -------- Main Program Loop -----------
-while not done:
-   event = pygame.event.Event(pygame.USEREVENT)    # Remise à zero de la variable event
-
-   # récupère la liste des touches claviers appuyeées sous la forme liste bool
-   pygame.event.pump()
-
-   for event in pygame.event.get():
-      if event.type == pygame.QUIT:
-         done = True
-
-
-    # LOGIQUE
-
-   poisson1_x += poisson1_vx
-   if ( poisson1_x < 50 ):
-      poisson1_x = 50
-      poisson1_vx = -poisson1_vx
-
-
-    # DESSIN
-
-   # affiche la zone de rendu au dessus de fenetre de jeu
-   screen.blit(fond,(0,0))
-
-   #tt = pygame.rect(poisson1_x,poisson1_y,10,10)
-
-   screen.blit(poisson, (poisson1_x,poisson1_y))
-
-
-    # Go ahead and update the screen with what we've drawn.
-   pygame.display.flip()
-
-    # Limit frames per second
-   clock.tick(30)
-
-# Close the window and quit.
-pygame.quit()
+window.loop(game)
