@@ -38,12 +38,12 @@ class Ball:
         pygame.draw.circle(
             self.window.screen,      # surface
             self.outer_circle_color, # color
-            [self.x, self.y],        # position
+            (self.x, self.y),        # position
             self.radius * 2          # radius
         )
         pygame.draw.circle(
             self.window.screen,      # surface
             self.inner_circle_color, # color
-            [self.x, self.y],        # position
+            (self.x, self.y),        # position
             self.radius              # radius
         )

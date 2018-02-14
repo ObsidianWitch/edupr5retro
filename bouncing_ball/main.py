@@ -20,7 +20,7 @@ def game():
     pygame.draw.rect(
         window.screen,                       # surface
         pygame.Color("green"),               # color
-        [0, 0, window.width, window.height], # rect
+        (0, 0, window.width, window.height), # rect
         5                                    # width
     )
     ball.draw()
