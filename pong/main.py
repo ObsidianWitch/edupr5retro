@@ -20,11 +20,11 @@ font2 = pygame.font.SysFont("arial", 42)
 
 pygame.mouse.set_visible(0) # hide cursor
 
-paddle1 = Paddle(
+p1 = Paddle(
     window   = window,
     position = Position.LEFT
 )
-paddle2 = Paddle(
+p2 = Paddle(
     window   = window,
     position = Position.RIGHT
 )
@@ -42,50 +42,48 @@ def state_running():
 
     # Update
     keys = pygame.key.get_pressed()
-    paddle1.update(keys)
-    paddle2.update(keys)
+
+    p1.update(keys)
+    p2.update(keys)
     ball.update()
 
-    ## ball x paddles collisions
-    def ball_paddle1_collision():
-        if (ball.x - ball.radius < paddle1.x + paddle1.width):
-            if (ball.y >= paddle1.y) and (ball.y <= paddle1.y + paddle1.height):
-                ball.x = paddle1.x + paddle1.width + ball.radius
-                ball.dx *= -1
-            else: ball.outside_reach = True
+    def ball_paddle_collision(paddle):
+        left_collision = (ball.x > paddle.x) \
+                     and (ball.x - ball.radius <= paddle.x + paddle.width)
+        right_collision = (ball.x < paddle.x) \
+                      and (ball.x + ball.radius >= paddle.x)
+        height_collision = (ball.y >= paddle.y) \
+                       and (ball.y <= paddle.y + paddle.height)
 
-    def ball_paddle2_collision():
-        if (ball.x + ball.radius > paddle2.x):
-            if (ball.y >= paddle2.y) and (ball.y <= paddle2.y + paddle2.height):
-                ball.x = paddle2.x - ball.radius
-                ball.dx *= -1
-            else: ball.outside_reach = True
+        if left_collision and height_collision:
+            ball.x = paddle.x + paddle.width + ball.radius
+            ball.dx *= -1
+        if right_collision and height_collision:
+            ball.x = paddle.x - ball.radius
+            ball.dx *= -1
 
-    ## Make sure the ball does not bounce once it is beyond the reach of
-    ## a paddle.
-    if not ball.outside_reach:
-        ball_paddle1_collision()
-        ball_paddle2_collision()
+    ball_paddle_collision(p1)
+    ball_paddle_collision(p2)
 
     ## Edges collision
     if (ball.x + 2*ball.radius < 0):
-        paddle2.score += 1
+        p2.score += 1
         ball.reset()
     if (ball.x - 2*ball.radius > window.width):
-        paddle1.score += 1
+        p1.score += 1
         ball.reset()
 
     ## State
-    if   paddle1.score == 3: state = State.P1WIN
-    elif paddle2.score == 3: state = State.P2WIN
+    if   p1.score == 3: state = State.P1WIN
+    elif p2.score == 3: state = State.P2WIN
 
     # Draw
     window.screen.fill(pygame.Color("black"))
-    paddle1.draw()
-    paddle2.draw()
+    p1.draw()
+    p2.draw()
     ball.draw()
 
-    score_text = f"{paddle1.score} - {paddle2.score}"
+    score_text = f"{p1.score} - {p2.score}"
     score_surface = font1.render(
         score_text,           # text
         True,                 # antialias

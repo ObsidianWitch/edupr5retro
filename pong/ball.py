@@ -14,7 +14,6 @@ class Ball:
     def reset(self):
         self.x = self.window.width // 2
         self.y = self.window.height // 2
-        self.outside_reach = False
 
     def walls_collision(self):
         if (self.y - self.radius < 0):
