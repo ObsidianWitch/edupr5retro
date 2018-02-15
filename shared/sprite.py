@@ -15,15 +15,16 @@ class Sprite(pygame.sprite.Sprite):
             os.path.join(self.project_path, image_path)
         )
 
-        if scale:
-            new_size = self.image.get_size()
-            new_size = (
-                int(new_size[0] * scale),
-                int(new_size[1] * scale)
-            )
-            self.image = pygame.transform.scale(self.image, new_size)
-
+        if scale: self.scale(scale)
         if colorkey: self.image.set_colorkey(colorkey)
 
         self.rect = self.image.get_rect()
         self.rect.topleft = position
+
+    def scale(self, ratio):
+        old_size = self.image.get_size()
+        new_size = (
+            int(old_size[0] * ratio),
+            int(old_size[1] * ratio)
+        )
+        self.image = pygame.transform.scale(self.image, new_size)
