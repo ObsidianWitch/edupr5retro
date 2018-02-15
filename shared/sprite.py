@@ -1,5 +1,7 @@
-import os, inspect
+import os
+import inspect
 
+import numpy
 import pygame
 
 class Sprite(pygame.sprite.Sprite):
@@ -8,18 +10,21 @@ class Sprite(pygame.sprite.Sprite):
         ".."
     )
 
-    def __init__(self, image_path, position, colorkey = None, scale = None):
+    def __init__(self, image, position):
         pygame.sprite.Sprite.__init__(self)
-
-        self.image = pygame.image.load(
-            os.path.join(self.project_path, image_path)
-        )
-
-        if scale: self.scale(scale)
-        if colorkey: self.image.set_colorkey(colorkey)
-
+        self.image = image
         self.rect = self.image.get_rect()
         self.rect.topleft = position
+
+    @classmethod
+    def from_image(cls, image_path, position, colorkey = None):
+        image = pygame.image.load(
+            os.path.join(cls.project_path, image_path)
+        )
+
+        if colorkey: image.set_colorkey(colorkey)
+
+        return cls(image, position)
 
     def scale(self, ratio):
         old_size = self.image.get_size()
