@@ -17,7 +17,7 @@ maze = Maze(window)
 def game():
     # Update
     keys = pygame.key.get_pressed()
-    player.move(keys)
+    player.update(keys)
 
     # Draw
     maze.draw()
