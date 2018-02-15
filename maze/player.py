@@ -1,6 +1,7 @@
 import pygame
 import numpy
 
+from shared.sprite import Sprite
 from maze.palette import palette
 
 class Player:
@@ -35,28 +36,18 @@ class Player:
     def __init__(self, window):
         self.window = window
 
-        self.sprite = self.to_sprite(self.char1_ascii)
-        self.x = 50
-        self.y = 50
-
-    def to_sprite(self, ascii):
-       _larg = len(max(ascii, key=len)) # on prend la ligne la plus grande
-       _haut = len(ascii)
-       TBL = numpy.zeros((_larg,_haut,3)) # tableau 3 dimensions
-
-       for y in range(_haut):
-          ligne = ascii[y]
-          for x in range(len(ligne)):
-             c = ligne[x]  # on recupere la lettre
-             TBL[x,y] = palette[c]  #on stocke le code couleur RVB
-
-       return pygame.surfarray.make_surface(TBL)
+        self.sprite = Sprite.from_ascii(
+            ascii_sprite = self.char1_ascii,
+            dictionary   = palette,
+            position     = (50, 50),
+            colorkey     = palette[' '],
+        )
 
     def move(self, keys):
-        if keys[pygame.K_UP]:    self.y -= 1
-        if keys[pygame.K_DOWN]:  self.y +=1
-        if keys[pygame.K_LEFT]:  self.x -= 1
-        if keys[pygame.K_RIGHT]: self.x +=1
+        if keys[pygame.K_UP]:    self.sprite.rect.move_ip( 0, -1)
+        if keys[pygame.K_DOWN]:  self.sprite.rect.move_ip( 0,  1)
+        if keys[pygame.K_LEFT]:  self.sprite.rect.move_ip(-1,  0)
+        if keys[pygame.K_RIGHT]: self.sprite.rect.move_ip( 1,  0)
 
     def draw(self):
-        self.window.screen.blit(self.sprite, (self.x, self.y))
+        self.window.screen.blit(self.sprite.image, self.sprite.rect.topleft)

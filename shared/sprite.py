@@ -26,6 +26,26 @@ class Sprite(pygame.sprite.Sprite):
 
         return cls(image, position)
 
+    @classmethod
+    def from_rgb(cls, rgb_sprite, position, colorkey = None):
+        image = pygame.surfarray.make_surface(rgb_sprite)
+
+        if colorkey: image.set_colorkey(colorkey)
+
+        return cls(image, position)
+
+    @classmethod
+    def from_ascii(cls, ascii_sprite, dictionary, position, colorkey = None):
+        height = len(ascii_sprite)
+        width  = len(ascii_sprite[0])
+
+        rgb_sprite = numpy.zeros((width, height, 3))
+        for y, x in numpy.ndindex(height, width):
+            c = ascii_sprite[y][x]
+            rgb_sprite[x,y] = dictionary[c]
+
+        return cls.from_rgb(rgb_sprite, position, colorkey)
+
     def scale(self, ratio):
         old_size = self.image.get_size()
         new_size = (
