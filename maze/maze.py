@@ -104,43 +104,82 @@ class Maze:
         self.height = len(self.maze_ascii)
         self.width  = len(self.maze_ascii[0])
 
-        self.exit = Sprite.from_ascii_sprites(
+        self.init_items()
+
+    # Places items in the maze based on the `maze_ascii` map.
+    # Each item is associated with a code contained in `palette`.
+    # "Y" -> exits
+    # "C" -> treasures
+    # "R" -> traps
+    def init_items(self):
+        self.items     = pygame.sprite.Group()
+        self.treasures = pygame.sprite.Group()
+        self.traps     = pygame.sprite.Group()
+
+        # Create temporary sprites to load images.
+        exit_tmp = Sprite.from_ascii_sprites(
             ascii_sprites = [self.exit_ascii],
             dictionary    = palette,
             position      = (0, 0),
         )
 
-        self.treasure = Sprite.from_ascii_sprites(
+        treasure_tmp = Sprite.from_ascii_sprites(
             ascii_sprites = [self.treasure_ascii],
             dictionary    = palette,
             position      = (0, 0),
         )
 
-        self.trap = Sprite.from_ascii_sprites(
+        trap_tmp = Sprite.from_ascii_sprites(
             ascii_sprites = [self.trap_ascii],
             dictionary    = palette,
             position      = (0, 0),
         )
 
-    def draw(self):
+        def init_one(code, color, xsq, ysq):
+            if code == "Y":
+                sprite = Sprite(
+                    images   = exit_tmp.images,
+                    position = (xsq, ysq),
+                )
+                self.items.add(sprite)
+                self.exit = sprite
+            elif code == "C":
+                sprite = Sprite(
+                    images   = treasure_tmp.images,
+                    position = (xsq, ysq),
+                )
+                self.items.add(sprite)
+                self.treasures.add(sprite)
+            elif code == "R":
+                sprite = Sprite(
+                    images   = trap_tmp.images,
+                    position = (xsq, ysq),
+                )
+                self.items.add(sprite)
+                self.traps.add(sprite)
+
+        self.traverse(init_one)
+
+    # Traverses the maze array and executes the given `function` on each
+    # element.
+    def traverse(self, function):
         for y, x in numpy.ndindex(self.height, self.width):
             code  = self.maze_ascii[y][x]
             color = palette[code]
             xsq   = x * self.square_size
             ysq   = y * self.square_size
 
-            if code == "Y":
-                self.window.screen.blit(self.exit.image, (xsq, ysq))
-                continue
-            elif code == "C":
-                self.window.screen.blit(self.treasure.image, (xsq, ysq))
-                continue
-            elif code == "R":
-                self.window.screen.blit(self.trap.image, (xsq, ysq))
-                continue
+            function(code, color, xsq, ysq)
 
+    # Draw the maze and the items contained in it.
+    def draw(self):
+        def draw_one(code, color, xsq, ysq):
             pygame.draw.rect(
                 self.window.screen,
                 color,
                 [xsq, ysq, self.square_size, self.square_size]
             )
+
+        self.traverse(draw_one)
+
+        self.items.draw(self.window.screen)
