@@ -84,13 +84,10 @@ decor2.scale_ip(0.3)
 
 layers = [pygame.sprite.Group()] * 5
 layers[0].add(bg)
-layers[1].add(fish1.sprite)
-layers[1].add(fish2.sprite)
-layers[2].add(plant1)
-layers[2].add(plant2)
+layers[1].add(fish1.sprite, fish2.sprite)
+layers[2].add(plant1, plant2)
 layers[3].add(fish3.sprite)
-layers[4].add(decor1)
-layers[4].add(decor2)
+layers[4].add(decor1, decor2)
 
 def game():
     # Update
