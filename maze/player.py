@@ -111,7 +111,7 @@ class Player:
                 "WALK_L": [3, 4, 5, 4],
             },
             dictionary = palette,
-            position   = (50, 50),
+            position   = (25, 25),
             colorkey   = palette[' '],
         )
 
