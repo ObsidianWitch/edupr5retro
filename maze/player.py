@@ -93,8 +93,7 @@ class Player:
     def __init__(self, window):
         self.window = window
 
-        # keep track of the current direction the player is facing
-        self.dir_x = 1
+        self.facing_x = 1
 
         self.sprite = Sprite.from_ascii_sprites(
             ascii_sprites = [
@@ -116,38 +115,31 @@ class Player:
             colorkey   = palette[' '],
         )
 
-    def move(self, keys, collision):
-        move_dir = [
-            keys[pygame.K_RIGHT] - keys[pygame.K_LEFT],
-            keys[pygame.K_DOWN]  - keys[pygame.K_UP]
-        ]
+    def move(self, directions, collisions):
+        move_vec = directions.vec
+        collision_vec = collisions.vec
 
-        collision_dir = (
-            collision.right - collision.left,
-            collision.bottom - collision.top
-        )
+        for i,_ in enumerate(move_vec):
+            if move_vec[i] == 0: continue
+            move_vec[i] -= collision_vec[i]
+            move_vec[i] = shared.math.clamp(move_vec[i], -1, 1)
 
-        for i,_ in enumerate(move_dir):
-            if move_dir[i] == 0: continue
-            move_dir[i] -= collision_dir[i]
-            move_dir[i] = shared.math.clamp(move_dir[i], -1, 1)
+        self.sprite.rect.move_ip(move_vec)
 
-        self.sprite.rect.move_ip(move_dir)
-
-        walking = any(d != 0 for d in move_dir)
-        if move_dir[0] != 0: self.dir_x = move_dir[0]
+        walking = any(d != 0 for d in move_vec)
+        if move_vec[0] != 0: self.facing_x = move_vec[0]
         self.animate(walking)
 
     def animate(self, walking):
         if not walking:
-            if   self.dir_x < 0: self.sprite.animation = "IDLE_L"
-            elif self.dir_x > 0: self.sprite.animation = "IDLE_R"
+            if   self.facing_x < 0: self.sprite.animation = "IDLE_L"
+            elif self.facing_x > 0: self.sprite.animation = "IDLE_R"
         else:
-            if   self.dir_x < 0: self.sprite.animation = "WALK_L"
-            elif self.dir_x > 0: self.sprite.animation = "WALK_R"
+            if   self.facing_x < 0: self.sprite.animation = "WALK_L"
+            elif self.facing_x > 0: self.sprite.animation = "WALK_R"
 
-    def update(self, keys, collision):
-        self.move(keys, collision)
+    def update(self, directions, collisions):
+        self.move(directions, collisions)
         self.sprite.update()
 
     def draw(self):
