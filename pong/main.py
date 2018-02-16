@@ -10,11 +10,6 @@ window = Window(
     title  = "Pong"
 )
 
-def text_centerpos(font, text):
-    return (
-        window.width  // 2 - font.size(text)[0] // 2,
-        window.height // 2 - font.size(text)[1] // 2
-    )
 font1 = pygame.font.SysFont("arial", 24)
 font2 = pygame.font.SysFont("arial", 42)
 
@@ -81,28 +76,27 @@ def state_running():
     p2.draw()
     ball.draw()
 
-    score_text = f"{p1.score} - {p2.score}"
     score_surface = font1.render(
-        score_text,           # text
-        True,                 # antialias
-        pygame.Color("green") # color
+        f"{p1.score} - {p2.score}", # text
+        True,                       # antialias
+        pygame.Color("green")       # color
     )
     window.screen.blit(
         score_surface,
-        (text_centerpos(font1, score_text)[0], 10)
+        score_surface.get_rect(center = window.screen.get_rect().midtop)
+                     .move(0, 20)
     )
 
 def state_end():
-    win_text = f"JOUEUR {state.value - 1} GAGNANT"
     win_surface = font2.render(
-        win_text,               # text
-        True,                   # antialias
-        pygame.Color("yellow"), # color
-        pygame.Color("red")     # background color
+        f"JOUEUR {state.value - 1} GAGNANT", # text
+        True,                                # antialias
+        pygame.Color("yellow"),              # color
+        pygame.Color("red")                  # background color
     )
     window.screen.blit(
         win_surface,
-        text_centerpos(font2, win_text)
+        win_surface.get_rect(center = window.screen.get_rect().center)
     )
 
 window.loop(game)
