@@ -115,11 +115,19 @@ class Player:
             colorkey   = palette[' '],
         )
 
-    def move(self, keys):
-        move_dir = (
+    def move(self, keys, collision):
+        move_dir = [
             keys[pygame.K_RIGHT] - keys[pygame.K_LEFT],
             keys[pygame.K_DOWN]  - keys[pygame.K_UP]
+        ]
+
+        collision_dir = (
+            collision.right - collision.left,
+            collision.bottom - collision.top
         )
+        if move_dir[0] != 0: move_dir[0] -= collision_dir[0]
+        if move_dir[1] != 0: move_dir[1] -= collision_dir[1]
+
         self.sprite.rect.move_ip(move_dir[0], move_dir[1])
 
         walking = any(d != 0 for d in move_dir)
@@ -134,8 +142,8 @@ class Player:
             if   self.dir_x < 0: self.sprite.animation = "WALK_L"
             elif self.dir_x > 0: self.sprite.animation = "WALK_R"
 
-    def update(self, keys):
-        self.move(keys)
+    def update(self, keys, collision):
+        self.move(keys, collision)
         self.sprite.update()
 
     def draw(self):
