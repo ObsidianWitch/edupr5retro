@@ -174,6 +174,9 @@ class Maze:
     # Draw the maze and the items contained in it.
     def draw(self):
         def draw_one(code, color, xsq, ysq):
+            # skip item tiles (drawing handled by sprites)
+            if code in ("Y", "C", "R"): color = palette[" "]
+
             pygame.draw.rect(
                 self.window.screen,
                 color,

@@ -1,4 +1,5 @@
-import collections
+import math
+import enum
 
 import pygame
 
@@ -14,8 +15,17 @@ window = Window(
     title  = "Maze"
 )
 
+font = pygame.font.SysFont("arial", 42)
+
 player = Player(window)
 maze = Maze(window)
+
+State = enum.Enum("State", "RUNNING END")
+state = State.RUNNING
+
+def game():
+    if state == State.RUNNING: state_running()
+    else: state_end()
 
 # Check collision between `sprite.rect` topleft, topright, bottomleft,
 # bottomright points and adjacent pixels of the specified `color`.
@@ -42,7 +52,16 @@ def pixel_collision(sprite, color):
              or check(sprite.rect.bottomright, (1, 0)),
     )
 
-def game():
+def distance_collision(p1, p2, threshold):
+    return math.sqrt(
+            math.pow(p2[0] - p1[0], 2)
+          + math.pow(p2[1] - p1[1], 2)
+    ) < threshold
+
+
+def state_running():
+    global state
+
     # Update
     keys = pygame.key.get_pressed()
     player.update(
@@ -58,8 +77,27 @@ def game():
         ),
     )
 
+    if distance_collision(
+        p1 = player.sprite.rect.center,
+        p2 = maze.exit.rect.center,
+        threshold = 5
+    ): state = State.END
+
     # Draw
     maze.draw()
     player.draw()
+
+def state_end():
+    win_surface = font.render(
+        "WIN",                 # text
+        True,                  # antialias
+        pygame.Color("white"), # color
+        pygame.Color("black"), # background color
+    )
+
+    window.screen.blit(
+        win_surface,
+        win_surface.get_rect(center = window.screen.get_rect().center)
+    )
 
 window.loop(game)
