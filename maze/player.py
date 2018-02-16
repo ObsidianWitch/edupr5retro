@@ -95,6 +95,8 @@ class Player:
 
         self.facing_x = 1
 
+        self.score = 0
+
         self.sprite = Sprite.from_ascii_sprites(
             ascii_sprites = [
                 self.char0_ascii,
@@ -115,7 +117,7 @@ class Player:
             colorkey   = palette[' '],
         )
 
-    def reset_pos(self):
+    def reset_position(self):
         self.sprite.rect.topleft = (25, 25)
 
     def move(self, directions, collisions):

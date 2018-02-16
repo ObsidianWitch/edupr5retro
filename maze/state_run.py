@@ -10,6 +10,7 @@ from maze.player  import Player
 class StateRun:
     def __init__(self, window):
         self.window = window
+        self.font = pygame.font.SysFont(None, 18)
 
         self.player = Player(window)
         self.maze = Maze(window)
@@ -66,7 +67,14 @@ class StateRun:
             self.player.sprite, # sprite
             self.maze.traps,    # group
             False               # dokill
-        ): self.player.reset_pos()
+        ): self.player.reset_position()
+
+        ## Treasures
+        if pygame.sprite.spritecollide(
+            self.player.sprite,  # sprite
+            self.maze.treasures, # group
+            True                 # dokill
+        ): self.player.score += 100
 
         ## Exit
         if self.distance_collision(
@@ -78,5 +86,17 @@ class StateRun:
         # Draw
         self.maze.draw()
         self.player.draw()
+
+        score_surface = self.font.render(
+            f"Score: {self.player.score}", # text
+            False,                         # antialias
+            pygame.Color("white")          # color
+        )
+        self.window.screen.blit(
+            score_surface,
+            score_surface.get_rect(
+                topright = self.window.screen.get_rect().topright
+            ).move(-10, 10)
+        )
 
         return False
