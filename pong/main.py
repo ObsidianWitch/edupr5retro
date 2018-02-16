@@ -1,8 +1,10 @@
+import enum
+
 import pygame
 
-from pong.ball import Ball
-from pong.paddle import *
 from shared.window import Window
+from pong.state_run import StateRun
+from pong.state_end import StateEnd
 
 window = Window(
     width  = 600,
@@ -10,93 +12,33 @@ window = Window(
     title  = "Pong"
 )
 
-font1 = pygame.font.SysFont("arial", 24)
-font2 = pygame.font.SysFont("arial", 42)
+State = enum.Enum("State", "START RUN END")
+state = State.START
 
-p1 = Paddle(
-    window   = window,
-    position = Position.LEFT
-)
-p2 = Paddle(
-    window   = window,
-    position = Position.RIGHT
-)
-ball = Ball(window)
+state_run = None
+state_end = None
 
-State = Enum("State", "RUNNING P1WIN P2WIN")
-state = State.RUNNING
-
-def game():
-    if state == State.RUNNING: state_running()
-    else: state_end()
-
-def state_running():
+def pong():
     global state
+    global state_run
+    global state_end
 
-    # Update
-    keys = pygame.key.get_pressed()
+    if state == State.START:
+        state_run = StateRun(window)
+        state = State.RUN
 
-    p1.update(keys)
-    p2.update(keys)
-    ball.update()
+    if state == State.RUN:
+        winner = state_run.run()
+        if winner != 0:
+            del state_run
+            state_end = StateEnd(window, winner)
+            state = State.END
 
-    def ball_paddle_collision(paddle):
-        left_collision = (ball.x > paddle.x) \
-                     and (ball.x - ball.radius <= paddle.x + paddle.width)
-        right_collision = (ball.x < paddle.x) \
-                      and (ball.x + ball.radius >= paddle.x)
-        height_collision = (ball.y >= paddle.y) \
-                       and (ball.y <= paddle.y + paddle.height)
+    elif state == State.END:
+        restart = state_end.run()
+        if restart:
+            del state_end
+            state_run = StateRun(window)
+            state = State.RUN
 
-        if left_collision and height_collision:
-            ball.x = paddle.x + paddle.width + ball.radius
-            ball.dx *= -1
-        if right_collision and height_collision:
-            ball.x = paddle.x - ball.radius
-            ball.dx *= -1
-
-    ball_paddle_collision(p1)
-    ball_paddle_collision(p2)
-
-    ## Edges collision
-    if (ball.x + 2*ball.radius < 0):
-        p2.score += 1
-        ball.reset()
-    if (ball.x - 2*ball.radius > window.width):
-        p1.score += 1
-        ball.reset()
-
-    ## State
-    if   p1.score == 3: state = State.P1WIN
-    elif p2.score == 3: state = State.P2WIN
-
-    # Draw
-    window.screen.fill(pygame.Color("black"))
-    p1.draw()
-    p2.draw()
-    ball.draw()
-
-    score_surface = font1.render(
-        f"{p1.score} - {p2.score}", # text
-        True,                       # antialias
-        pygame.Color("green")       # color
-    )
-    window.screen.blit(
-        score_surface,
-        score_surface.get_rect(center = window.screen.get_rect().midtop)
-                     .move(0, 20)
-    )
-
-def state_end():
-    win_surface = font2.render(
-        f"JOUEUR {state.value - 1} GAGNANT", # text
-        True,                                # antialias
-        pygame.Color("yellow"),              # color
-        pygame.Color("red")                  # background color
-    )
-    window.screen.blit(
-        win_surface,
-        win_surface.get_rect(center = window.screen.get_rect().center)
-    )
-
-window.loop(game)
+window.loop(pong)

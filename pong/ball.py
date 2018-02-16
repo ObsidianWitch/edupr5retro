@@ -23,6 +23,16 @@ class Ball:
             self.y = self.window.height - self.radius
             self.dy *= -1
 
+    # Return -1 for left edge collision, 1 for right edge collision
+    # and 0 otherwise.
+    def edges_collision(self):
+        left_edge  = (self.x + 2 * self.radius < 0)
+        right_edge = (self.x - 2 * self.radius > self.window.width)
+
+        if left_edge or right_edge: self.reset()
+
+        return right_edge - left_edge
+
     def update(self):
         self.x += self.dx
         self.y += self.dy

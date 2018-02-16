@@ -1,7 +1,8 @@
-from enum import Enum
+import enum
+
 import pygame
 
-Position = Enum("Position", "LEFT RIGHT")
+Position = enum.Enum("Position", "LEFT RIGHT")
 
 class Paddle:
     def __init__(self, window, position):
@@ -16,7 +17,7 @@ class Paddle:
             self.x = self.offset
         elif position == Position.RIGHT:
             self.x = window.width - self.width - self.offset
-        self.y = window.height // 2
+        self.y = window.height // 2 - self.height // 2
 
         self.dy = 2
 
