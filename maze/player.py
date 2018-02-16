@@ -115,6 +115,9 @@ class Player:
             colorkey   = palette[' '],
         )
 
+    def reset_pos(self):
+        self.sprite.rect.topleft = (25, 25)
+
     def move(self, directions, collisions):
         move_vec = directions.vec
         collision_vec = collisions.vec

@@ -61,7 +61,14 @@ class StateRun:
             ),
         )
 
-        ## Win condition
+        ## Traps
+        if pygame.sprite.spritecollide(
+            self.player.sprite, # sprite
+            self.maze.traps,    # group
+            False               # dokill
+        ): self.player.reset_pos()
+
+        ## Exit
         if self.distance_collision(
             p1 = self.player.sprite.rect.center,
             p2 = self.maze.exit.rect.center,
