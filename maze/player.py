@@ -1,6 +1,7 @@
 import pygame
 import numpy
 
+import shared.math
 from shared.sprite import Sprite
 from maze.palette import palette
 
@@ -125,10 +126,13 @@ class Player:
             collision.right - collision.left,
             collision.bottom - collision.top
         )
-        if move_dir[0] != 0: move_dir[0] -= collision_dir[0]
-        if move_dir[1] != 0: move_dir[1] -= collision_dir[1]
 
-        self.sprite.rect.move_ip(move_dir[0], move_dir[1])
+        for i,_ in enumerate(move_dir):
+            if move_dir[i] == 0: continue
+            move_dir[i] -= collision_dir[i]
+            move_dir[i] = shared.math.clamp(move_dir[i], -1, 1)
+
+        self.sprite.rect.move_ip(move_dir)
 
         walking = any(d != 0 for d in move_dir)
         if move_dir[0] != 0: self.dir_x = move_dir[0]

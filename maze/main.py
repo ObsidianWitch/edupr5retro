@@ -18,26 +18,35 @@ window = Window(
 player = Player(window)
 maze = Maze(window)
 
+# Check collision between `sprite.rect` topleft, topright, bottomleft,
+# bottomright points and adjacent pixels of the specified `color`.
+# Only checking collision against `sprite.rect` midpoints would have caused
+# missed collision detection in some cases (near the rect's vertices).
+# To avoid this problem, a pair of `sprite.rect` vertices are checked against
+# two adjacent pixels.
+def pixel_collision(sprite, color):
+    def check(rect, vec):
+        return (window.screen.get_at((
+            rect[0] + vec[0],
+            rect[1] + vec[1]
+        )) == color)
+
+    return Collision(
+        top    = check(sprite.rect.topleft,  (0, -1))
+              or check(sprite.rect.topright, (0, -1)),
+        bottom = check(sprite.rect.bottomleft,  (0, 1))
+              or check(sprite.rect.bottomright, (0, 1)),
+        left   = check(sprite.rect.topleft,    (-1, 0))
+              or check(sprite.rect.bottomleft, (-1, 0)),
+        right  = check(sprite.rect.topright,    (1, 0))
+              or check(sprite.rect.bottomright, (1, 0)),
+    )
+
 def game():
-    # Check collision between `sprite.rect` midtop, midbottom, midleft, midright
-    # points and adjacent `window.screen` pixels of the specified `color`.
-    # Caveat: It only detects collisions at midpoints. Any other point along the edge
-    # will be undetected.
-    def pixel_collision(sprite, color):
-        def check(rect, vec):
-            return (window.screen.get_at((
-                rect[0] + vec[0],
-                rect[1] + vec[1]
-            )) == color)
-
-        return Collision(
-            top    = check(sprite.rect.midtop, (0, -1)),
-            bottom = check(sprite.rect.midbottom, (0, 1)),
-            left   = check(sprite.rect.midleft, (-1, 0)),
-            right  = check(sprite.rect.midright, (1, 0)),
-        )
-
-    walls_collision = pixel_collision(player.sprite, pygame.Color(*palette["B"]))
+    walls_collision = pixel_collision(
+        player.sprite,
+        pygame.Color(*palette["B"])
+    )
 
     # Update
     keys = pygame.key.get_pressed()
