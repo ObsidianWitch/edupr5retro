@@ -1,11 +1,9 @@
-import os
-
 import pygame
 
 from shared.window  import Window
-from shared.sprite import Sprite
-
-asset_path = lambda filename: os.path.join("empire_city/data", filename)
+from shared.sprite  import Sprite
+from empire_city.common import asset_path
+from empire_city.player import Player
 
 window = Window(
     width  = 400,
@@ -20,11 +18,7 @@ bg = Sprite.from_paths(
     position = (0, 0),
 )
 
-crosshair = Sprite.from_paths(
-    paths    = [asset_path("viseur.png")],
-    position = (0, 0),
-)
-crosshair.rect.center = window.rect.center
+player = Player(window)
 
 def game():
     # Update
@@ -36,9 +30,6 @@ def game():
         area   = camera
     )
 
-    window.screen.blit(
-        source = crosshair.image,
-        dest   = crosshair.rect
-    )
+    player.draw()
 
 window.loop(game)
