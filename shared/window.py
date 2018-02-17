@@ -2,12 +2,15 @@ import sys
 import pygame
 
 class Window:
+    @property
+    def width(self): return self.screen.get_width()
+    @property
+    def height(self): return self.screen.get_height()
+
     def __init__(self, width, height, title, cursor = False):
         pygame.init()
 
-        self.width  = width
-        self.height = height
-        self.screen = pygame.display.set_mode([self.width, self.height])
+        self.screen = pygame.display.set_mode([width, height])
 
         pygame.display.set_caption(title)
         pygame.mouse.set_visible(cursor)
