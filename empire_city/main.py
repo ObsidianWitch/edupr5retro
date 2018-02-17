@@ -20,6 +20,12 @@ bg = Sprite.from_paths(
     position = (0, 0),
 )
 
+crosshair = Sprite.from_paths(
+    paths    = [asset_path("viseur.png")],
+    position = (0, 0),
+)
+crosshair.rect.center = window.rect.center
+
 def game():
     # Update
 
@@ -28,6 +34,11 @@ def game():
         source = bg.image,
         dest   = (0, 0),
         area   = camera
+    )
+
+    window.screen.blit(
+        source = crosshair.image,
+        dest   = crosshair.rect
     )
 
 window.loop(game)
