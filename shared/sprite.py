@@ -21,10 +21,10 @@ class Sprite(pygame.sprite.Sprite):
         self.animation = next(iter(self.animations))
 
         self.rect = self.image.get_rect()
-        self.rect.topleft = position
+        self.rect.move_ip(position)
 
     @classmethod
-    def from_images(
+    def from_paths(
         cls, paths, position, colorkey = None,
         animations = None,
     ):
@@ -39,7 +39,7 @@ class Sprite(pygame.sprite.Sprite):
         return cls(images, position, animations)
 
     @classmethod
-    def from_ascii_sprites(
+    def from_ascii(
         cls, ascii_sprites, dictionary, position, colorkey = None,
         animations = None,
     ):
@@ -63,26 +63,23 @@ class Sprite(pygame.sprite.Sprite):
 
         return pygame.surfarray.make_surface(rgb_sprite)
 
-    def update(self):
-        #print(self.animation)
-        frames = self.animations[self.animation]
-        n_frames = len(frames)
-        i = int(pygame.time.get_ticks() / 500) % n_frames
-        self.image = self.images[frames[i]]
-
     def scale(self, ratio):
+        self.rect.size = (
+            int(self.rect.width * ratio),
+            int(self.rect.height * ratio)
+        )
+
         new_images = []
-        for img in self.images:
-            old_size = self.image.get_size()
-            new_size = (
-                int(old_size[0] * ratio),
-                int(old_size[1] * ratio)
-            )
-            new_images.append(
-                pygame.transform.scale(img, new_size)
-            )
+        for img in self.images: new_images.append(
+            pygame.transform.scale(img, self.rect.size)
+        )
         return new_images
 
     def scale_ip(self, ratio):
         self.images = self.scale(ratio)
-        self.image = self.images[0]
+        self.image  = self.images[0]
+
+    def update(self):
+        frames = self.animations[self.animation]
+        i = int(pygame.time.get_ticks() / 500) % len(frames)
+        self.image = self.images[frames[i]]

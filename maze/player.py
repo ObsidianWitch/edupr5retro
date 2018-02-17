@@ -97,7 +97,7 @@ class Player:
 
         self.score = 0
 
-        self.sprite = Sprite.from_ascii_sprites(
+        self.sprite = Sprite.from_ascii(
             ascii_sprites = [
                 self.char0_ascii,
                 self.char1_ascii,
