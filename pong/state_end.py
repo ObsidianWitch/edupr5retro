@@ -21,7 +21,7 @@ class StateEnd:
         )
         self.window.screen.blit(
             win_surface,
-            win_surface.get_rect(center = self.window.screen.get_rect().center)
+            win_surface.get_rect(center = self.window.rect.center)
         )
 
         return False

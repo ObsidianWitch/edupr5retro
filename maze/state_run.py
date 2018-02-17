@@ -95,7 +95,7 @@ class StateRun:
         self.window.screen.blit(
             score_surface,
             score_surface.get_rect(
-                topright = self.window.screen.get_rect().topright
+                topright = self.window.rect.topright
             ).move(-10, 10)
         )
 

@@ -74,7 +74,7 @@ class StateRun:
         self.window.screen.blit(
             score_surface,
             score_surface.get_rect(
-                midtop = self.window.screen.get_rect().midtop
+                midtop = self.window.rect.midtop
             ).move(0, 10)
         )
 
