@@ -1,0 +1,55 @@
+import pygame
+
+from shared.sprite import Sprite
+from empire_city.common  import asset_path
+from empire_city.camera  import Camera
+from empire_city.player import Player
+from empire_city.enemy  import Enemy
+from empire_city.hints  import Hints
+
+class StateRun:
+    def __init__(self, window):
+        self.window = window
+
+        self.bg  = Sprite.from_paths([
+            asset_path("map.png"),
+            asset_path("map.png")
+        ])
+
+        self.camera = Camera(
+            window   = self.window,
+            bg       = self.bg,
+            position = (350, 170),
+        )
+
+        self.player = Player(self.camera)
+        self.enemy = Enemy(self.camera)
+        self.hints = Hints(self.camera, self.player, self.enemy)
+
+    def run(self):
+        # Update
+        scroll_vec = self.camera.scroll_zone_collide(
+            self.player.crosshair.rect.center
+        ).vec
+        self.camera.update(scroll_vec)
+        self.player.update(scroll_vec, self.enemy)
+        self.enemy.update()
+
+        if self.player.ammunitions == 0: return True
+
+        # Draw
+        ## bg drawing
+        self.bg.image.blit(self.bg.images[1], (0, 0))
+        self.enemy.draw_bg()
+        self.player.draw_bg()
+
+        ## screen drawing
+        self.window.screen.blit(
+            source = self.bg.image,
+            dest   = (0, 0),
+            area   = self.camera.display_zone
+        )
+        self.player.draw_screen()
+        self.hints.draw_screen()
+
+        return False

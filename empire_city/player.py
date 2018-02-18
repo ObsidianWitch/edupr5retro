@@ -53,13 +53,7 @@ class Player:
     def shoot(self, target):
         if self.ammunitions <= 0: return
 
-        # Avoid shooting multiple times while holding space by using
-        # `window.events` instead of `window.keys`.
-        shoot = next(
-            (e.type == pygame.KEYDOWN and e.key == pygame.K_SPACE
-            for e in self.window.events),
-            False
-        )
+        shoot = self.window.keydown(pygame.K_SPACE)
         if not shoot: return
 
         self.ammunitions -= 1

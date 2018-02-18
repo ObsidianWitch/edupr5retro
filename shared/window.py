@@ -20,6 +20,15 @@ class Window:
 
         self.events = []
 
+    # Returns whether `key` has been pressed or not by checking the
+    # `events` list.
+    # To check if `key` is held down, use the `keys` list instead.
+    def keydown(self, key): return next(
+        (e.type == pygame.KEYDOWN and e.key == key
+        for e in self.events),
+        False
+    )
+
     def loop(self, instructions):
         while 1:
             self.events = pygame.event.get()
