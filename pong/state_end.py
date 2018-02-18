@@ -9,8 +9,7 @@ class StateEnd:
 
     def run(self):
         # Update
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE]: return True
+        if self.window.keys[pygame.K_SPACE]: return True
 
         # Draw
         win_surface = self.font.render(

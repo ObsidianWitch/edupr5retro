@@ -43,10 +43,8 @@ class StateRun:
     # Returns which player won (1 or 2) when the game is finished.
     def run(self):
         # Update
-        keys = pygame.key.get_pressed()
-
-        self.p1.update(keys)
-        self.p2.update(keys)
+        self.p1.update(self.window.keys)
+        self.p2.update(self.window.keys)
         self.ball.update()
 
         self.ball_paddle_collision(self.p1)

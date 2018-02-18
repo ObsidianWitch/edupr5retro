@@ -48,13 +48,12 @@ class StateRun:
 
     def run(self):
         # Update
-        keys = pygame.key.get_pressed()
         self.player.update(
             directions = Directions(
-                up    = keys[pygame.K_UP],
-                down  = keys[pygame.K_DOWN],
-                left  = keys[pygame.K_LEFT],
-                right = keys[pygame.K_RIGHT],
+                up    = self.window.keys[pygame.K_UP],
+                down  = self.window.keys[pygame.K_DOWN],
+                left  = self.window.keys[pygame.K_LEFT],
+                right = self.window.keys[pygame.K_RIGHT],
             ),
             collisions = self.pixel_collision(
                 rect  = self.player.sprite.rect,

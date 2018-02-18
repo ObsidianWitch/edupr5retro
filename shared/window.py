@@ -26,6 +26,8 @@ class Window:
             for event in self.events:
                 if event.type == pygame.QUIT: sys.exit()
 
+            self.keys = pygame.key.get_pressed()
+
             instructions()
 
             self.clock.tick(30) # 30 FPS

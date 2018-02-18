@@ -28,18 +28,16 @@ camera = Camera(
 
 def game():
     # Update
-    keys = pygame.key.get_pressed()
-
     scroll_vec = camera.scroll_zone_collide(
         player.crosshair.rect.center
     ).vec
 
     player.move(
         move_vec = Directions(
-            up    = keys[pygame.K_UP],
-            down  = keys[pygame.K_DOWN],
-            left  = keys[pygame.K_LEFT],
-            right = keys[pygame.K_RIGHT],
+            up    = window.keys[pygame.K_UP],
+            down  = window.keys[pygame.K_DOWN],
+            left  = window.keys[pygame.K_LEFT],
+            right = window.keys[pygame.K_RIGHT],
         ).vec,
         collisions_vec = scroll_vec,
     )
