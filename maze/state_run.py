@@ -46,6 +46,19 @@ class StateRun:
               + math.pow(p2[1] - p1[1], 2)
         ) < threshold
 
+    def draw_score(self):
+        score_surface = self.font.render(
+            f"Score: {self.player.score}", # text
+            False,                         # antialias
+            pygame.Color("white")          # color
+        )
+        self.window.screen.blit(
+            score_surface,
+            score_surface.get_rect(
+                topright = self.window.rect.topright
+            ).move(-10, 10)
+        )
+
     def run(self):
         # Update
         self.player.update(
@@ -85,17 +98,6 @@ class StateRun:
         # Draw
         self.maze.draw()
         self.player.draw()
-
-        score_surface = self.font.render(
-            f"Score: {self.player.score}", # text
-            False,                         # antialias
-            pygame.Color("white")          # color
-        )
-        self.window.screen.blit(
-            score_surface,
-            score_surface.get_rect(
-                topright = self.window.rect.topright
-            ).move(-10, 10)
-        )
+        self.draw_score()
 
         return False
