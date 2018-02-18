@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 from shared.math   import Directions
@@ -14,7 +16,8 @@ window = Window(
     title  = "Empire City",
 )
 
-bg = Sprite.from_paths([asset_path("map.png")])
+bg0 = Sprite.from_paths([asset_path("map.png")])
+bg  = Sprite.from_paths([asset_path("map.png")])
 
 player = Player(window)
 
@@ -26,8 +29,12 @@ camera = Camera(
     position = (350, 170),
 )
 
-def game():
-    # Update
+def bg_space(p): return (
+        p[0] + camera.display_zone.x,
+        p[1] + camera.display_zone.y,
+    )
+
+def move():
     scroll_vec = camera.scroll_zone_collide(
         player.crosshair.rect.center
     ).vec
@@ -44,16 +51,40 @@ def game():
 
     camera.update(scroll_vec)
 
+def shoot():
+    shoot = False
+    for event in window.events:
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            shoot = True
+            break
+
+    if not shoot: return
+
+    player.crosshair.rect.move_ip(
+        random.randint(-2, 2),
+        random.randint(-2, 2)
+    )
+    enemies.killcollide(
+        bg_space(player.crosshair.rect.center)
+    )
+
+def game():
+    # Update
+    move()
+    shoot()
     enemies.update()
 
     # Draw
+    ## bg drawing
+    bg.image.blit(bg0.image, (0, 0))
+    enemies.draw()
+
+    ## screen drawing
     window.screen.blit(
         source = bg.image,
         dest   = (0, 0),
         area   = camera.display_zone
     )
-
     player.draw()
-    enemies.draw()
 
 window.loop(game)

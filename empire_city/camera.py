@@ -20,7 +20,7 @@ class Camera:
         self.scroll_zone_right = self.scroll_zone_left.copy()
         self.scroll_zone_right.topright = (window.width, 0)
 
-        self.speed = 5
+        self.speed = 10
 
     def scroll_zone_collide(self, p): return Directions(
         up    = self.scroll_zone_up.collidepoint(p),

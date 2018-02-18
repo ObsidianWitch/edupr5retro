@@ -10,31 +10,35 @@ def get_time(): return pygame.time.get_ticks() // 1000
 class Enemies:
     street_mob = Sprite.from_paths([asset_path("bandit_rue.png")])
 
+    @property
+    def alive(self): return self.mob is not None
+
     def __init__(self, bg):
         self.bg = bg
         self.kill()
 
     def generate_street(self):
-        self.enemy = Sprite(self.street_mob.images)
-        self.enemy.rect.move_ip(
-            random.randint(100, self.bg.rect.width - self.enemy.rect.width - 100),
-            self.bg.rect.height - self.enemy.rect.height - 10
+        mob = Sprite(self.street_mob.images)
+        mob.rect.move_ip(
+            random.randint(100, self.bg.rect.width - mob.rect.width - 100),
+            self.bg.rect.height - mob.rect.height - 10
         )
+        self.mob = mob
 
     # Generates a new enemy.
     def next(self):
         self.generate_street()
 
     def kill(self):
-        self.enemy = None
+        self.mob = None
         self.t0 = get_time()
+
+    def killcollide(self, p):
+        if self.alive and self.mob.rect.collidepoint(p): self.kill()
 
     # Generates a new enemy 3 seconds after the previous one has been killed.
     def update(self):
-        if (self.enemy is None) and (get_time() - self.t0 >= 3): self.next()
+        if not self.alive and (get_time() - self.t0 >= 3): self.next()
 
     def draw(self):
-        if self.enemy is not None: self.bg.image.blit(
-            source = self.enemy.image,
-            dest   = self.enemy.rect
-        )
+        if self.alive: self.bg.image.blit(self.mob.image, self.mob.rect)

@@ -6,7 +6,7 @@ class Player:
     def __init__(self, window):
         self.window = window
 
-        self.speed = 5
+        self.speed = 10
 
         self.crosshair = Sprite.from_paths([asset_path("viseur.png")])
         self.crosshair.rect.center = window.rect.center
@@ -22,7 +22,4 @@ class Player:
         )
 
     def draw(self):
-        self.window.screen.blit(
-            source = self.crosshair.image,
-            dest   = self.crosshair.rect
-        )
+        self.window.screen.blit(self.crosshair.image, self.crosshair.rect)
