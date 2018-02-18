@@ -1,8 +1,5 @@
-import random
-
 import pygame
 
-from shared.math   import Directions
 from shared.window import Window
 from shared.sprite import Sprite
 from empire_city.common  import asset_path
@@ -19,51 +16,14 @@ window = Window(
 bg0 = Sprite.from_paths([asset_path("map.png")])
 bg  = Sprite.from_paths([asset_path("map.png")])
 
-player = Player(window)
-
-enemy = Enemy(bg)
-
 camera = Camera(
     window   = window,
     bg       = bg,
     position = (350, 170),
 )
 
-def move():
-    scroll_vec = camera.scroll_zone_collide(
-        player.crosshair.rect.center
-    ).vec
-
-    player.move(
-        move_vec = Directions(
-            up    = window.keys[pygame.K_UP],
-            down  = window.keys[pygame.K_DOWN],
-            left  = window.keys[pygame.K_LEFT],
-            right = window.keys[pygame.K_RIGHT],
-        ).vec,
-        collisions_vec = scroll_vec,
-    )
-
-    camera.update(scroll_vec)
-
-def shoot():
-    # Avoid shooting multiple times while holding space by using `window.events`
-    # instead of `window.keys`.
-    shoot = next(
-        (e.type == pygame.KEYDOWN and e.key == pygame.K_SPACE
-        for e in window.events),
-        False
-    )
-
-    if not shoot: return
-
-    player.crosshair.rect.move_ip(
-        random.randint(-2, 2),
-        random.randint(-2, 2)
-    )
-    enemy.killcollide(
-        camera.bg_space(player.crosshair.rect.center)
-    )
+player = Player(window, camera)
+enemy = Enemy(bg)
 
 hint_left = Sprite.from_paths([asset_path("fleche_gauche.png")])
 hint_left.rect.midleft = window.rect.midleft
@@ -84,8 +44,12 @@ def draw_hints():
 
 def game():
     # Update
-    move()
-    shoot()
+    scroll_vec = camera.scroll_zone_collide(
+        player.crosshair.rect.center
+    ).vec
+    player.move(scroll_vec)
+    camera.move(scroll_vec)
+    player.shoot(enemy)
     enemy.update()
 
     # Draw
