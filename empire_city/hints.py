@@ -2,13 +2,10 @@ from shared.sprite import Sprite
 from empire_city.common  import asset_path
 
 class Hints:
-    def __init__(self, camera, player, enemy):
+    def __init__(self, camera):
         self.camera = camera
         self.window = camera.window
         self.bg     = camera.bg
-
-        self.player = player
-        self.enemy  = enemy
 
         self.sprites = (
             Sprite.from_paths([asset_path("fleche_gauche.png")]),
@@ -17,17 +14,13 @@ class Hints:
         self.sprites[0].rect.midleft = self.window.rect.midleft
         self.sprites[1].rect.midright = self.window.rect.midright
 
-    def draw_screen(self):
-        if not self.enemy.alive: return
+    def draw_screen(self, player, enemy):
+        if not enemy.alive: return
 
-        enemy_visible = self.camera.display_zone.colliderect(
-            self.enemy.mob.rect
-        )
+        enemy_visible = self.camera.display_zone.colliderect(enemy.rect)
         if enemy_visible: return
 
-        arrow_i = (
-            self.camera.bg_space(
-                self.player.crosshair.rect.center
-            )[0] < self.enemy.mob.rect.x
-        )
+        arrow_i = (self.camera.bg_space(
+            player.crosshair.rect.center
+        )[0] < enemy.rect.x)
         self.sprites[arrow_i].draw(self.window.screen)

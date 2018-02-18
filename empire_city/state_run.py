@@ -4,7 +4,7 @@ from shared.sprite import Sprite
 from empire_city.common  import asset_path
 from empire_city.camera  import Camera
 from empire_city.player import Player
-from empire_city.enemy  import Enemy
+from empire_city.enemy  import Enemies
 from empire_city.hints  import Hints
 
 class StateRun:
@@ -22,9 +22,9 @@ class StateRun:
             position = (350, 170),
         )
 
-        self.player = Player(self.camera)
-        self.enemy = Enemy(self.camera)
-        self.hints = Hints(self.camera, self.player, self.enemy)
+        self.player  = Player(self.camera)
+        self.enemies = Enemies(self.camera)
+        self.hints   = Hints(self.camera)
 
     def run(self):
         # Update
@@ -32,25 +32,25 @@ class StateRun:
             self.player.crosshair.rect.center
         ).vec
         self.camera.update(scroll_vec)
-        self.player.update(scroll_vec, self.enemy)
-        self.enemy.update(self.player)
+        self.player.update(scroll_vec, self.enemies.mob)
+        self.enemies.update(self.player)
 
         if self.player.ammunitions <= 0: return True
 
         # Draw
         ## bg drawing
         self.bg.image.blit(self.bg.images[1], (0, 0))
-        self.enemy.draw_bg()
+        self.enemies.draw_bg()
         self.player.draw_bg()
 
         ## screen drawing
         self.window.screen.blit(
             source = self.bg.image,
-            dest   = (0, 0),
+            dest   = self.bg.rect,
             area   = self.camera.display_zone
         )
         self.player.draw_screen()
-        self.enemy.draw_screen()
-        self.hints.draw_screen()
+        self.enemies.draw_screen()
+        self.hints.draw_screen(self.player, self.enemies.mob)
 
         return False
