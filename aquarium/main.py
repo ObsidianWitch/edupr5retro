@@ -8,10 +8,7 @@ from shared.sprite import Sprite
 
 asset_path = lambda filename: os.path.join("aquarium/data", filename)
 
-bg = Sprite.from_paths(
-    paths    = [asset_path("fond.png")],
-    position = (0, 0)
-)
+bg = Sprite.from_paths([asset_path("fond.png")])
 
 window = Window(
     width  = bg.rect.width,

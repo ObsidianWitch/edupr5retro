@@ -10,7 +10,7 @@ class Sprite(pygame.sprite.Sprite):
         ".."
     )
 
-    def __init__(self, images, position, animations = None,):
+    def __init__(self, images, position = (0, 0), animations = None):
         pygame.sprite.Sprite.__init__(self)
         self.images = images
         self.image = self.images[0]
@@ -25,7 +25,7 @@ class Sprite(pygame.sprite.Sprite):
 
     @classmethod
     def from_paths(
-        cls, paths, position, colorkey = None,
+        cls, paths, position = (0, 0), colorkey = None,
         animations = None,
     ):
         images = []
@@ -40,7 +40,7 @@ class Sprite(pygame.sprite.Sprite):
 
     @classmethod
     def from_ascii(
-        cls, ascii_sprites, dictionary, position, colorkey = None,
+        cls, ascii_sprites, dictionary, position = (0, 0), colorkey = None,
         animations = None,
     ):
         images = []
@@ -81,5 +81,5 @@ class Sprite(pygame.sprite.Sprite):
 
     def update(self):
         frames = self.animations[self.animation]
-        i = int(pygame.time.get_ticks() / 500) % len(frames)
+        i = (pygame.time.get_ticks() // 500) % len(frames)
         self.image = self.images[frames[i]]

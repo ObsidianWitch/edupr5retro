@@ -120,19 +120,16 @@ class Maze:
         exit_tmp = Sprite.from_ascii(
             ascii_sprites = [self.exit_ascii],
             dictionary    = palette,
-            position      = (0, 0),
         )
 
         treasure_tmp = Sprite.from_ascii(
             ascii_sprites = [self.treasure_ascii],
             dictionary    = palette,
-            position      = (0, 0),
         )
 
         trap_tmp = Sprite.from_ascii(
             ascii_sprites = [self.trap_ascii],
             dictionary    = palette,
-            position      = (0, 0),
         )
 
         def init_one(code, color, xsq, ysq):
