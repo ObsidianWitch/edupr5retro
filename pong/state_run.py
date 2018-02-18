@@ -39,6 +39,19 @@ class StateRun:
             self.ball.x = paddle.x - self.ball.radius
             self.ball.dx *= -1
 
+    def draw_score(self):
+        score_surface = self.font.render(
+            f"{self.p1.score} - {self.p2.score}", # text
+            False,                      # antialias
+            pygame.Color("green")       # color
+        )
+        self.window.screen.blit(
+            score_surface,
+            score_surface.get_rect(
+                midtop = self.window.rect.midtop
+            ).move(0, 10)
+        )
+
     # Returns 0 while the game is not yet been won.
     # Returns which player won (1 or 2) when the game is finished.
     def run(self):
@@ -63,17 +76,6 @@ class StateRun:
         self.p1.draw()
         self.p2.draw()
         self.ball.draw()
-
-        score_surface = self.font.render(
-            f"{self.p1.score} - {self.p2.score}", # text
-            False,                      # antialias
-            pygame.Color("green")       # color
-        )
-        self.window.screen.blit(
-            score_surface,
-            score_surface.get_rect(
-                midtop = self.window.rect.midtop
-            ).move(0, 10)
-        )
+        self.draw_score()
 
         return 0
