@@ -49,11 +49,11 @@ def move():
 def shoot():
     # Avoid shooting multiple times while holding space by using `window.events`
     # instead of `window.keys`.
-    shoot = False
-    for event in window.events:
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-            shoot = True
-            break
+    shoot = next(
+        (e.type == pygame.KEYDOWN and e.key == pygame.K_SPACE
+        for e in window.events),
+        False
+    )
 
     if not shoot: return
 
