@@ -7,7 +7,7 @@ from empire_city.common import asset_path
 
 def get_time(): return pygame.time.get_ticks() // 1000
 
-class Enemies:
+class Enemy:
     street_mob = Sprite.from_paths([asset_path("bandit_rue.png")])
 
     @property

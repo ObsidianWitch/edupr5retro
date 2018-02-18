@@ -7,8 +7,8 @@ from shared.window import Window
 from shared.sprite import Sprite
 from empire_city.common  import asset_path
 from empire_city.camera  import Camera
-from empire_city.player  import Player
-from empire_city.enemies import Enemies
+from empire_city.player import Player
+from empire_city.enemy  import Enemy
 
 window = Window(
     width  = 400,
@@ -21,7 +21,7 @@ bg  = Sprite.from_paths([asset_path("map.png")])
 
 player = Player(window)
 
-enemies = Enemies(bg)
+enemy = Enemy(bg)
 
 camera = Camera(
     window   = window,
@@ -52,6 +52,8 @@ def move():
     camera.update(scroll_vec)
 
 def shoot():
+    # Avoid shooting multiple times while holding space by using `window.events`
+    # instead of `window.keys`.
     shoot = False
     for event in window.events:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
@@ -64,7 +66,7 @@ def shoot():
         random.randint(-2, 2),
         random.randint(-2, 2)
     )
-    enemies.killcollide(
+    enemy.killcollide(
         bg_space(player.crosshair.rect.center)
     )
 
@@ -72,12 +74,12 @@ def game():
     # Update
     move()
     shoot()
-    enemies.update()
+    enemy.update()
 
     # Draw
     ## bg drawing
     bg.image.blit(bg0.image, (0, 0))
-    enemies.draw()
+    enemy.draw()
 
     ## screen drawing
     window.screen.blit(
