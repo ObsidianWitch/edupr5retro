@@ -1,5 +1,4 @@
-import enum
-
+import types
 import pygame
 
 from shared.window import Window
@@ -12,33 +11,31 @@ window = Window(
     title  = "Pong"
 )
 
-State = enum.Enum("State", "START RUN END")
-state = State.START
+states = types.SimpleNamespace(
+    START    = 0,
+    RUN      = 1,
+    END      = 2,
+    current  = 0,
+    instance = None,
+)
 
-state_run = None
-state_end = None
+def game():
+    if states.current == states.START:
+        states.instance = StateRun(window)
+        states.current  = states.RUN
 
-def pong():
-    global state
-    global state_run
-    global state_end
+    if states.current == states.RUN:
+        winner = states.instance.run()
+        if winner == 0: return
 
-    if state == State.START:
-        state_run = StateRun(window)
-        state = State.RUN
+        states.instance = StateEnd(window, winner)
+        states.current  = states.END
 
-    if state == State.RUN:
-        winner = state_run.run()
-        if winner != 0:
-            del state_run
-            state_end = StateEnd(window, winner)
-            state = State.END
+    elif states.current == states.END:
+        restart = states.instance.run()
+        if not restart: return
 
-    elif state == State.END:
-        restart = state_end.run()
-        if restart:
-            del state_end
-            state_run = StateRun(window)
-            state = State.RUN
+        states.instance = StateRun(window)
+        states.current  = states.RUN
 
-window.loop(pong)
+window.loop(game)

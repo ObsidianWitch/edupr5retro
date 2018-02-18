@@ -1,6 +1,4 @@
-import enum
-
-import pygame
+import types
 
 from shared.window  import Window
 from maze.state_run import StateRun
@@ -12,33 +10,31 @@ window = Window(
     title  = "Maze"
 )
 
-State = enum.Enum("State", "START RUN END")
-state = State.START
-
-state_run = None
-state_end = None
+states = types.SimpleNamespace(
+    START    = 0,
+    RUN      = 1,
+    END      = 2,
+    current  = 0,
+    instance = None,
+)
 
 def game():
-    global state
-    global state_run
-    global state_end
+    if states.current == states.START:
+        states.instance = StateRun(window)
+        states.current  = states.RUN
 
-    if state == State.START:
-        state_run = StateRun(window)
-        state = State.RUN
+    if states.current == states.RUN:
+        win = states.instance.run()
+        if not win: return
 
-    if state == State.RUN:
-        win = state_run.run()
-        if win:
-            del state_run
-            state_end = StateEnd(window)
-            state = State.END
+        states.instance = StateEnd(window)
+        states.current  = states.END
 
-    elif state == State.END:
-        restart = state_end.run()
-        if restart:
-            del state_end
-            state_run = StateRun(window)
-            state = State.RUN
+    elif states.current == states.END:
+        restart = states.instance.run()
+        if not restart: return
+
+        states.instance = StateRun(window)
+        states.current  = states.RUN
 
 window.loop(game)
