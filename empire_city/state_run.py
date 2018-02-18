@@ -33,9 +33,9 @@ class StateRun:
         ).vec
         self.camera.update(scroll_vec)
         self.player.update(scroll_vec, self.enemy)
-        self.enemy.update()
+        self.enemy.update(self.player)
 
-        if self.player.ammunitions == 0: return True
+        if self.player.ammunitions <= 0: return True
 
         # Draw
         ## bg drawing
@@ -50,6 +50,7 @@ class StateRun:
             area   = self.camera.display_zone
         )
         self.player.draw_screen()
+        self.enemy.draw_screen()
         self.hints.draw_screen()
 
         return False

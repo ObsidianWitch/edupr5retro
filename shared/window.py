@@ -12,13 +12,10 @@ class Window:
 
         self.screen = pygame.display.set_mode([width, height])
         self.rect = self.screen.get_rect()
-
         pygame.display.set_caption(title)
         pygame.mouse.set_visible(cursor)
 
         self.clock = pygame.time.Clock()
-
-        self.events = []
 
     # Returns whether `key` has been pressed or not by checking the
     # `events` list.

@@ -4,7 +4,8 @@ import pygame
 
 import shared.math
 from shared.sprite import Sprite
-from empire_city.common import asset_path, get_time
+from shared.timer  import Timer
+from empire_city.common import asset_path
 
 class Explosion(Sprite):
     image0 = Sprite.from_paths([asset_path("bang.png")]).images
@@ -12,10 +13,10 @@ class Explosion(Sprite):
     def __init__(self, center):
         Sprite.__init__(self, self.image0)
         self.rect.center = center
-        self.t0 = get_time()
+        self.timer = Timer(2)
 
     def update(self):
-        if (get_time() - self.t0 >= 2): self.kill()
+        if self.timer.finished: self.kill()
 
 class Player:
     def __init__(self, camera):
