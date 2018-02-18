@@ -3,9 +3,7 @@ import random
 import pygame
 
 from shared.sprite  import Sprite
-from empire_city.common import asset_path
-
-def get_time(): return pygame.time.get_ticks() // 1000
+from empire_city.common import asset_path, get_time
 
 class Enemy:
     street_mob = Sprite.from_paths([asset_path("bandit_rue.png")])
@@ -13,8 +11,9 @@ class Enemy:
     @property
     def alive(self): return self.mob is not None
 
-    def __init__(self, bg):
-        self.bg = bg
+    def __init__(self, camera):
+        self.camera = camera
+        self.bg = camera.bg
         self.kill()
 
     def generate_street(self):
@@ -42,5 +41,5 @@ class Enemy:
     def update(self):
         if not self.alive and (get_time() - self.t0 >= 3): self.next()
 
-    def draw(self):
+    def draw_bg(self):
         if self.alive: self.bg.image.blit(self.mob.image, self.mob.rect)

@@ -22,15 +22,15 @@ camera = Camera(
     position = (350, 170),
 )
 
-player = Player(window, camera)
-enemy = Enemy(bg)
+player = Player(camera)
+enemy = Enemy(camera)
 
 hint_left = Sprite.from_paths([asset_path("fleche_gauche.png")])
 hint_left.rect.midleft = window.rect.midleft
 hint_right = Sprite.from_paths([asset_path("fleche_droite.png")])
 hint_right.rect.midright = window.rect.midright
 
-def draw_hints():
+def draw_screen_hints():
     if not enemy.alive: return
 
     enemy_visible = camera.display_zone.colliderect(enemy.mob.rect)
@@ -47,15 +47,15 @@ def game():
     scroll_vec = camera.scroll_zone_collide(
         player.crosshair.rect.center
     ).vec
-    player.move(scroll_vec)
-    camera.move(scroll_vec)
-    player.shoot(enemy)
+    camera.update(scroll_vec)
+    player.update(scroll_vec, enemy)
     enemy.update()
 
     # Draw
     ## bg drawing
     bg.image.blit(bg0.image, (0, 0))
-    enemy.draw()
+    enemy.draw_bg()
+    player.draw_bg()
 
     ## screen drawing
     window.screen.blit(
@@ -63,7 +63,7 @@ def game():
         dest   = (0, 0),
         area   = camera.display_zone
     )
-    player.draw()
-    draw_hints()
+    player.draw_screen()
+    draw_screen_hints()
 
 window.loop(game)

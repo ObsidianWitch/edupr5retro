@@ -34,7 +34,7 @@ class Camera:
         p[1] + self.display_zone.y,
     )
 
-    def move(self, scroll_vec):
+    def update(self, scroll_vec):
         self.display_zone.move_ip(
             scroll_vec[0] * self.speed,
             scroll_vec[1] * self.speed,
