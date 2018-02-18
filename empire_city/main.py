@@ -1,11 +1,12 @@
 import pygame
 
-from shared.math    import Directions
-from shared.window  import Window
-from shared.sprite  import Sprite
-from empire_city.common import asset_path
-from empire_city.camera import Camera
-from empire_city.player import Player
+from shared.math   import Directions
+from shared.window import Window
+from shared.sprite import Sprite
+from empire_city.common  import asset_path
+from empire_city.camera  import Camera
+from empire_city.player  import Player
+from empire_city.enemies import Enemies
 
 window = Window(
     width  = 400,
@@ -13,12 +14,11 @@ window = Window(
     title  = "Empire City",
 )
 
-bg = Sprite.from_paths(
-    paths    = [asset_path("map.png")],
-    position = (0, 0),
-)
+bg = Sprite.from_paths([asset_path("map.png")])
 
 player = Player(window)
+
+enemies = Enemies(bg)
 
 camera = Camera(
     window   = window,
@@ -46,6 +46,8 @@ def game():
 
     camera.update(scroll_vec)
 
+    enemies.update()
+
     # Draw
     window.screen.blit(
         source = bg.image,
@@ -54,5 +56,6 @@ def game():
     )
 
     player.draw()
+    enemies.draw()
 
 window.loop(game)
