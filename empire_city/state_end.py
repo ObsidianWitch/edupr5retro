@@ -4,14 +4,12 @@ class StateEnd:
     def __init__(self, window):
         self.window = window
 
-        self.font = pygame.font.SysFont("arial", 42)
-
     def run(self):
         # Update
         if self.window.keydown(pygame.K_SPACE): return True
 
         # Draw
-        end_surface = self.font.render(
+        end_surface = self.window.fonts[4].render(
             "DEAD",                # text
             False,                 # antialias
             pygame.Color("white"), # color

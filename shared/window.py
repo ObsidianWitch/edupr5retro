@@ -17,6 +17,12 @@ class Window:
 
         self.clock = pygame.time.Clock()
 
+        # Ascending size fonts
+        self.fonts = list(
+            pygame.font.SysFont(None, size)
+            for size in range(18, 43, 6)
+        )
+
     # Returns whether `key` has been pressed or not by checking the
     # `events` list.
     # To check if `key` is held down, use the `keys` list instead.

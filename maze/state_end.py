@@ -4,14 +4,12 @@ class StateEnd:
     def __init__(self, window):
         self.window = window
 
-        self.font = pygame.font.SysFont("arial", 42)
-
     def run(self):
         # Update
         if self.window.keys[pygame.K_SPACE]: return True
 
         # Draw
-        win_surface = self.font.render(
+        win_surface = self.window.fonts[4].render(
             "WIN",                 # text
             False,                 # antialias
             pygame.Color("white"), # color

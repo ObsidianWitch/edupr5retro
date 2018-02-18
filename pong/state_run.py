@@ -6,7 +6,6 @@ from pong.paddle import *
 class StateRun:
     def __init__(self, window):
         self.window = window
-        self.font = pygame.font.SysFont(None, 24)
 
         self.p1 = Paddle(
             window   = self.window,
@@ -40,7 +39,7 @@ class StateRun:
             self.ball.dx *= -1
 
     def draw_score(self):
-        score_surface = self.font.render(
+        score_surface = self.window.fonts[1].render(
             f"{self.p1.score} - {self.p2.score}", # text
             False,                      # antialias
             pygame.Color("green")       # color

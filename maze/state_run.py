@@ -10,7 +10,6 @@ from maze.player  import Player
 class StateRun:
     def __init__(self, window):
         self.window = window
-        self.font = pygame.font.SysFont(None, 18)
 
         self.player = Player(window)
         self.maze = Maze(window)
@@ -47,7 +46,7 @@ class StateRun:
         ) < threshold
 
     def draw_score(self):
-        score_surface = self.font.render(
+        score_surface = self.window.fonts[0].render(
             f"Score: {self.player.score}", # text
             False,                         # antialias
             pygame.Color("white")          # color

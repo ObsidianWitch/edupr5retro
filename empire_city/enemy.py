@@ -15,7 +15,6 @@ class Enemy:
         self.camera = camera
         self.window = camera.window
         self.bg     = camera.bg
-        self.font   = pygame.font.SysFont(None, 24)
 
         self.repop_timer = Timer(3)
         self.shoot_timer = Timer(3)
@@ -61,7 +60,7 @@ class Enemy:
     def draw_screen(self):
         if not self.alive: return
 
-        shoot_timer_surface = self.font.render(
+        shoot_timer_surface = self.window.fonts[1].render(
             f"{self.shoot_timer.remaining}", # text
             False,                           # antialias
             pygame.Color("white")            # color
