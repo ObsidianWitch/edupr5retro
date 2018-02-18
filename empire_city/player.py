@@ -29,9 +29,12 @@ class Player:
         self.ammunition.scale_ip(0.5)
         self.ammunition.rect.bottomleft = self.window.rect.bottomleft
         self.explosions = pygame.sprite.Group()
+        self.hide = Sprite.from_paths([asset_path("hide.png")])
+        self.hide.rect.center = self.window.rect.center
 
         self.speed = 10
         self.ammunitions = 12
+        self.hidden = False
 
     def move(self, collisions_vec):
         move_vec = shared.math.Directions(
@@ -52,9 +55,7 @@ class Player:
 
     def shoot(self, target):
         if self.ammunitions <= 0: return
-
-        shoot = self.window.keydown(pygame.K_SPACE)
-        if not shoot: return
+        if not self.window.keydown(pygame.K_SPACE): return
 
         self.ammunitions -= 1
         self.crosshair.rect.move_ip(
@@ -74,6 +75,7 @@ class Player:
         self.move(collisions_vec)
         self.shoot(target)
         self.explosions.update()
+        self.hidden = self.window.keys[pygame.K_RETURN]
 
     def draw_bg(self):
         self.explosions.draw(self.bg.image)
@@ -81,9 +83,13 @@ class Player:
     def draw_screen(self):
         self.window.screen.blit(self.crosshair.image, self.crosshair.rect)
 
-        for a in range(self.ammunitions):
-            self.window.screen.blit(
-                self.ammunition.image, self.ammunition.rect.move(
-                    a * self.ammunition.rect.width, 0
-                )
+        if self.hidden: self.window.screen.blit(
+            self.hide.image, self.hide.rect
+        )
+
+        for a in range(self.ammunitions): self.window.screen.blit(
+            self.ammunition.image,
+            self.ammunition.rect.move(
+                a * self.ammunition.rect.width, 0
             )
+        )
