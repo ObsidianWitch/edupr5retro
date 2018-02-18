@@ -1,5 +1,6 @@
 from empire_city.common import asset_path
 from shared.sprite import Sprite
+import shared.math
 
 class Player:
     def __init__(self, window):
@@ -19,8 +20,11 @@ class Player:
             dest   = self.crosshair.rect
         )
 
-    def move(self, directions):
-        move_vec = directions.vec
+    def move(self, move_vec, collisions_vec):
+        for i,_ in enumerate(move_vec):
+            move_vec[i] -= collisions_vec[i]
+            move_vec[i] = shared.math.clamp(move_vec[i], -1, 1)
+
         self.crosshair.rect.move_ip(
             move_vec[0] * self.speed,
             move_vec[1] * self.speed,

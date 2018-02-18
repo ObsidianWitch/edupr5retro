@@ -13,4 +13,13 @@ class Directions:
         self.down  - self.up,
     ]
 
+    def __repr__(self): return (
+            "<Directions(\n"
+            f"\tup: {self.up}\n"
+            f"\tdown: {self.down}\n"
+            f"\tleft: {self.left}\n"
+            f"\tright: {self.right}\n"
+            ")"
+        )
+
 def clamp(val, minval, maxval): return max(minval, min(val, maxval))
