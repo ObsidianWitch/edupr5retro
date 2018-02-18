@@ -30,9 +30,9 @@ camera = Camera(
 )
 
 def bg_space(p): return (
-        p[0] + camera.display_zone.x,
-        p[1] + camera.display_zone.y,
-    )
+    p[0] + camera.display_zone.x,
+    p[1] + camera.display_zone.y,
+)
 
 def move():
     scroll_vec = camera.scroll_zone_collide(
@@ -70,6 +70,21 @@ def shoot():
         bg_space(player.crosshair.rect.center)
     )
 
+hint_left = Sprite.from_paths([asset_path("fleche_gauche.png")])
+hint_left.rect.midleft = window.rect.midleft
+hint_right = Sprite.from_paths([asset_path("fleche_droite.png")])
+hint_right.rect.midright = window.rect.midright
+
+def draw_hints():
+    if not enemy.alive: return
+
+    enemy_visible = camera.display_zone.colliderect(enemy.mob.rect)
+    if enemy_visible: return
+
+    enemy_left = (bg_space(player.crosshair.rect.center)[0] > enemy.mob.rect.x)
+    if enemy_left: window.screen.blit(hint_left.image, hint_left.rect)
+    else: window.screen.blit(hint_right.image, hint_right.rect)
+
 def game():
     # Update
     move()
@@ -88,5 +103,6 @@ def game():
         area   = camera.display_zone
     )
     player.draw()
+    draw_hints()
 
 window.loop(game)
