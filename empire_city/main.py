@@ -29,11 +29,6 @@ camera = Camera(
     position = (350, 170),
 )
 
-def bg_space(p): return (
-    p[0] + camera.display_zone.x,
-    p[1] + camera.display_zone.y,
-)
-
 def move():
     scroll_vec = camera.scroll_zone_collide(
         player.crosshair.rect.center
@@ -67,7 +62,7 @@ def shoot():
         random.randint(-2, 2)
     )
     enemy.killcollide(
-        bg_space(player.crosshair.rect.center)
+        camera.bg_space(player.crosshair.rect.center)
     )
 
 hint_left = Sprite.from_paths([asset_path("fleche_gauche.png")])
@@ -81,7 +76,9 @@ def draw_hints():
     enemy_visible = camera.display_zone.colliderect(enemy.mob.rect)
     if enemy_visible: return
 
-    enemy_left = (bg_space(player.crosshair.rect.center)[0] > enemy.mob.rect.x)
+    enemy_left = (
+        camera.bg_space(player.crosshair.rect.center)[0] > enemy.mob.rect.x
+    )
     if enemy_left: window.screen.blit(hint_left.image, hint_left.rect)
     else: window.screen.blit(hint_right.image, hint_right.rect)
 

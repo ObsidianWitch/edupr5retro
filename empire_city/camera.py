@@ -29,6 +29,11 @@ class Camera:
         right = self.scroll_zone_right.collidepoint(p),
     )
 
+    def bg_space(self, p): return (
+        p[0] + self.display_zone.x,
+        p[1] + self.display_zone.y,
+    )
+
     def update(self, scroll_vec):
         self.display_zone.move_ip(
             scroll_vec[0] * self.speed,
