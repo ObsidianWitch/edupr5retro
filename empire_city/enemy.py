@@ -34,7 +34,9 @@ class Enemy:
         self.t0 = get_time()
 
     def killcollide(self, p):
-        if self.alive and self.mob.rect.collidepoint(p): self.kill()
+        killed = (self.alive and self.mob.rect.collidepoint(p))
+        if killed: self.kill()
+        return killed
 
     # Generates a new enemy 3 seconds after the previous one has been killed.
     def update(self):
