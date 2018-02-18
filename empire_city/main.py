@@ -6,6 +6,7 @@ from empire_city.common  import asset_path
 from empire_city.camera  import Camera
 from empire_city.player import Player
 from empire_city.enemy  import Enemy
+from empire_city.hints  import Hints
 
 window = Window(
     width  = 400,
@@ -24,23 +25,7 @@ camera = Camera(
 
 player = Player(camera)
 enemy = Enemy(camera)
-
-hint_left = Sprite.from_paths([asset_path("fleche_gauche.png")])
-hint_left.rect.midleft = window.rect.midleft
-hint_right = Sprite.from_paths([asset_path("fleche_droite.png")])
-hint_right.rect.midright = window.rect.midright
-
-def draw_screen_hints():
-    if not enemy.alive: return
-
-    enemy_visible = camera.display_zone.colliderect(enemy.mob.rect)
-    if enemy_visible: return
-
-    enemy_left = (
-        camera.bg_space(player.crosshair.rect.center)[0] > enemy.mob.rect.x
-    )
-    if enemy_left: window.screen.blit(hint_left.image, hint_left.rect)
-    else: window.screen.blit(hint_right.image, hint_right.rect)
+hints = Hints(camera, player, enemy)
 
 def game():
     # Update
@@ -64,6 +49,6 @@ def game():
         area   = camera.display_zone
     )
     player.draw_screen()
-    draw_screen_hints()
+    hints.draw_screen()
 
 window.loop(game)
