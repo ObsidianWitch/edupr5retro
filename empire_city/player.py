@@ -70,7 +70,8 @@ class Player:
         killed = target.kill(
             self.camera.bg_space(self.crosshair.rect.center)
         )
-        if killed: self.ammunitions += 2
+        if killed ==  1: self.ammunitions += 2
+        if killed == -1: self.ammunitions -= 3
 
     def update(self, collisions_vec, target):
         self.move(collisions_vec)
