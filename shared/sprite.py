@@ -24,29 +24,23 @@ class Sprite(pygame.sprite.Sprite):
         self.rect.move_ip(position)
 
     @classmethod
-    def from_paths(
-        cls, paths, position = (0, 0), colorkey = None,
-        animations = None,
-    ):
+    def from_paths(cls, paths, position = (0, 0), animations = None):
         images = []
         for path in paths:
             image = pygame.image.load(
                 os.path.join(cls.project_path, path)
             )
-            if colorkey: image.set_colorkey(colorkey)
             images.append(image)
 
         return cls(images, position, animations)
 
     @classmethod
     def from_ascii(
-        cls, ascii_sprites, dictionary, position = (0, 0), colorkey = None,
-        animations = None,
+        cls, ascii_sprites, dictionary, position = (0, 0), animations = None
     ):
         images = []
         for ascii_sprite in ascii_sprites:
             image = cls.ascii_to_image(ascii_sprite, dictionary)
-            if colorkey: image.set_colorkey(colorkey)
             images.append(image)
 
         return cls(images, position, animations)
@@ -78,6 +72,9 @@ class Sprite(pygame.sprite.Sprite):
     def scale_ip(self, ratio):
         self.images = self.scale(ratio)
         self.image  = self.images[0]
+
+    def colorkey(self, color):
+        for img in self.images: img.set_colorkey(color)
 
     def update(self):
         frames = self.animations[self.animation]

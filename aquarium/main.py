@@ -23,9 +23,9 @@ fish1 = Fish(
     sprite = Sprite.from_paths(
         paths    = [asset_path("fish1.bmp")],
         position = (100, 200),
-        colorkey = (170, 238, 255),
     )
 )
+fish1.sprite.colorkey((170, 238, 255))
 fish1.sprite.scale_ip(0.5)
 
 fish2 = Fish(
@@ -35,9 +35,9 @@ fish2 = Fish(
     sprite = Sprite.from_paths(
         paths    = [asset_path("fish2.bmp")],
         position = (200, 300),
-        colorkey = (170, 238, 255)
     )
 )
+fish2.sprite.colorkey((170, 238, 255))
 
 fish3 = Fish(
     window = window,
@@ -46,37 +46,37 @@ fish3 = Fish(
     sprite = Sprite.from_paths(
         paths    = [asset_path("fish3.bmp")],
         position = (200, 200),
-        colorkey = (170, 255, 238),
     )
 )
+fish3.sprite.colorkey((170, 255, 238))
 fish3.sprite.scale_ip(1.1)
 
 plant1 = Sprite.from_paths(
     paths    = [asset_path("plant1.bmp")],
     position = (100, 170),
-    colorkey = (255, 7 ,0),
 )
+plant1.colorkey((255, 7, 0))
 plant1.scale_ip(0.5)
 
 plant2 = Sprite.from_paths(
     paths    = [asset_path("plant2.bmp")],
     position = (360, 170),
-    colorkey = (255, 7 ,0),
 )
+plant2.colorkey((255, 7, 0))
 plant2.scale_ip(0.7)
 
 decor1 = Sprite.from_paths(
     paths    = [asset_path("decor1.bmp")],
     position = (500, 175),
-    colorkey = (255, 0 ,0),
 )
+decor1.colorkey((255, 0, 0))
 decor1.scale_ip(0.7)
 
 decor2 = Sprite.from_paths(
     paths    = [asset_path("decor2.bmp")],
     position = (260, 260),
-    colorkey = (255, 7 ,0),
 )
+decor2.colorkey((255, 7, 0))
 decor2.scale_ip(0.3)
 
 layers = [pygame.sprite.Group()] * 5

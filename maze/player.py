@@ -94,7 +94,6 @@ class Player:
         self.window = window
 
         self.facing_x = 1
-
         self.score = 0
 
         self.sprite = Sprite.from_ascii(
@@ -113,9 +112,9 @@ class Player:
                 "WALK_L": [3, 4, 5, 4],
             },
             dictionary = palette,
-            position   = (25, 25),
-            colorkey   = palette[' '],
+            position   = (25, 25)
         )
+        self.sprite.colorkey(palette[' '])
 
     def reset_position(self):
         self.sprite.rect.topleft = (25, 25)
