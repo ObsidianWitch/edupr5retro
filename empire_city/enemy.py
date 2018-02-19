@@ -14,6 +14,13 @@ class Enemies:
         asset_path("bandit_rue4.png"),
     ]).images
 
+    window_images = Sprite.from_paths([
+        asset_path("bandit_window.png"),
+        asset_path("bandit_window2.png"),
+        asset_path("bandit_window3.png"),
+        asset_path("bandit_window4.png"),
+    ]).images
+
     wall_images = Sprite.from_paths([
         asset_path("bandit_mur.png"),
         asset_path("bandit_mur2.png"),
@@ -29,6 +36,7 @@ class Enemies:
 
         self.generators = (
             self.new_street_mob,
+            self.new_window_mob,
             self.new_wall_mob,
             self.new_sewer_mob,
         )
@@ -48,6 +56,13 @@ class Enemies:
     def new_street_mob(self):
         mob = Enemy(self.camera, [random.choice(self.street_images)])
         self.street_position(mob)
+        return mob
+
+    def new_window_mob(self):
+        i = random.randrange(len(self.window_images))
+        positions = ((1244, 78), (1312, 258), (952, 84), (790, 88))
+        mob = Enemy(self.camera, [self.window_images[i]])
+        mob.rect.topleft = positions[i]
         return mob
 
     def new_wall_mob(self):
