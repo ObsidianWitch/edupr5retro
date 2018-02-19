@@ -30,7 +30,4 @@ class Hints:
                 self.player.crosshair.rect.center
             )[0] < self.enemy.mob.rect.x
         )
-        self.window.screen.blit(
-            self.sprites[arrow_i].image,
-            self.sprites[arrow_i].rect
-        )
+        self.sprites[arrow_i].draw(self.window.screen)

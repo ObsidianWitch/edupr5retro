@@ -82,15 +82,10 @@ class Player:
         self.explosions.draw(self.bg.image)
 
     def draw_screen(self):
-        self.window.screen.blit(self.crosshair.image, self.crosshair.rect)
+        self.crosshair.draw(self.window.screen)
 
-        if self.hidden: self.window.screen.blit(
-            self.hide.image, self.hide.rect
-        )
+        if self.hidden: self.hide.draw(self.window.screen)
 
-        for a in range(self.ammunitions): self.window.screen.blit(
-            self.ammunition.image,
-            self.ammunition.rect.move(
-                a * self.ammunition.rect.width, 0
-            )
-        )
+        for a in range(self.ammunitions):
+            self.ammunition.rect.left = a * self.ammunition.rect.width
+            self.ammunition.draw(self.window.screen)

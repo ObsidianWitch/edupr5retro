@@ -148,4 +148,4 @@ class Player:
         self.sprite.update()
 
     def draw(self):
-        self.window.screen.blit(self.sprite.image, self.sprite.rect)
+        self.sprite.draw(self.window.screen)

@@ -83,3 +83,6 @@ class Sprite(pygame.sprite.Sprite):
         frames = self.animations[self.animation]
         i = (pygame.time.get_ticks() // 500) % len(frames)
         self.image = self.images[frames[i]]
+
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
