@@ -9,7 +9,7 @@ class Camera:
 
         self.display_zone = window.rect.move(position)
 
-        offset = 100
+        offset = 20
         self.scroll_zone_up = pygame.Rect(0, 0, window.width, offset)
 
         self.scroll_zone_down = self.scroll_zone_up.copy()
