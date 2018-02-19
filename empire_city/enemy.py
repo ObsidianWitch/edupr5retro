@@ -40,6 +40,10 @@ class Enemies:
         asset_path("woman.png"),
     ]).images
 
+    runner_images = Sprite.from_paths([
+        asset_path("bandit_rue3.png"),
+    ]).images
+
     def __init__(self, camera):
         self.camera = camera
         self.bg = camera.bg
@@ -51,6 +55,7 @@ class Enemies:
             self.new_sewer_mob,
             self.new_top_mob,
             self.new_kidnaper_mob,
+            self.new_runner_mob,
         )
 
         self.next()
@@ -60,10 +65,7 @@ class Enemies:
 
     def street_position(self, sprite):
         sprite.rect.bottom = self.bg.rect.bottom - 10
-        sprite.rect.left = random.randint(
-            100,
-            self.bg.rect.width - sprite.rect.width - 100
-        )
+        sprite.rect.left = random.randint(100, self.bg.rect.width - 100)
 
     def new_street_mob(self):
         mob = Enemy(self.camera, [random.choice(self.street_images)])
@@ -96,6 +98,11 @@ class Enemies:
 
     def new_kidnaper_mob(self):
         mob = Kidnaper(self.camera, self.kidnaper_images)
+        self.street_position(mob)
+        return mob
+
+    def new_runner_mob(self):
+        mob = Runner(self.camera, self.runner_images)
         self.street_position(mob)
         return mob
 
@@ -186,3 +193,18 @@ class Kidnaper(Enemy):
         kidnaper_killed = (self.alive and kidnaper.collidepoint(p))
         if victim_killed or kidnaper_killed: self.alive = False
         return (kidnaper_killed - victim_killed)
+
+class Runner(Enemy):
+    def __init__(self, camera, images):
+        Enemy.__init__(self, camera, images)
+        self.dx = -2
+
+    def move(self):
+        self.rect.x += self.dx
+        if not self.bg.rect.contains(self.rect):
+            self.rect.clamp_ip(self.bg.rect)
+            self.dx *= -1
+
+    def update(self, target):
+        Enemy.update(self, target)
+        self.move()
