@@ -1,6 +1,5 @@
 import os
 import inspect
-
 import numpy
 import pygame
 
@@ -10,64 +9,96 @@ class Sprite(pygame.sprite.Sprite):
         ".."
     )
 
-    def __init__(self, images, position = (0, 0), animations = None):
+    def __init__(self, image, position = (0, 0)):
         pygame.sprite.Sprite.__init__(self)
-        self.images = images
-        self.image = self.images[0]
-
-        self.animations = animations or {
-            "DEFAULT": range(len(self.images)),
-        }
-        self.animation = next(iter(self.animations))
+        self.image = image
 
         self.rect = self.image.get_rect()
         self.rect.move_ip(position)
 
     @classmethod
-    def from_paths(cls, paths, position = (0, 0), animations = None):
-        images = []
-        for path in paths:
-            image = pygame.image.load(
-                os.path.join(cls.project_path, path)
-            )
-            images.append(image)
-
-        return cls(images, position, animations)
+    def from_path(cls, path, position = (0, 0)): return cls(
+        image    = cls.path_to_image(path),
+        position = position,
+    )
 
     @classmethod
-    def from_ascii(
-        cls, ascii_sprites, dictionary, position = (0, 0), animations = None
-    ):
-        images = []
-        for ascii_sprite in ascii_sprites:
-            image = cls.ascii_to_image(ascii_sprite, dictionary)
-            images.append(image)
-
-        return cls(images, position, animations)
+    def from_ascii(cls, txt, dictionary, position = (0, 0)): return cls(
+        image    = cls.ascii_to_image(txt, dictionary),
+        position = position
+    )
 
     @classmethod
-    def ascii_to_image(cls, ascii_sprite, dictionary):
-        height = len(ascii_sprite)
-        width  = len(ascii_sprite[0])
+    def path_to_image(cls, path): return pygame.image.load(
+        os.path.join(cls.project_path, path)
+    )
+
+    @classmethod
+    def ascii_to_image(cls, txt, dictionary):
+        height = len(txt)
+        width  = len(txt[0])
 
         rgb_sprite = numpy.zeros((width, height, 3))
         for y, x in numpy.ndindex(height, width):
-            c = ascii_sprite[y][x]
+            c = txt[y][x]
             rgb_sprite[x,y] = dictionary[c]
 
         return pygame.surfarray.make_surface(rgb_sprite)
+
+    @classmethod
+    def path_to_images(cls, paths): return [
+        cls.path_to_image(path) for path in paths
+    ]
+
+    @classmethod
+    def ascii_to_images(cls, txts, dictionary): return [
+        cls.ascii_to_image(txt, dictionary) for txt in txts
+    ]
 
     def scale(self, ratio):
         self.rect.size = (
             int(self.rect.width * ratio),
             int(self.rect.height * ratio)
         )
+        return pygame.transform.scale(self.image, self.rect.size)
 
-        new_images = []
-        for img in self.images: new_images.append(
-            pygame.transform.scale(img, self.rect.size)
+    def scale_ip(self, ratio):
+        self.image = self.scale(ratio)
+
+    def colorkey(self, color):
+        self.image.set_colorkey(color)
+
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
+
+class AnimatedSprite(Sprite):
+    def __init__(self, images, position = (0, 0), animations = None):
+        Sprite.__init__(self, images[0], position)
+        self.images = images
+        self.animations = animations or {
+            "DEFAULT": range(len(self.images)),
+        }
+        self.animation = next(iter(self.animations))
+
+    @classmethod
+    def from_path(cls, paths, position = (0, 0), animations = None):
+        images = cls.path_to_images(paths)
+        return cls(images, position, animations)
+
+    @classmethod
+    def from_ascii(cls, txts, dictionary, position = (0, 0), animations = None):
+        images = cls.ascii_to_images(txts, dictionary)
+        return cls(images, position, animations)
+
+    def scale(self, ratio):
+        self.rect.size = (
+            int(self.rect.width * ratio),
+            int(self.rect.height * ratio)
         )
-        return new_images
+        return [
+            pygame.transform.scale(img, self.rect.size)
+            for img in self.images
+        ]
 
     def scale_ip(self, ratio):
         self.images = self.scale(ratio)

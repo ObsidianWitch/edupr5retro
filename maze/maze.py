@@ -5,7 +5,7 @@ from shared.sprite import Sprite
 from maze.palette import palette
 
 class Maze:
-    maze_ascii = [
+    maze_ascii = (
         'BBBBBBBBBBBBBBBBBBBB',
         'B         B       CB',
         'B BB BBBBB     BBBBB',
@@ -26,9 +26,9 @@ class Maze:
         'BB BB B  BBB BB BB B',
         'B  CB    BBB  B    B',
         'BBBBBBBBBBBBBBBBBBBB',
-    ]
+    )
 
-    exit_ascii = [
+    exit_ascii = (
         '                    ',
         '                    ',
         '        YYYY        ',
@@ -49,9 +49,9 @@ class Maze:
         '         YY         ',
         '                    ',
         '                    ',
-    ]
+    )
 
-    treasure_ascii = [
+    treasure_ascii = (
         '                    ',
         '                    ',
         '                    ',
@@ -72,9 +72,9 @@ class Maze:
         '                    ',
         '                    ',
         '                    ',
-    ]
+    )
 
-    trap_ascii = [
+    trap_ascii = (
         '                    ',
         '                    ',
         '          RRRR      ',
@@ -95,7 +95,22 @@ class Maze:
         '       RRRR  R      ',
         '                    ',
         '                    ',
-    ]
+    )
+
+    exit_img = Sprite.ascii_to_image(
+        txt        = exit_ascii,
+        dictionary = palette,
+    )
+
+    treasure_img = Sprite.ascii_to_image(
+        txt        = treasure_ascii,
+        dictionary = palette,
+    )
+
+    trap_img = Sprite.ascii_to_image(
+        txt        = trap_ascii,
+        dictionary = palette,
+    )
 
     def __init__(self, window):
         self.window = window
@@ -116,40 +131,24 @@ class Maze:
         self.treasures = pygame.sprite.Group()
         self.traps     = pygame.sprite.Group()
 
-        # Create temporary sprites to load images.
-        exit_tmp = Sprite.from_ascii(
-            ascii_sprites = [self.exit_ascii],
-            dictionary    = palette,
-        )
-
-        treasure_tmp = Sprite.from_ascii(
-            ascii_sprites = [self.treasure_ascii],
-            dictionary    = palette,
-        )
-
-        trap_tmp = Sprite.from_ascii(
-            ascii_sprites = [self.trap_ascii],
-            dictionary    = palette,
-        )
-
         def init_one(code, color, xsq, ysq):
             if code == "Y":
                 sprite = Sprite(
-                    images   = exit_tmp.images,
+                    image    = self.exit_img,
                     position = (xsq, ysq),
                 )
                 self.items.add(sprite)
                 self.exit = sprite
             elif code == "C":
                 sprite = Sprite(
-                    images   = treasure_tmp.images,
+                    image    = self.treasure_img,
                     position = (xsq, ysq),
                 )
                 self.items.add(sprite)
                 self.treasures.add(sprite)
             elif code == "R":
                 sprite = Sprite(
-                    images   = trap_tmp.images,
+                    image    = self.trap_img,
                     position = (xsq, ysq),
                 )
                 self.items.add(sprite)

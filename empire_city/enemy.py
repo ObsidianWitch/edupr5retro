@@ -8,41 +8,41 @@ from empire_city.common import asset_path
 
 # Enemy generator.
 class Enemies:
-    street_images = Sprite.from_paths([
-        asset_path("bandit_rue.png"),
-        asset_path("bandit_rue2.png"),
-        asset_path("bandit_rue4.png"),
-    ]).images
+    street_images = Sprite.path_to_images([
+            asset_path("bandit_rue.png"),
+            asset_path("bandit_rue2.png"),
+            asset_path("bandit_rue4.png")
+    ])
 
-    window_images = Sprite.from_paths([
+    window_images = Sprite.path_to_images([
         asset_path("bandit_window.png"),
         asset_path("bandit_window2.png"),
         asset_path("bandit_window3.png"),
         asset_path("bandit_window4.png"),
-    ]).images
+    ])
 
-    wall_images = Sprite.from_paths([
+    wall_images = Sprite.path_to_images([
         asset_path("bandit_mur.png"),
         asset_path("bandit_mur2.png"),
-    ]).images
+    ])
 
-    sewer_images = Sprite.from_paths([
-        asset_path("bandit_egout.png"),
-    ]).images
-
-    top_images = Sprite.from_paths([
+    top_images = Sprite.path_to_images([
         asset_path("bandit_appui.png"),
         asset_path("bandit_appui2.png"),
         asset_path("bandit_appui3.png"),
-    ]).images
+    ])
 
-    kidnaper_images = Sprite.from_paths([
+    sewer_image = Sprite.path_to_image(
+        asset_path("bandit_egout.png"),
+    )
+
+    kidnaper_image = Sprite.path_to_image(
         asset_path("woman.png"),
-    ]).images
+    )
 
-    runner_images = Sprite.from_paths([
+    runner_image = Sprite.path_to_image(
         asset_path("bandit_rue3.png"),
-    ]).images
+    )
 
     def __init__(self, camera):
         self.camera = camera
@@ -52,8 +52,8 @@ class Enemies:
             self.new_street_mob,
             self.new_window_mob,
             self.new_wall_mob,
-            self.new_sewer_mob,
             self.new_top_mob,
+            self.new_sewer_mob,
             self.new_kidnaper_mob,
             self.new_runner_mob,
         )
@@ -68,41 +68,41 @@ class Enemies:
         sprite.rect.left = random.randint(100, self.bg.rect.width - 100)
 
     def new_street_mob(self):
-        mob = Enemy(self.camera, [random.choice(self.street_images)])
+        mob = Enemy(self.camera, random.choice(self.street_images))
         self.street_position(mob)
         return mob
 
     def new_window_mob(self):
         i = random.randrange(len(self.window_images))
         positions = ((1244, 78), (1312, 258), (952, 84), (790, 88))
-        mob = Enemy(self.camera, [self.window_images[i]])
+        mob = Enemy(self.camera, self.window_images[i])
         mob.rect.topleft = positions[i]
         return mob
 
     def new_wall_mob(self):
         positions = ((710, 600), (1140, 600), (1823, 600))
-        mob = Enemy(self.camera, [random.choice(self.wall_images)])
+        mob = Enemy(self.camera, random.choice(self.wall_images))
         mob.rect.bottomright = random.choice(positions)
-        return mob
-
-    def new_sewer_mob(self):
-        mob = Enemy(self.camera, self.sewer_images)
-        mob.rect.topleft = (410, 642)
         return mob
 
     def new_top_mob(self):
         positions = ((29, 191), (356, 191), (1712, 411))
-        mob = Enemy(self.camera, [random.choice(self.top_images)])
+        mob = Enemy(self.camera, random.choice(self.top_images))
         mob.rect.midbottom = random.choice(positions)
         return mob
 
+    def new_sewer_mob(self):
+        mob = Enemy(self.camera, self.sewer_image)
+        mob.rect.topleft = (410, 642)
+        return mob
+
     def new_kidnaper_mob(self):
-        mob = Kidnaper(self.camera, self.kidnaper_images)
+        mob = Kidnaper(self.camera, self.kidnaper_image)
         self.street_position(mob)
         return mob
 
     def new_runner_mob(self):
-        mob = Runner(self.camera, self.runner_images)
+        mob = Runner(self.camera, self.runner_image)
         self.street_position(mob)
         return mob
 
@@ -130,8 +130,8 @@ class Enemies:
         self.mob.draw_screen()
 
 class Enemy(Sprite):
-    def __init__(self, camera, images):
-        Sprite.__init__(self, images)
+    def __init__(self, camera, image):
+        Sprite.__init__(self, image)
 
         self.camera = camera
         self.window = camera.window
@@ -179,8 +179,8 @@ class Enemy(Sprite):
         self.draw_shoot_timer()
 
 class Kidnaper(Enemy):
-    def __init__(self, camera, images):
-        Enemy.__init__(self, camera, images)
+    def __init__(self, camera, image):
+        Enemy.__init__(self, camera, image)
 
     def kill(self, p):
         kidnaper = self.rect.copy()
@@ -195,8 +195,8 @@ class Kidnaper(Enemy):
         return (kidnaper_killed - victim_killed)
 
 class Runner(Enemy):
-    def __init__(self, camera, images):
-        Enemy.__init__(self, camera, images)
+    def __init__(self, camera, image):
+        Enemy.__init__(self, camera, image)
         self.dx = -2
 
     def move(self):

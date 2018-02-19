@@ -11,10 +11,8 @@ class StateRun:
     def __init__(self, window):
         self.window = window
 
-        self.bg  = Sprite.from_paths([
-            asset_path("map.png"),
-            asset_path("map.png")
-        ])
+        self.bg  = Sprite.from_path(asset_path("map.png"))
+        self.bg0 = self.bg.image.copy()
 
         self.camera = Camera(
             window   = self.window,
@@ -39,7 +37,7 @@ class StateRun:
 
         # Draw
         ## bg drawing
-        self.bg.image.blit(self.bg.images[1], (0, 0))
+        self.bg.image.blit(self.bg0, (0, 0))
         self.enemies.draw_bg()
         self.player.draw_bg()
 

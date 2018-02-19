@@ -1,5 +1,5 @@
 from shared.sprite import Sprite
-from empire_city.common  import asset_path
+from empire_city.common import asset_path
 
 class Hints:
     def __init__(self, camera):
@@ -8,10 +8,10 @@ class Hints:
         self.bg     = camera.bg
 
         self.sprites = (
-            Sprite.from_paths([asset_path("fleche_gauche.png")]),
-            Sprite.from_paths([asset_path("fleche_droite.png")]),
+            Sprite.from_path(asset_path("fleche_gauche.png")),
+            Sprite.from_path(asset_path("fleche_droite.png")),
         )
-        self.sprites[0].rect.midleft = self.window.rect.midleft
+        self.sprites[0].rect.midleft  = self.window.rect.midleft
         self.sprites[1].rect.midright = self.window.rect.midright
 
     def draw_screen(self, player, enemy):

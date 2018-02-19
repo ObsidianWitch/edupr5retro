@@ -2,11 +2,11 @@ import pygame
 import numpy
 
 import shared.math
-from shared.sprite import Sprite
+from shared.sprite import AnimatedSprite
 from maze.palette import palette
 
 class Player:
-    char0_ascii = [
+    char0_ascii = (
         '   RRR    ',
         '  RRWWR   ',
         '   RRR    ',
@@ -18,9 +18,9 @@ class Player:
         '   CC     ',
         '  C  C    ',
         ' C    C   ',
-    ]
+    )
 
-    char1_ascii = [
+    char1_ascii = (
         '   RRR    ',
         '  RRWWR   ',
         '   RRR    ',
@@ -32,9 +32,9 @@ class Player:
         '   CC     ',
         '  C  C    ',
         '  C  C    ',
-    ]
+    )
 
-    char2_ascii = [
+    char2_ascii = (
         '   RRR    ',
         '  RRWWR   ',
         '   RRR    ',
@@ -46,9 +46,9 @@ class Player:
         '   CC     ',
         '   CC     ',
         '   CC     ',
-    ]
+    )
 
-    char3_ascii = [
+    char3_ascii = (
         '    RRR   ',
         '   RWWRR  ',
         '    RRR   ',
@@ -60,9 +60,9 @@ class Player:
         '     CC   ',
         '    C  C  ',
         '   C    C ',
-    ]
+    )
 
-    char4_ascii = [
+    char4_ascii = (
         '    RRR   ',
         '   RWWRR  ',
         '    RRR   ',
@@ -74,9 +74,9 @@ class Player:
         '     CC   ',
         '    C  C  ',
         '    C  C  ',
-    ]
+    )
 
-    char5_ascii = [
+    char5_ascii = (
         '    RRR   ',
         '   RWWRR  ',
         '    RRR   ',
@@ -88,7 +88,7 @@ class Player:
         '     CC   ',
         '     CC   ',
         '     CC   ',
-    ]
+    )
 
     def __init__(self, window):
         self.window = window
@@ -96,8 +96,8 @@ class Player:
         self.facing_x = 1
         self.score = 0
 
-        self.sprite = Sprite.from_ascii(
-            ascii_sprites = [
+        self.sprite = AnimatedSprite.from_ascii(
+            txts = [
                 self.char0_ascii,
                 self.char1_ascii,
                 self.char2_ascii,
@@ -111,10 +111,10 @@ class Player:
                 "WALK_R": [0, 1, 2, 1],
                 "WALK_L": [3, 4, 5, 4],
             },
-            dictionary = palette,
-            position   = (25, 25)
+            dictionary = palette
         )
         self.sprite.colorkey(palette[' '])
+        self.reset_position()
 
     def reset_position(self):
         self.sprite.rect.topleft = (25, 25)
