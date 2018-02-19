@@ -42,6 +42,11 @@ class Enemies:
     def next(self):
         self.mob = random.choice(self.generators)()
 
+    def kill(self, p):
+        killed = self.mob.kill(p)
+        if killed: self.repop_timer.restart()
+        return killed
+
     def update(self, target):
         repop = (
             not self.mob.alive
@@ -57,7 +62,6 @@ class Enemies:
     def draw_screen(self):
         self.mob.draw_screen()
 
-
 class Enemy(Sprite):
     def __init__(self, camera, images):
         Sprite.__init__(self, images)
@@ -69,7 +73,7 @@ class Enemy(Sprite):
         self.alive = True
         self.shoot_timer = Timer(3)
 
-    def killcollide(self, p):
+    def kill(self, p):
         killed = (self.alive and self.rect.collidepoint(p))
         if killed: self.alive = False
         return killed

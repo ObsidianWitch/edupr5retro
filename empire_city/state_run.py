@@ -32,7 +32,7 @@ class StateRun:
             self.player.crosshair.rect.center
         ).vec
         self.camera.update(scroll_vec)
-        self.player.update(scroll_vec, self.enemies.mob)
+        self.player.update(scroll_vec, self.enemies)
         self.enemies.update(self.player)
 
         if self.player.ammunitions <= 0: return True

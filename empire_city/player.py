@@ -67,7 +67,7 @@ class Player:
             self.camera.bg_space(self.crosshair.rect.center)
         ))
 
-        killed = target.killcollide(
+        killed = target.kill(
             self.camera.bg_space(self.crosshair.rect.center)
         )
         if killed: self.ammunitions += 2
