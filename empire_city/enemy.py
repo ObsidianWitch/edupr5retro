@@ -30,6 +30,12 @@ class Enemies:
         asset_path("bandit_egout.png"),
     ]).images
 
+    top_images = Sprite.from_paths([
+        asset_path("bandit_appui.png"),
+        asset_path("bandit_appui2.png"),
+        asset_path("bandit_appui3.png"),
+    ]).images
+
     def __init__(self, camera):
         self.camera = camera
         self.bg = camera.bg
@@ -39,6 +45,7 @@ class Enemies:
             self.new_window_mob,
             self.new_wall_mob,
             self.new_sewer_mob,
+            self.new_top_mob,
         )
 
         self.next()
@@ -74,6 +81,12 @@ class Enemies:
     def new_sewer_mob(self):
         mob = Enemy(self.camera, self.sewer_images)
         mob.rect.topleft = (410, 642)
+        return mob
+
+    def new_top_mob(self):
+        positions = ((29, 191), (356, 191), (1712, 411))
+        mob = Enemy(self.camera, [random.choice(self.top_images)])
+        mob.rect.midbottom = random.choice(positions)
         return mob
 
     def next(self):
