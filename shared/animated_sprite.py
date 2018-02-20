@@ -1,29 +1,19 @@
-import collections
 import pygame
 
 from shared.sprite import Sprite
 from shared.timer  import Timer
 
-class Animation:
-    def __init__(self, frames, loop = True):
-        self.frames = frames
-        self.loop   = loop
-
 class Animations:
     @property
     def frame(self):
-        i = self.timer.elapsed % len(self.current.frames)
-        if self.finished: i = self.last_frame
-        return self.current.frames[i]
+        i = self.timer.elapsed % len(self.current)
+        return self.current[i]
 
     @property
-    def last_frame(self): return (len(self.current.frames) - 1)
-
-    @property
-    def finished(self): return (not self.current.loop and self.timer.finished)
+    def finished(self): return self.timer.finished
 
     def __init__(self, data, period):
-        self.data = data
+        self.data   = data
         self.period = period
         self.start(name = next(iter(self.data)))
 
@@ -33,8 +23,8 @@ class Animations:
     def start(self, name):
         self.set(name)
         self.timer = Timer(
-            end    = self.last_frame,
-            period = self.period
+            end    = len(self.current),
+            period = self.period,
         )
 
 class AnimatedSprite(Sprite):

@@ -3,7 +3,7 @@ import types
 import pygame
 
 from shared.collisions import pixel_collision_mid
-from shared.animated_sprite import AnimatedSprite, Animations, Animation
+from shared.animated_sprite import AnimatedSprite, Animations
 from lemmings.common import asset_path
 
 STATES = enum.Enum("STATES", "START WALK FALL DEAD")
@@ -57,9 +57,9 @@ class Lemming(AnimatedSprite):
             images     = self.lemming_imgs,
             animations = Animations(
                 data = {
-                    "WALK_L": Animation(range(0, 8)),
-                    "FALL"  : Animation(range(8, 12)),
-                    "DEAD"  : Animation(range(117, 133), loop = False),
+                    "WALK_L": range(0, 8),
+                    "FALL"  : range(8, 12),
+                    "DEAD"  : range(117, 133),
                 },
                 period  = 100,
             ),
