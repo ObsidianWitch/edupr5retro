@@ -2,7 +2,7 @@ import pygame
 import numpy
 
 import shared.math
-from shared.sprite import AnimatedSprite
+from shared.animated_sprite import AnimatedSprite
 from maze.palette import palette
 
 class Player:
