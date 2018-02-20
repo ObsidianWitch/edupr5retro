@@ -65,6 +65,12 @@ class Sprite(pygame.sprite.Sprite):
     def scale_ip(self, ratio):
         self.image = self.scale(ratio)
 
+    def flip(self, xflip = False, yflip = False):
+        return pygame.transform.flip(self.image, xflip, yflip)
+
+    def flip_ip(self, xflip = False, yflip = False):
+        self.image = self.flip(xflip, yflip)
+
     def colorkey(self, color):
         self.image.set_colorkey(color)
 
@@ -102,6 +108,15 @@ class AnimatedSprite(Sprite):
 
     def scale_ip(self, ratio):
         self.images = self.scale(ratio)
+        self.image  = self.images[0]
+
+    def flip(self, xflip = False, yflip = False): return [
+        pygame.transform.flip(img, xflip, yflip)
+        for img in self.images
+    ]
+
+    def flip_ip(self, xflip = False, yflip = False):
+        self.images = self.flip(xflip, yflip)
         self.image  = self.images[0]
 
     def colorkey(self, color):

@@ -201,9 +201,12 @@ class Runner(Enemy):
 
     def move(self):
         self.rect.x += self.dx
-        if not self.bg.rect.contains(self.rect):
-            self.rect.clamp_ip(self.bg.rect)
-            self.dx *= -1
+
+        if self.bg.rect.contains(self.rect): return
+
+        self.dx *= -1
+        self.flip_ip(xflip = True)
+        self.rect.clamp_ip(self.bg.rect)
 
     def update(self, target):
         Enemy.update(self, target)

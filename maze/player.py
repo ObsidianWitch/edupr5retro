@@ -48,48 +48,6 @@ class Player:
         '   CC     ',
     )
 
-    char3_ascii = (
-        '    RRR   ',
-        '   RWWRR  ',
-        '    RRR   ',
-        '     YY   ',
-        '    YYY   ',
-        '  GY YY   ',
-        '     GG   ',
-        '     CC   ',
-        '     CC   ',
-        '    C  C  ',
-        '   C    C ',
-    )
-
-    char4_ascii = (
-        '    RRR   ',
-        '   RWWRR  ',
-        '    RRR   ',
-        '     YY   ',
-        '    YYY   ',
-        '  GY YY   ',
-        '     GG   ',
-        '     CC   ',
-        '     CC   ',
-        '    C  C  ',
-        '    C  C  ',
-    )
-
-    char5_ascii = (
-        '    RRR   ',
-        '   RWWRR  ',
-        '    RRR   ',
-        '     YY   ',
-        '    YYY   ',
-        '  GY YY   ',
-        '     GG   ',
-        '     CC   ',
-        '     CC   ',
-        '     CC   ',
-        '     CC   ',
-    )
-
     def __init__(self, window):
         self.window = window
 
@@ -101,9 +59,6 @@ class Player:
                 self.char0_ascii,
                 self.char1_ascii,
                 self.char2_ascii,
-                self.char3_ascii,
-                self.char4_ascii,
-                self.char5_ascii,
             ],
             animations = {
                 "IDLE_R": [1],
@@ -113,6 +68,7 @@ class Player:
             },
             dictionary = palette
         )
+        self.sprite.images += self.sprite.flip(xflip = True)
         self.sprite.colorkey(palette[' '])
         self.reset_position()
 

@@ -17,36 +17,33 @@ class Fish:
     def flip(self, xflip = False, yflip = False):
         if xflip: self.dx *= -1
         if yflip: self.dy *= -1
-        self.sprite.image = pygame.transform.flip(
-            self.sprite.image, xflip, False
-        )
+        self.sprite.flip_ip(xflip, False)
 
-    # Move from left to right.
+    # Moves from left to right.
     def move1(self):
         xnew = self.sprite.rect.x + self.dx
 
-        if not (50 <= xnew <= 3 * self.window.width // 4):
-            self.flip(xflip = True)
+        limits = range(50, 3 * self.window.width // 4)
+        if xnew not in limits: self.flip(xflip = True)
 
         self.sprite.rect.move_ip(self.dx, 0)
 
-    # Move diagonally.
+    # Moves diagonally.
     def move2(self):
         xnew = self.sprite.rect.x + self.dx
         ynew = self.sprite.rect.y + self.dy
 
-        if not (20 <= xnew <= self.window.width -100):
-            self.flip(xflip = True)
-        if not (20 <= ynew <= self.window.height -100):
-            self.flip(yflip = True)
+        limits = lambda upper: range(20, upper - 100)
+        if xnew not in limits(self.window.width):  self.flip(xflip = True)
+        if ynew not in limits(self.window.height): self.flip(yflip = True)
 
         self.sprite.rect.move_ip(self.dx, self.dy)
 
-    # Move randomly.
+    # Moves randomly.
     def move3(self):
         self.flip(
-            xflip = (random.randint(0, 100) == 0),
-            yflip = (random.randint(0, 100) == 0)
+            xflip = (random.randrange(0, 100) == 0),
+            yflip = (random.randrange(0, 100) == 0)
         )
 
         self.move2()
