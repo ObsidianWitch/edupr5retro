@@ -67,7 +67,6 @@ class Player:
                     "WALK_R": [0, 1, 2, 1],
                     "WALK_L": [3, 4, 5, 4],
                 },
-                default = "IDLE_R",
                 period  = 500,
             ),
             dictionary = palette

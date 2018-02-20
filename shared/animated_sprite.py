@@ -9,10 +9,10 @@ class Animations:
         i = self.timer.elapsed % len(self.current)
         return self.current[i]
 
-    def __init__(self, data, default, period):
+    def __init__(self, data, period):
         self.data = data
         self.timer = Timer(0, period)
-        self.set(default)
+        self.set(next(iter(self.data)))
 
     def set(self, name):
         self.current = self.data[name]
