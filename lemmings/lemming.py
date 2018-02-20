@@ -1,51 +1,44 @@
 import enum
 import pygame
 
+from shared.animated_sprite import AnimatedSprite, Animations
 from lemmings.common import asset_path
 
 class Lemming:
-    STATES = enum.Enum("STATES", "WALKING FALLING STOP DEAD")
+    STATES = enum.Enum("STATES", "WALK FALL STOP DEAD")
+
+    lemming_imgs = AnimatedSprite.spritesheet_to_images(
+        path          = asset_path("planche.png"),
+        sprite_size   = (30, 30),
+        discard_color = pygame.Color("red"),
+    )
 
     def __init__(self, window):
         self.window = window
 
-        self.x  = 250
-        self.y  = 100
-        self.dx = -1
+        self.sprite = AnimatedSprite(
+            images = self.lemming_imgs,
+            animations = Animations(
+                data = {
+                    "WALK_L": range(0, 8),
+                    "FALL"  : range(8, 12),
+                },
+                default = "FALL",
+                period  = 100,
+            ),
+            position = (250, 100)
+        )
+        self.sprite.colorkey(pygame.Color("black"))
 
-        self.state     = self.STATES.FALLING
+        self.state = self.STATES.FALL
         self.fallcount = 0
 
-        self.spritesheet = pygame.image.load(asset_path("planche.png"))
-        self.spritesheet.set_colorkey(pygame.Color("black"))
-
-        self.walking_animation = self.chargeSerieSprites(0)
-        self.falling_animation  = self.chargeSerieSprites(1)
-
-    def chargeSerieSprites(self, id):
-        sprite_width = 30
-        sprite = []
-        for i in range(18):
-            spr = self.spritesheet.subsurface(
-                (sprite_width * i, sprite_width * id, sprite_width, sprite_width)
-            )
-            test = spr.get_at((10,10))
-            if (test != (255,0,0,255)): sprite.append(spr)
-        return sprite
-
     def falling(self):
-        self.y += 3
+        self.sprite.rect.move_ip(0, 3)
         self.fallcount += 3
 
     def update(self):
-        if self.state == self.STATES.FALLING: self.falling()
+        self.sprite.update()
+        if self.state == self.STATES.FALL: self.falling()
 
-    def draw(self):
-        time = int(pygame.time.get_ticks() / 100)
-
-        if self.state == self.STATES.FALLING:
-            i = time % len(self.falling_animation)
-            self.window.screen.blit(
-                self.falling_animation[i],
-                (self.x, self.y)
-            )
+    def draw(self): self.sprite.draw(self.window.screen)

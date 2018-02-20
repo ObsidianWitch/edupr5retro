@@ -2,7 +2,7 @@ import pygame
 import numpy
 
 import shared.math
-from shared.animated_sprite import AnimatedSprite
+from shared.animated_sprite import AnimatedSprite, Animations
 from maze.palette import palette
 
 class Player:
@@ -60,12 +60,16 @@ class Player:
                 self.char1_ascii,
                 self.char2_ascii,
             ],
-            animations = {
-                "IDLE_R": [1],
-                "IDLE_L": [4],
-                "WALK_R": [0, 1, 2, 1],
-                "WALK_L": [3, 4, 5, 4],
-            },
+            animations = Animations(
+                data = {
+                    "IDLE_R": [1],
+                    "IDLE_L": [4],
+                    "WALK_R": [0, 1, 2, 1],
+                    "WALK_L": [3, 4, 5, 4],
+                },
+                default = "IDLE_R",
+                period  = 500,
+            ),
             dictionary = palette
         )
         self.sprite.images += self.sprite.flip(xflip = True)
@@ -92,11 +96,11 @@ class Player:
 
     def animate(self, walking):
         if not walking:
-            if   self.facing_x < 0: self.sprite.animation = "IDLE_L"
-            elif self.facing_x > 0: self.sprite.animation = "IDLE_R"
+            if   self.facing_x < 0: self.sprite.animations.set("IDLE_L")
+            elif self.facing_x > 0: self.sprite.animations.set("IDLE_R")
         else:
-            if   self.facing_x < 0: self.sprite.animation = "WALK_L"
-            elif self.facing_x > 0: self.sprite.animation = "WALK_R"
+            if   self.facing_x < 0: self.sprite.animations.set("WALK_L")
+            elif self.facing_x > 0: self.sprite.animations.set("WALK_R")
 
     def update(self, directions, collisions):
         self.move(directions, collisions)

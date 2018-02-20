@@ -1,25 +1,66 @@
 import pygame
 
 from shared.sprite import Sprite
+from shared.timer  import Timer
+
+class Animations:
+    @property
+    def frame(self):
+        i = self.timer.elapsed % len(self.current)
+        return self.current[i]
+
+    def __init__(self, data, default, period):
+        self.data = data
+        self.timer = Timer(0, period)
+        self.set(default)
+
+    def set(self, name):
+        self.current = self.data[name]
+
+    def start(self, name):
+        self.set(name)
+        self.timer.restart()
 
 class AnimatedSprite(Sprite):
-    def __init__(self, images, position = (0, 0), animations = None):
+    def __init__(self, images, animations, position = (0, 0)):
         Sprite.__init__(self, images[0], position)
         self.images = images
-        self.animations = animations or {
-            "DEFAULT": range(len(self.images)),
-        }
-        self.animation = next(iter(self.animations))
+        self.animations = animations
 
     @classmethod
-    def from_path(cls, paths, position = (0, 0), animations = None):
+    def from_path(cls, paths, animations, position = (0, 0)):
         images = cls.path_to_images(paths)
-        return cls(images, position, animations)
+        return cls(images, animations, position)
 
     @classmethod
-    def from_ascii(cls, txts, dictionary, position = (0, 0), animations = None):
+    def from_ascii(cls, txts, dictionary, animations, position = (0, 0)):
         images = cls.ascii_to_images(txts, dictionary)
-        return cls(images, position, animations)
+        return cls(images, animations, position)
+
+    @classmethod
+    def from_spritesheet(
+        cls, path, sprite_size, discard_color, animations,
+        position = (0, 0)
+    ):
+        images = cls.spritesheet_to_images(path, sprite_size, discard_color)
+        return cls(images, animations, position)
+
+    @classmethod
+    def spritesheet_to_images(cls, path, sprite_size, discard_color):
+        spritesheet = cls.path_to_image(path)
+
+        images = []
+        for y in range(spritesheet.get_height() // sprite_size[1]):
+            for x in range(spritesheet.get_width() // sprite_size[0]):
+                img = spritesheet.subsurface(pygame.Rect(
+                    x * sprite_size[0], # x
+                    y * sprite_size[1], # y
+                    sprite_size[0],     # width
+                    sprite_size[1],     # height
+                ))
+                if img.get_at((0, 0)) == discard_color: break
+                images.append(img)
+        return images
 
     def scale(self, ratio):
         self.rect.size = (
@@ -48,9 +89,7 @@ class AnimatedSprite(Sprite):
         for img in self.images: img.set_colorkey(color)
 
     def update(self):
-        frames = self.animations[self.animation]
-        i = (pygame.time.get_ticks() // 500) % len(frames)
-        self.image = self.images[frames[i]]
+        self.image = self.images[self.animations.frame]
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
