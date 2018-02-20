@@ -2,6 +2,7 @@ import pygame
 import pygame.surfarray as surfarray
 import numpy as np
 
+from shared.timer import Timer
 from lemmings.common  import asset_path
 from lemmings.lemming import Lemming
 
@@ -10,8 +11,8 @@ class StateRun:
         self.window = window
 
         self.bg = pygame.image.load(asset_path("map.png"))
-
         self.lemmings = []
+        self.repop_timer = Timer(15, 100)
 
     def draw_cursor(self):
         display = next(
@@ -35,18 +36,17 @@ class StateRun:
         )
         print(f"Click - Grid coordinates: {x}, {y}")
 
-    def run(self):
-        time = int(pygame.time.get_ticks() / 100)
+    # Creates one lemming every 1.5s if the limit has not been reached.
+    def generate_lemmings(self):
+        if (len(self.lemmings) < 5) and self.repop_timer.finished:
+            self.lemmings.append(Lemming(self.window))
+            self.repop_timer.restart()
 
+    def run(self):
         # draw background
         self.window.screen.blit(self.bg, (0,0))
 
-        # creation des lemmings : 1 lemming toutes les 1,5 secondes
-        if (
-            len(self.lemmings) < 5
-            and ((time + len(self.lemmings)) % 15 == 0)
-        ):
-            self.lemmings.append(Lemming(self.window))
+        self.generate_lemmings()
 
         for lemming in self.lemmings: lemming.update()
 
