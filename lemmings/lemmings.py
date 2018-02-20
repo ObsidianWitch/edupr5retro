@@ -7,7 +7,7 @@ class Lemmings:
         self.window = window
 
         self.lst = []
-        self.max = 5
+        self.max = 15
         self.timer = Timer(end = 15, period = 100)
 
     def generate(self):
