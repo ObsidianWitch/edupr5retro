@@ -4,8 +4,8 @@ from shared.sprite import Sprite
 from empire_city.common import asset_path
 from empire_city.camera import Camera
 from empire_city.player import Player
-from empire_city.enemy  import Enemies
 from empire_city.hints  import Hints
+from empire_city.enemies.enemies import Enemies
 
 class StateRun:
     def __init__(self, window):
