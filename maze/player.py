@@ -2,7 +2,7 @@ import pygame
 import numpy
 
 import shared.math
-from shared.animated_sprite import AnimatedSprite, Animations
+from shared.animated_sprite import AnimatedSprite, Animations, Animation
 from maze.palette import palette
 
 class Player:
@@ -62,10 +62,10 @@ class Player:
             ],
             animations = Animations(
                 data = {
-                    "IDLE_R": [1],
-                    "IDLE_L": [4],
-                    "WALK_R": [0, 1, 2, 1],
-                    "WALK_L": [3, 4, 5, 4],
+                    "IDLE_R": Animation([1]),
+                    "IDLE_L": Animation([4]),
+                    "WALK_R": Animation([0, 1, 2, 1]),
+                    "WALK_L": Animation([3, 4, 5, 4]),
                 },
                 period  = 500,
             ),
