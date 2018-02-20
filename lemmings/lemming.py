@@ -1,16 +1,19 @@
 import enum
+import types
 import pygame
 
 from shared.animated_sprite import AnimatedSprite, Animations
 from lemmings.common import asset_path
 
-STATES = enum.Enum("STATES", "WALK FALL STOP DEAD")
+STATES = enum.Enum("STATES", "WALK FALL")
 
-class StateFall:
-    ID = STATES.FALL
-
+class Fall:
     def __init__(self, lemming):
         self.lemming = lemming
+        self.start()
+
+    def start(self):
+        self.lemming.sprite.animations.set("FALL")
         self.fallcount = 0
 
     def run(self):
@@ -41,11 +44,16 @@ class Lemming:
         )
         self.sprite.colorkey(pygame.Color("black"))
 
-        self.state = StateFall(self)
+        self.behaviours = types.SimpleNamespace(
+            fall = Fall(self),
+        )
+
+        self.state = STATES.FALL
 
     def update(self):
         self.sprite.update()
 
-        if self.state.ID == STATES.FALL: self.state.run()
+        if self.state == STATES.FALL:
+            self.behaviours.fall.run()
 
     def draw(self): self.sprite.draw(self.window.screen)
