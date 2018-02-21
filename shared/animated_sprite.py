@@ -96,6 +96,3 @@ class AnimatedSprite(Sprite):
 
     def update(self):
         self.image = self.images[self.animations.frame]
-
-    def draw(self, surface):
-        surface.blit(self.image, self.rect)

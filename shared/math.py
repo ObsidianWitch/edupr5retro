@@ -13,6 +13,13 @@ class Directions:
         self.down  - self.up,
     ]
 
+    def invert(self):
+        self.up    = not self.up
+        self.down  = not self.down
+        self.left  = not self.left
+        self.right = not self.right
+        return self
+
     def __repr__(self): return (
             "<Directions(\n"
             f"\tup: {self.up}\n"
