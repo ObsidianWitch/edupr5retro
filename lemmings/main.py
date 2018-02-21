@@ -1,3 +1,4 @@
+import pygame
 import types
 
 from shared.window import Window
@@ -7,7 +8,10 @@ window = Window(
     width  = 800,
     height = 400,
     title  = "Lemmings",
+    cursor = True,
 )
+
+pygame.mouse.set_cursor(*pygame.cursors.diamond)
 
 states = types.SimpleNamespace(
     START    = 0,

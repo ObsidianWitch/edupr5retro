@@ -17,19 +17,14 @@ class StateRun:
         if not display: return
 
         pos = pygame.mouse.get_pos()
-        x = pos[0]
-        y = pos[1]
-        pygame.draw.line(
+        rect = pygame.Rect(0, 0, 3, 3)
+        rect.center = pos
+        pygame.draw.rect(
             self.window.screen,
             pygame.Color("white"),
-            (x - 5, y), (x + 5, y)
+            rect
         )
-        pygame.draw.line(
-            self.window.screen,
-            pygame.Color("white"),
-            (x, y - 5), (x, y + 5)
-        )
-        print(f"Click - Grid coordinates: {x}, {y}")
+        print(f"Click - Grid coordinates: {pos}")
 
     def run(self):
         # update
