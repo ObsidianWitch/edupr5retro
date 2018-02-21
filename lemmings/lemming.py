@@ -7,7 +7,7 @@ import shared.collisions
 from shared.animated_sprite import AnimatedSprite, Animations
 from lemmings.common import asset_path
 
-STATES = enum.Enum("STATES", "START WALK FALL DEAD")
+STATES = enum.Enum("STATES", "START WALK FALL STOP DEAD")
 
 class Fall:
     def __init__(self, lemming):

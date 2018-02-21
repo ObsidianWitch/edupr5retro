@@ -23,6 +23,13 @@ class Window:
             for size in range(18, 43, 6)
         )
 
+    # Returns whether a mouse button has been pressed or not.
+    def mousedown(self): return next(
+        (e.type == pygame.MOUSEBUTTONDOWN
+        for e in self.events),
+        False
+    )
+
     # Returns whether `key` has been pressed or not by checking the
     # `events` list.
     # To check if `key` is held down, use the `keys` list instead.

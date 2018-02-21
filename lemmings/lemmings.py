@@ -19,6 +19,8 @@ class Lemmings:
             self.counter += 1
             self.timer.restart()
 
-    def update(self): self.group.update()
+    def update(self):
+        self.generate()
+        self.group.update()
 
     def draw(self): self.group.draw(self.window.screen)
