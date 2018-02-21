@@ -102,7 +102,7 @@ class Lemming(AnimatedSprite):
 
     def update(self, new_action):
         collisions = shared.collisions.pixel_collision_mid(
-            self.bg, self.rect, pygame.Color("black")
+            self.bg.current, self.rect, pygame.Color("black")
         ).invert()
 
         if self.state == STATES.START:
@@ -139,7 +139,7 @@ class Lemming(AnimatedSprite):
 
     def draw_bg(self):
         if self.state == STATES.STOP:
-            AnimatedSprite.draw(self, self.bg)
+            AnimatedSprite.draw(self, self.bg.current)
 
     def draw_screen(self):
         if self.state != STATES.STOP:

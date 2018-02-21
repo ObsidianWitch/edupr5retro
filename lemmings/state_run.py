@@ -1,18 +1,12 @@
-import pygame
-
-from lemmings.common  import asset_path
 from lemmings.lemmings import Lemmings
+from lemmings.bg import BG
 from lemmings.ui import UI
 
 class StateRun:
     def __init__(self, window):
         self.window = window
-
-        self.bg  = pygame.image.load(asset_path("map.png"))
-        self.bg0 = self.bg.copy()
-
+        self.bg = BG()
         self.lemmings = Lemmings(self.window, self.bg)
-
         self.ui = UI(self.window)
 
     def run(self):
@@ -21,9 +15,9 @@ class StateRun:
         self.lemmings.update(self.ui.selection.state)
 
         # Draw
-        self.bg.blit(self.bg0, (0, 0))
+        self.bg.clear()
         self.lemmings.draw_bg()
 
-        self.window.screen.blit(self.bg, (0,0))
+        self.window.screen.blit(self.bg.current, (0,0))
         self.ui.draw()
         self.lemmings.draw_screen()
