@@ -7,7 +7,7 @@ import shared.collisions
 from lemmings.characters.actions import Actions
 from lemmings.common import asset_path
 
-STATES = enum.Enum("STATES", "START WALK FALL STOP DEAD")
+STATES = enum.Enum("STATES", "START WALK FALL STOP DIGV DEAD")
 
 class Lemming(AnimatedSprite):
     lemming_imgs = AnimatedSprite.spritesheet_to_images(
@@ -34,6 +34,7 @@ class Lemming(AnimatedSprite):
                     "WALK_R": range(133, 141),
                     "FALL"  : range(8, 12),
                     "STOP"  : range(26, 42),
+                    "DIGV"  : range(72, 88),
                     "DEAD"  : range(117, 133),
                 },
                 period  = 100,
@@ -55,17 +56,19 @@ class Lemming(AnimatedSprite):
             self.actions.fall.start()
             self.state = STATES.FALL
 
-        if self.state == STATES.WALK:
+        elif self.state == STATES.WALK:
             self.actions.walk.run(collisions.vec)
-            fall = not collisions.down
-            if fall:
+            if not collisions.down:
                 self.state = STATES.FALL
                 self.actions.fall.start()
             elif new_action == STATES.STOP:
                 self.state = new_action
                 self.actions.stop.start()
+            elif new_action == STATES.DIGV:
+                self.state = new_action
+                self.actions.digv.start()
 
-        if self.state == STATES.FALL:
+        elif self.state == STATES.FALL:
             dead = self.actions.fall.run()
             walk = collisions.down
             if dead and walk:
@@ -74,10 +77,15 @@ class Lemming(AnimatedSprite):
             elif not dead and walk:
                 self.state = STATES.WALK
 
-        if self.state == STATES.STOP:
+        elif self.state == STATES.STOP:
             self.actions.stop.run()
 
-        if self.state == STATES.DEAD:
+        elif self.state == STATES.DIGV:
+            self.actions.digv.run()
+            if not collisions.down:
+                self.state = STATES.WALK
+
+        elif self.state == STATES.DEAD:
             self.actions.dead.run()
 
         AnimatedSprite.update(self)

@@ -8,30 +8,29 @@ class UI:
     def __init__(self, window):
         self.window = window
 
-        self.group = pygame.sprite.Group()
-        self.populate_sprites()
-        self.position_sprites()
+        self.icons = pygame.sprite.Group()
+        self.populate_icons()
+        self.position_icons()
 
-    def populate_sprites(self):
+    def populate_icons(self):
         stop_sprite = Sprite.from_path(asset_path("ui_stop.png"))
         stop_sprite.state = STATES.STOP
-        self.group.add(stop_sprite)
+        self.icons.add(stop_sprite)
         self.selection = stop_sprite
 
-        # DEBUG
-        test_sprite = Sprite.from_path(asset_path("ui_stop.png"))
-        test_sprite.state = STATES.STOP
-        self.group.add(test_sprite)
+        digv_sprite = Sprite.from_path(asset_path("ui_digv.png"))
+        digv_sprite.state = STATES.DIGV
+        self.icons.add(digv_sprite)
 
-    def position_sprites(self):
+    def position_icons(self):
         rect = pygame.Rect(
             0, 0,
-            len(self.group) * self.selection.rect.width,
+            len(self.icons) * self.selection.rect.width,
             self.selection.rect.height
         )
         rect.midbottom = self.window.rect.midbottom
 
-        for i, s in enumerate(self.group):
+        for i, s in enumerate(self.icons):
             s.rect.top  = rect.top
             s.rect.left = rect.left + (i * s.rect.width)
 
@@ -39,7 +38,7 @@ class UI:
         if not self.window.mousedown(): return
 
         pos = pygame.mouse.get_pos()
-        for s in self.group:
+        for s in self.icons:
             if s.rect.collidepoint(pos):
                 self.selection = s
 
@@ -52,5 +51,5 @@ class UI:
         )
 
     def draw(self):
-        self.group.draw(self.window.screen)
+        self.icons.draw(self.window.screen)
         self.draw_selection()

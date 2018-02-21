@@ -1,3 +1,5 @@
+import pygame
+
 class Fall:
     def __init__(self, lemming):
         self.lemming = lemming
@@ -28,6 +30,24 @@ class Walk:
 
         self.lemming.rect.move_ip(self.dx, 0)
 
+class Stop:
+    def __init__(self, lemming):
+        self.lemming = lemming
+
+    def start(self):
+        self.lemming.animations.start("STOP")
+
+    def run(self): pass
+
+class DigV:
+    def __init__(self, lemming):
+        self.lemming = lemming
+
+    def start(self):
+        self.lemming.animations.start("DIGV")
+
+    def run(self): pass
+
 class Dead:
     def __init__(self, lemming):
         self.lemming = lemming
@@ -38,18 +58,10 @@ class Dead:
     def run(self):
         if self.lemming.animations.finished: self.lemming.kill()
 
-class Stop:
-    def __init__(self, lemming):
-        self.lemming = lemming
-
-    def start(self):
-        self.lemming.animations.start("STOP")
-
-    def run(self): pass
-
 class Actions:
     def __init__(self, lemming):
         self.walk = Walk(lemming)
         self.fall = Fall(lemming)
         self.stop = Stop(lemming)
+        self.digv = DigV(lemming)
         self.dead = Dead(lemming)
