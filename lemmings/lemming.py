@@ -67,7 +67,7 @@ class Lemming(AnimatedSprite):
         )
         self.colorkey(pygame.Color("black"))
 
-        self.behaviours = types.SimpleNamespace(
+        self.actions = types.SimpleNamespace(
             walk = Walk(self),
             fall = Fall(self),
             dead = Dead(self),
@@ -79,11 +79,11 @@ class Lemming(AnimatedSprite):
         AnimatedSprite.update(self)
 
         if self.state == STATES.START:
-            self.behaviours.walk.start()
+            self.actions.walk.start()
             self.state = STATES.WALK
 
         if self.state == STATES.WALK:
-            self.behaviours.walk.run()
+            self.actions.walk.run()
 
             fall = pixel_collision_mid(
                 self.window.screen, self.rect, pygame.Color("black")
@@ -91,10 +91,10 @@ class Lemming(AnimatedSprite):
 
             if fall:
                 self.state = STATES.FALL
-                self.behaviours.fall.start()
+                self.actions.fall.start()
 
         if self.state == STATES.FALL:
-            dead = self.behaviours.fall.run()
+            dead = self.actions.fall.run()
 
             walk = not pixel_collision_mid(
                 self.window.screen, self.rect, pygame.Color("black")
@@ -102,9 +102,9 @@ class Lemming(AnimatedSprite):
 
             if dead and walk:
                 self.state = STATES.DEAD
-                self.behaviours.dead.start()
+                self.actions.dead.start()
             elif not dead and walk:
                 self.state = STATES.WALK
 
         if self.state == STATES.DEAD:
-            self.behaviours.dead.run()
+            self.actions.dead.run()
