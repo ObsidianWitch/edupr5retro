@@ -1,6 +1,7 @@
 import pygame
 import numpy
 
+import shared.transform
 import shared.math
 from shared.animated_sprite import AnimatedSprite, Animations
 from maze.palette import palette
@@ -46,6 +47,16 @@ class Player:
         '   CC     ',
         '   CC     ',
         '   CC     ',
+    )
+
+    char_imgs = AnimatedSprite.ascii_to_images(
+        txts       = (char0_ascii, char1_ascii, char2_ascii),
+        dictionary = palette,
+    )
+    char_imgs += shared.transform.flip_n(
+        surfaces = char_imgs,
+        xflip   = True,
+        yflip   = False,
     )
 
     def __init__(self, window):
