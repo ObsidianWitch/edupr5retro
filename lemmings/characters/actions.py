@@ -1,18 +1,5 @@
 import pygame
 
-class Fall:
-    def __init__(self, lemming):
-        self.lemming = lemming
-
-    def start(self):
-        self.lemming.animations.start("FALL")
-        self.fallcount = 0
-
-    def run(self):
-        self.lemming.rect.move_ip(0, 3)
-        self.fallcount += 3
-        return (self.fallcount >= 100)
-
 class Walk:
     def __init__(self, lemming):
         self.lemming = lemming
@@ -25,17 +12,28 @@ class Walk:
             self.dx *= -1
             self.lemming.rect.move_ip(-self.dx * 20, 0)
 
-        if self.dx < 0:   self.lemming.animations.set("WALK_L")
-        elif self.dx > 0: self.lemming.animations.set("WALK_R")
-
+        self.lemming.set_animation("WALK")
         self.lemming.rect.move_ip(self.dx, 0)
+
+class Fall:
+    def __init__(self, lemming):
+        self.lemming = lemming
+
+    def start(self):
+        self.lemming.start_animation("FALL")
+        self.fallcount = 0
+
+    def run(self):
+        self.lemming.rect.move_ip(0, 3)
+        self.fallcount += 3
+        return (self.fallcount >= 100)
 
 class Stop:
     def __init__(self, lemming):
         self.lemming = lemming
 
     def start(self):
-        self.lemming.animations.start("STOP")
+        self.lemming.start_animation("STOP")
 
     def run(self): pass
 
@@ -44,7 +42,7 @@ class DigV:
         self.lemming = lemming
 
     def start(self):
-        self.lemming.animations.start("DIGV")
+        self.lemming.start_animation("DIGV")
 
     def run(self): pass
 
@@ -53,7 +51,7 @@ class Dead:
         self.lemming = lemming
 
     def start(self):
-        self.lemming.animations.start("DEAD")
+        self.lemming.start_animation("DEAD")
 
     def run(self):
         if self.lemming.animations.finished: self.lemming.kill()

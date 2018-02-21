@@ -16,7 +16,7 @@ class Lemming(AnimatedSprite):
         discard_color = pygame.Color("red"),
     )
     lemming_imgs += shared.transform.flip_n(
-        surfaces = lemming_imgs[0:8],
+        surfaces = lemming_imgs,
         xflip    = True,
         yflip    = False
     )
@@ -31,11 +31,15 @@ class Lemming(AnimatedSprite):
             animations = Animations(
                 data = {
                     "WALK_L": range(0, 8),
-                    "WALK_R": range(133, 141),
-                    "FALL"  : range(8, 12),
-                    "STOP"  : range(26, 42),
-                    "DIGV"  : range(72, 88),
-                    "DEAD"  : range(117, 133),
+                    "WALK_R": range(0 + 133, 8 + 133),
+                    "FALL_L": range(8, 12),
+                    "FALL_R": range(8 + 133, 12 + 133),
+                    "STOP_L": range(26, 42),
+                    "STOP_R": range(26 + 133, 42 + 133),
+                    "DIGV_L": range(72, 88),
+                    "DIGV_R": range(72 + 133, 88 + 133),
+                    "DEAD_L": range(117, 133),
+                    "DEAD_R": range(117 + 133, 133 + 133),
                 },
                 period  = 100,
             ),
@@ -45,6 +49,18 @@ class Lemming(AnimatedSprite):
 
         self.actions = Actions(self)
         self.state = STATES.START
+
+    def set_animation(self, name):
+        dx = self.actions.walk.dx
+        if   dx < 0: self.animations.set(f"{name}_L")
+        elif dx > 0: self.animations.set(f"{name}_R")
+        else:        self.animations.set("NONE")
+
+    def start_animation(self, name):
+        dx = self.actions.walk.dx
+        if   dx < 0: self.animations.start(f"{name}_L")
+        elif dx > 0: self.animations.start(f"{name}_R")
+        else:        self.animations.start("NONE")
 
     def update(self, new_action):
         collisions = shared.collisions.pixel_collision_mid(
