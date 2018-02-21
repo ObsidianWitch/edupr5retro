@@ -1,62 +1,13 @@
 import enum
-import types
 import pygame
 
+from shared.animated_sprite import AnimatedSprite, Animations
 import shared.transform
 import shared.collisions
-from shared.animated_sprite import AnimatedSprite, Animations
+from lemmings.characters.actions import Actions
 from lemmings.common import asset_path
 
 STATES = enum.Enum("STATES", "START WALK FALL STOP DEAD")
-
-class Fall:
-    def __init__(self, lemming):
-        self.lemming = lemming
-
-    def start(self):
-        self.lemming.animations.start("FALL")
-        self.fallcount = 0
-
-    def run(self):
-        self.lemming.rect.move_ip(0, 3)
-        self.fallcount += 3
-        return (self.fallcount >= 100)
-
-class Walk:
-    def __init__(self, lemming):
-        self.lemming = lemming
-
-    def start(self):
-        self.dx = -1
-
-    def run(self, collision_vec):
-        if self.dx == collision_vec[0]:
-            self.dx *= -1
-            self.lemming.rect.move_ip(-self.dx * 20, 0)
-
-        if self.dx < 0:   self.lemming.animations.set("WALK_L")
-        elif self.dx > 0: self.lemming.animations.set("WALK_R")
-
-        self.lemming.rect.move_ip(self.dx, 0)
-
-class Dead:
-    def __init__(self, lemming):
-        self.lemming = lemming
-
-    def start(self):
-        self.lemming.animations.start("DEAD")
-
-    def run(self):
-        if self.lemming.animations.finished: self.lemming.kill()
-
-class Stop:
-    def __init__(self, lemming):
-        self.lemming = lemming
-
-    def start(self):
-        self.lemming.animations.start("STOP")
-
-    def run(self): pass
 
 class Lemming(AnimatedSprite):
     lemming_imgs = AnimatedSprite.spritesheet_to_images(
@@ -91,13 +42,7 @@ class Lemming(AnimatedSprite):
         )
         self.colorkey(pygame.Color("black"))
 
-        self.actions = types.SimpleNamespace(
-            walk = Walk(self),
-            fall = Fall(self),
-            stop = Stop(self),
-            dead = Dead(self),
-        )
-
+        self.actions = Actions(self)
         self.state = STATES.START
 
     def update(self, new_action):

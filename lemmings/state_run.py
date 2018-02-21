@@ -1,4 +1,4 @@
-from lemmings.lemmings import Lemmings
+from lemmings.characters.lemmings import Lemmings
 from lemmings.bg import BG
 from lemmings.ui import UI
 

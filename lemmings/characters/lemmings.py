@@ -1,8 +1,9 @@
 import pygame
 
+from lemmings.characters.lemming import Lemming
 from shared.timer import Timer
-from lemmings.lemming import Lemming
 
+# Lemming generator.
 class Lemmings:
     def __init__(self, window, bg):
         self.window = window
