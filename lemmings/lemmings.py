@@ -19,8 +19,20 @@ class Lemmings:
             self.counter += 1
             self.timer.restart()
 
-    def update(self):
+    def update(self, ui_action):
         self.generate()
-        self.group.update()
 
-    def draw(self): self.group.draw(self.window.screen)
+        if not self.window.mousedown():
+            self.group.update(False)
+            return
+
+        click = pygame.mouse.get_pos()
+        for l in self.group:
+            collision = l.rect.collidepoint(click)
+            if collision: l.update(ui_action)
+            else: l.update(False)
+
+    def draw_bg(self):
+        for l in self.group: l.draw_bg()
+    def draw_screen(self):
+        for l in self.group: l.draw_screen()

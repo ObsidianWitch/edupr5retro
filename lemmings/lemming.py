@@ -49,6 +49,15 @@ class Dead:
     def run(self):
         if self.lemming.animations.finished: self.lemming.kill()
 
+class Stop:
+    def __init__(self, lemming):
+        self.lemming = lemming
+
+    def start(self):
+        self.lemming.animations.start("STOP")
+
+    def run(self): pass
+
 class Lemming(AnimatedSprite):
     lemming_imgs = AnimatedSprite.spritesheet_to_images(
         path          = asset_path("planche.png"),
@@ -73,6 +82,7 @@ class Lemming(AnimatedSprite):
                     "WALK_L": range(0, 8),
                     "WALK_R": range(133, 141),
                     "FALL"  : range(8, 12),
+                    "STOP"  : range(26, 42),
                     "DEAD"  : range(117, 133),
                 },
                 period  = 100,
@@ -84,12 +94,13 @@ class Lemming(AnimatedSprite):
         self.actions = types.SimpleNamespace(
             walk = Walk(self),
             fall = Fall(self),
+            stop = Stop(self),
             dead = Dead(self),
         )
 
         self.state = STATES.START
 
-    def update(self):
+    def update(self, new_action):
         collisions = shared.collisions.pixel_collision_mid(
             self.bg, self.rect, pygame.Color("black")
         ).invert()
@@ -105,6 +116,9 @@ class Lemming(AnimatedSprite):
             if fall:
                 self.state = STATES.FALL
                 self.actions.fall.start()
+            elif new_action == STATES.STOP:
+                self.state = new_action
+                self.actions.stop.start()
 
         if self.state == STATES.FALL:
             dead = self.actions.fall.run()
@@ -115,7 +129,18 @@ class Lemming(AnimatedSprite):
             elif not dead and walk:
                 self.state = STATES.WALK
 
+        if self.state == STATES.STOP:
+            self.actions.stop.run()
+
         if self.state == STATES.DEAD:
             self.actions.dead.run()
 
         AnimatedSprite.update(self)
+
+    def draw_bg(self):
+        if self.state == STATES.STOP:
+            AnimatedSprite.draw(self, self.bg)
+
+    def draw_screen(self):
+        if self.state != STATES.STOP:
+            AnimatedSprite.draw(self, self.window.screen)
