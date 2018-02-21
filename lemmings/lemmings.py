@@ -4,8 +4,9 @@ from shared.timer import Timer
 from lemmings.lemming import Lemming
 
 class Lemmings:
-    def __init__(self, window):
+    def __init__(self, window, bg):
         self.window = window
+        self.bg = bg
 
         self.group = pygame.sprite.Group()
         self.counter = 0
@@ -14,7 +15,7 @@ class Lemmings:
 
     def generate(self):
         if (self.counter < self.max) and self.timer.finished:
-            self.group.add(Lemming(self.window))
+            self.group.add(Lemming(self.window, self.bg))
             self.counter += 1
             self.timer.restart()
 

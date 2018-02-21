@@ -6,9 +6,8 @@ from lemmings.lemmings import Lemmings
 class StateRun:
     def __init__(self, window):
         self.window = window
-
         self.bg = pygame.image.load(asset_path("map.png"))
-        self.lemmings = Lemmings(self.window)
+        self.lemmings = Lemmings(self.window, self.bg)
 
     def draw_cursor(self):
         display = next(

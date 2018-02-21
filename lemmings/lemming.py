@@ -2,7 +2,8 @@ import enum
 import types
 import pygame
 
-from shared.collisions import pixel_collision_mid
+import shared.transform
+import shared.collisions
 from shared.animated_sprite import AnimatedSprite, Animations
 from lemmings.common import asset_path
 
@@ -28,8 +29,14 @@ class Walk:
     def start(self):
         self.dx = -1
 
-    def run(self):
-        if self.dx < 0: self.lemming.animations.set("WALK_L")
+    def run(self, collision_vec):
+        if self.dx == collision_vec[0]:
+            self.dx *= -1
+            self.lemming.rect.move_ip(-self.dx * 20, 0)
+
+        if self.dx < 0:   self.lemming.animations.set("WALK_L")
+        elif self.dx > 0: self.lemming.animations.set("WALK_R")
+
         self.lemming.rect.move_ip(self.dx, 0)
 
 class Dead:
@@ -48,9 +55,15 @@ class Lemming(AnimatedSprite):
         sprite_size   = (30, 30),
         discard_color = pygame.Color("red"),
     )
+    lemming_imgs += shared.transform.flip_n(
+        surfaces = lemming_imgs[0:8],
+        xflip    = True,
+        yflip    = False
+    )
 
-    def __init__(self, window):
+    def __init__(self, window, bg):
         self.window = window
+        self.bg = bg
 
         AnimatedSprite.__init__(
             self       = self,
@@ -58,6 +71,7 @@ class Lemming(AnimatedSprite):
             animations = Animations(
                 data = {
                     "WALK_L": range(0, 8),
+                    "WALK_R": range(133, 141),
                     "FALL"  : range(8, 12),
                     "DEAD"  : range(117, 133),
                 },
@@ -76,17 +90,17 @@ class Lemming(AnimatedSprite):
         self.state = STATES.START
 
     def update(self):
-        AnimatedSprite.update(self)
-        collisions = pixel_collision_mid(
-            self.window.screen, self.rect, pygame.Color("black")
+        collisions = shared.collisions.pixel_collision_mid(
+            self.bg, self.rect, pygame.Color("black")
         ).invert()
 
         if self.state == STATES.START:
             self.actions.walk.start()
-            self.state = STATES.WALK
+            self.actions.fall.start()
+            self.state = STATES.FALL
 
         if self.state == STATES.WALK:
-            self.actions.walk.run()
+            self.actions.walk.run(collisions.vec)
             fall = not collisions.down
             if fall:
                 self.state = STATES.FALL
@@ -103,3 +117,5 @@ class Lemming(AnimatedSprite):
 
         if self.state == STATES.DEAD:
             self.actions.dead.run()
+
+        AnimatedSprite.update(self)
