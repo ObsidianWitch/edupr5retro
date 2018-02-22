@@ -1,7 +1,7 @@
 import pygame
 
 from shared.sprite import Sprite
-from lemmings.nodes.lemming import STATES
+from lemmings.nodes.actions import Actions
 from lemmings.path import asset_path
 
 class UI:
@@ -10,17 +10,14 @@ class UI:
 
         self.icons = pygame.sprite.Group()
         self.populate_icons()
+        self.selection = self.icons.sprites()[0]
         self.position_icons()
 
     def populate_icons(self):
-        stop_sprite = Sprite.from_path(asset_path("ui_stop.png"))
-        stop_sprite.state = STATES.STOP
-        self.icons.add(stop_sprite)
-        self.selection = stop_sprite
-
-        digv_sprite = Sprite.from_path(asset_path("ui_digv.png"))
-        digv_sprite.state = STATES.DIGV
-        self.icons.add(digv_sprite)
+        for A in Actions.USABLE:
+            sprite = Sprite(A.ICON)
+            sprite.state = A.STATE
+            self.icons.add(sprite)
 
     def position_icons(self):
         rect = pygame.Rect(

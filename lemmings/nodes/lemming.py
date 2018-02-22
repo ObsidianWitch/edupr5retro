@@ -1,13 +1,10 @@
-import enum
 import pygame
 
 from shared.animated_sprite import AnimatedSprite, Animations
 import shared.transform
 import shared.collisions
-from lemmings.nodes.actions import Actions
+from lemmings.nodes.actions import Actions, STATES
 from lemmings.path import asset_path
-
-STATES = enum.Enum("STATES", "START WALK FALL STOP DIGV DEAD")
 
 class Lemming(AnimatedSprite):
     lemming_imgs = AnimatedSprite.spritesheet_to_images(
