@@ -24,17 +24,17 @@ def game():
         states.current  = states.RUN
 
     if states.current == states.RUN:
-        end = states.instance.run()
-        if not end: return
+        if states.instance.end:
+            states.instance = StateEnd(window)
+            states.current  = states.END
+        else:
+            states.instance.run()
 
-        states.instance = StateEnd(window)
-        states.current  = states.END
-
-    elif states.current == states.END:
-        restart = states.instance.run()
-        if not restart: return
-
-        states.instance = StateRun(window)
-        states.current  = states.RUN
+    if states.current == states.END:
+        if states.instance.restart:
+            states.instance = StateRun(window)
+            states.current  = states.RUN
+        else:
+            states.instance.run()
 
 window.loop(game)

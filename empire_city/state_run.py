@@ -24,6 +24,8 @@ class StateRun:
         self.enemies = Enemies(self.camera)
         self.hints   = Hints(self.camera)
 
+        self.end = False
+
     def run(self):
         # Update
         scroll_vec = self.camera.scroll_zone_collide(
@@ -33,7 +35,7 @@ class StateRun:
         self.player.update(scroll_vec, self.enemies)
         self.enemies.update(self.player)
 
-        if self.player.ammunitions <= 0: return True
+        self.end = (self.player.ammunitions <= 0)
 
         # Draw
         ## bg drawing
