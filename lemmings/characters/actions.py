@@ -44,7 +44,14 @@ class DigV:
     def start(self):
         self.lemming.start_animation("DIGV")
 
-    def run(self): pass
+    def run(self):
+        rect = self.lemming.rect.copy()
+        rect.top = rect.bottom
+        rect.size = (20, 1)
+        self.lemming.bg.original.fill(
+            pygame.Color("black"), rect
+        )
+        self.lemming.rect.move_ip(0, 1)
 
 class Dead:
     def __init__(self, lemming):

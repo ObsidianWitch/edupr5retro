@@ -55,6 +55,13 @@ class Sprite(pygame.sprite.Sprite):
         cls.ascii_to_image(txt, dictionary) for txt in txts
     ]
 
+    @property
+    def bounding_rect(self): return (
+        self.image
+            .get_bounding_rect()
+            .move(self.rect.topleft)
+    )
+
     def scale(self, ratio):
         self.rect.size = (
             int(self.rect.width * ratio),

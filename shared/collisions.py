@@ -17,7 +17,6 @@ def pixel_collision_mid(surface, rect, color):
         right = check(rect.midright,  ( 1,  0)),
     )
 
-
 # Check collision between `rect`'s topleft, topright, bottomleft,
 # bottomright points and adjacent pixels of the specified `color` in `surface`.
 # Only checking collision against `rect` midpoints would have caused
