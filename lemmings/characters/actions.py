@@ -49,7 +49,9 @@ class DigV:
     def run(self):
         rect = self.lemming.rect.copy()
         rect.top = rect.bottom
+        rect.left += 10 if self.lemming.actions.walk.dx > 0 else 0
         rect.size = (20, 1)
+
         self.lemming.bg.original.fill(
             pygame.Color("black"), rect
         )
