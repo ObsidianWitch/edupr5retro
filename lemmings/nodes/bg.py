@@ -1,6 +1,6 @@
 import pygame
 
-from lemmings.common import asset_path
+from lemmings.path import asset_path
 
 class BG:
     def __init__(self):

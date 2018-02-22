@@ -1,6 +1,6 @@
 import pygame
 
-from lemmings.characters.lemming import Lemming
+from lemmings.nodes.lemming import Lemming
 from shared.timer import Timer
 
 # Lemming generator.

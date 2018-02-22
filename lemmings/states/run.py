@@ -1,9 +1,9 @@
 import pygame
 
 from shared.sprite import Sprite
-from lemmings.characters.lemmings import Lemmings
-from lemmings.common import asset_path
-from lemmings.bg import BG
+from lemmings.nodes.lemmings import Lemmings
+from lemmings.nodes.bg import BG
+from lemmings.path import asset_path
 from lemmings.ui import UI
 
 class StateRun:

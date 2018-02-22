@@ -2,8 +2,8 @@ import pygame
 import types
 
 from shared.window import Window
-from lemmings.state_run import StateRun
-from lemmings.state_end import StateEnd
+from lemmings.states.run import StateRun
+from lemmings.states.end import StateEnd
 
 window = Window(
     width  = 800,

@@ -1,8 +1,8 @@
 import pygame
 
 from shared.sprite import Sprite
-from lemmings.characters.lemming import STATES
-from lemmings.common import asset_path
+from lemmings.nodes.lemming import STATES
+from lemmings.path import asset_path
 
 class UI:
     def __init__(self, window):
