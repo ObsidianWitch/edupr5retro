@@ -17,6 +17,8 @@ class StateRun:
         )
         self.ball = Ball(self.window)
 
+        self.winner = 0
+
     def ball_paddle_collision(self, paddle):
         left_collision = (
                 (self.ball.x > paddle.x)
@@ -67,8 +69,8 @@ class StateRun:
         elif edge > 0: self.p1.score += 1
 
         ## Win conditions
-        if   self.p1.score == 3: return 1
-        elif self.p2.score == 3: return 2
+        if   self.p1.score == 3: self.winner = 1
+        elif self.p2.score == 3: self.winner = 2
 
         # Draw
         self.window.screen.fill(pygame.Color("black"))
@@ -76,5 +78,3 @@ class StateRun:
         self.p2.draw()
         self.ball.draw()
         self.draw_score()
-
-        return 0
