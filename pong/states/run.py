@@ -1,19 +1,19 @@
 import pygame
 
-from pong.ball import Ball
-from pong.paddle import *
+from pong.nodes.ball import Ball
+from pong.nodes.paddle import Paddle
 
 class StateRun:
     def __init__(self, window):
         self.window = window
 
         self.p1 = Paddle(
-            window   = self.window,
-            position = Position.LEFT
+            window = self.window,
+            side   = Paddle.SIDE.LEFT
         )
         self.p2 = Paddle(
-            window   = self.window,
-            position = Position.RIGHT
+            window = self.window,
+            side   = Paddle.SIDE.RIGHT
         )
         self.ball = Ball(self.window)
 

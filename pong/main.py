@@ -2,8 +2,8 @@ import types
 import pygame
 
 from shared.window import Window
-from pong.state_run import StateRun
-from pong.state_end import StateEnd
+from pong.states.run import StateRun
+from pong.states.end import StateEnd
 
 window = Window(
     width  = 600,
