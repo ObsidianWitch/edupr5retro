@@ -2,11 +2,12 @@ import pygame
 
 class StateEnd:
     def __init__(self, window):
-        self.window = window
+        self.window  = window
+        self.restart = False
 
     def run(self):
         # Update
-        if self.window.keys[pygame.K_SPACE]: return True
+        self.restart = self.window.keys[pygame.K_SPACE]
 
         # Draw
         win_surface = self.window.fonts[4].render(

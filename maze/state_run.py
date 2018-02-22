@@ -13,6 +13,8 @@ class StateRun:
         self.player = Player(window)
         self.maze = Maze(window)
 
+        self.win = False
+
     def draw_score(self):
         score_surface = self.window.fonts[0].render(
             f"Score: {self.player.score}", # text
@@ -57,11 +59,11 @@ class StateRun:
         ): self.player.score += 100
 
         ## Exit
-        if distance_collision(
+        self.win = distance_collision(
             p1 = self.player.sprite.rect.center,
             p2 = self.maze.exit.rect.center,
             threshold = 5
-        ): return True
+        )
 
         # Draw
         self.maze.draw()
