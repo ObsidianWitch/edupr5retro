@@ -1,8 +1,8 @@
 import types
 
-from shared.window  import Window
-from maze.state_run import StateRun
-from maze.state_end import StateEnd
+from shared.window import Window
+from maze.states.run import StateRun
+from maze.states.end import StateEnd
 
 window = Window(
     width  = 400,
