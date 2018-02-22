@@ -16,6 +16,9 @@ class Walk:
         self.lemming.rect.move_ip(self.dx, 0)
 
 class Fall:
+    @property
+    def dead(self): return (self.fallcount >= 100)
+
     def __init__(self, lemming):
         self.lemming = lemming
 
@@ -26,7 +29,6 @@ class Fall:
     def run(self):
         self.lemming.rect.move_ip(0, 3)
         self.fallcount += 3
-        return (self.fallcount >= 100)
 
 class Stop:
     def __init__(self, lemming):
