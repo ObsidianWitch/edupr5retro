@@ -10,9 +10,12 @@ class Lemmings:
         self.bg = bg
 
         self.group = pygame.sprite.Group()
+
         self.counter = 0
         self.max = 15
         self.timer = Timer(end = 15, period = 100)
+
+        self.escaped = 0
 
     def generate(self):
         if (self.counter < self.max) and self.timer.finished:
