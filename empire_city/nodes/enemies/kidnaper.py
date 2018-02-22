@@ -1,4 +1,4 @@
-from empire_city.enemies.enemy import Enemy
+from empire_city.nodes.enemies.enemy import Enemy
 
 class Kidnaper(Enemy):
     def __init__(self, camera, image):

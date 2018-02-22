@@ -4,8 +4,8 @@ import pygame
 
 import shared.math
 from shared.sprite import Sprite
-from shared.timer  import Timer
-from empire_city.common import asset_path
+from shared.timer import Timer
+from empire_city.path import asset_path
 
 class Explosion(Sprite):
     explosion_img = Sprite.path_to_image(asset_path("bang.png"))

@@ -1,5 +1,5 @@
 from shared.sprite import Sprite
-from empire_city.common import asset_path
+from empire_city.path import asset_path
 
 class Hints:
     def __init__(self, camera):

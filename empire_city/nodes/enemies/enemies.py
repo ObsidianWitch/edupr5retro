@@ -1,11 +1,11 @@
 import random
 
 from shared.sprite import Sprite
-from shared.timer  import Timer
-from empire_city.common import asset_path
-from empire_city.enemies.enemy    import Enemy
-from empire_city.enemies.kidnaper import Kidnaper
-from empire_city.enemies.runner   import Runner
+from shared.timer import Timer
+from empire_city.nodes.enemies.enemy import Enemy
+from empire_city.nodes.enemies.kidnaper import Kidnaper
+from empire_city.nodes.enemies.runner import Runner
+from empire_city.path import asset_path
 
 # Enemy generator.
 class Enemies:

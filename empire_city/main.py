@@ -1,8 +1,8 @@
 import types
 
 from shared.window import Window
-from empire_city.state_run import StateRun
-from empire_city.state_end import StateEnd
+from empire_city.states.run import StateRun
+from empire_city.states.end import StateEnd
 
 window = Window(
     width  = 400,
