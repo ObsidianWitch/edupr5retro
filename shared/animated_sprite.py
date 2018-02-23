@@ -1,7 +1,8 @@
 import pygame
 
 from shared.sprite import Sprite
-from shared.timer  import Timer
+from shared.image import Image
+from shared.timer import Timer
 
 class Animations:
     @property
@@ -35,38 +36,32 @@ class AnimatedSprite(Sprite):
 
     @classmethod
     def from_path(cls, paths, animations, position = (0, 0)):
-        images = cls.path_to_images(paths)
-        return cls(images, animations, position)
+        return cls(
+            images     = Image.from_path_n(paths),
+            animations = animations,
+            position   = position,
+        )
 
     @classmethod
     def from_ascii(cls, txts, dictionary, animations, position = (0, 0)):
-        images = cls.ascii_to_images(txts, dictionary)
-        return cls(images, animations, position)
+        return cls(
+            images     = Image.from_ascii_n(txts, dictionary),
+            animations = animations,
+            position   = position,
+        )
 
     @classmethod
     def from_spritesheet(
         cls, path, sprite_size, discard_color, animations,
         position = (0, 0)
     ):
-        images = cls.spritesheet_to_images(path, sprite_size, discard_color)
-        return cls(images, animations, position)
-
-    @classmethod
-    def spritesheet_to_images(cls, path, sprite_size, discard_color):
-        spritesheet = cls.path_to_image(path)
-
-        images = []
-        for y in range(spritesheet.get_height() // sprite_size[1]):
-            for x in range(spritesheet.get_width() // sprite_size[0]):
-                img = spritesheet.subsurface(pygame.Rect(
-                    x * sprite_size[0], # x
-                    y * sprite_size[1], # y
-                    sprite_size[0],     # width
-                    sprite_size[1],     # height
-                ))
-                if img.get_at((0, 0)) == discard_color: break
-                images.append(img)
-        return images
+        return cls(
+            images     = Image.from_spritesheet_n(
+                path, sprite_size, discard_color
+            ),
+            animations = animations,
+            position   = position,
+        )
 
     def scale(self, ratio):
         self.rect.size = (

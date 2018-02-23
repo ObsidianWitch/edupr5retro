@@ -49,15 +49,11 @@ class Player:
         '   CC     ',
     )
 
-    char_imgs = AnimatedSprite.ascii_to_images(
-        txts       = (char0_ascii, char1_ascii, char2_ascii),
-        dictionary = palette,
-    )
-    char_imgs += shared.transform.flip_n(
-        surfaces = char_imgs,
-        xflip   = True,
-        yflip   = False,
-    )
+    char3_ascii = tuple(s[::-1] for s in char0_ascii)
+
+    char4_ascii = tuple(s[::-1] for s in char1_ascii)
+
+    char5_ascii = tuple(s[::-1] for s in char2_ascii)
 
     def __init__(self, window):
         self.window = window
@@ -66,11 +62,11 @@ class Player:
         self.score = 0
 
         self.sprite = AnimatedSprite.from_ascii(
-            txts = [
-                self.char0_ascii,
-                self.char1_ascii,
-                self.char2_ascii,
-            ],
+            txts = (
+                self.char0_ascii, self.char1_ascii, self.char2_ascii,
+                self.char3_ascii, self.char4_ascii, self.char5_ascii,
+            ),
+            dictionary = palette,
             animations = Animations(
                 data = {
                     "IDLE_R": [1],
@@ -80,9 +76,7 @@ class Player:
                 },
                 period  = 500,
             ),
-            dictionary = palette
         )
-        self.sprite.images += self.sprite.flip(xflip = True)
         self.sprite.colorkey(palette[' '])
         self.reset_position()
 

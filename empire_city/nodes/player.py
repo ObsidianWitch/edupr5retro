@@ -4,14 +4,15 @@ import pygame
 
 import shared.math
 from shared.sprite import Sprite
+from shared.image import Image
 from shared.timer import Timer
 from empire_city.path import asset_path
 
 class Explosion(Sprite):
-    explosion_img = Sprite.path_to_image(asset_path("bang.png"))
+    img = Image.from_path(asset_path("bang.png"))
 
     def __init__(self, center):
-        Sprite.__init__(self, self.explosion_img)
+        Sprite.__init__(self, self.img)
         self.rect.center = center
         self.timer = Timer(2)
 
@@ -26,12 +27,15 @@ class Player:
 
         self.crosshair = Sprite.from_path(asset_path("viseur.png"))
         self.crosshair.rect.center = self.window.rect.center
+
         self.ammunition = Sprite.from_path(asset_path("bullet.png"))
         self.ammunition.scale_ip(0.5)
         self.ammunition.rect.bottomleft = self.window.rect.bottomleft
-        self.explosions = pygame.sprite.Group()
+
         self.hide = Sprite.from_path(asset_path("hide.png"))
         self.hide.rect.center = self.window.rect.center
+
+        self.explosions = pygame.sprite.Group()
 
         self.speed = 10
         self.ammunitions = 12

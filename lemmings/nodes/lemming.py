@@ -1,5 +1,6 @@
 import pygame
 
+from shared.image import Image
 from shared.animated_sprite import AnimatedSprite, Animations
 import shared.transform
 import shared.collisions
@@ -7,7 +8,7 @@ from lemmings.nodes.actions import Actions, STATES
 from lemmings.path import asset_path
 
 class Lemming(AnimatedSprite):
-    lemming_imgs = AnimatedSprite.spritesheet_to_images(
+    lemming_imgs = Image.from_spritesheet_n(
         path          = asset_path("planche.png"),
         sprite_size   = (30, 30),
         discard_color = pygame.Color("red"),

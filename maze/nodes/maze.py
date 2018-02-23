@@ -97,21 +97,6 @@ class Maze:
         '                    ',
     )
 
-    exit_img = Sprite.ascii_to_image(
-        txt        = exit_ascii,
-        dictionary = palette,
-    )
-
-    treasure_img = Sprite.ascii_to_image(
-        txt        = treasure_ascii,
-        dictionary = palette,
-    )
-
-    trap_img = Sprite.ascii_to_image(
-        txt        = trap_ascii,
-        dictionary = palette,
-    )
-
     def __init__(self, window):
         self.window = window
 
@@ -131,28 +116,36 @@ class Maze:
         self.treasures = pygame.sprite.Group()
         self.traps     = pygame.sprite.Group()
 
+        def init_exit(code, color, xsq, ysq):
+            self.exit = Sprite.from_ascii(
+                txt        = self.exit_ascii,
+                dictionary = palette,
+                position   = (xsq, ysq),
+            )
+            self.items.add(self.exit)
+
+        def init_treasure(code, color, xsq, ysq):
+            sprite = Sprite.from_ascii(
+                txt        = self.treasure_ascii,
+                dictionary = palette,
+                position   = (xsq, ysq),
+            )
+            self.items.add(sprite)
+            self.treasures.add(sprite)
+
+        def init_trap(code, color, xsq, ysq):
+            sprite = Sprite.from_ascii(
+                txt        = self.trap_ascii,
+                dictionary = palette,
+                position   = (xsq, ysq),
+            )
+            self.items.add(sprite)
+            self.traps.add(sprite)
+
         def init_one(code, color, xsq, ysq):
-            if code == "Y":
-                sprite = Sprite(
-                    image    = self.exit_img,
-                    position = (xsq, ysq),
-                )
-                self.items.add(sprite)
-                self.exit = sprite
-            elif code == "C":
-                sprite = Sprite(
-                    image    = self.treasure_img,
-                    position = (xsq, ysq),
-                )
-                self.items.add(sprite)
-                self.treasures.add(sprite)
-            elif code == "R":
-                sprite = Sprite(
-                    image    = self.trap_img,
-                    position = (xsq, ysq),
-                )
-                self.items.add(sprite)
-                self.traps.add(sprite)
+            if   code == "Y": init_exit(code, color, xsq, ysq)
+            elif code == "C": init_treasure(code, color, xsq, ysq)
+            elif code == "R": init_trap(code, color, xsq, ysq)
 
         self.traverse(init_one)
 
@@ -176,7 +169,7 @@ class Maze:
             pygame.draw.rect(
                 self.window.screen,
                 color,
-                [xsq, ysq, self.square_size, self.square_size]
+                (xsq, ysq, self.square_size, self.square_size)
             )
 
         self.traverse(draw_one)

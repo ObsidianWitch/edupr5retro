@@ -1,5 +1,6 @@
 import random
 
+from shared.image import Image
 from shared.sprite import Sprite
 from shared.timer import Timer
 from empire_city.nodes.enemies.enemy import Enemy
@@ -9,39 +10,39 @@ from empire_city.path import asset_path
 
 # Enemy generator.
 class Enemies:
-    street_images = Sprite.path_to_images([
-            asset_path("bandit_rue.png"),
-            asset_path("bandit_rue2.png"),
-            asset_path("bandit_rue4.png")
-    ])
+    street_images = Image.from_path_n((
+        asset_path("bandit_rue.png"),
+        asset_path("bandit_rue2.png"),
+        asset_path("bandit_rue4.png"),
+    ))
 
-    window_images = Sprite.path_to_images([
+    window_images = Image.from_path_n((
         asset_path("bandit_window.png"),
         asset_path("bandit_window2.png"),
         asset_path("bandit_window3.png"),
         asset_path("bandit_window4.png"),
-    ])
+    ))
 
-    wall_images = Sprite.path_to_images([
+    wall_images = Image.from_path_n((
         asset_path("bandit_mur.png"),
         asset_path("bandit_mur2.png"),
-    ])
+    ))
 
-    top_images = Sprite.path_to_images([
+    top_images = Image.from_path_n((
         asset_path("bandit_appui.png"),
         asset_path("bandit_appui2.png"),
         asset_path("bandit_appui3.png"),
-    ])
+    ))
 
-    sewer_image = Sprite.path_to_image(
+    sewer_image = Image.from_path(
         asset_path("bandit_egout.png"),
     )
 
-    kidnaper_image = Sprite.path_to_image(
+    kidnaper_image = Image.from_path(
         asset_path("woman.png"),
     )
 
-    runner_image = Sprite.path_to_image(
+    runner_image = Image.from_path(
         asset_path("bandit_rue3.png"),
     )
 
