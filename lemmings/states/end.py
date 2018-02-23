@@ -1,6 +1,6 @@
 import pygame
 
-class StateEnd:
+class End:
     def __init__(self, window):
         self.window = window
         self.restart = False

@@ -6,17 +6,17 @@ from lemmings.nodes.bg import BG
 from lemmings.path import asset_path
 from lemmings.ui import UI
 
-class StateRun:
-    def __init__(self, window):
+class Level:
+    def __init__(self, window, map, startp, endp):
         self.window = window
-        self.bg = BG()
+        self.bg = BG(map)
 
         self.ui = UI(self.window)
 
-        self.lemmings = Lemmings(self.window, self.bg)
+        self.lemmings = Lemmings(self.window, self.bg, startp)
         self.exit = Sprite.from_path(
             asset_path("sortie.png"),
-            position = (622, 252),
+            position = endp,
         )
 
         self.win = False

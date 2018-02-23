@@ -19,7 +19,7 @@ class Lemming(AnimatedSprite):
         yflip    = False
     )
 
-    def __init__(self, window, bg):
+    def __init__(self, window, bg, position):
         self.window = window
         self.bg = bg
 
@@ -47,7 +47,7 @@ class Lemming(AnimatedSprite):
                 },
                 period  = 100,
             ),
-            position = (250, 100)
+            position = position
         )
         self.colorkey(pygame.Color("black"))
 

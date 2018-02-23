@@ -5,21 +5,21 @@ from shared.timer import Timer
 
 # Lemming generator.
 class Lemmings:
-    def __init__(self, window, bg):
+    def __init__(self, window, bg, position):
         self.window = window
         self.bg = bg
 
         self.group = pygame.sprite.Group()
+        self.position = position
+        self.escaped = 0
 
         self.counter = 0
         self.max = 15
         self.timer = Timer(end = 15, period = 100)
 
-        self.escaped = 0
-
     def generate(self):
         if (self.counter < self.max) and self.timer.finished:
-            self.group.add(Lemming(self.window, self.bg))
+            self.group.add(Lemming(self.window, self.bg, self.position))
             self.counter += 1
             self.timer.restart()
 
