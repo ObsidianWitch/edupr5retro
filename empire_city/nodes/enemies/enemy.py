@@ -41,7 +41,7 @@ class Enemy(Sprite):
             shoot_timer_surface,
             shoot_timer_surface.get_rect(
                 midbottom = self.window.rect.midbottom
-            ).move(0, 0)
+            )
         )
 
     def draw_bg(self):

@@ -1,10 +1,11 @@
 import enum
 import pygame
 
+from shared.timer import Timer
 from shared.image import Image
 from lemmings.path import asset_path
 
-STATES = enum.Enum("STATES", "START WALK FALL FLOAT STOP DIGV DEAD")
+STATES = enum.Enum("STATES", "START WALK FALL FLOAT STOP BOMB DIGV DEAD")
 
 class Walk:
     def __init__(self, lemming):
@@ -65,6 +66,48 @@ class Stop:
 
     def run(self): pass
 
+class Bomb:
+    ICON = Image.from_path(asset_path("ui_bomb.png"))
+    STATE = STATES.BOMB
+
+    def __init__(self, lemming):
+        self.lemming = lemming
+
+    def wait(self):
+        self.timer = Timer(end = 3, period = 1000)
+        self.explode = False
+
+    def start(self):
+        self.lemming.start_animation("BOMB")
+        self.explode = True
+
+        pygame.draw.circle(
+            self.lemming.bg.original,
+            pygame.Color("black"),
+            self.lemming.bounding_rect.midbottom,
+            20
+        )
+
+    def run(self):
+        if not self.lemming.animations.finished: return
+        self.lemming.kill()
+
+    def draw_timer(self):
+        if self.explode: return
+
+        window = self.lemming.window
+        timer_surface = window.fonts[0].render(
+            f"{self.timer.remaining}", # text
+            False,                     # antialias
+            pygame.Color("white")      # color
+        )
+        window.screen.blit(
+            timer_surface,
+            timer_surface.get_rect(
+                midbottom = self.lemming.bounding_rect.midtop
+            )
+        )
+
 class DigV:
     ICON  = Image.from_path(asset_path("ui_digv.png"))
     STATE = STATES.DIGV
@@ -97,12 +140,13 @@ class Dead:
         if self.lemming.animations.finished: self.lemming.kill()
 
 class Actions:
-    USABLE = (Float, Stop, DigV)
+    USABLE = (Float, Stop, Bomb, DigV)
 
     def __init__(self, lemming):
         self.walk  = Walk(lemming)
         self.fall  = Fall(lemming)
         self.float = Float(lemming)
         self.stop  = Stop(lemming)
+        self.bomb  = Bomb(lemming)
         self.digv  = DigV(lemming)
         self.dead  = Dead(lemming)
