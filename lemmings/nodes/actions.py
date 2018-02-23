@@ -5,7 +5,7 @@ from shared.timer import Timer
 from shared.image import Image
 from lemmings.path import asset_path
 
-STATES = enum.Enum("STATES", "START WALK FALL FLOAT STOP BOMB DIGV DIGH DEAD")
+STATES = enum.Enum("STATES", "START WALK FALL FLOAT STOP BOMB DIGV DIGH MINE DEAD")
 
 class Walk:
     def __init__(self, lemming):
@@ -160,6 +160,35 @@ class DigH:
         )
         self.lemming.rect.move_ip(dx, 0)
 
+class Mine:
+    ICON  = Image.from_path(asset_path("ui_mine.png"))
+    STATE = STATES.MINE
+
+    def __init__(self, lemming):
+        self.lemming = lemming
+
+    def wait(self):
+        self.enabled = False
+
+    def start(self):
+        self.lemming.start_animation("MINE")
+        self.enabled = True
+
+    def run(self):
+        if not self.enabled: self.start()
+        if not self.lemming.animations.finished: return
+
+        pygame.draw.circle(
+            self.lemming.bg.original,
+            pygame.Color("black"),
+            self.lemming.rect.center,
+            18
+        )
+
+        dx = self.lemming.actions.walk.dx
+        self.lemming.rect.move_ip(3 * dx, 3)
+        self.lemming.start_animation("MINE")
+
 class Dead:
     def __init__(self, lemming):
         self.lemming = lemming
@@ -171,7 +200,7 @@ class Dead:
         if self.lemming.animations.finished: self.lemming.kill()
 
 class Actions:
-    USABLE = (Float, Stop, Bomb, DigV, DigH)
+    USABLE = (Float, Stop, Bomb, DigV, DigH, Mine)
 
     def __init__(self, lemming):
         self.walk  = Walk(lemming)
@@ -181,4 +210,5 @@ class Actions:
         self.bomb  = Bomb(lemming)
         self.digv  = DigV(lemming)
         self.digh  = DigH(lemming)
+        self.mine  = Mine(lemming)
         self.dead  = Dead(lemming)

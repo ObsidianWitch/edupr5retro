@@ -42,6 +42,8 @@ class Lemming(AnimatedSprite):
                     "DIGV_R":  range(72 + 133, 88 + 133),
                     "DIGH_L":  range(88, 100),
                     "DIGH_R":  range(88 + 133, 100 + 133),
+                    "MINE_L":  range(100, 117),
+                    "MINE_R":  range(100 + 133, 117 + 133),
                     "DEAD_L":  range(117, 133),
                     "DEAD_R":  range(117 + 133, 133 + 133),
                 },
@@ -101,6 +103,9 @@ class Lemming(AnimatedSprite):
             elif new_action == STATES.DIGH:
                 self.state = new_action
                 self.actions.digh.wait()
+            elif new_action == STATES.MINE:
+                self.state = new_action
+                self.actions.mine.wait()
             else:
                 self.actions.walk.run(collisions_all.vec)
 
@@ -146,6 +151,20 @@ class Lemming(AnimatedSprite):
             elif not collisions_all.down:
                 self.state = STATES.WALK
             elif self.actions.digh.enabled:
+                self.state = STATES.WALK
+            else:
+                self.actions.walk.run(collisions_all.vec)
+
+        elif self.state == STATES.MINE:
+            if (
+                (self.actions.walk.dx == collisions_bg.vec[0])
+                and collisions_bg.down
+                and (not outside)
+            ):
+                self.actions.mine.run()
+            elif not collisions_all.down:
+                self.state = STATES.WALK
+            elif self.actions.mine.enabled:
                 self.state = STATES.WALK
             else:
                 self.actions.walk.run(collisions_all.vec)
