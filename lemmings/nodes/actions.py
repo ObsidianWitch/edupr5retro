@@ -4,7 +4,7 @@ import pygame
 from shared.image import Image
 from lemmings.path import asset_path
 
-STATES = enum.Enum("STATES", "START WALK FALL STOP DIGV DEAD")
+STATES = enum.Enum("STATES", "START WALK FALL FLOAT STOP DIGV DEAD")
 
 class Walk:
     def __init__(self, lemming):
@@ -35,6 +35,23 @@ class Fall:
     def run(self):
         self.lemming.rect.move_ip(0, 3)
         self.fallcount += 3
+
+class Float:
+    ICON  = Image.from_path(asset_path("ui_float.png"))
+    STATE = STATES.FLOAT
+
+    def __init__(self, lemming):
+        self.lemming = lemming
+
+    def wait(self):
+        self.enabled = False
+
+    def start(self):
+        self.lemming.start_animation("FLOAT")
+        self.enabled = True
+
+    def run(self):
+        self.lemming.rect.move_ip(0, 1)
 
 class Stop:
     ICON  = Image.from_path(asset_path("ui_stop.png"))
@@ -80,11 +97,12 @@ class Dead:
         if self.lemming.animations.finished: self.lemming.kill()
 
 class Actions:
-    USABLE = (Stop, DigV)
+    USABLE = (Float, Stop, DigV)
 
     def __init__(self, lemming):
-        self.walk = Walk(lemming)
-        self.fall = Fall(lemming)
-        self.stop = Stop(lemming)
-        self.digv = DigV(lemming)
-        self.dead = Dead(lemming)
+        self.walk  = Walk(lemming)
+        self.fall  = Fall(lemming)
+        self.float = Float(lemming)
+        self.stop  = Stop(lemming)
+        self.digv  = DigV(lemming)
+        self.dead  = Dead(lemming)

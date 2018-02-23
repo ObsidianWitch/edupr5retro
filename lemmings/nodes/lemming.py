@@ -28,16 +28,18 @@ class Lemming(AnimatedSprite):
             images     = self.lemming_imgs,
             animations = Animations(
                 data = {
-                    "WALK_L": range(0, 8),
-                    "WALK_R": range(0 + 133, 8 + 133),
-                    "FALL_L": range(8, 12),
-                    "FALL_R": range(8 + 133, 12 + 133),
-                    "STOP_L": range(26, 42),
-                    "STOP_R": range(26 + 133, 42 + 133),
-                    "DIGV_L": range(72, 88),
-                    "DIGV_R": range(72 + 133, 88 + 133),
-                    "DEAD_L": range(117, 133),
-                    "DEAD_R": range(117 + 133, 133 + 133),
+                    "WALK_L":  range(0, 8),
+                    "WALK_R":  range(0 + 133, 8 + 133),
+                    "FALL_L":  range(8, 12),
+                    "FALL_R":  range(8 + 133, 12 + 133),
+                    "FLOAT_L": range(20, 26),
+                    "FLOAT_R": range(20 + 133, 26 + 133),
+                    "STOP_L":  range(26, 42),
+                    "STOP_R":  range(26 + 133, 42 + 133),
+                    "DIGV_L":  range(72, 88),
+                    "DIGV_R":  range(72 + 133, 88 + 133),
+                    "DEAD_L":  range(117, 133),
+                    "DEAD_R":  range(117 + 133, 133 + 133),
                 },
                 period  = 100,
             ),
@@ -74,6 +76,9 @@ class Lemming(AnimatedSprite):
             if not collisions.down:
                 self.state = STATES.FALL
                 self.actions.fall.start()
+            elif new_action == STATES.FLOAT:
+                self.state = new_action
+                self.actions.float.wait()
             elif new_action == STATES.STOP:
                 self.state = new_action
                 self.actions.stop.start()
@@ -91,6 +96,18 @@ class Lemming(AnimatedSprite):
                 self.actions.dead.start()
             else:
                 self.state = STATES.WALK
+
+        elif self.state == STATES.FLOAT:
+            if not collisions.down:
+                if not self.actions.float.enabled:
+                    self.actions.float.start()
+
+                self.actions.float.run()
+            else:
+                if self.actions.float.enabled:
+                    self.state = STATES.WALK
+                else:
+                    self.actions.walk.run(collisions.vec)
 
         elif self.state == STATES.STOP:
             self.actions.stop.run()
