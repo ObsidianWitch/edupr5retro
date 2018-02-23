@@ -4,7 +4,7 @@ import numpy
 from shared.animated_sprite import AnimatedSprite, Animations
 import shared.transform
 import shared.math
-from maze.palette import palette
+from maze.nodes.palette import palette
 
 class Player:
     char0_ascii = (

@@ -2,7 +2,7 @@ import pygame
 import numpy
 
 from shared.sprite import Sprite
-from maze.palette import palette
+from maze.nodes.palette import palette
 
 class Maze:
     maze_ascii = (

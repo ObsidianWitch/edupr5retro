@@ -4,7 +4,7 @@ from shared.math  import Directions
 from shared.collisions import *
 from maze.nodes.maze import Maze
 from maze.nodes.player import Player
-from maze.palette import palette
+from maze.nodes.palette import palette
 
 class StateRun:
     def __init__(self, window):
