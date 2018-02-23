@@ -73,6 +73,9 @@ class Lemming(AnimatedSprite):
         collisions_bg = shared.collisions.pixel_collision_mid(
             self.bg.original, self.rect, pygame.Color("black")
         ).invert()
+        outside = None in collisions_all
+        collisions_all.replace(None, True)
+        collisions_bg.replace(None, True)
 
         if self.state == STATES.START:
             self.actions.walk.start()
@@ -132,13 +135,13 @@ class Lemming(AnimatedSprite):
                 self.actions.walk.run(collisions_all.vec)
 
         elif self.state == STATES.DIGV:
-            if collisions_all.down:
+            if collisions_all.down and (not outside):
                 self.actions.digv.run()
             else:
                 self.state = STATES.WALK
 
         elif self.state == STATES.DIGH:
-            if (self.actions.walk.dx == collisions_bg.vec[0]):
+            if (self.actions.walk.dx == collisions_bg.vec[0]) and (not outside):
                 self.actions.digh.run()
             elif not collisions_all.down:
                 self.state = STATES.WALK

@@ -3,12 +3,15 @@ from shared.math import Directions
 
 # Check collisions between `rect` midpoints and adjacent pixels of the specified
 # `color` in `surface`.
+# For each direction, returns True on collision, False on non-collisions, and
+# None in case of undefined behaviour (e.g. outside of the `surface` rect).
 def pixel_collision_mid(surface, rect, color):
+    def inside(p): return surface.get_rect().collidepoint(p)
+
     def check(p, offset):
-        return (surface.get_at((
-            p[0] + offset[0],
-            p[1] + offset[1]
-        )) == color)
+        p = (p[0] + offset[0], p[1] + offset[1])
+        if not inside(p): return None
+        return (surface.get_at(p) == color)
 
     return Directions(
         up    = check(rect.midtop,    ( 0, -1)),
@@ -19,17 +22,15 @@ def pixel_collision_mid(surface, rect, color):
 
 # Check collision between `rect`'s topleft, topright, bottomleft,
 # bottomright points and adjacent pixels of the specified `color` in `surface`.
-# Only checking collision against `rect` midpoints would have caused
-# missed collision detection in some cases (near the rect's vertices).
-# To avoid this problem, we check the state of adjacent pixels to the vertices
-# of the current edge (e.g. topleft + (1, 0) and bottomleft + (1, 0) for the
-# left edge)
+# For each direction, returns True on collision, False on non-collisions, and
+# None in case of undefined behaviour (e.g. outside of the `surface` rect).
 def pixel_collision_vertices(surface, rect, color):
+    def inside(p): return surface.get_rect().collidepoint(p)
+
     def check(p, offset):
-        return (surface.get_at((
-            p[0] + offset[0],
-            p[1] + offset[1]
-        )) == color)
+        p = (p[0] + offset[0], p[1] + offset[1])
+        if not inside(p): return None
+        return (surface.get_at(p) == color)
 
     return Directions(
         up    = check(rect.topleft,     ( 0, -1))
