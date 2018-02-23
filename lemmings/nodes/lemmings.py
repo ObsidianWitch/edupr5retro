@@ -38,5 +38,6 @@ class Lemmings:
 
     def draw_bg(self):
         for l in self.group: l.draw_bg()
+
     def draw_screen(self):
         for l in self.group: l.draw_screen()

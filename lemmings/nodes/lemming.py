@@ -127,7 +127,7 @@ class Lemming(AnimatedSprite):
             elif self.actions.bomb.timer.finished:
                 self.actions.bomb.start()
             elif not collisions_all.down:
-                self.state = STATES.WALK
+                self.actions.bomb.start()
             else:
                 self.actions.walk.run(collisions_all.vec)
 
