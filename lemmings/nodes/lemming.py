@@ -40,6 +40,8 @@ class Lemming(AnimatedSprite):
                     "BOMB_R":  range(42 + 133, 56 + 133),
                     "DIGV_L":  range(72, 88),
                     "DIGV_R":  range(72 + 133, 88 + 133),
+                    "DIGH_L":  range(88, 100),
+                    "DIGH_R":  range(88 + 133, 100 + 133),
                     "DEAD_L":  range(117, 133),
                     "DEAD_R":  range(117 + 133, 133 + 133),
                 },
@@ -65,8 +67,11 @@ class Lemming(AnimatedSprite):
         else:        self.animations.start("NONE")
 
     def update(self, new_action):
-        collisions = shared.collisions.pixel_collision_mid(
+        collisions_all = shared.collisions.pixel_collision_mid(
             self.bg.current, self.rect, pygame.Color("black")
+        ).invert()
+        collisions_bg = shared.collisions.pixel_collision_mid(
+            self.bg.original, self.rect, pygame.Color("black")
         ).invert()
 
         if self.state == STATES.START:
@@ -75,7 +80,7 @@ class Lemming(AnimatedSprite):
             self.state = STATES.FALL
 
         elif self.state == STATES.WALK:
-            if not collisions.down:
+            if not collisions_all.down:
                 self.state = STATES.FALL
                 self.actions.fall.start()
             elif new_action == STATES.FLOAT:
@@ -90,11 +95,14 @@ class Lemming(AnimatedSprite):
             elif new_action == STATES.DIGV:
                 self.state = new_action
                 self.actions.digv.start()
+            elif new_action == STATES.DIGH:
+                self.state = new_action
+                self.actions.digh.wait()
             else:
-                self.actions.walk.run(collisions.vec)
+                self.actions.walk.run(collisions_all.vec)
 
         elif self.state == STATES.FALL:
-            if not collisions.down:
+            if not collisions_all.down:
                 self.actions.fall.run()
             elif self.actions.fall.dead:
                 self.state = STATES.DEAD
@@ -103,15 +111,12 @@ class Lemming(AnimatedSprite):
                 self.state = STATES.WALK
 
         elif self.state == STATES.FLOAT:
-            if not collisions.down:
-                if not self.actions.float.enabled:
-                    self.actions.float.start()
+            if not collisions_all.down:
                 self.actions.float.run()
+            elif self.actions.float.enabled:
+                self.state = STATES.WALK
             else:
-                if self.actions.float.enabled:
-                    self.state = STATES.WALK
-                else:
-                    self.actions.walk.run(collisions.vec)
+                self.actions.walk.run(collisions_all.vec)
 
         elif self.state == STATES.STOP:
             self.actions.stop.run()
@@ -121,16 +126,26 @@ class Lemming(AnimatedSprite):
                 self.actions.bomb.run()
             elif self.actions.bomb.timer.finished:
                 self.actions.bomb.start()
-            elif not collisions.down:
-                self.actions.fall.run()
+            elif not collisions_all.down:
+                self.state = STATES.WALK
             else:
-                self.actions.walk.run(collisions.vec)
+                self.actions.walk.run(collisions_all.vec)
 
         elif self.state == STATES.DIGV:
-            if collisions.down:
+            if collisions_all.down:
                 self.actions.digv.run()
             else:
                 self.state = STATES.WALK
+
+        elif self.state == STATES.DIGH:
+            if (self.actions.walk.dx == collisions_bg.vec[0]):
+                self.actions.digh.run()
+            elif not collisions_all.down:
+                self.state = STATES.WALK
+            elif self.actions.digh.enabled:
+                self.state = STATES.WALK
+            else:
+                self.actions.walk.run(collisions_all.vec)
 
         elif self.state == STATES.DEAD:
             self.actions.dead.run()

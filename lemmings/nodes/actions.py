@@ -5,7 +5,7 @@ from shared.timer import Timer
 from shared.image import Image
 from lemmings.path import asset_path
 
-STATES = enum.Enum("STATES", "START WALK FALL FLOAT STOP BOMB DIGV DEAD")
+STATES = enum.Enum("STATES", "START WALK FALL FLOAT STOP BOMB DIGV DIGH DEAD")
 
 class Walk:
     def __init__(self, lemming):
@@ -52,6 +52,7 @@ class Float:
         self.enabled = True
 
     def run(self):
+        if not self.enabled: self.start()
         self.lemming.rect.move_ip(0, 1)
 
 class Stop:
@@ -119,15 +120,45 @@ class DigV:
         self.lemming.start_animation("DIGV")
 
     def run(self):
+        dx = self.lemming.actions.walk.dx
+
         rect = self.lemming.rect.copy()
         rect.top = rect.bottom
-        rect.left += 10 if self.lemming.actions.walk.dx > 0 else 0
+        rect.left += 10 if dx > 0 else 0
         rect.size = (20, 1)
 
         self.lemming.bg.original.fill(
             pygame.Color("black"), rect
         )
         self.lemming.rect.move_ip(0, 1)
+
+class DigH:
+    ICON  = Image.from_path(asset_path("ui_digh.png"))
+    STATE = STATES.DIGH
+
+    def __init__(self, lemming):
+        self.lemming = lemming
+
+    def wait(self):
+        self.enabled = False
+
+    def start(self):
+        self.lemming.start_animation("DIGH")
+        self.enabled = True
+
+    def run(self):
+        if not self.enabled: self.start()
+
+        dx = self.lemming.actions.walk.dx
+
+        rect = self.lemming.rect.copy()
+        rect.left = rect.right if dx > 0 else rect.left - 1
+        rect.width = 2
+
+        self.lemming.bg.original.fill(
+            pygame.Color("black"), rect
+        )
+        self.lemming.rect.move_ip(dx, 0)
 
 class Dead:
     def __init__(self, lemming):
@@ -140,7 +171,7 @@ class Dead:
         if self.lemming.animations.finished: self.lemming.kill()
 
 class Actions:
-    USABLE = (Float, Stop, Bomb, DigV)
+    USABLE = (Float, Stop, Bomb, DigV, DigH)
 
     def __init__(self, lemming):
         self.walk  = Walk(lemming)
@@ -149,4 +180,5 @@ class Actions:
         self.stop  = Stop(lemming)
         self.bomb  = Bomb(lemming)
         self.digv  = DigV(lemming)
+        self.digh  = DigH(lemming)
         self.dead  = Dead(lemming)
