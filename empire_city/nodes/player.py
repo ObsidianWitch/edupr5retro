@@ -29,7 +29,7 @@ class Player:
         self.crosshair.rect.center = self.window.rect.center
 
         self.ammunition = Sprite.from_path(asset_path("bullet.png"))
-        self.ammunition.scale_ip(0.5)
+        self.ammunition.scale(0.5)
         self.ammunition.rect.bottomleft = self.window.rect.bottomleft
 
         self.hide = Sprite.from_path(asset_path("hide.png"))

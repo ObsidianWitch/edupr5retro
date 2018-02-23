@@ -2,7 +2,7 @@ import pygame
 
 def scale(surface, ratio):
     rect = surface.get_rect()
-    rect = (
+    rect.size = (
         int(rect.width * ratio),
         int(rect.height * ratio),
     )

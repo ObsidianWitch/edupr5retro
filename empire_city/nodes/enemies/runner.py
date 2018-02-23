@@ -11,7 +11,7 @@ class Runner(Enemy):
         if self.bg.rect.contains(self.rect): return
 
         self.dx *= -1
-        self.flip_ip(xflip = True)
+        self.flip(xflip = True)
         self.rect.clamp_ip(self.bg.rect)
 
     def update(self, target):

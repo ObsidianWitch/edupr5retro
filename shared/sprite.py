@@ -1,5 +1,6 @@
 import pygame
 
+import shared.transform
 from shared.image import Image
 
 class Sprite(pygame.sprite.Sprite):
@@ -29,20 +30,11 @@ class Sprite(pygame.sprite.Sprite):
     )
 
     def scale(self, ratio):
-        self.rect.size = (
-            int(self.rect.width * ratio),
-            int(self.rect.height * ratio)
-        )
-        return pygame.transform.scale(self.image, self.rect.size)
-
-    def scale_ip(self, ratio):
-        self.image = self.scale(ratio)
+        self.image = shared.transform.scale(self.image, ratio)
+        self.rect  = self.image.get_rect()
 
     def flip(self, xflip = False, yflip = False):
-        return pygame.transform.flip(self.image, xflip, yflip)
-
-    def flip_ip(self, xflip = False, yflip = False):
-        self.image = self.flip(xflip, yflip)
+        self.image = pygame.transform.flip(self.image, xflip, yflip)
 
     def colorkey(self, color):
         self.image.set_colorkey(color)

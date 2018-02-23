@@ -17,7 +17,7 @@ class Fish:
     def flip(self, xflip = False, yflip = False):
         if xflip: self.dx *= -1
         if yflip: self.dy *= -1
-        self.sprite.flip_ip(xflip, False)
+        self.sprite.flip(xflip, False)
 
     # Moves from left to right.
     def move1(self):
@@ -43,7 +43,7 @@ class Fish:
     def move3(self):
         self.flip(
             xflip = (random.randrange(0, 100) == 0),
-            yflip = (random.randrange(0, 100) == 0)
+            yflip = (random.randrange(0, 100) == 0),
         )
 
         self.move2()

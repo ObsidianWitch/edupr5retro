@@ -1,5 +1,6 @@
 import pygame
 
+import shared.transform
 from shared.sprite import Sprite
 from shared.image import Image
 from shared.timer import Timer
@@ -64,26 +65,12 @@ class AnimatedSprite(Sprite):
         )
 
     def scale(self, ratio):
-        self.rect.size = (
-            int(self.rect.width * ratio),
-            int(self.rect.height * ratio)
-        )
-        return [
-            pygame.transform.scale(img, self.rect.size)
-            for img in self.images
-        ]
-
-    def scale_ip(self, ratio):
-        self.images = self.scale(ratio)
+        self.images = shared.transform.scale_n(self.images, ratio)
         self.image  = self.images[0]
+        self.rect   = self.image.get_rect()
 
-    def flip(self, xflip = False, yflip = False): return [
-        pygame.transform.flip(img, xflip, yflip)
-        for img in self.images
-    ]
-
-    def flip_ip(self, xflip = False, yflip = False):
-        self.images = self.flip(xflip, yflip)
+    def flip(self, xflip = False, yflip = False):
+        self.images = shared.transform.flip_n(self.images, xflip, yflip)
         self.image  = self.images[0]
 
     def colorkey(self, color):
