@@ -1,9 +1,10 @@
+import types
 import pygame
 
-from shared.image import Image
-from shared.animated_sprite import AnimatedSprite, Animations
 import shared.transform
 import shared.collisions
+from shared.image import Image
+from shared.animated_sprite import AnimatedSprite, Animations
 from lemmings.nodes.actions import Actions, STATES
 from lemmings.path import asset_path
 
@@ -68,16 +69,28 @@ class Lemming(AnimatedSprite):
         elif dx > 0: self.animations.start(f"{name}_R")
         else:        self.animations.start("NONE")
 
+    def collisions(self, surface):
+        directions = shared.collisions.pixel_collision_mid(
+            surface, self.rect, pygame.Color("black")
+        ).invert()
+
+        outside = (None in directions)
+        directions.replace(None, True)
+
+        fall = not directions.down
+
+        dx = self.actions.walk.dx
+        side = (directions.vec[0] == dx)
+
+        return types.SimpleNamespace(
+            outside = outside,
+            fall    = fall,
+            side    = side,
+        )
+
     def update(self, new_action):
-        collisions_all = shared.collisions.pixel_collision_mid(
-            self.bg.current, self.rect, pygame.Color("black")
-        ).invert()
-        collisions_bg = shared.collisions.pixel_collision_mid(
-            self.bg.original, self.rect, pygame.Color("black")
-        ).invert()
-        outside = None in collisions_all
-        collisions_all.replace(None, True)
-        collisions_bg.replace(None, True)
+        collisions_all = self.collisions(self.bg.current)
+        collisions_bg  = self.collisions(self.bg.original)
 
         if self.state == STATES.START:
             self.actions.walk.start()
@@ -85,7 +98,7 @@ class Lemming(AnimatedSprite):
             self.state = STATES.FALL
 
         elif self.state == STATES.WALK:
-            if not collisions_all.down:
+            if collisions_all.fall:
                 self.state = STATES.FALL
                 self.actions.fall.start()
             elif new_action == STATES.FLOAT:
@@ -107,24 +120,25 @@ class Lemming(AnimatedSprite):
                 self.state = new_action
                 self.actions.mine.wait()
             else:
-                self.actions.walk.run(collisions_all.vec)
+                self.actions.walk.run(collisions_all)
 
         elif self.state == STATES.FALL:
-            if not collisions_all.down:
+            if collisions_all.fall:
                 self.actions.fall.run()
             elif self.actions.fall.dead:
                 self.state = STATES.DEAD
                 self.actions.dead.start()
             else:
+                self.actions.fall.clamp()
                 self.state = STATES.WALK
 
         elif self.state == STATES.FLOAT:
-            if not collisions_all.down:
+            if collisions_all.fall:
                 self.actions.float.run()
             elif self.actions.float.enabled:
                 self.state = STATES.WALK
             else:
-                self.actions.walk.run(collisions_all.vec)
+                self.actions.walk.run(collisions_all)
 
         elif self.state == STATES.STOP:
             self.actions.stop.run()
@@ -134,40 +148,38 @@ class Lemming(AnimatedSprite):
                 self.actions.bomb.run()
             elif self.actions.bomb.timer.finished:
                 self.actions.bomb.start()
-            elif not collisions_all.down:
+            elif collisions_all.fall:
                 self.actions.bomb.start()
             else:
-                self.actions.walk.run(collisions_all.vec)
+                self.actions.walk.run(collisions_all)
 
         elif self.state == STATES.DIGV:
-            if collisions_all.down and (not outside):
+            if (not collisions_bg.fall) and (not collisions_bg.outside):
                 self.actions.digv.run()
             else:
                 self.state = STATES.WALK
 
         elif self.state == STATES.DIGH:
-            if (self.actions.walk.dx == collisions_bg.vec[0]) and (not outside):
+            if collisions_bg.side and (not collisions_bg.outside):
                 self.actions.digh.run()
-            elif not collisions_all.down:
+            elif collisions_all.fall:
                 self.state = STATES.WALK
             elif self.actions.digh.enabled:
                 self.state = STATES.WALK
             else:
-                self.actions.walk.run(collisions_all.vec)
+                self.actions.walk.run(collisions_all)
 
         elif self.state == STATES.MINE:
             if (
-                (self.actions.walk.dx == collisions_bg.vec[0])
-                and collisions_bg.down
-                and (not outside)
+                collisions_bg.side
+                and (not collisions_bg.fall)
+                and (not collisions_bg.outside)
             ):
                 self.actions.mine.run()
-            elif not collisions_all.down:
-                self.state = STATES.WALK
-            elif self.actions.mine.enabled:
+            elif (collisions_all.fall) or (self.actions.mine.enabled):
                 self.state = STATES.WALK
             else:
-                self.actions.walk.run(collisions_all.vec)
+                self.actions.walk.run(collisions_all)
 
         elif self.state == STATES.DEAD:
             self.actions.dead.run()

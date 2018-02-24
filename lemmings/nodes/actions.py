@@ -10,12 +10,13 @@ STATES = enum.Enum("STATES", "START WALK FALL FLOAT STOP BOMB DIGV DIGH MINE DEA
 class Walk:
     def __init__(self, lemming):
         self.lemming = lemming
+        self.dx = 0
 
     def start(self):
         self.dx = -1
 
-    def run(self, collision_vec):
-        if self.dx == collision_vec[0]:
+    def run(self, collisions):
+        if collisions.side:
             self.dx *= -1
             self.lemming.rect.move_ip(-self.dx * 20, 0)
 
@@ -36,6 +37,12 @@ class Fall:
     def run(self):
         self.lemming.rect.move_ip(0, 3)
         self.fallcount += 3
+
+    def clamp(self):
+        self.lemming.rect.move_ip(0, -1)
+        c = self.lemming.collisions(self.lemming.bg.current)
+        if c.fall: self.lemming.rect.move_ip(0, 1)
+        else: self.clamp()
 
 class Float:
     ICON  = Image.from_path(asset_path("ui_float.png"))
