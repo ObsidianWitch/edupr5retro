@@ -31,8 +31,8 @@ class Window:
     )
 
     # Returns whether `key` has been pressed or not by checking the
-    # `events` list.
-    # To check if `key` is held down, use the `keys` list instead.
+    # `events` list. To check if `key` is held down, use the `self.keys` list
+    # instead.
     def keydown(self, key): return next(
         (e.type == pygame.KEYDOWN and e.key == key
         for e in self.events),
@@ -50,5 +50,4 @@ class Window:
             instructions()
 
             self.clock.tick(30) # 30 FPS
-
             pygame.display.flip() # update display Surface

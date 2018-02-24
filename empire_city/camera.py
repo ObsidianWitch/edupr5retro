@@ -1,6 +1,6 @@
 import pygame
 
-from shared.math import Directions
+from shared.directions import Directions
 
 class Camera:
     def __init__(self, window, bg, position):

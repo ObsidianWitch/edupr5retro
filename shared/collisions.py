@@ -1,5 +1,6 @@
 import math
-from shared.math import Directions
+
+from shared.directions import Directions
 
 def pixel_checker(surface, color):
     def inside(p): return surface.get_rect().collidepoint(p)
@@ -15,7 +16,7 @@ def pixel_checker(surface, color):
 # `color` in `surface`.
 # For each direction, returns True on collision, False on non-collisions, and
 # None in case of undefined behaviour (e.g. outside of the `surface` rect).
-def pixel_collision_mid(surface, rect, color):
+def pixel_mid(surface, rect, color):
     check = pixel_checker(surface, color)
 
     return Directions(
@@ -29,7 +30,7 @@ def pixel_collision_mid(surface, rect, color):
 # bottomright points and adjacent pixels of the specified `color` in `surface`.
 # For each direction, returns True on collision, False on non-collisions, and
 # None in case of undefined behaviour (e.g. outside of the `surface` rect).
-def pixel_collision_vertices(surface, rect, color):
+def pixel_vertices(surface, rect, color):
     check = pixel_checker(surface, color)
 
     return Directions(
@@ -43,7 +44,7 @@ def pixel_collision_vertices(surface, rect, color):
              or check(rect.bottomright, ( 0, -1)),
     )
 
-def distance_collision(p1, p2, threshold):
+def distance(p1, p2, threshold):
     return math.sqrt(
             math.pow(p2[0] - p1[0], 2)
           + math.pow(p2[1] - p1[1], 2)

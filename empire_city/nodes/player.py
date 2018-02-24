@@ -1,8 +1,8 @@
 import random
-
 import pygame
 
 import shared.math
+from shared.directions import Directions
 from shared.sprite import Sprite
 from shared.image import Image
 from shared.timer import Timer
@@ -42,7 +42,7 @@ class Player:
         self.hidden = False
 
     def move(self, collisions_vec):
-        move_vec = shared.math.Directions(
+        move_vec = Directions(
             up    = self.window.keys[pygame.K_UP],
             down  = self.window.keys[pygame.K_DOWN],
             left  = self.window.keys[pygame.K_LEFT],

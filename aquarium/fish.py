@@ -1,5 +1,4 @@
 import random
-
 import pygame
 
 from shared.sprite import Sprite

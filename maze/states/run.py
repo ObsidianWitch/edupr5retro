@@ -1,7 +1,7 @@
 import pygame
 
-from shared.math  import Directions
-from shared.collisions import *
+import shared.collisions
+from shared.directions  import Directions
 from maze.nodes.maze import Maze
 from maze.nodes.player import Player
 from maze.nodes.palette import palette
@@ -37,7 +37,7 @@ class StateRun:
                 left  = self.window.keys[pygame.K_LEFT],
                 right = self.window.keys[pygame.K_RIGHT],
             ),
-            collisions = pixel_collision_vertices(
+            collisions = shared.collisions.pixel_vertices(
                 surface = self.window.screen,
                 rect    = self.player.sprite.rect,
                 color   = pygame.Color(*palette["B"]),
@@ -59,7 +59,7 @@ class StateRun:
         ): self.player.score += 100
 
         ## Exit
-        self.win = distance_collision(
+        self.win = shared.collisions.distance(
             p1 = self.player.sprite.rect.center,
             p2 = self.maze.exit.rect.center,
             threshold = 5

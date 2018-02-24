@@ -78,7 +78,7 @@ class Lemming(AnimatedSprite):
         else:        self.animations.start("NONE")
 
     def collisions(self, surface):
-        directions = shared.collisions.pixel_collision_mid(
+        directions = shared.collisions.pixel_mid(
             surface, self.bounding_rect, pygame.Color("black")
         ).invert()
 
