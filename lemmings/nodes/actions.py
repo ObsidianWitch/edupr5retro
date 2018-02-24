@@ -25,9 +25,21 @@ class Walk:
         self.slope()
 
     def slope(self):
+        up = self.slope_up()
+        if not up: self.slope_down()
+
+    def slope_up(self):
         self.lemming.rect.move_ip(0, -2)
         c = self.lemming.collisions(self.lemming.bg.current)
         if c.fall: self.lemming.rect.move_ip(0, 2)
+        return (not c.fall)
+
+    def slope_down(self):
+        c = self.lemming.collisions(self.lemming.bg.current)
+        if c.fall: self.lemming.rect.move_ip(0, 2)
+
+        c = self.lemming.collisions(self.lemming.bg.current)
+        if c.fall: self.lemming.rect.move_ip(0, -2)
 
 class Fall:
     @property
