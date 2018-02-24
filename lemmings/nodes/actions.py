@@ -22,6 +22,12 @@ class Walk:
 
         self.lemming.set_animation("WALK")
         self.lemming.rect.move_ip(self.dx, 0)
+        self.slope()
+
+    def slope(self):
+        self.lemming.rect.move_ip(0, -2)
+        c = self.lemming.collisions(self.lemming.bg.current)
+        if c.fall: self.lemming.rect.move_ip(0, 2)
 
 class Fall:
     @property

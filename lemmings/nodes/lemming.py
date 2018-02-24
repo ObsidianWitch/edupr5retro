@@ -57,6 +57,14 @@ class Lemming(AnimatedSprite):
         self.actions = Actions(self)
         self.state = STATES.START
 
+    @property
+    def bounding_rect(self):
+        dx = self.actions.walk.dx
+        rect = self.rect.copy()
+        rect.width //= 2
+        if dx > 0: rect.left += rect.width
+        return rect
+
     def set_animation(self, name):
         dx = self.actions.walk.dx
         if   dx < 0: self.animations.set(f"{name}_L")
@@ -71,7 +79,7 @@ class Lemming(AnimatedSprite):
 
     def collisions(self, surface):
         directions = shared.collisions.pixel_collision_mid(
-            surface, self.rect, pygame.Color("black")
+            surface, self.bounding_rect, pygame.Color("black")
         ).invert()
 
         outside = (None in directions)

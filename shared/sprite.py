@@ -22,13 +22,6 @@ class Sprite(pygame.sprite.Sprite):
         position = position
     )
 
-    @property
-    def bounding_rect(self): return (
-        self.image
-            .get_bounding_rect()
-            .move(self.rect.topleft)
-    )
-
     def scale(self, ratio):
         self.image = shared.transform.scale(self.image, ratio)
         self.rect  = self.image.get_rect()
