@@ -24,7 +24,7 @@ class Sprite(pygame.sprite.Sprite):
 
     def scale(self, ratio):
         self.image = shared.transform.scale(self.image, ratio)
-        self.rect  = self.image.get_rect()
+        self.rect  = self.image.get_rect().move(self.rect.topleft)
 
     def flip(self, xflip = False, yflip = False):
         self.image = pygame.transform.flip(self.image, xflip, yflip)
