@@ -39,6 +39,8 @@ class Lemming(AnimatedSprite):
                     "STOP_R":  range(26 + 133, 42 + 133),
                     "BOMB_L":  range(42, 56),
                     "BOMB_R":  range(42 + 133, 56 + 133),
+                    "BUILD_L": range(56, 72),
+                    "BUILD_R": range(56 + 133, 72 + 133),
                     "DIGV_L":  range(72, 88),
                     "DIGV_R":  range(72 + 133, 88 + 133),
                     "DIGH_L":  range(88, 100),
@@ -118,6 +120,9 @@ class Lemming(AnimatedSprite):
             elif new_action == STATES.BOMB:
                 self.state = new_action
                 self.actions.bomb.wait()
+            elif new_action == STATES.BUILD:
+                self.state = new_action
+                self.actions.build.start()
             elif new_action == STATES.DIGV:
                 self.state = new_action
                 self.actions.digv.start()
@@ -160,6 +165,12 @@ class Lemming(AnimatedSprite):
                 self.actions.bomb.start()
             else:
                 self.actions.walk.run(collisions_all)
+
+        elif self.state == STATES.BUILD:
+            if self.actions.build.finished or collisions_bg.side:
+                self.state = STATES.WALK
+            else:
+                self.actions.build.run()
 
         elif self.state == STATES.DIGV:
             if (not collisions_bg.fall) and (not collisions_bg.outside):

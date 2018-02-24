@@ -5,7 +5,8 @@ from shared.timer import Timer
 from shared.image import Image
 from lemmings.path import asset_path
 
-STATES = enum.Enum("STATES", "START WALK FALL FLOAT STOP BOMB DIGV DIGH MINE DEAD")
+STATES = enum.Enum("STATES", """START WALK FALL FLOAT STOP BOMB
+                                BUILD DIGV DIGH MINE DEAD""")
 
 class Walk:
     def __init__(self, lemming):
@@ -134,6 +135,39 @@ class Bomb:
             )
         )
 
+class Build:
+    ICON  = Image.from_path(asset_path("ui_build.png"))
+    STATE = STATES.BUILD
+
+    @property
+    def finished(self): return (self.count >= 12)
+
+    def __init__(self, lemming):
+        self.lemming = lemming
+        self.count = 0
+
+    def start(self):
+        self.lemming.start_animation("BUILD")
+
+    def run(self):
+        if not self.lemming.animations.finished: return
+
+        dx = self.lemming.actions.walk.dx
+        rect = self.lemming.rect.copy()
+        rect.size = (15, 3)
+        rect.top = self.lemming.rect.bottom - rect.height
+        if   (dx > 0): rect.left = self.lemming.rect.right - (rect.width // 2)
+        elif (dx < 0): rect.left  -= rect.width // 2
+
+        self.lemming.bg.original.fill(
+            pygame.Color("grey"), rect
+        )
+
+        self.lemming.rect.move_ip(dx * rect.width // 2, -rect.height)
+
+        self.count += 1
+        self.lemming.start_animation("BUILD")
+
 class DigV:
     ICON  = Image.from_path(asset_path("ui_digv.png"))
     STATE = STATES.DIGV
@@ -225,7 +259,7 @@ class Dead:
         if self.lemming.animations.finished: self.lemming.kill()
 
 class Actions:
-    USABLE = (Float, Stop, Bomb, DigV, DigH, Mine)
+    USABLE = (Float, Stop, Bomb, Build, DigV, DigH, Mine)
 
     def __init__(self, lemming):
         self.walk  = Walk(lemming)
@@ -233,6 +267,7 @@ class Actions:
         self.float = Float(lemming)
         self.stop  = Stop(lemming)
         self.bomb  = Bomb(lemming)
+        self.build = Build(lemming)
         self.digv  = DigV(lemming)
         self.digh  = DigH(lemming)
         self.mine  = Mine(lemming)
