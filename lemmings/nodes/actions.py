@@ -148,9 +148,9 @@ class DigV:
         dx = self.lemming.actions.walk.dx
 
         rect = self.lemming.rect.copy()
-        rect.top = rect.bottom
+        rect.top = rect.bottom - 1
         rect.left += 10 if dx > 0 else 0
-        rect.size = (20, 1)
+        rect.size = (20, 2)
 
         self.lemming.bg.original.fill(
             pygame.Color("black"), rect
@@ -177,8 +177,8 @@ class DigH:
         dx = self.lemming.actions.walk.dx
 
         rect = self.lemming.rect.copy()
-        rect.left = rect.right if dx > 0 else rect.left - 1
-        rect.width = 2
+        rect.left = rect.right - 15 if dx > 0 else rect.left - 1
+        rect.width = 16
 
         self.lemming.bg.original.fill(
             pygame.Color("black"), rect
