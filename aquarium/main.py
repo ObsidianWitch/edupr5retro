@@ -24,8 +24,8 @@ fish1 = Fish(
         position = (100, 200),
     )
 )
-fish1.sprite.colorkey((170, 238, 255))
-fish1.sprite.scale(0.5)
+fish1.colorkey((170, 238, 255))
+fish1.scale(0.5)
 
 fish2 = Fish(
     window = window,
@@ -36,7 +36,7 @@ fish2 = Fish(
         position = (200, 300),
     )
 )
-fish2.sprite.colorkey((170, 238, 255))
+fish2.colorkey((170, 238, 255))
 
 fish3 = Fish(
     window = window,
@@ -47,8 +47,8 @@ fish3 = Fish(
         position = (200, 200),
     )
 )
-fish3.sprite.colorkey((170, 255, 238))
-fish3.sprite.scale(1.1)
+fish3.colorkey((170, 255, 238))
+fish3.scale(1.1)
 
 plant1 = Sprite.from_path(
     path     = asset_path("plant1.bmp"),
@@ -80,9 +80,9 @@ decor2.scale(0.3)
 
 layers = [pygame.sprite.Group()] * 5
 layers[0].add(bg)
-layers[1].add(fish1.sprite, fish2.sprite)
+layers[1].add(fish1, fish2)
 layers[2].add(plant1, plant2)
-layers[3].add(fish3.sprite)
+layers[3].add(fish3)
 layers[4].add(decor1, decor2)
 
 def game():

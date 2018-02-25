@@ -9,6 +9,7 @@ class Window:
 
     def __init__(self, size, title, cursor = False):
         pygame.init()
+        pygame.mixer.quit()
 
         self.screen = pygame.display.set_mode(size)
         pygame.display.set_caption(title)
