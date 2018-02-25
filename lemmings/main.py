@@ -7,8 +7,7 @@ from lemmings.states.level2 import Level2
 from lemmings.states.end import End
 
 window = Window(
-    width  = 800,
-    height = 400,
+    size   = (800, 400),
     title  = "Lemmings",
     cursor = True,
 )

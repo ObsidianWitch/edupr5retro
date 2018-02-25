@@ -4,9 +4,8 @@ from bouncing_ball.ball import Ball
 from shared.window import Window
 
 window = Window(
-    width  = 800,
-    height = 600,
-    title  = "Bouncing Ball !!!"
+    size  = (800, 600),
+    title = "Bouncing Ball !!!",
 )
 
 ball = Ball(window)
@@ -18,10 +17,10 @@ def game():
     # Draw
     window.screen.fill(pygame.Color("white"))
     pygame.draw.rect(
-        window.screen,                       # surface
-        pygame.Color("green"),               # color
-        (0, 0, window.width, window.height), # rect
-        5                                    # width
+        window.screen,         # surface
+        pygame.Color("green"), # color
+        window.rect,           # rect
+        5                      # width
     )
     ball.draw()
 

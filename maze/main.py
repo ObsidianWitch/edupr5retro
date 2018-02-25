@@ -5,9 +5,8 @@ from maze.states.run import StateRun
 from maze.states.end import StateEnd
 
 window = Window(
-    width  = 400,
-    height = 400,
-    title  = "Maze"
+    size  = (400, 400),
+    title = "Maze",
 )
 
 states = types.SimpleNamespace(

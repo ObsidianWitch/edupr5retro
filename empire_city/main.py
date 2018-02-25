@@ -5,9 +5,8 @@ from empire_city.states.run import StateRun
 from empire_city.states.end import StateEnd
 
 window = Window(
-    width  = 400,
-    height = 300,
-    title  = "Empire City",
+    size  = (400, 300),
+    title = "Empire City",
 )
 
 states = types.SimpleNamespace(

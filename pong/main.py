@@ -6,9 +6,8 @@ from pong.states.run import StateRun
 from pong.states.end import StateEnd
 
 window = Window(
-    width  = 600,
-    height = 400,
-    title  = "Pong"
+    size  = (600, 400),
+    title = "Pong",
 )
 
 states = types.SimpleNamespace(

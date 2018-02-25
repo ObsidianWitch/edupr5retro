@@ -7,13 +7,14 @@ class Window:
     @property
     def height(self): return self.rect.height
 
-    def __init__(self, width, height, title, cursor = False):
+    def __init__(self, size, title, cursor = False):
         pygame.init()
 
-        self.screen = pygame.display.set_mode([width, height])
-        self.rect = self.screen.get_rect()
+        self.screen = pygame.display.set_mode(size)
         pygame.display.set_caption(title)
         pygame.mouse.set_visible(cursor)
+
+        self.rect = self.screen.get_rect()
 
         self.clock = pygame.time.Clock()
 
