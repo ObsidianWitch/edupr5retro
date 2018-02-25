@@ -6,17 +6,9 @@ from pong.nodes.paddle import Paddle
 class StateRun:
     def __init__(self, window):
         self.window = window
-
-        self.p1 = Paddle(
-            window = self.window,
-            side   = Paddle.SIDE.LEFT
-        )
-        self.p2 = Paddle(
-            window = self.window,
-            side   = Paddle.SIDE.RIGHT
-        )
+        self.p1 = Paddle(self.window, Paddle.SIDE.LEFT)
+        self.p2 = Paddle(self.window, Paddle.SIDE.RIGHT)
         self.ball = Ball(self.window)
-
         self.winner = 0
 
     def ball_paddle_collision(self, paddle):
@@ -53,12 +45,10 @@ class StateRun:
             ).move(0, 10)
         )
 
-    # Returns 0 while the game is not yet been won.
-    # Returns which player won (1 or 2) when the game is finished.
     def run(self):
         # Update
-        self.p1.update(self.window.keys)
-        self.p2.update(self.window.keys)
+        self.p1.update()
+        self.p2.update()
         self.ball.update()
 
         self.ball_paddle_collision(self.p1)

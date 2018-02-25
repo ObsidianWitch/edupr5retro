@@ -3,17 +3,17 @@ import pygame
 class Ball:
     def __init__(self, window):
         self.window = window
-
+        self.radius = 10
         self.reset()
 
-        self.dx = -2
-        self.dy = -2
-
-        self.radius = 10
+    @property
+    def position(self): return (self.x, self.y)
 
     def reset(self):
-        self.x = self.window.width // 2
-        self.y = self.window.height // 2
+        self.x  = self.window.width // 2
+        self.y  = self.window.height // 2
+        self.dx = -2
+        self.dy = -2
 
     def walls_collision(self):
         if (self.y - self.radius < 0):
@@ -42,6 +42,6 @@ class Ball:
         pygame.draw.circle(
             self.window.screen,    # surface
             pygame.Color("white"), # color
-            (self.x, self.y),      # position
+            self.position,         # position
             self.radius            # radius
         )

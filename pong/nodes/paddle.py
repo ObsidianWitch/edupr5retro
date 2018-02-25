@@ -36,8 +36,8 @@ class Paddle:
         if self.y + self.height + self.dy > self.window.height:
             self.y = self.window.height - self.height
 
-    def update(self, keys):
-        self.move(keys)
+    def update(self):
+        self.move(self.window.keys)
         self.walls_collision()
 
     def draw(self):
