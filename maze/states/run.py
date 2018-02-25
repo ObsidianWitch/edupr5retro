@@ -69,5 +69,3 @@ class StateRun:
         self.maze.draw()
         self.player.draw()
         self.draw_score()
-
-        return False
