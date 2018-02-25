@@ -12,22 +12,28 @@ class Ball:
 
         self.radius = 10
 
-        self.outer_circle_color = pygame.Color("blue")
-        self.inner_circle_color = pygame.Color("red")
+        self.toggle = False
+        self.inner_color = (
+            pygame.Color("red"),
+            pygame.Color("green")
+        )
+
+    @property
+    def position(self): return (self.x, self.y)
+
+    @property
+    def speed(self): return (self.dx, self.dy)
 
     def bounce(self, dx_mul = 1, dy_mul = 1):
         y_collision = (self.y > self.window.height or self.y < 0)
         x_collision = (self.x > self.window.width or self.x < 0)
 
-        if not y_collision and not x_collision: return
+        if (not y_collision) and (not x_collision): return
 
         if y_collision: self.dy *= -1
         if x_collision: self.dx *= -1
 
-        if self.inner_circle_color == pygame.Color("red"):
-            self.inner_circle_color = pygame.Color("green")
-        else:
-            self.inner_circle_color = pygame.Color("red")
+        self.toggle = not self.toggle
 
     def update(self):
         self.x += self.dx
@@ -36,14 +42,14 @@ class Ball:
 
     def draw(self):
         pygame.draw.circle(
-            self.window.screen,      # surface
-            self.outer_circle_color, # color
-            (self.x, self.y),        # position
-            self.radius * 2          # radius
+            self.window.screen,   # surface
+            pygame.Color("blue"), # color
+            self.position,        # position
+            self.radius * 2,      # radius
         )
         pygame.draw.circle(
-            self.window.screen,      # surface
-            self.inner_circle_color, # color
-            (self.x, self.y),        # position
-            self.radius              # radius
+            self.window.screen,            # surface
+            self.inner_color[self.toggle], # color
+            self.position,                 # position
+            self.radius,                   # radius
         )
