@@ -6,7 +6,7 @@ import shared.transform
 import shared.math
 from maze.nodes.palette import palette
 
-class Player:
+class Player(AnimatedSprite):
     char0_ascii = (
         '   RRR    ',
         '  RRWWR   ',
@@ -61,7 +61,7 @@ class Player:
         self.facing_x = 1
         self.score = 0
 
-        self.sprite = AnimatedSprite.from_ascii(
+        sprite = AnimatedSprite.from_ascii(
             txts = (
                 self.char0_ascii, self.char1_ascii, self.char2_ascii,
                 self.char3_ascii, self.char4_ascii, self.char5_ascii,
@@ -77,11 +77,12 @@ class Player:
                 period  = 500,
             ),
         )
-        self.sprite.colorkey(palette[' '])
+        AnimatedSprite.__init__(self, sprite.images, sprite.animations)
+        self.colorkey(palette[' '])
         self.reset_position()
 
     def reset_position(self):
-        self.sprite.rect.topleft = (25, 25)
+        self.rect.topleft = (25, 25)
 
     def move(self, directions, collisions):
         move_vec = directions.vec
@@ -92,7 +93,7 @@ class Player:
             move_vec[i] -= collision_vec[i]
             move_vec[i] = shared.math.clamp(move_vec[i], -1, 1)
 
-        self.sprite.rect.move_ip(move_vec)
+        self.rect.move_ip(move_vec)
 
         walking = any(d != 0 for d in move_vec)
         if move_vec[0] != 0: self.facing_x = move_vec[0]
@@ -100,15 +101,15 @@ class Player:
 
     def animate(self, walking):
         if not walking:
-            if   self.facing_x < 0: self.sprite.animations.set("IDLE_L")
-            elif self.facing_x > 0: self.sprite.animations.set("IDLE_R")
+            if   self.facing_x < 0: self.animations.set("IDLE_L")
+            elif self.facing_x > 0: self.animations.set("IDLE_R")
         else:
-            if   self.facing_x < 0: self.sprite.animations.set("WALK_L")
-            elif self.facing_x > 0: self.sprite.animations.set("WALK_R")
+            if   self.facing_x < 0: self.animations.set("WALK_L")
+            elif self.facing_x > 0: self.animations.set("WALK_R")
 
     def update(self, directions, collisions):
         self.move(directions, collisions)
-        self.sprite.update()
+        AnimatedSprite.update(self)
 
     def draw(self):
-        self.sprite.draw(self.window.screen)
+        AnimatedSprite.draw(self, self.window.screen)

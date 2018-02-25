@@ -39,28 +39,28 @@ class StateRun:
             ),
             collisions = shared.collisions.pixel_vertices(
                 surface = self.window.screen,
-                rect    = self.player.sprite.rect,
+                rect    = self.player.rect,
                 color   = pygame.Color(*palette["B"]),
             ),
         )
 
         ## Traps
         if pygame.sprite.spritecollide(
-            self.player.sprite, # sprite
-            self.maze.traps,    # group
-            False               # dokill
+            self.player,     # sprite
+            self.maze.traps, # group
+            False            # dokill
         ): self.player.reset_position()
 
         ## Treasures
         if pygame.sprite.spritecollide(
-            self.player.sprite,  # sprite
+            self.player,         # sprite
             self.maze.treasures, # group
             True                 # dokill
         ): self.player.score += 100
 
         ## Exit
         self.win = shared.collisions.distance(
-            p1 = self.player.sprite.rect.center,
+            p1 = self.player.rect.center,
             p2 = self.maze.exit.rect.center,
             threshold = 5
         )
