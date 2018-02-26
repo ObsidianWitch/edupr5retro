@@ -9,7 +9,7 @@ from shared.timer import Timer
 from empire_city.path import asset_path
 
 class Crosshair(Sprite):
-    IMG  = Image.from_path(asset_path("viseur.png"))
+    IMG = Image.from_path(asset_path("viseur.png"))
 
     def __init__(self, window):
         self.window = window
@@ -37,6 +37,23 @@ class Ammunitions(Sprite):
             self.rect.left = i * self.rect.width
             Sprite.draw(self, self.window.screen)
 
+class Hide(Sprite):
+    IMG = Image.from_path(asset_path("hide.png"))
+
+    def __init__(self, window):
+        self.window = window
+
+        Sprite.__init__(self, self.IMG)
+        self.rect.center = self.window.rect.center
+
+        self.hidden = False
+
+    def update(self):
+        self.hidden = self.window.keys[pygame.K_RETURN]
+
+    def draw(self):
+        if self.hidden: Sprite.draw(self, self.window.screen)
+
 class Explosion(Sprite):
     IMG = Image.from_path(asset_path("bang.png"))
 
@@ -49,8 +66,6 @@ class Explosion(Sprite):
         if self.timer.finished: self.kill()
 
 class Player:
-    HIDE_IMG       = Image.from_path(asset_path("hide.png"))
-
     def __init__(self, camera):
         self.camera = camera
         self.window = camera.window
@@ -58,14 +73,10 @@ class Player:
 
         self.crosshair = Crosshair(self.window)
         self.ammunitions = Ammunitions(self.window)
-
-        self.hide = Sprite(self.HIDE_IMG)
-        self.hide.rect.center = self.window.rect.center
-
+        self.hide = Hide(self.window)
         self.explosions = pygame.sprite.Group()
 
         self.speed = 10
-        self.hidden = False
 
     def move(self, collisions_vec):
         move_vec = Directions(
@@ -107,12 +118,12 @@ class Player:
         self.move(collisions_vec)
         self.shoot(target)
         self.explosions.update()
-        self.hidden = self.window.keys[pygame.K_RETURN]
+        self.hide.update()
 
     def draw_bg(self):
         self.explosions.draw(self.bg.current)
 
     def draw_screen(self):
         self.crosshair.draw()
-        if self.hidden: self.hide.draw(self.window.screen)
+        self.hide.draw()
         self.ammunitions.draw()

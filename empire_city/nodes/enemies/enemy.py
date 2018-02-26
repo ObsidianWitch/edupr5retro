@@ -22,7 +22,7 @@ class Enemy(Sprite):
     def shoot(self, target):
         if not self.shoot_timer.finished: return
         self.shoot_timer.restart()
-        if target.hidden: return
+        if target.hide.hidden: return
         target.ammunitions.count -= 3
 
     def update(self, target):
