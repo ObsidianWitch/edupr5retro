@@ -8,6 +8,23 @@ from shared.image import Image
 from shared.timer import Timer
 from empire_city.path import asset_path
 
+class Ammunitions(Sprite):
+    IMG = Image.from_path(asset_path("bullet.png"))
+
+    def __init__(self, window):
+        self.window = window
+
+        Sprite.__init__(self, self.IMG)
+        self.scale(0.5)
+        self.rect.bottomleft = self.window.rect.bottomleft
+
+        self.count = 12
+
+    def draw(self):
+        for i in range(self.count):
+            self.rect.left = i * self.rect.width
+            Sprite.draw(self, self.window.screen)
+
 class Explosion(Sprite):
     IMG = Image.from_path(asset_path("bang.png"))
 
@@ -21,7 +38,6 @@ class Explosion(Sprite):
 
 class Player:
     CROSSHAIR_IMG  = Image.from_path(asset_path("viseur.png"))
-    AMMUNITION_IMG = Image.from_path(asset_path("bullet.png"))
     HIDE_IMG       = Image.from_path(asset_path("hide.png"))
 
     def __init__(self, camera):
@@ -32,9 +48,7 @@ class Player:
         self.crosshair = Sprite(self.CROSSHAIR_IMG)
         self.crosshair.rect.center = self.window.rect.center
 
-        self.ammunition = Sprite(self.AMMUNITION_IMG)
-        self.ammunition.scale(0.5)
-        self.ammunition.rect.bottomleft = self.window.rect.bottomleft
+        self.ammunitions = Ammunitions(self.window)
 
         self.hide = Sprite(self.HIDE_IMG)
         self.hide.rect.center = self.window.rect.center
@@ -42,7 +56,6 @@ class Player:
         self.explosions = pygame.sprite.Group()
 
         self.speed = 10
-        self.ammunitions = 12
         self.hidden = False
 
     def move(self, collisions_vec):
@@ -63,10 +76,10 @@ class Player:
         )
 
     def shoot(self, target):
-        if self.ammunitions <= 0: return
+        if self.ammunitions.count <= 0: return
         if not self.window.keydown(pygame.K_SPACE): return
 
-        self.ammunitions -= 1
+        self.ammunitions.count -= 1
         self.crosshair.rect.move_ip(
             random.randint(-2, 2),
             random.randint(-2, 2)
@@ -78,8 +91,8 @@ class Player:
         killed = target.kill(
             self.camera.bg_space(self.crosshair.rect.center)
         )
-        if killed ==  1: self.ammunitions += 2
-        if killed == -1: self.ammunitions -= 3
+        if killed ==  1: self.ammunitions.count += 2
+        if killed == -1: self.ammunitions.count -= 3
 
     def update(self, collisions_vec, target):
         self.move(collisions_vec)
@@ -95,6 +108,4 @@ class Player:
 
         if self.hidden: self.hide.draw(self.window.screen)
 
-        for a in range(self.ammunitions):
-            self.ammunition.rect.left = a * self.ammunition.rect.width
-            self.ammunition.draw(self.window.screen)
+        self.ammunitions.draw()

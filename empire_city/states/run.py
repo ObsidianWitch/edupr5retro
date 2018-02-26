@@ -36,7 +36,7 @@ class StateRun:
         self.player.update(scroll_vec, self.enemies)
         self.enemies.update(self.player)
 
-        self.end = (self.player.ammunitions <= 0)
+        self.end = (self.player.ammunitions.count <= 0)
 
         # Draw
         ## bg drawing

@@ -23,7 +23,7 @@ class Enemy(Sprite):
         if not self.shoot_timer.finished: return
         self.shoot_timer.restart()
         if target.hidden: return
-        target.ammunitions -= 3
+        target.ammunitions.count -= 3
 
     def update(self, target):
         if not self.alive: return
