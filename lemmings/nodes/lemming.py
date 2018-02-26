@@ -9,13 +9,13 @@ from lemmings.nodes.actions import Actions, STATES
 from lemmings.path import asset_path
 
 class Lemming(AnimatedSprite):
-    lemming_imgs = Image.from_spritesheet_n(
+    IMGS = Image.from_spritesheet_n(
         path          = asset_path("planche.png"),
         sprite_size   = (30, 30),
         discard_color = pygame.Color("red"),
     )
-    lemming_imgs += shared.transform.flip_n(
-        surfaces = lemming_imgs,
+    IMGS += shared.transform.flip_n(
+        surfaces = IMGS,
         xflip    = True,
         yflip    = False
     )
@@ -26,7 +26,7 @@ class Lemming(AnimatedSprite):
 
         AnimatedSprite.__init__(
             self       = self,
-            images     = self.lemming_imgs,
+            images     = self.IMGS,
             animations = Animations(
                 data = {
                     "WALK_L":  range(0, 8),
