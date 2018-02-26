@@ -2,10 +2,10 @@ import pygame
 import numpy
 
 from shared.sprite import Sprite
-from maze.nodes.palette import palette
+from maze.nodes.palette import PALETTE
 
 class Maze:
-    maze_ascii = (
+    MAZE_ASCII = (
         'BBBBBBBBBBBBBBBBBBBB',
         'B         B       CB',
         'B BB BBBBB     BBBBB',
@@ -28,7 +28,7 @@ class Maze:
         'BBBBBBBBBBBBBBBBBBBB',
     )
 
-    exit_ascii = (
+    EXIT_ASCII = (
         '                    ',
         '                    ',
         '        YYYY        ',
@@ -51,7 +51,7 @@ class Maze:
         '                    ',
     )
 
-    treasure_ascii = (
+    TREASURE_ASCII = (
         '                    ',
         '                    ',
         '                    ',
@@ -74,7 +74,7 @@ class Maze:
         '                    ',
     )
 
-    trap_ascii = (
+    TRAP_ASCII = (
         '                    ',
         '                    ',
         '          RRRR      ',
@@ -101,13 +101,13 @@ class Maze:
         self.window = window
 
         self.square_size = 20
-        self.height = len(self.maze_ascii)
-        self.width  = len(self.maze_ascii[0])
+        self.height = len(self.MAZE_ASCII)
+        self.width  = len(self.MAZE_ASCII[0])
 
         self.init_items()
 
-    # Places items in the maze based on the `maze_ascii` map.
-    # Each item is associated with a code contained in `palette`.
+    # Places items in the maze based on the `MAZE_ASCII` map.
+    # Each item is associated with a code contained in `PALETTE`.
     # "Y" -> exits
     # "C" -> treasures
     # "R" -> traps
@@ -118,16 +118,16 @@ class Maze:
 
         def init_exit(code, color, xsq, ysq):
             self.exit = Sprite.from_ascii(
-                txt        = self.exit_ascii,
-                dictionary = palette,
+                txt        = self.EXIT_ASCII,
+                dictionary = PALETTE,
                 position   = (xsq, ysq),
             )
             self.items.add(self.exit)
 
         def init_treasure(code, color, xsq, ysq):
             sprite = Sprite.from_ascii(
-                txt        = self.treasure_ascii,
-                dictionary = palette,
+                txt        = self.TREASURE_ASCII,
+                dictionary = PALETTE,
                 position   = (xsq, ysq),
             )
             self.items.add(sprite)
@@ -135,8 +135,8 @@ class Maze:
 
         def init_trap(code, color, xsq, ysq):
             sprite = Sprite.from_ascii(
-                txt        = self.trap_ascii,
-                dictionary = palette,
+                txt        = self.TRAP_ASCII,
+                dictionary = PALETTE,
                 position   = (xsq, ysq),
             )
             self.items.add(sprite)
@@ -153,8 +153,8 @@ class Maze:
     # element.
     def traverse(self, function):
         for y, x in numpy.ndindex(self.height, self.width):
-            code  = self.maze_ascii[y][x]
-            color = palette[code]
+            code  = self.MAZE_ASCII[y][x]
+            color = PALETTE[code]
             xsq   = x * self.square_size
             ysq   = y * self.square_size
 
@@ -164,7 +164,7 @@ class Maze:
     def draw(self):
         def draw_one(code, color, xsq, ysq):
             # skip item tiles (drawing handled by sprites)
-            if code in ("Y", "C", "R"): color = palette[" "]
+            if code in ("Y", "C", "R"): color = PALETTE[" "]
 
             pygame.draw.rect(
                 self.window.screen,

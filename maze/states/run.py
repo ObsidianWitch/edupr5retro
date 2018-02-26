@@ -4,15 +4,13 @@ import shared.collisions
 from shared.directions  import Directions
 from maze.nodes.maze import Maze
 from maze.nodes.player import Player
-from maze.nodes.palette import palette
+from maze.nodes.palette import PALETTE
 
 class StateRun:
     def __init__(self, window):
         self.window = window
-
         self.player = Player(window)
         self.maze = Maze(window)
-
         self.win = False
 
     def draw_score(self):
@@ -40,7 +38,7 @@ class StateRun:
             collisions = shared.collisions.pixel_vertices(
                 surface = self.window.screen,
                 rect    = self.player.rect,
-                color   = pygame.Color(*palette["B"]),
+                color   = pygame.Color(*PALETTE["B"]),
             ),
         )
 

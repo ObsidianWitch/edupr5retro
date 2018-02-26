@@ -4,56 +4,54 @@ import numpy
 from shared.animated_sprite import AnimatedSprite, Animations
 import shared.transform
 import shared.math
-from maze.nodes.palette import palette
+from maze.nodes.palette import PALETTE
 
 class Player(AnimatedSprite):
-    char0_ascii = (
-        '   RRR    ',
-        '  RRWWR   ',
-        '   RRR    ',
-        '   YY     ',
-        '   YYY    ',
-        '   YY YG  ',
-        '   GG     ',
-        '   CC     ',
-        '   CC     ',
-        '  C  C    ',
-        ' C    C   ',
+    PLAYER_ASCII = [
+        ( # 0
+            '   RRR    ',
+            '  RRWWR   ',
+            '   RRR    ',
+            '   YY     ',
+            '   YYY    ',
+            '   YY YG  ',
+            '   GG     ',
+            '   CC     ',
+            '   CC     ',
+            '  C  C    ',
+            ' C    C   ',
+        ),
+        ( # 1
+            '   RRR    ',
+            '  RRWWR   ',
+            '   RRR    ',
+            '   YY     ',
+            '   YYY    ',
+            '   YY YG  ',
+            '   GG     ',
+            '   CC     ',
+            '   CC     ',
+            '  C  C    ',
+            '  C  C    ',
+        ),
+        ( # 2
+            '   RRR    ',
+            '  RRWWR   ',
+            '   RRR    ',
+            '   YY     ',
+            '   YYY    ',
+            '   YY YG  ',
+            '   GG     ',
+            '   CC     ',
+            '   CC     ',
+            '   CC     ',
+            '   CC     ',
+        )
+    ]
+    PLAYER_ASCII += tuple( # flipped ascii frames (3, 4, 5)
+        tuple(line[::-1] for line in frame_ascii)
+        for frame_ascii in PLAYER_ASCII
     )
-
-    char1_ascii = (
-        '   RRR    ',
-        '  RRWWR   ',
-        '   RRR    ',
-        '   YY     ',
-        '   YYY    ',
-        '   YY YG  ',
-        '   GG     ',
-        '   CC     ',
-        '   CC     ',
-        '  C  C    ',
-        '  C  C    ',
-    )
-
-    char2_ascii = (
-        '   RRR    ',
-        '  RRWWR   ',
-        '   RRR    ',
-        '   YY     ',
-        '   YYY    ',
-        '   YY YG  ',
-        '   GG     ',
-        '   CC     ',
-        '   CC     ',
-        '   CC     ',
-        '   CC     ',
-    )
-
-    char3_ascii = tuple(s[::-1] for s in char0_ascii)
-
-    char4_ascii = tuple(s[::-1] for s in char1_ascii)
-
-    char5_ascii = tuple(s[::-1] for s in char2_ascii)
 
     def __init__(self, window):
         self.window = window
@@ -62,11 +60,8 @@ class Player(AnimatedSprite):
         self.score = 0
 
         sprite = AnimatedSprite.from_ascii(
-            txts = (
-                self.char0_ascii, self.char1_ascii, self.char2_ascii,
-                self.char3_ascii, self.char4_ascii, self.char5_ascii,
-            ),
-            dictionary = palette,
+            txts       = self.PLAYER_ASCII,
+            dictionary = PALETTE,
             animations = Animations(
                 data = {
                     "IDLE_R": [1],
@@ -78,7 +73,7 @@ class Player(AnimatedSprite):
             ),
         )
         AnimatedSprite.__init__(self, sprite.images, sprite.animations)
-        self.colorkey(palette[' '])
+        self.colorkey(PALETTE[' '])
         self.reset_position()
 
     def reset_position(self):
@@ -95,8 +90,8 @@ class Player(AnimatedSprite):
 
         self.rect.move_ip(move_vec)
 
-        walking = any(d != 0 for d in move_vec)
         if move_vec[0] != 0: self.facing_x = move_vec[0]
+        walking = any(d != 0 for d in move_vec)
         self.animate(walking)
 
     def animate(self, walking):
