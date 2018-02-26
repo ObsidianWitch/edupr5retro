@@ -8,6 +8,18 @@ from shared.image import Image
 from shared.timer import Timer
 from empire_city.path import asset_path
 
+class Crosshair(Sprite):
+    IMG  = Image.from_path(asset_path("viseur.png"))
+
+    def __init__(self, window):
+        self.window = window
+
+        Sprite.__init__(self, self.IMG)
+        self.rect.center = self.window.rect.center
+
+    def draw(self):
+        Sprite.draw(self, self.window.screen)
+
 class Ammunitions(Sprite):
     IMG = Image.from_path(asset_path("bullet.png"))
 
@@ -37,7 +49,6 @@ class Explosion(Sprite):
         if self.timer.finished: self.kill()
 
 class Player:
-    CROSSHAIR_IMG  = Image.from_path(asset_path("viseur.png"))
     HIDE_IMG       = Image.from_path(asset_path("hide.png"))
 
     def __init__(self, camera):
@@ -45,9 +56,7 @@ class Player:
         self.window = camera.window
         self.bg     = camera.bg
 
-        self.crosshair = Sprite(self.CROSSHAIR_IMG)
-        self.crosshair.rect.center = self.window.rect.center
-
+        self.crosshair = Crosshair(self.window)
         self.ammunitions = Ammunitions(self.window)
 
         self.hide = Sprite(self.HIDE_IMG)
@@ -104,8 +113,6 @@ class Player:
         self.explosions.draw(self.bg.current)
 
     def draw_screen(self):
-        self.crosshair.draw(self.window.screen)
-
+        self.crosshair.draw()
         if self.hidden: self.hide.draw(self.window.screen)
-
         self.ammunitions.draw()
