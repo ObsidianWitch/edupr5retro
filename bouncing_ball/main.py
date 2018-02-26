@@ -25,6 +25,6 @@ def game():
     ball.draw()
 
     # Debug
-    print(f"position: {ball.position}\tspeed: {ball.speed}")
+    print(f"position: {ball.circle.center}\tspeed: {ball.speed}")
 
 window.loop(game)
