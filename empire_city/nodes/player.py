@@ -84,7 +84,7 @@ class Player:
         self.hidden = self.window.keys[pygame.K_RETURN]
 
     def draw_bg(self):
-        self.explosions.draw(self.bg.image)
+        self.explosions.draw(self.bg.current)
 
     def draw_screen(self):
         self.crosshair.draw(self.window.screen)

@@ -46,7 +46,7 @@ class Enemy(Sprite):
 
     def draw_bg(self):
         if not self.alive: return
-        self.draw(self.bg.image)
+        self.draw(self.bg.current)
 
     def draw_screen(self):
         if not self.alive: return

@@ -1,5 +1,6 @@
 import pygame
 
+from shared.background import Background
 from shared.sprite import Sprite
 from empire_city.nodes.enemies.enemies import Enemies
 from empire_city.nodes.player import Player
@@ -12,8 +13,7 @@ class StateRun:
     def __init__(self, window):
         self.window = window
 
-        self.bg  = Sprite.from_path(asset_path("map.png"))
-        self.bg0 = self.bg.image.copy()
+        self.bg = Background(asset_path("map.png"))
 
         self.camera = Camera(
             window   = self.window,
@@ -40,13 +40,13 @@ class StateRun:
 
         # Draw
         ## bg drawing
-        self.bg.image.blit(self.bg0, (0, 0))
+        self.bg.clear()
         self.enemies.draw_bg()
         self.player.draw_bg()
 
         ## screen drawing
         self.window.screen.blit(
-            source = self.bg.image,
+            source = self.bg.current,
             dest   = self.bg.rect,
             area   = self.camera.display_zone
         )
