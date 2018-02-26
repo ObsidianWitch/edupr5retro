@@ -179,7 +179,11 @@ class Lemming(AnimatedSprite):
                 self.state = STATES.WALK
 
         elif self.state == STATES.DIGH:
-            if collisions_bg.side and (not collisions_bg.outside):
+            if (
+                collisions_bg.side
+                and (not collisions_bg.fall)
+                and (not collisions_bg.outside)
+            ):
                 self.actions.digh.run()
             elif collisions_all.fall:
                 self.state = STATES.WALK
