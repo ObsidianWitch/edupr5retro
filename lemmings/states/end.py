@@ -1,14 +1,14 @@
 import pygame
 
 class End:
-    def __init__(self, window):
+    def __init__(self, window, win):
         self.window = window
         self.restart = False
         self.txt_surface = self.window.fonts[4].render(
-            "WIN",                 # text
-            False,                 # antialias
-            pygame.Color("white"), # color
-            pygame.Color("black"), # background color
+            "WIN" if win else "LOST", # text
+            False,                    # antialias
+            pygame.Color("white"),    # color
+            pygame.Color("black"),    # background color
         )
 
     def run(self):

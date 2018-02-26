@@ -32,12 +32,18 @@ def game():
         if states.instance.win:
             states.instance = Level2(window)
             states.current  = states.LEVEL2
+        elif states.instance.lost:
+            states.instance = End(window, win = False)
+            states.current  = states.END
         else:
             states.instance.run()
 
     if states.current == states.LEVEL2:
         if states.instance.win:
-            states.instance = End(window)
+            states.instance = End(window, win = True)
+            states.current  = states.END
+        elif states.instance.lost:
+            states.instance = End(window, win = False)
             states.current  = states.END
         else:
             states.instance.run()

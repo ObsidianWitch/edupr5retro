@@ -15,13 +15,16 @@ class Lemmings:
 
         self.counter = 0
         self.max = 15
-        self.timer = Timer(end = 15, period = 100)
+        self.pop_timer = Timer(end = 15, period = 100)
+
+    @property
+    def generated(self): return (self.counter >= self.max)
 
     def generate(self):
-        if (self.counter < self.max) and self.timer.finished:
+        if (not self.generated) and self.pop_timer.finished:
             self.group.add(Lemming(self.window, self.bg, self.position))
             self.counter += 1
-            self.timer.restart()
+            self.pop_timer.restart()
 
     def update(self, ui_action):
         self.generate()

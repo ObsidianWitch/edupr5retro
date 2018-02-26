@@ -19,7 +19,13 @@ class Level:
             position = endp,
         )
 
-        self.win = False
+    @property
+    def win(self): return (self.lemmings.escaped >= 10)
+
+    @property
+    def lost(self): return (
+        self.lemmings.generated and (len(self.lemmings.group) <= 0)
+    )
 
     def run(self):
         # update
@@ -31,8 +37,6 @@ class Level:
             self.lemmings.group, # group
             True                 # dokill
         ): self.lemmings.escaped += 1
-
-        self.win = (self.lemmings.escaped >= 10)
 
         # Draw
         self.bg.clear()
