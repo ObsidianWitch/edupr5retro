@@ -2,11 +2,6 @@ import sys
 import pygame
 
 class Window:
-    @property
-    def width(self): return self.rect.width
-    @property
-    def height(self): return self.rect.height
-
     def __init__(self, size, title, cursor = False):
         pygame.init()
         pygame.mixer.quit()
@@ -24,6 +19,11 @@ class Window:
             pygame.font.SysFont(None, size)
             for size in range(18, 43, 6)
         )
+
+    @property
+    def width(self): return self.rect.width
+    @property
+    def height(self): return self.rect.height
 
     # Returns whether a mouse button has been pressed or not.
     def mousedown(self): return next(

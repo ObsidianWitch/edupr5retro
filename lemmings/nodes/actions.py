@@ -43,11 +43,11 @@ class Walk:
         if c.fall: self.lemming.rect.move_ip(0, -2)
 
 class Fall:
-    @property
-    def dead(self): return (self.fallcount >= 100)
-
     def __init__(self, lemming):
         self.lemming = lemming
+
+    @property
+    def dead(self): return (self.fallcount >= 100)
 
     def start(self):
         self.lemming.start_animation("FALL")
@@ -139,12 +139,12 @@ class Build:
     ICON  = Image.from_path(asset_path("ui_build.png"))
     STATE = STATES.BUILD
 
-    @property
-    def finished(self): return (self.count >= 12)
-
     def __init__(self, lemming):
         self.lemming = lemming
         self.count = 0
+
+    @property
+    def finished(self): return (self.count >= 12)
 
     def start(self):
         self.lemming.start_animation("BUILD")

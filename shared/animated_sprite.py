@@ -6,6 +6,11 @@ from shared.image import Image
 from shared.timer import Timer
 
 class Animations:
+    def __init__(self, data, period):
+        self.data   = data
+        self.period = period
+        self.start(name = next(iter(self.data)))
+
     @property
     def frame(self):
         i = self.timer.elapsed % len(self.current)
@@ -13,11 +18,6 @@ class Animations:
 
     @property
     def finished(self): return self.timer.finished
-
-    def __init__(self, data, period):
-        self.data   = data
-        self.period = period
-        self.start(name = next(iter(self.data)))
 
     def set(self, name):
         self.current = self.data[name]
