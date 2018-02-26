@@ -6,6 +6,11 @@ from shared.image import Image
 from shared.timer import Timer
 
 class Animations:
+    # `data` must be a dictionary where the key is the name of one animation
+    # and the value contains frames (a list containing indices each referencing
+    # an image).
+    # `period` corresponds to the time in ms needed to switch from one frame to
+    # another.
     def __init__(self, data, period):
         self.data   = data
         self.period = period
