@@ -24,8 +24,8 @@ class Paddle:
             if keys[pygame.K_UP]:   self.rect.y -= self.dy
             if keys[pygame.K_DOWN]: self.rect.y += self.dy
         elif self.side == self.SIDE.RIGHT:
-            if keys[pygame.K_a]: self.rect.y -= self.dy
-            if keys[pygame.K_q]: self.rect.y += self.dy
+            if keys[pygame.K_q]: self.rect.y -= self.dy
+            if keys[pygame.K_a]: self.rect.y += self.dy
 
     def walls_collision(self):
         if self.rect.top < 0:
