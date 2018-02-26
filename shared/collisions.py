@@ -2,6 +2,14 @@ import math
 
 from shared.directions import Directions
 
+# Returns  1 when `circle`'s right side collides `rect`'s left side.
+# Returns -1 when `circle`'s left side collides `rect`'s right side.
+# Returns  0 when no collision happens.
+def circle_rect(circle, rect):
+    right = rect.collidepoint(circle.right, circle.y)
+    left  = rect.collidepoint(circle.left, circle.y)
+    return (right - left)
+
 def pixel_checker(surface, color):
     def inside(p): return surface.get_rect().collidepoint(p)
 

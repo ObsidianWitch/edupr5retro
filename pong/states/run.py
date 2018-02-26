@@ -1,5 +1,6 @@
 import pygame
 
+import shared.collisions
 from pong.nodes.ball import Ball
 from pong.nodes.paddle import Paddle
 
@@ -12,24 +13,12 @@ class StateRun:
         self.winner = 0
 
     def ball_paddle_collision(self, paddle):
-        left_collision = (
-                (self.ball.x > paddle.x)
-            and (self.ball.x - self.ball.radius <= paddle.x + paddle.width)
-        )
-        right_collision = (
-                (self.ball.x < paddle.x)
-            and (self.ball.x + self.ball.radius >= paddle.x)
-        )
-        height_collision = (
-                (self.ball.y >= paddle.y)
-            and (self.ball.y <= paddle.y + paddle.height)
-        )
-
-        if left_collision and height_collision:
-            self.ball.x = paddle.x + paddle.width + self.ball.radius
+        collision = shared.collisions.circle_rect(self.ball.circle, paddle.rect)
+        if (collision == -1):
+            self.ball.circle.left = paddle.rect.right
             self.ball.dx *= -1
-        if right_collision and height_collision:
-            self.ball.x = paddle.x - self.ball.radius
+        elif (collision == 1):
+            self.ball.circle.right = paddle.rect.left
             self.ball.dx *= -1
 
     def draw_score(self):
