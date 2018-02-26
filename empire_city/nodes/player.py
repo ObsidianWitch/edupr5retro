@@ -9,10 +9,10 @@ from shared.timer import Timer
 from empire_city.path import asset_path
 
 class Explosion(Sprite):
-    img = Image.from_path(asset_path("bang.png"))
+    IMG = Image.from_path(asset_path("bang.png"))
 
     def __init__(self, center):
-        Sprite.__init__(self, self.img)
+        Sprite.__init__(self, self.IMG)
         self.rect.center = center
         self.timer = Timer(2)
 
@@ -20,19 +20,23 @@ class Explosion(Sprite):
         if self.timer.finished: self.kill()
 
 class Player:
+    CROSSHAIR_IMG  = Image.from_path(asset_path("viseur.png"))
+    AMMUNITION_IMG = Image.from_path(asset_path("bullet.png"))
+    HIDE_IMG       = Image.from_path(asset_path("hide.png"))
+
     def __init__(self, camera):
         self.camera = camera
         self.window = camera.window
         self.bg     = camera.bg
 
-        self.crosshair = Sprite.from_path(asset_path("viseur.png"))
+        self.crosshair = Sprite(self.CROSSHAIR_IMG)
         self.crosshair.rect.center = self.window.rect.center
 
-        self.ammunition = Sprite.from_path(asset_path("bullet.png"))
+        self.ammunition = Sprite(self.AMMUNITION_IMG)
         self.ammunition.scale(0.5)
         self.ammunition.rect.bottomleft = self.window.rect.bottomleft
 
-        self.hide = Sprite.from_path(asset_path("hide.png"))
+        self.hide = Sprite(self.HIDE_IMG)
         self.hide.rect.center = self.window.rect.center
 
         self.explosions = pygame.sprite.Group()
