@@ -25,7 +25,8 @@ class StateRun:
         self.enemies = Enemies(self.camera)
         self.hints   = Hints(self.camera)
 
-        self.end = False
+    @property
+    def end(self): return (self.player.ammunitions.count <= 0)
 
     def run(self):
         # Update
@@ -35,8 +36,6 @@ class StateRun:
         self.camera.update(scroll_vec)
         self.player.update(scroll_vec, self.enemies)
         self.enemies.update(self.player)
-
-        self.end = (self.player.ammunitions.count <= 0)
 
         # Draw
         ## bg drawing
