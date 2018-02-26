@@ -10,7 +10,12 @@ class StateRun:
         self.p1 = Paddle(self.window, Paddle.SIDE.LEFT)
         self.p2 = Paddle(self.window, Paddle.SIDE.RIGHT)
         self.ball = Ball(self.window)
-        self.winner = 0
+
+    @property
+    def winner(self):
+        if   self.p1.score == 3: return 1
+        elif self.p2.score == 3: return 2
+        else: return 0
 
     def ball_paddle_collision(self, paddle):
         collision = shared.collisions.circle_rect(self.ball.circle, paddle.rect)
@@ -46,10 +51,6 @@ class StateRun:
         edge = self.ball.edges_collision()
         if   edge < 0: self.p2.score += 1
         elif edge > 0: self.p1.score += 1
-
-        ## Win conditions
-        if   self.p1.score == 3: self.winner = 1
-        elif self.p2.score == 3: self.winner = 2
 
         # Draw
         self.window.screen.fill(pygame.Color("black"))
