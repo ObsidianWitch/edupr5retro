@@ -42,8 +42,10 @@ class Window(tkinter.Tk):
     @property
     def height(self): return self.size[1]
 
-    # Transfert de la zone de dessin vers l'ecran
     def draw(self):
+        # Transfert de la zone de dessin vers l'ecran
         buffertk = PIL.ImageTk.PhotoImage(self.buffer)
         self.canvas.itemconfig(self.screen, image = buffertk)
+
+        # Affichage
         self.canvas.update()

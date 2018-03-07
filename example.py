@@ -8,7 +8,6 @@ from PIL import ImageDraw
 import retro
 
 ######################################################################
-#
 # Mise en place de la partie technique | ne pas toucher
 
 def ColorKey(image, color):
@@ -26,7 +25,7 @@ def ColorKey(image, color):
 scriptPATH = os.path.abspath(inspect.getsourcefile(lambda:0))
 scriptDIR  = os.path.dirname(scriptPATH)
 assets = os.path.join(scriptDIR, "assets")
-myfont = ImageFont.truetype(font = os.path.join(assets, "DejaVuSansMono.ttf"), size = 30)
+font = ImageFont.truetype(font = os.path.join(assets, "DejaVuSansMono.ttf"), size = 30)
 
 window = retro.Window(
     title = "Mon Super Jeu",
@@ -45,7 +44,6 @@ def keyup(e):
 
 def keydown(e):
     KEYPressed.add(e.keysym)
-    #print(e.keysym)
 
 def Fermeture():
     OnBoucle = False
@@ -71,7 +69,6 @@ window.protocol("WM_DELETE_WINDOW", Fermeture)
 window.bind("<Button-1>", MouseClick)
 
 ######################################################################
-#
 # Création des ressoures du jeu
 
 bandit = PIL.Image.open(os.path.join(assets, "bandit_rue.png"))
@@ -86,20 +83,15 @@ fff = 0
 
 while(OnBoucle):
     #################################################################
-    #
     # logique
 
     # https://www.tcl.tk/man/tcl8.4/TkCmd/keysyms.htm
-
     if ('Escape' in KEYPressed): OnBoucle = False
     if ('Left' in KEYPressed): fff -= 5
     if ('Right' in KEYPressed): fff += 5
 
     #################################################################
-    #
     # affichage
-
-    #print(fff,MouseX,MouseY)
     zone_jaune = decor.crop((fff,0,fff+window.width,window.height)) # selectionne la zone a afficher dans le décors (x1,y1,x2,y2)
     window.buffer.paste(zone_jaune)
     window.buffer.alpha_composite(bandit1, (100, window.height - bandit1.height)) #affichage avec transparence
@@ -110,15 +102,12 @@ while(OnBoucle):
     # C = buffer.getpixel((MouseX,MouseY)) # valeur (R,V,B) ou (R,V,B,A) A = transparence
     # print ( 'couleur : ',C[0], C[1],C[2])
 
-    draw.ellipse(((MouseX-5, MouseY-5), (MouseX+5, MouseY+5)), fill="blue")
-    draw.text((30, 5),"Utilisez les flèches <- ->", font= myfont, fill=(255,0,0))
+    draw.ellipse(((MouseX - 5, MouseY - 5), (MouseX + 5, MouseY + 5)), fill = "blue")
+    draw.text((30, 5),"Utilisez les flèches <- ->", font = font, fill = (255,0,0))
 
     ##################################################################
-    #
     #  gestion des FPS et de l'affiche écran | ne pas toucher
-
     window.draw()
-
     print(1 / clock.tick())
 
 window.destroy()
