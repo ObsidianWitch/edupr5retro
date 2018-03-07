@@ -23,19 +23,27 @@ def ColorKey(image, color):
     return img
 
 
-
 scriptPATH = os.path.abspath(inspect.getsourcefile(lambda:0))
 scriptDIR  = os.path.dirname(scriptPATH)
 assets = os.path.join(scriptDIR, "assets")
 myfont = ImageFont.truetype(font = os.path.join(assets, "DejaVuSansMono.ttf"), size = 30)
 
+window = retro.Window(
+    title = "Mon Super Jeu",
+    size  = (640, 480)
+)
+window.config(cursor = 'none')
+
+img = tkinter.PhotoImage(width = window.width, height = window.height)
+ECRAN = window.canvas.create_image((window.width / 2, window.height / 2), image = img, state = "normal")
+
+buffer = Image.new('RGBA', window.size)
+draw = ImageDraw.Draw(buffer)
+
+clock = retro.Clock(framerate = 60)
 
 KEYPressed = set()
 OnBoucle = True
-window = tkinter.Tk()
-WIDTH, HEIGHT = 640, 480
-buffer = Image.new('RGBA', (WIDTH, HEIGHT))
-draw = ImageDraw.Draw(buffer)
 
 def keyup(e):
     KEYPressed.remove(e.keysym)
@@ -57,31 +65,24 @@ def ReadMouseXY():
     ax = window.winfo_pointerx() - window.winfo_rootx()
     ay = window.winfo_pointery() - window.winfo_rooty()
     if (ax < 0): ax = 0
-    if (ax >= WIDTH ): ax = WIDTH - 1
+    if (ax >= window.width ): ax = window.width - 1
     if (ay < 0): ay = 0
-    if (ay >= HEIGHT): ay = HEIGHT - 1
+    if (ay >= window.height): ay = window.height - 1
     return (ax, ay)
 
-
-canvas = tkinter.Canvas(window, width = WIDTH, height = HEIGHT, bg = "#000000")
-window.title('Mon Super Jeu')
 window.bind("<KeyPress>", keydown)
 window.bind("<KeyRelease>", keyup)
 window.protocol("WM_DELETE_WINDOW", Fermeture)
 window.bind("<Button-1>", MouseClick)
-window.config(cursor = 'none')
-img = tkinter.PhotoImage(width = WIDTH, height = HEIGHT)
-ECRAN = canvas.create_image((WIDTH / 2, HEIGHT / 2), image = img, state = "normal")
-canvas.pack()
-
-clock = retro.Clock(framerate = 60)
 
 ######################################################################
 #
 # Création des ressoures du jeu
 
 bandit = PIL.Image.open(os.path.join(assets, "bandit_rue.png"))
-bandit = ColorKey(bandit,(255,255,255))  # donne la couleur de fond transparente
+bandit1 = ColorKey(bandit,(255,255,255))  # donne la couleur de fond transparente
+bandit2 = bandit.resize((bandit1.width // 2, bandit1.height // 2 ))  # // pour avoir des valeurs entieres
+bandit3 = bandit2.rotate(180)
 
 decor = PIL.Image.open(os.path.join(assets, "map.png"))
 
@@ -90,8 +91,6 @@ fff = 0
 
 
 while(OnBoucle):
-    (MouseX,MouseY) = ReadMouseXY()
-
     #################################################################
     #
     # logique
@@ -107,20 +106,15 @@ while(OnBoucle):
     # affichage
 
     #print(fff,MouseX,MouseY)
-    zone_jaune = decor.crop((fff,0,fff+WIDTH,HEIGHT)) # selectionne la zone a afficher dans le décors (x1,y1,x2,y2)
+    zone_jaune = decor.crop((fff,0,fff+window.width,window.height)) # selectionne la zone a afficher dans le décors (x1,y1,x2,y2)
     buffer.paste(zone_jaune)
-    buffer.alpha_composite(bandit,(100,HEIGHT-bandit.height)) #affichage avec transparence
+    buffer.alpha_composite(bandit1, (100, window.height - bandit1.height)) #affichage avec transparence
+    buffer.alpha_composite(bandit2, (200, window.height - bandit2.height))
+    buffer.alpha_composite(bandit3, (300, window.height - bandit3.height))
 
-    bandit_small = bandit.resize((bandit.width // 2, bandit.height // 2 ))  # // pour avoir des valeurs entieres
-    buffer.alpha_composite(bandit_small,(200,HEIGHT-bandit_small.height))
-
-    bandit_small = bandit_small.rotate(180)
-    buffer.alpha_composite(bandit_small,(300,HEIGHT-bandit_small.height))
-
-
-    C = buffer.getpixel((MouseX,MouseY)) # valeur (R,V,B) ou (R,V,B,A) A = transparence
+    (MouseX,MouseY) = ReadMouseXY()
+    # C = buffer.getpixel((MouseX,MouseY)) # valeur (R,V,B) ou (R,V,B,A) A = transparence
     # print ( 'couleur : ',C[0], C[1],C[2])
-
 
     draw.ellipse(((MouseX-5, MouseY-5), (MouseX+5, MouseY+5)), fill="blue")
     draw.text((30, 5),"Utilisez les flèches <- ->", font= myfont, fill=(255,0,0))
@@ -131,11 +125,11 @@ while(OnBoucle):
 
     # transfert de la zone de dessin vers l'ecran
     photo = PIL.ImageTk.PhotoImage(buffer)
-    canvas.itemconfig(ECRAN, image = photo)
+    window.canvas.itemconfig(ECRAN, image = photo)
 
     print(1 / clock.tick())
 
     #affichage
-    canvas.update()
+    window.canvas.update()
 
 window.destroy()
