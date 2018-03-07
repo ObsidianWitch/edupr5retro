@@ -9,32 +9,32 @@ from PIL import ImageDraw
 
 ######################################################################
 #
-#   Mise en place de la partie technique | ne pas toucher
+# Mise en place de la partie technique | ne pas toucher
 
-def ColorKey(image,color):
+def ColorKey(image, color):
     img = image.convert("RGBA")
     datas = img.getdata()
     newData = []
     for item in datas:
-       if item[0] == color[0] and item[1] == color[1] and item[2] == color[2]:
-          newData.append((0,0,0,0))
-       else:
-        newData.append(item)
+        if (item[0] == color[0]) and (item[1] == color[1]) and (item[2] == color[2]):
+            newData.append((0,0,0,0))
+        else:
+            newData.append(item)
     return img
 
 
 
 scriptPATH = os.path.abspath(inspect.getsourcefile(lambda:0))
 scriptDIR  = os.path.dirname(scriptPATH)
-assets = os.path.join(scriptDIR,"assets")
-myfont = ImageFont.truetype(font='assets/DejaVuSansMono.ttf', size=30)
+assets = os.path.join(scriptDIR, "assets")
+myfont = ImageFont.truetype(font = os.path.join(assets, "DejaVuSansMono.ttf"), size = 30)
 
 
 KEYPressed = set()
 OnBoucle = True
 window = tkinter.Tk()
 WIDTH, HEIGHT = 640, 480
-buffer = Image.new('RGBA', (WIDTH,HEIGHT))
+buffer = Image.new('RGBA', (WIDTH, HEIGHT))
 draw = ImageDraw.Draw(buffer)
 
 def keyup(e):
@@ -52,37 +52,37 @@ def MouseClick(event):
     print("clicked at", event.x, event.y)
 
 def ReadMouseXY():
-   x = window.winfo_pointerx()
-   y = window.winfo_pointery()
-   ax = window.winfo_pointerx() - window.winfo_rootx()
-   ay = window.winfo_pointery() - window.winfo_rooty()
-   if ( ax < 0) : ax = 0
-   if ( ax >= WIDTH ) : ax = WIDTH-1
-   if ( ay < 0) : ay = 0
-   if ( ay >= HEIGHT) : ay = HEIGHT-1
-   return (ax,ay)
+    x = window.winfo_pointerx()
+    y = window.winfo_pointery()
+    ax = window.winfo_pointerx() - window.winfo_rootx()
+    ay = window.winfo_pointery() - window.winfo_rooty()
+    if (ax < 0): ax = 0
+    if (ax >= WIDTH ): ax = WIDTH - 1
+    if (ay < 0): ay = 0
+    if (ay >= HEIGHT): ay = HEIGHT - 1
+    return (ax, ay)
 
 
-canvas = tkinter.Canvas(window, width=WIDTH, height=HEIGHT, bg="#000000")
+canvas = tkinter.Canvas(window, width = WIDTH, height = HEIGHT, bg = "#000000")
 window.title('Mon Super Jeu')
 window.bind("<KeyPress>", keydown)
 window.bind("<KeyRelease>", keyup)
 window.protocol("WM_DELETE_WINDOW", Fermeture)
 window.bind("<Button-1>", MouseClick)
-window.config(cursor='none')
-img = tkinter.PhotoImage(width=WIDTH, height=HEIGHT)
-ECRAN = canvas.create_image((WIDTH/2, HEIGHT/2), image = img, state="normal" )
+window.config(cursor = 'none')
+img = tkinter.PhotoImage(width = WIDTH, height = HEIGHT)
+ECRAN = canvas.create_image((WIDTH / 2, HEIGHT / 2), image = img, state = "normal")
 canvas.pack()
 
 
 ######################################################################
 #
-#   création des ressoures du jeu
+# Création des ressoures du jeu
 
-bandit  =  PIL.Image.open(os.path.join(assets, "bandit_rue.png"))
+bandit = PIL.Image.open(os.path.join(assets, "bandit_rue.png"))
 bandit = ColorKey(bandit,(255,255,255))  # donne la couleur de fond transparente
 
-decor =  PIL.Image.open(os.path.join(assets, "map.png"))
+decor = PIL.Image.open(os.path.join(assets, "map.png"))
 
 
 fff = 0
@@ -94,21 +94,17 @@ while(OnBoucle):
 
     #################################################################
     #
-    #  logique
+    # logique
 
+    # https://www.tcl.tk/man/tcl8.4/TkCmd/keysyms.htm
 
-    if ( 'Escape' in KEYPressed ):  # https://www.tcl.tk/man/tcl8.4/TkCmd/keysyms.htm
-        OnBoucle = False
-
-    if ( 'Left' in KEYPressed ):
-       fff -= 5
-
-    if ( 'Right' in KEYPressed ):
-       fff += 5
+    if ('Escape' in KEYPressed): OnBoucle = False
+    if ('Left' in KEYPressed): fff -= 5
+    if ('Right' in KEYPressed): fff += 5
 
     #################################################################
     #
-    #  affichage
+    # affichage
 
     #print(fff,MouseX,MouseY)
     zone_jaune = decor.crop((fff,0,fff+WIDTH,HEIGHT)) # selectionne la zone a afficher dans le décors (x1,y1,x2,y2)
@@ -123,7 +119,7 @@ while(OnBoucle):
 
 
     C = buffer.getpixel((MouseX,MouseY)) # valeur (R,V,B) ou (R,V,B,A) A = transparence
-    print ( 'couleur : ',C[0], C[1],C[2])
+    # print ( 'couleur : ',C[0], C[1],C[2])
 
 
     draw.ellipse(((MouseX-5, MouseY-5), (MouseX+5, MouseY+5)), fill="blue")
@@ -138,10 +134,18 @@ while(OnBoucle):
     canvas.itemconfig(ECRAN, image = photo)
 
     # synchronisation a 20 fps
+    T = 1 / 20
     timeend = time.time()
-    delta = timeend-timestart - 1/20
-    if ( delta > 0 ):
-       time.sleep(delta)
+    delta = timeend - timestart
+    if (delta < T):
+        print(delta)
+        time.sleep(T - delta)
+
+        now = time.time()
+        timepassed = now - timestart
+        #timestart = now
+        print(timepassed)
+        print()
     #affichage
     canvas.update()
 
