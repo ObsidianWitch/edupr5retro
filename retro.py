@@ -28,12 +28,22 @@ class Window(tkinter.Tk):
             self,
             width  = self.width,
             height = self.height,
-            bg = "#000000",
+            bg     = "#000000",
         )
         self.canvas.pack()
 
+        self.screen = self.canvas.create_image((0, 0), anchor = tkinter.NW)
+
+        self.buffer = PIL.Image.new('RGBA', self.size)
+
     @property
     def width(self): return self.size[0]
-    
+
     @property
     def height(self): return self.size[1]
+
+    # Transfert de la zone de dessin vers l'ecran
+    def draw(self):
+        buffertk = PIL.ImageTk.PhotoImage(self.buffer)
+        self.canvas.itemconfig(self.screen, image = buffertk)
+        self.canvas.update()

@@ -33,14 +33,9 @@ window = retro.Window(
     size  = (640, 480)
 )
 window.config(cursor = 'none')
+clock = retro.Clock(framerate = 20)
 
-img = tkinter.PhotoImage(width = window.width, height = window.height)
-ECRAN = window.canvas.create_image((window.width / 2, window.height / 2), image = img, state = "normal")
-
-buffer = Image.new('RGBA', window.size)
-draw = ImageDraw.Draw(buffer)
-
-clock = retro.Clock(framerate = 60)
+draw = ImageDraw.Draw(window.buffer)
 
 KEYPressed = set()
 OnBoucle = True
@@ -89,7 +84,6 @@ decor = PIL.Image.open(os.path.join(assets, "map.png"))
 
 fff = 0
 
-
 while(OnBoucle):
     #################################################################
     #
@@ -107,10 +101,10 @@ while(OnBoucle):
 
     #print(fff,MouseX,MouseY)
     zone_jaune = decor.crop((fff,0,fff+window.width,window.height)) # selectionne la zone a afficher dans le décors (x1,y1,x2,y2)
-    buffer.paste(zone_jaune)
-    buffer.alpha_composite(bandit1, (100, window.height - bandit1.height)) #affichage avec transparence
-    buffer.alpha_composite(bandit2, (200, window.height - bandit2.height))
-    buffer.alpha_composite(bandit3, (300, window.height - bandit3.height))
+    window.buffer.paste(zone_jaune)
+    window.buffer.alpha_composite(bandit1, (100, window.height - bandit1.height)) #affichage avec transparence
+    window.buffer.alpha_composite(bandit2, (200, window.height - bandit2.height))
+    window.buffer.alpha_composite(bandit3, (300, window.height - bandit3.height))
 
     (MouseX,MouseY) = ReadMouseXY()
     # C = buffer.getpixel((MouseX,MouseY)) # valeur (R,V,B) ou (R,V,B,A) A = transparence
@@ -123,13 +117,8 @@ while(OnBoucle):
     #
     #  gestion des FPS et de l'affiche écran | ne pas toucher
 
-    # transfert de la zone de dessin vers l'ecran
-    photo = PIL.ImageTk.PhotoImage(buffer)
-    window.canvas.itemconfig(ECRAN, image = photo)
+    window.draw()
 
     print(1 / clock.tick())
-
-    #affichage
-    window.canvas.update()
 
 window.destroy()
