@@ -5,17 +5,17 @@ import PIL
 class Clock:
     def __init__(self, framerate):
         self.period = (1 / framerate)
-        self.timestart = time.time()
+        self.last_tick = time.time()
 
     def tick(self):
-        delta = time.time() - self.timestart
+        delta = time.time() - self.last_tick
         if (delta < self.period): time.sleep(self.period - delta)
 
         now = time.time()
-        timepassed = now - self.timestart
-        self.timestart = now
+        time_passed = now - self.last_tick
+        self.last_tick = now
 
-        return timepassed
+        return time_passed
 
 class Window(tkinter.Tk):
     def __init__(self, title, size):
