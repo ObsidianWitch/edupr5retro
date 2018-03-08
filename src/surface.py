@@ -16,6 +16,9 @@ class Surface:
     @property
     def height(self): return self.rect.height
 
+    def copy(self):
+        return cls(self.pygsurface.copy())
+
     def fill(self, color):
         self.pygsurface.fill(color)
 
