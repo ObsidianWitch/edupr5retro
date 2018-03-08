@@ -6,8 +6,7 @@ class Window(Surface):
         pygame.mixer.quit()
 
         pygame.display.set_caption(title)
-        screen = pygame.display.set_mode(size)
-        Surface.__init__(self, screen)
+        self.pygsurface = pygame.display.set_mode(size)
 
         self.clock = pygame.time.Clock()
         self.framerate = framerate

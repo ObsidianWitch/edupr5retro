@@ -1,8 +1,8 @@
 import pygame
 
 class Surface:
-    def __init__(self, pygsurface):
-        self.pygsurface = pygsurface
+    def __init__(self, size):
+        self.pygsurface = pygame.Surface(size)
 
     @property
     def rect(self): return self.pygsurface.get_rect()
@@ -17,7 +17,9 @@ class Surface:
     def height(self): return self.rect.height
 
     def copy(self):
-        return cls(self.pygsurface.copy())
+        obj = cls((0, 0))
+        obj.pygsurface = self.pygsurface.copy()
+        return obj
 
     def fill(self, color):
         self.pygsurface.fill(color)
