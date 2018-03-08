@@ -1,4 +1,4 @@
 #!/bin/sh
 
 mkdir -p 'out'
-echo > 'out/retro.py'
+cat 'src/window.py' > 'out/retro.py'
