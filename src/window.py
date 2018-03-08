@@ -1,26 +1,16 @@
 import pygame
 
-class Window:
+class Window(Surface):
     def __init__(self, size, title, framerate = 30):
         pygame.init()
         pygame.mixer.quit()
 
-        self.screen = pygame.display.set_mode(size)
         pygame.display.set_caption(title)
-
-        self.rect = self.screen.get_rect()
+        screen = pygame.display.set_mode(size)
+        Surface.__init__(self, screen)
 
         self.clock = pygame.time.Clock()
         self.framerate = framerate
-
-    @property
-    def size(self): return self.rect.size
-
-    @property
-    def width(self): return self.rect.width
-
-    @property
-    def height(self): return self.rect.height
 
     def cursor(self, enable):
         pygame.mouse.set_visible(enable)
