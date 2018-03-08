@@ -1,7 +1,7 @@
 import pygame
 
 class Window:
-    def __init__(self, size, title):
+    def __init__(self, size, title, framerate = 30):
         pygame.init()
         pygame.mixer.quit()
 
@@ -9,6 +9,9 @@ class Window:
         pygame.display.set_caption(title)
 
         self.rect = self.screen.get_rect()
+
+        self.clock = pygame.time.Clock()
+        self.framerate = framerate
 
     @property
     def size(self): return self.rect.size
@@ -21,3 +24,7 @@ class Window:
 
     def cursor(self, enable):
         pygame.mouse.set_visible(enable)
+
+    def update(self):
+        self.clock.tick(self.framerate)
+        pygame.display.flip()
