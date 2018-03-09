@@ -1,5 +1,3 @@
-import pygame
-
 class Surface:
     def __init__(self, size):
         self.pygsurface = pygame.Surface(size)

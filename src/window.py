@@ -1,5 +1,3 @@
-import pygame
-
 class Window(Surface):
     def __init__(self, size, title, framerate = 30):
         pygame.init()

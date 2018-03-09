@@ -1,5 +1,3 @@
-import pygame
-
 class Event:
     @classmethod
     def update(cls):
