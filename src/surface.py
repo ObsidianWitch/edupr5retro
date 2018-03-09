@@ -28,20 +28,6 @@ class Surface:
         self.pygsurface.set_colorkey(color)
         return self
 
-    def flip(self, x, y):
-        self.pygsurface = pygame.transform.flip(self.pygsurface, x, y)
-        return self
-
-    def resize(self, size):
-        self.pygsurface = pygame.transform.scale(self.pygsurface, size)
-        return self
-
-    def scale(self, ratio):
-        return self.resize(size = (
-                int(self.width * ratio),
-                int(self.height * ratio),
-        ))
-
     def rotate(self, angle):
         self.pygsurface = pygame.transform.rotate(self.pygsurface, angle)
         return self
@@ -62,3 +48,17 @@ class Surface:
     def draw_line(self, color, start_pos, end_pos, width = 1):
         pygame.draw.line(self.pygsurface, color, start_pos, end_pos, width)
         return self
+
+    def flip(self, x, y):
+        self.pygsurface = pygame.transform.flip(self.pygsurface, x, y)
+        return self
+
+    def resize(self, size):
+        self.pygsurface = pygame.transform.scale(self.pygsurface, size)
+        return self
+
+    def scale(self, ratio):
+        return self.resize(size = (
+                int(self.width * ratio),
+                int(self.height * ratio),
+        ))
