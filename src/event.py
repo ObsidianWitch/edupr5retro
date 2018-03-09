@@ -1,3 +1,4 @@
+import pygame
 class Event:
     def update(self):
         self.events = pygame.event.get()

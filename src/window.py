@@ -1,3 +1,5 @@
+import pygame
+from surface import Surface
 class Window(Surface):
     def __init__(self, size, title, framerate = 30):
         pygame.init()
