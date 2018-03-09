@@ -1,55 +1,46 @@
 class Event:
-    @classmethod
-    def update(cls):
-        cls.events = pygame.event.get()
-        cls.keyheld = pygame.key.get_pressed()
-        cls.mouseheld = pygame.mouse.get_pressed()
+    def update(self):
+        self.events = pygame.event.get()
+        self.keyheld = pygame.key.get_pressed()
+        self.mouseheld = pygame.mouse.get_pressed()
 
-    @classmethod
-    def event(cls, type):
-        for e in cls.events:
+    def event(self, type):
+        for e in self.events:
             if e.type == type: return e
         return False
 
-    @classmethod
-    def key_press(cls, key):
-        for e in cls.events:
+    def key_press(self, key):
+        for e in self.events:
             if (e.type == pygame.KEYDOWN) and (e.key == key): return e
         return False
 
-    @classmethod
-    def key_held(cls, key):
-        return cls.keyheld[key]
+    def key_held(self, key):
+        return self.keyheld[key]
 
-    @classmethod
-    def key_release(cls, key):
-        for e in cls.events:
+    def key_release(self, key):
+        for e in self.events:
             if (e.type == pygame.KEYUP) and (e.key == key): return e
         return False
 
-    @classmethod
-    def mouse_press(cls, button = None):
-        for e in cls.events:
+    def mouse_press(self, button = None):
+        for e in self.events:
             if (e.type == pygame.MOUSEBUTTONDOWN):
                 if button is None: return e
                 elif e.button == button: return e
         return False
 
-    @classmethod
-    def mouse_held(cls, button = None):
-        if any(cls.mouseheld):
-            if button is None: return cls.mouseheld
-            else: return cls.mouseheld[button - 1]
+    def mouse_held(self, button = None):
+        if any(self.mouseheld):
+            if button is None: return self.mouseheld
+            else: return self.mouseheld[button - 1]
         return False
 
-    @classmethod
-    def mouse_release(cls, button = None):
-        for e in cls.events:
+    def mouse_release(self, button = None):
+        for e in self.events:
             if (e.type == pygame.MOUSEBUTTONUP):
                 if button is None: return e
                 elif e.button == button: return e
         return False
 
-    @classmethod
-    def mouse_pos(cls):
+    def mouse_pos(self):
         return pygame.mouse.get_pos()
