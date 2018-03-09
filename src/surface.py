@@ -3,6 +3,19 @@ class Surface:
     def __init__(self, size):
         self.pygsurface = pygame.Surface(size)
 
+    @classmethod
+    def from_pygsurface(cls, pygsurface):
+        obj = Surface((0, 0))
+        obj.pygsurface = pygsurface
+        return obj
+
+    @classmethod
+    def from_image(cls, path):
+        return cls.from_pygsurface(pygame.image.load(path))
+
+    def copy(self):
+        return self.from_pygsurface(self.pygsurface.copy())
+
     @property
     def rect(self): return self.pygsurface.get_rect()
 
@@ -15,21 +28,12 @@ class Surface:
     @property
     def height(self): return self.rect.height
 
-    def copy(self):
-        obj = Surface((0, 0))
-        obj.pygsurface = self.pygsurface.copy()
-        return obj
-
     def fill(self, color):
         self.pygsurface.fill(color)
         return self
 
     def colorkey(self, color):
         self.pygsurface.set_colorkey(color)
-        return self
-
-    def rotate(self, angle):
-        self.pygsurface = pygame.transform.rotate(self.pygsurface, angle)
         return self
 
     def draw_surface(self, source, pos, area = None):
@@ -58,7 +62,12 @@ class Surface:
         return self
 
     def scale(self, ratio):
-        return self.resize(size = (
+        self.resize(size = (
                 int(self.width * ratio),
                 int(self.height * ratio),
         ))
+        return self
+
+    def rotate(self, angle):
+        self.pygsurface = pygame.transform.rotate(self.pygsurface, angle)
+        return self
