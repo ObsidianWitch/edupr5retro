@@ -13,6 +13,10 @@ class Surface:
     def from_image(cls, path):
         return cls.from_pygsurface(pygame.image.load(path))
 
+    @classmethod
+    def from_array(cls, array):
+        return cls.from_pygsurface(pygame.surfarray.make_surface(array))
+
     def copy(self):
         return self.from_pygsurface(self.pygsurface.copy())
 
