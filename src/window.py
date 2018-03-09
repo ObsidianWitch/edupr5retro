@@ -1,7 +1,7 @@
 import pygame
-from surface import Surface
+from src.surface import Surface
 class Window(Surface):
-    def __init__(self, size, title, framerate = 30):
+    def __init__(self, title, size, framerate = 30):
         pygame.init()
         pygame.mixer.quit()
 
