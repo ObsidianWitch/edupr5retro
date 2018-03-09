@@ -14,6 +14,7 @@ mkdir -p 'out'
 echo -n > 'out/retro.py'
 decorate 'src/constants.py' 'cat'
 for f in 'src/surface.py' \
+         'src/clock.py' \
          'src/window.py' \
          'src/event.py'
 do decorate "$f" 'discard_imports'; done
