@@ -1,21 +1,19 @@
 #!/bin/sh
 
+decorate() {
+    echo "### begin $1" >> 'out/retro.py'
+    $2 "$1" >> 'out/retro.py'
+    echo "### end $1" >> 'out/retro.py'
+}
+
 discard_imports() {
     sed -e '/^import/d' -e '/^from .* import/d' "$1"
 }
 
 mkdir -p 'out'
 echo -n > 'out/retro.py'
-for f in 'src/constants.py' \
-         'src/surface.py' \
+decorate 'src/constants.py' 'cat'
+for f in 'src/surface.py' \
          'src/window.py' \
          'src/event.py'
-do
-    echo "### begin $f" >> 'out/retro.py'
-    if [ "$f" = 'src/constants.py' ]; then
-        cat "$f" >> 'out/retro.py'
-    else
-        discard_imports "$f" >> 'out/retro.py'
-    fi
-    echo "### end $f" >> 'out/retro.py'
-done
+do decorate "$f" 'discard_imports'; done
