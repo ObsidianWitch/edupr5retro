@@ -11,7 +11,7 @@ GREEN = (  0, 255,   0)
 RED =   (255,   0,   0)
 
 window = Window(
-    title     = "events",
+    title     = "window",
     size      = (640, 480),
     framerate = 30,
 )

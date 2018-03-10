@@ -4,7 +4,7 @@ from src.window import Window
 from src.event import Event
 
 window = Window(
-    title     = "events",
+    title     = "window",
     size      = (640, 480),
     framerate = 30,
 )

@@ -47,7 +47,7 @@ ASCII_IMG = (
 )
 
 window = Window(
-    title     = "events",
+    title     = "window",
     size      = (640, 480),
     framerate = 30,
 )
