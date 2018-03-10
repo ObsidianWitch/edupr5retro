@@ -13,7 +13,7 @@ discard_imports() {
 mkdir -p 'out'
 echo -n > 'out/retro.py'
 decorate 'src/constants.py' 'cat'
-for f in 'src/surface.py' \
+for f in 'src/image.py' \
          'src/window.py' \
          'src/event.py'
 do decorate "$f" 'discard_imports'; done

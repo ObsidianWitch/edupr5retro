@@ -3,7 +3,7 @@ import pygame
 from src.constants import *
 from src.window import Window
 from src.event import Event
-from src.surface import Surface
+from src.image import Image
 
 BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
@@ -22,7 +22,7 @@ while 1:
     events.update()
     if events.event(QUIT): sys.exit()
 
-    obj1 = Surface((100, 100)).draw_line(
+    obj1 = Image((100, 100)).draw_line(
         color     = GREEN,
         start_pos = (0, 0),
         end_pos   = (50,30),
@@ -36,7 +36,7 @@ while 1:
         y = False,
     )
 
-    obj3 = Surface((50, 50)).fill(
+    obj3 = Image((50, 50)).fill(
         color = BLUE
     ).draw_rect(
         color = WHITE,
@@ -49,11 +49,11 @@ while 1:
     obj5 = obj3.copy().scale(2.0)
 
     window.fill(color = WHITE) \
-          .draw_surface(obj1, (10, 10)) \
-          .draw_surface(obj2, (100, 10)) \
-          .draw_surface(obj3, (10, 100)) \
-          .draw_surface(obj4, (10, 200)) \
-          .draw_surface(obj5, (10, 250))
+          .draw_image(obj1, (10, 10)) \
+          .draw_image(obj2, (100, 10)) \
+          .draw_image(obj3, (10, 100)) \
+          .draw_image(obj4, (10, 200)) \
+          .draw_image(obj5, (10, 250))
 
     print(events.mouse_pos())
 

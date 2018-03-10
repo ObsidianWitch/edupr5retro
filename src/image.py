@@ -1,11 +1,11 @@
 import pygame
-class Surface:
+class Image:
     def __init__(self, size):
         self.pygsurface = pygame.Surface(size)
 
     @classmethod
     def from_pygsurface(cls, pygsurface):
-        obj = Surface((0, 0))
+        obj = Image((0, 0))
         obj.pygsurface = pygsurface
         return obj
 
@@ -40,8 +40,8 @@ class Surface:
         self.pygsurface.set_colorkey(color)
         return self
 
-    def draw_surface(self, source, pos, area = None):
-        if isinstance(source, Surface): source = source.pygsurface
+    def draw_image(self, source, pos, area = None):
+        if isinstance(source, Image): source = source.pygsurface
         self.pygsurface.blit(source, pos, area)
         return self
 

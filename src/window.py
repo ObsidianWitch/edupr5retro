@@ -1,6 +1,6 @@
 import pygame
-from src.surface import Surface
-class Window(Surface):
+from src.image import Image
+class Window(Image):
     def __init__(self, title, size, framerate = 30):
         pygame.init()
         pygame.mixer.quit()

@@ -5,7 +5,7 @@ import numpy
 from src.constants import *
 from src.window import Window
 from src.event import Event
-from src.surface import Surface
+from src.image import Image
 
 BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
@@ -62,22 +62,22 @@ def from_ascii(txt, dictionary):
         c = txt[y][x]
         rgb_sprite[x,y] = dictionary[c]
 
-    return Surface.from_array(rgb_sprite)
+    return Image.from_array(rgb_sprite)
 
 while 1:
     events.update()
     if events.event(QUIT): sys.exit()
 
-    s1 = Surface((100, 100))
-    s2 = Surface.from_image(os.path.join(
+    s1 = Image((100, 100))
+    s2 = Image.from_image(os.path.join(
         "examples", "data", "img.png"
     ))
     s3 = from_ascii(ASCII_IMG, PALETTE)
 
     window.fill(color = WHITE) \
-          .draw_surface(s1, (10, 10)) \
-          .draw_surface(s2, (10, 110)) \
-          .draw_surface(s3, (10, 170))
+          .draw_image(s1, (10, 10)) \
+          .draw_image(s2, (10, 110)) \
+          .draw_image(s3, (10, 170))
 
     print(events.mouse_pos())
 
