@@ -1,14 +1,16 @@
 import pygame
 class Image:
     def __init__(self, size):
-        self.pygsurface = pygame.Surface(size)
+        self.init_pygsurface(pygame.Surface(size))
+
+    def init_pygsurface(self, pygsurface):
+        self.pygsurface = pygsurface
         self.rect = self.pygsurface.get_rect()
 
     @classmethod
     def from_pygsurface(cls, pygsurface):
         obj = Image((0, 0))
-        obj.pygsurface = pygsurface
-        obj.rect = obj.pygsurface.get_rect()
+        obj.init_pygsurface(pygsurface)
         return obj
 
     @classmethod
