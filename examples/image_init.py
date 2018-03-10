@@ -66,7 +66,7 @@ def from_ascii(txt, dictionary):
 
 s1 = Image((100, 100))
 s1.rect.move_ip(10, 10)
-s2 = Image.from_image(os.path.join(
+s2 = Image.from_path(os.path.join(
     "examples", "data", "img.png"
 ))
 s2.rect.move_ip(10, 110)

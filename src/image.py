@@ -12,7 +12,7 @@ class Image:
         return obj
 
     @classmethod
-    def from_image(cls, path):
+    def from_path(cls, path):
         return cls.from_pygsurface(pygame.image.load(path))
 
     @classmethod

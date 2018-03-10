@@ -20,7 +20,7 @@ window = Window(
 )
 events = Event()
 
-spritesheet = Image.from_image(os.path.join(
+spritesheet = Image.from_path(os.path.join(
     "examples", "data", "spritesheet.png"
 ))
 
