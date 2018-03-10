@@ -6,8 +6,12 @@ decorate() {
     echo "### end $1" >> 'out/retro.py'
 }
 
-discard_imports() {
-    sed -e '/^import/d' -e '/^from .* import/d' "$1"
+# Discard imports and comments.
+discard_elems() {
+    sed -e '/^import/d' \
+        -e '/^from .* import/d' \
+        -e '/^\s*#/d' \
+        "$1"
 }
 
 mkdir -p 'out'
@@ -16,4 +20,4 @@ decorate 'src/constants.py' 'cat'
 for f in 'src/image.py' \
          'src/window.py' \
          'src/event.py'
-do decorate "$f" 'discard_imports'; done
+do decorate "$f" 'discard_elems'; done
