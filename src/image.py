@@ -39,6 +39,14 @@ class Image:
     def subimage(self, area):
         return self.from_pygsurface(self.pygsurface.subsurface(area))
 
+    # Renvoie la couleur du pixel à la position spécifiée (`pos`).
+    def __getitem__(self, pos):
+        return self.pygsurface.get_at(pos)
+
+    # Définit la couleur (`color`) du pixel à la position spécifiée (`pos`).
+    def __setitem__(self, pos, color):
+        self.pygsurface.set_at(pos, color)
+
     def colorkey(self, color):
         self.pygsurface.set_colorkey(color)
         return self
