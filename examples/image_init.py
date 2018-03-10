@@ -64,20 +64,32 @@ def from_ascii(txt, dictionary):
 
     return Image.from_array(rgb_sprite)
 
+s1 = Image((100, 100))
+s1.rect.move_ip(10, 10)
+s2 = Image.from_image(os.path.join(
+    "examples", "data", "img.png"
+))
+s2.rect.move_ip(10, 110)
+s2_area = pygame.Rect(20, 10, 30, 30)
+s3 = from_ascii(ASCII_IMG, PALETTE)
+s3.rect.move_ip(10, 150)
+
+s4 = s3.deepcopy()
+s4.rect.move_ip(50, 0)
+s5 = s4.copy()
+s5.rect.move_ip(50, 0)
+s5.draw_line(GREEN, (0, 0), (30, 30))
+
 while 1:
     events.update()
     if events.event(QUIT): sys.exit()
 
-    s1 = Image((100, 100))
-    s2 = Image.from_image(os.path.join(
-        "examples", "data", "img.png"
-    ))
-    s3 = from_ascii(ASCII_IMG, PALETTE)
-
     window.fill(color = WHITE) \
-          .draw_image(s1, (10, 10)) \
-          .draw_image(s2, (10, 110)) \
-          .draw_image(s3, (10, 170))
+          .draw_image(s1) \
+          .draw_image(s2, s2_area) \
+          .draw_image(s3) \
+          .draw_image(s4) \
+          .draw_image(s5)
 
     print(events.mouse_pos())
 

@@ -2,11 +2,13 @@ import pygame
 class Image:
     def __init__(self, size):
         self.pygsurface = pygame.Surface(size)
+        self.rect = self.pygsurface.get_rect()
 
     @classmethod
     def from_pygsurface(cls, pygsurface):
         obj = Image((0, 0))
         obj.pygsurface = pygsurface
+        obj.rect = obj.pygsurface.get_rect()
         return obj
 
     @classmethod
@@ -17,11 +19,19 @@ class Image:
     def from_array(cls, array):
         return cls.from_pygsurface(pygame.surfarray.make_surface(array))
 
+    # Crée une copie superficielle de l'image actuelle. L'image actuelle et la
+    # copie feront toutes deux référence à la même surface sous-jacente. Leurs
+    # position et taille (`rect`) seront cependant indépendantes.
     def copy(self):
-        return self.from_pygsurface(self.pygsurface.copy())
+        obj = self.from_pygsurface(self.pygsurface)
+        obj.rect = self.rect.copy()
+        return obj
 
-    @property
-    def rect(self): return self.pygsurface.get_rect()
+    # Crée une copie complète de l'image actuelle.
+    def deepcopy(self):
+        obj = self.from_pygsurface(self.pygsurface.copy())
+        obj.rect = self.rect.copy()
+        return obj
 
     @property
     def size(self): return self.rect.size
@@ -40,9 +50,12 @@ class Image:
         self.pygsurface.set_colorkey(color)
         return self
 
-    def draw_image(self, source, pos, area = None):
-        if isinstance(source, Image): source = source.pygsurface
-        self.pygsurface.blit(source, pos, area)
+    # Dessine l'image `img` sur l'image actuelle. La position et la taille de
+    # `img` sont déterminées à partir de `img.rect`. Le paramètre optionnel
+    # `area` est un Rect et désigne quelle zone (plus petite) de `img` doit être
+    # dessinée.
+    def draw_image(self, img, area = None):
+        self.pygsurface.blit(img.pygsurface, img.rect, area)
         return self
 
     def draw_rect(self, color, rect, width = 0):
@@ -63,6 +76,7 @@ class Image:
 
     def resize(self, size):
         self.pygsurface = pygame.transform.scale(self.pygsurface, size)
+        self.rect = self.pygsurface.get_rect().move(self.rect.topleft)
         return self
 
     def scale(self, ratio):
