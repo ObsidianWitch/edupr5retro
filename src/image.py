@@ -33,15 +33,6 @@ class Image:
         obj.rect = self.rect.copy()
         return obj
 
-    @property
-    def size(self): return self.rect.size
-
-    @property
-    def width(self): return self.rect.width
-
-    @property
-    def height(self): return self.rect.height
-
     def fill(self, color):
         self.pygsurface.fill(color)
         return self
@@ -81,8 +72,8 @@ class Image:
 
     def scale(self, ratio):
         self.resize(size = (
-                int(self.width * ratio),
-                int(self.height * ratio),
+                int(self.rect.w * ratio),
+                int(self.rect.h * ratio),
         ))
         return self
 
