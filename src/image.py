@@ -33,12 +33,18 @@ class Image:
         obj.rect = self.rect.copy()
         return obj
 
-    def fill(self, color):
-        self.pygsurface.fill(color)
-        return self
+    # Crée une nouvelle image faisant référence à une zone plus petite de
+    # l'image actuelle. Le paramètre `area` est un Rect désignant la zone à
+    # extraire de l'image actuelle.
+    def subimage(self, area):
+        return self.from_pygsurface(self.pygsurface.subsurface(area))
 
     def colorkey(self, color):
         self.pygsurface.set_colorkey(color)
+        return self
+
+    def fill(self, color):
+        self.pygsurface.fill(color)
         return self
 
     # Dessine l'image `img` sur l'image actuelle. La position et la taille de
