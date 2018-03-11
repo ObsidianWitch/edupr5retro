@@ -1,7 +1,7 @@
-import pygame
-
+import include.retro as retro
 import shared.collisions
-from shared.directions  import Directions
+from shared.directions import Directions
+from shared.sprite import Sprite
 from maze.nodes.maze import Maze
 from maze.nodes.player import Player
 from maze.nodes.palette import PALETTE
@@ -14,46 +14,43 @@ class StateRun:
         self.win = False
 
     def draw_score(self):
-        score_surface = self.window.fonts[0].render(
-            f"Score: {self.player.score}", # text
-            False,                         # antialias
-            pygame.Color("white")          # color
-        )
-        self.window.screen.blit(
-            score_surface,
-            score_surface.get_rect(
-                topright = self.window.rect.topright
-            ).move(-10, 10)
-        )
+        score = Sprite(self.window.fonts[0].render(
+            text  = f"Score: {self.player.score}",
+            color = retro.WHITE,
+        ))
+        score.rect.topright = self.window.rect.topright
+        score.rect.move(-10, 10)
+        score.draw(self.window)
 
     def run(self):
         # Update
+        key = self.window.events.key_held
         self.player.update(
             directions = Directions(
-                up    = self.window.keys[pygame.K_UP],
-                down  = self.window.keys[pygame.K_DOWN],
-                left  = self.window.keys[pygame.K_LEFT],
-                right = self.window.keys[pygame.K_RIGHT],
+                up    = key(retro.K_UP),
+                down  = key(retro.K_DOWN),
+                left  = key(retro.K_LEFT),
+                right = key(retro.K_RIGHT),
             ),
             collisions = shared.collisions.pixel_vertices(
-                surface = self.window.screen,
+                surface = self.window,
                 rect    = self.player.rect,
-                color   = pygame.Color(*PALETTE["B"]),
+                color   = PALETTE["B"],
             ),
         )
 
         ## Traps
-        if pygame.sprite.spritecollide(
-            self.player,     # sprite
-            self.maze.traps, # group
-            False            # dokill
+        if shared.collisions.sprites(
+            sprite = self.player,
+            lst    = self.maze.traps,
+            kill   = False,
         ): self.player.reset_position()
 
         ## Treasures
-        if pygame.sprite.spritecollide(
-            self.player,         # sprite
-            self.maze.treasures, # group
-            True                 # dokill
+        if shared.collisions.sprites(
+            sprite = self.player,
+            lst    = self.maze.treasures,
+            kill   = True
         ): self.player.score += 100
 
         ## Exit

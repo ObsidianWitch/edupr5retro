@@ -1,12 +1,11 @@
 import types
-
 from shared.window import Window
 from maze.states.run import StateRun
 from maze.states.end import StateEnd
 
 window = Window(
-    size  = (400, 400),
     title = "Maze",
+    size  = (400, 400),
 )
 
 states = types.SimpleNamespace(

@@ -1,7 +1,5 @@
-import pygame
 import numpy
-
-from shared.sprite import Sprite
+from shared.sprite import Sprite, Group
 from maze.nodes.palette import PALETTE
 
 class Maze:
@@ -112,35 +110,35 @@ class Maze:
     # "C" -> treasures
     # "R" -> traps
     def init_items(self):
-        self.items     = pygame.sprite.Group()
-        self.treasures = pygame.sprite.Group()
-        self.traps     = pygame.sprite.Group()
+        self.items     = Group()
+        self.treasures = Group()
+        self.traps     = Group()
 
         def init_exit(code, color, xsq, ysq):
             self.exit = Sprite.from_ascii(
                 txt        = self.EXIT_ASCII,
                 dictionary = PALETTE,
-                position   = (xsq, ysq),
             )
-            self.items.add(self.exit)
+            self.exit.rect.move(xsq, ysq)
+            self.items.append(self.exit)
 
         def init_treasure(code, color, xsq, ysq):
             sprite = Sprite.from_ascii(
                 txt        = self.TREASURE_ASCII,
                 dictionary = PALETTE,
-                position   = (xsq, ysq),
             )
-            self.items.add(sprite)
-            self.treasures.add(sprite)
+            sprite.rect.move(xsq, ysq)
+            self.items.append(sprite)
+            self.treasures.append(sprite)
 
         def init_trap(code, color, xsq, ysq):
             sprite = Sprite.from_ascii(
                 txt        = self.TRAP_ASCII,
                 dictionary = PALETTE,
-                position   = (xsq, ysq),
             )
-            self.items.add(sprite)
-            self.traps.add(sprite)
+            sprite.rect.move(xsq, ysq)
+            self.items.append(sprite)
+            self.traps.append(sprite)
 
         def init_one(code, color, xsq, ysq):
             if   code == "Y": init_exit(code, color, xsq, ysq)
@@ -166,12 +164,11 @@ class Maze:
             # skip item tiles (drawing handled by sprites)
             if code in ("Y", "C", "R"): color = PALETTE[" "]
 
-            pygame.draw.rect(
-                self.window.screen,
-                color,
-                (xsq, ysq, self.square_size, self.square_size)
+            self.window.draw_rect(
+                color = color,
+                rect = (xsq, ysq, self.square_size, self.square_size),
             )
 
         self.traverse(draw_one)
 
-        self.items.draw(self.window.screen)
+        self.items.draw(self.window)

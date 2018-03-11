@@ -1,22 +1,22 @@
-import pygame
+import include.retro as retro
+from shared.sprite import Sprite
 
 class StateEnd:
     def __init__(self, window):
         self.window = window
         self.restart = False
-        self.txt_surface = self.window.fonts[4].render(
-            "WIN",                 # text
-            False,                 # antialias
-            pygame.Color("white"), # color
-            pygame.Color("black"), # background color
-        )
+
+        self.txt = Sprite(self.window.fonts[4].render(
+            text    = f"WIN",
+            color   = retro.WHITE,
+            bgcolor = retro.BLACK,
+        ))
+        self.txt.rect.center = self.window.rect.center
 
     def run(self):
         # Update
-        self.restart = self.window.keys[pygame.K_SPACE]
+        key = self.window.events.key_press
+        self.restart = key(retro.K_SPACE)
 
         # Draw
-        self.window.screen.blit(
-            self.txt_surface,
-            self.txt_surface.get_rect(center = self.window.rect.center)
-        )
+        self.txt.draw(self.window)

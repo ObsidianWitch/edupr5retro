@@ -1,3 +1,4 @@
+import numpy
 import include.retro as retro
 
 class Group(list):

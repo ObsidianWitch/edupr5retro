@@ -1,8 +1,5 @@
-import pygame
-
-import shared.transform
+import include.retro as retro
 from shared.sprite import Sprite
-from shared.image import Image
 from shared.timer import Timer
 
 class Animations:
@@ -35,51 +32,54 @@ class Animations:
         )
 
 class AnimatedSprite(Sprite):
-    def __init__(self, images, animations, position = (0, 0)):
-        Sprite.__init__(self, images[0], position)
+    def __init__(self, images, animations):
+        Sprite.__init__(self, images[0])
         self.images = images
         self.animations = animations
 
     @classmethod
-    def from_path(cls, paths, animations, position = (0, 0)):
+    def from_path(cls, paths, animations):
         return cls(
-            images     = Image.from_path_n(paths),
+            images     = [Sprite.from_path(p).image for p in paths],
             animations = animations,
-            position   = position,
         )
 
     @classmethod
-    def from_ascii(cls, txts, dictionary, animations, position = (0, 0)):
+    def from_ascii(cls, txts, dictionary, animations):
         return cls(
-            images     = Image.from_ascii_n(txts, dictionary),
+            images     = [Sprite.from_ascii(t, dictionary).image for t in txts],
             animations = animations,
-            position   = position,
         )
 
     @classmethod
-    def from_spritesheet(
-        cls, path, sprite_size, discard_color, animations,
-        position = (0, 0)
-    ):
-        return cls(
-            images     = Image.from_spritesheet_n(
-                path, sprite_size, discard_color
-            ),
-            animations = animations,
-            position   = position,
-        )
+    def from_spritesheet(cls, path, sprite_size, discard_color, animations):
+        spritesheet = retro.Image.from_path(path)
+
+        images = []
+        for y in range(spritesheet.rect.h // sprite_size[1]):
+            for x in range(spritesheet.rect.w // sprite_size[0]):
+                img = spritesheet.subimage(retro.Rect(
+                    x * sprite_size[0], # x
+                    y * sprite_size[1], # y
+                    sprite_size[0],     # width
+                    sprite_size[1],     # height
+                ))
+                if img.get_at((0, 0)) == discard_color: break
+                images.append(img)
+
+        return cls(images, animations)
 
     def scale(self, ratio):
-        self.images = shared.transform.scale_n(self.images, ratio)
+        self.images = [img.scale(ratio) for img in self.images]
         self.image  = self.images[0]
-        self.rect   = self.image.get_rect().move(self.rect.topleft)
+        self.rect   = self.image.rect.move(self.rect.topleft)
 
     def flip(self, xflip = False, yflip = False):
-        self.images = shared.transform.flip_n(self.images, xflip, yflip)
+        self.images = [img.flip(xflip, yflip) for img in self.images]
         self.image  = self.images[0]
 
     def colorkey(self, color):
-        for img in self.images: img.set_colorkey(color)
+        for img in self.images: img.colorkey(color)
 
     def update(self):
         self.image = self.images[self.animations.frame]

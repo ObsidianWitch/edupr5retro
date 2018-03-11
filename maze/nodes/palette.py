@@ -1,9 +1,11 @@
+import include.retro as retro
+
 PALETTE = {
-    ' ': (  0,   0,   0),
-    'W': (255, 255, 255),
-    'R': (255,   0,   0),
-    'G': (  0, 255,   0),
-    'B': (  0,   0, 255),
-    'C': (  0, 225, 255),
-    'Y': (255, 255,   0),
+    ' ': retro.BLACK,
+    'W': retro.WHITE,
+    'R': retro.RED,
+    'G': retro.GREEN,
+    'B': retro.BLUE,
+    'C': retro.CYAN,
+    'Y': retro.YELLOW,
 }

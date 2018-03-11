@@ -1,9 +1,6 @@
-import pygame
 import numpy
-
-from shared.animated_sprite import AnimatedSprite, Animations
-import shared.transform
 import shared.math
+from shared.animated_sprite import AnimatedSprite, Animations
 from maze.nodes.palette import PALETTE
 
 class Player(AnimatedSprite):
@@ -88,7 +85,7 @@ class Player(AnimatedSprite):
             move_vec[i] -= collision_vec[i]
             move_vec[i] = shared.math.clamp(move_vec[i], -1, 1)
 
-        self.rect.move_ip(move_vec)
+        self.rect.move(move_vec)
 
         if move_vec[0] != 0: self.facing_x = move_vec[0]
         walking = any(d != 0 for d in move_vec)
@@ -107,4 +104,4 @@ class Player(AnimatedSprite):
         AnimatedSprite.update(self)
 
     def draw(self):
-        AnimatedSprite.draw(self, self.window.screen)
+        AnimatedSprite.draw(self, self.window)

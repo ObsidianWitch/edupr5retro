@@ -11,12 +11,12 @@ def circle_rect(circle, rect):
     return (right - left)
 
 def pixel_checker(surface, color):
-    def inside(p): return surface.get_rect().collidepoint(p)
+    def inside(p): return surface.rect.collidepoint(p)
 
     def check(p, offset):
         p = (p[0] + offset[0], p[1] + offset[1])
         if not inside(p): return None
-        return (surface.get_at(p) == color)
+        return (surface[p] == color)
 
     return check
 
@@ -57,3 +57,13 @@ def distance(p1, p2, threshold):
             math.pow(p2[0] - p1[0], 2)
           + math.pow(p2[1] - p1[1], 2)
     ) < threshold
+
+# Returns a list containing all Sprites in `lst` that intersect with `sprite`.
+# If `kill` is set to True, all Sprites that collide will be removed from `lst`.
+def sprites(sprite, lst, kill):
+    collisions = []
+    for s in lst:
+        if sprite.rect.colliderect(s):
+            collisions.append(s)
+            if kill: s.kill()
+    return collisions
