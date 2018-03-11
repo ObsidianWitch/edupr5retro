@@ -1,5 +1,6 @@
 import include.retro as retro
 import shared.collisions
+from shared.sprite import Sprite
 from pong.nodes.ball import Ball
 from pong.nodes.paddle import Paddle
 
@@ -26,14 +27,13 @@ class StateRun:
             self.ball.dx *= -1
 
     def draw_score(self):
-        score_img = self.window.fonts[1].render(
+        score = Sprite(self.window.fonts[1].render(
             text  = f"{self.p1.score} - {self.p2.score}",
             color = retro.GREEN,
-        )
-        score_rect = score_img.rect
-        score_rect.midtop = self.window.rect.midtop
-        score_rect.move(0, 10)
-        self.window.draw_image(score_img, score_rect)
+        ))
+        score.rect.midtop = self.window.rect.midtop
+        score.rect.move(0, 10)
+        score.draw(self.window)
 
     def run(self):
         # Update

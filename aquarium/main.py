@@ -8,8 +8,8 @@ asset_path = lambda filename: os.path.join("aquarium", "data", filename)
 bg = Sprite.from_path(asset_path("fond.png"))
 
 window = Window(
-    size  = bg.rect.size,
     title = "Aquarium",
+    size  = bg.rect.size,
 )
 
 fish1 = Fish(
