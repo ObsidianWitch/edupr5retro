@@ -19,6 +19,7 @@ echo -n > 'out/retro.py'
 decorate 'src/constants.py' 'cat'
 for f in 'src/rect.py' \
          'src/image.py' \
+         'src/font.py' \
          'src/window.py' \
          'src/event.py'
 do decorate "$f" 'discard_elems'; done
