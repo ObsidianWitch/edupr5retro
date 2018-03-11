@@ -1,5 +1,5 @@
 import pygame
-
+import include.retro as retro
 from bouncing_ball.ball import Ball
 from shared.window import Window
 
@@ -15,13 +15,12 @@ def game():
     ball.update()
 
     # Draw
-    window.screen.fill(pygame.Color("white"))
-    pygame.draw.rect(
-        window.screen,         # surface
-        pygame.Color("green"), # color
-        window.rect,           # rect
-        5                      # width
-    )
+    window.fill(retro.WHITE) \
+          .draw_rect(
+              color = retro.GREEN,
+              rect  = window.rect,
+              width = 5,
+          )
     ball.draw()
 
     # Debug

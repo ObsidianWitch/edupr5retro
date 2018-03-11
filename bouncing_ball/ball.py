@@ -1,5 +1,4 @@
-import pygame
-
+import include.retro as retro
 from shared.circle import Circle
 
 class Ball:
@@ -7,24 +6,21 @@ class Ball:
         self.window = window
 
         self.circle = Circle(
-            center = [50, self.window.height // 2],
+            center = [50, self.window.rect.h // 2],
             radius = 10,
         )
         self.dx = 3
         self.dy = 3
 
         self.toggle = False
-        self.inner_color = (
-            pygame.Color("red"),
-            pygame.Color("green")
-        )
+        self.inner_color = (retro.RED, retro.GREEN)
 
     @property
     def speed(self): return (self.dx, self.dy)
 
     def bounce(self, dx_mul = 1, dy_mul = 1):
-        y_collision = not (0 <= self.circle.y <= self.window.height)
-        x_collision = not (0 <= self.circle.x <= self.window.width)
+        y_collision = not (0 <= self.circle.y <= self.window.rect.h)
+        x_collision = not (0 <= self.circle.x <= self.window.rect.w)
 
         if y_collision:
             self.dy *= -1
@@ -39,15 +35,13 @@ class Ball:
         self.bounce()
 
     def draw(self):
-        pygame.draw.circle(
-            self.window.screen,     # surface
-            pygame.Color("blue"),   # color
-            self.circle.center,     # position
-            self.circle.radius * 2, # radius
+        self.window.draw_circle(
+            color  = retro.BLUE,
+            center = self.circle.center,
+            radius = self.circle.radius * 2,
         )
-        pygame.draw.circle(
-            self.window.screen,            # surface
-            self.inner_color[self.toggle], # color
-            self.circle.center,            # position
-            self.circle.radius,            # radius
+        self.window.draw_circle(
+            color  = self.inner_color[self.toggle],
+            center = self.circle.center,
+            radius = self.circle.radius,
         )
