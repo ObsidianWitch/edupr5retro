@@ -16,29 +16,29 @@ class Image:
 
     @classmethod
     def from_path(cls, path):
-        return Image(pygame.image.load(path))
+        return cls(pygame.image.load(path))
 
     @classmethod
     def from_array(cls, array):
-        return Image(pygame.surfarray.make_surface(array))
+        return cls(pygame.surfarray.make_surface(array))
 
     # Crée une copie superficielle de l'image actuelle. L'image actuelle et la
     # copie feront toutes deux référence à la même surface sous-jacente. Leurs
     # position et taille (`rect`) seront cependant indépendantes.
     def copy(self):
-        obj = Image(self.pygsurface)
+        obj = self.__class__(self.pygsurface)
         obj.rect = self.rect.copy()
         return obj
 
     # Crée une copie complète de l'image actuelle.
     def deepcopy(self):
-        return Image(self)
+        return self.__class__(self)
 
     # Crée une nouvelle image faisant référence à une zone plus petite de
     # l'image actuelle. Le paramètre `area` est un Rect désignant la zone à
     # extraire de l'image actuelle.
     def subimage(self, area):
-        return Image(self.pygsurface.subsurface(area))
+        return self.__class__(self.pygsurface.subsurface(area))
 
     # Renvoie la couleur du pixel à la position spécifiée (`pos`).
     def __getitem__(self, pos):
