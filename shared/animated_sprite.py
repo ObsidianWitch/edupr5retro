@@ -11,7 +11,7 @@ class Animations:
     def __init__(self, data, period):
         self.data   = data
         self.period = period
-        self.start(name = next(iter(self.data)))
+        if len(data) > 0: self.start(name = next(iter(self.data)))
 
     @property
     def frame(self):
@@ -64,7 +64,7 @@ class AnimatedSprite(Sprite):
                     sprite_size[0],     # width
                     sprite_size[1],     # height
                 ))
-                if img.get_at((0, 0)) == discard_color: break
+                if img[0, 0] == discard_color: break
                 images.append(img)
 
         return cls(images, animations)

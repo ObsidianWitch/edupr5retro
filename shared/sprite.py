@@ -13,8 +13,8 @@ class Group(list):
         list.append(self, e)
         e.groups.append(self)
 
-    def update(self):
-        for e in self: e.update()
+    def update(self, *args):
+        for e in self: e.update(args)
 
     def draw(self, surface):
         for e in self: e.draw(surface)

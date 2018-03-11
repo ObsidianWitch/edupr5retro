@@ -1,8 +1,7 @@
 import enum
-import pygame
-
+import include.retro as retro
 from shared.timer import Timer
-from shared.image import Image
+from shared.sprite import Sprite
 from lemmings.path import asset_path
 
 STATES = enum.Enum("STATES", """START WALK FALL FLOAT STOP BOMB
@@ -19,10 +18,10 @@ class Walk:
     def run(self, collisions):
         if collisions.side:
             self.dx *= -1
-            self.lemming.rect.move_ip(-self.dx * 20, 0)
+            self.lemming.rect.move(-self.dx * 20, 0)
 
         self.lemming.set_animation("WALK")
-        self.lemming.rect.move_ip(self.dx, 0)
+        self.lemming.rect.move(self.dx, 0)
         self.slope()
 
     def slope(self):
@@ -30,17 +29,17 @@ class Walk:
         if not up: self.slope_down()
 
     def slope_up(self):
-        self.lemming.rect.move_ip(0, -2)
+        self.lemming.rect.move(0, -2)
         c = self.lemming.collisions(self.lemming.bg.current)
-        if c.fall: self.lemming.rect.move_ip(0, 2)
+        if c.fall: self.lemming.rect.move(0, 2)
         return (not c.fall)
 
     def slope_down(self):
         c = self.lemming.collisions(self.lemming.bg.current)
-        if c.fall: self.lemming.rect.move_ip(0, 2)
+        if c.fall: self.lemming.rect.move(0, 2)
 
         c = self.lemming.collisions(self.lemming.bg.current)
-        if c.fall: self.lemming.rect.move_ip(0, -2)
+        if c.fall: self.lemming.rect.move(0, -2)
 
 class Fall:
     def __init__(self, lemming):
@@ -54,17 +53,17 @@ class Fall:
         self.fallcount = 0
 
     def run(self):
-        self.lemming.rect.move_ip(0, 3)
+        self.lemming.rect.move(0, 3)
         self.fallcount += 3
 
     def clamp(self):
-        self.lemming.rect.move_ip(0, -1)
+        self.lemming.rect.move(0, -1)
         c = self.lemming.collisions(self.lemming.bg.current)
-        if c.fall: self.lemming.rect.move_ip(0, 1)
+        if c.fall: self.lemming.rect.move(0, 1)
         else: self.clamp()
 
 class Float:
-    ICON  = Image.from_path(asset_path("ui_float.png"))
+    ICON  = retro.Image.from_path(asset_path("ui_float.png"))
     STATE = STATES.FLOAT
 
     def __init__(self, lemming):
@@ -79,10 +78,10 @@ class Float:
 
     def run(self):
         if not self.enabled: self.start()
-        self.lemming.rect.move_ip(0, 1)
+        self.lemming.rect.move(0, 1)
 
 class Stop:
-    ICON  = Image.from_path(asset_path("ui_stop.png"))
+    ICON  = retro.Image.from_path(asset_path("ui_stop.png"))
     STATE = STATES.STOP
 
     def __init__(self, lemming):
@@ -94,7 +93,7 @@ class Stop:
     def run(self): pass
 
 class Bomb:
-    ICON = Image.from_path(asset_path("ui_bomb.png"))
+    ICON = retro.Image.from_path(asset_path("ui_bomb.png"))
     STATE = STATES.BOMB
 
     def __init__(self, lemming):
@@ -108,11 +107,10 @@ class Bomb:
         self.lemming.start_animation("BOMB")
         self.explode = True
 
-        pygame.draw.circle(
-            self.lemming.bg.original,
-            pygame.Color("black"),
-            self.lemming.bounding_rect.midbottom,
-            20
+        self.lemming.bg.original.draw_circle(
+            color  = retro.BLACK,
+            center = self.lemming.bounding_rect.midbottom,
+            radius = 20,
         )
 
     def run(self):
@@ -123,20 +121,15 @@ class Bomb:
         if self.explode: return
 
         window = self.lemming.window
-        timer_surface = window.fonts[0].render(
-            f"{self.timer.remaining}", # text
-            False,                     # antialias
-            pygame.Color("white")      # color
-        )
-        window.screen.blit(
-            timer_surface,
-            timer_surface.get_rect(
-                midbottom = self.lemming.bounding_rect.midtop
-            )
-        )
+        timer_surface = Sprite(window.fonts[0].render(
+            text  = f"{self.timer.remaining}",
+            color = retro.WHITE,
+        ))
+        timer_surface.rect.midbottom = self.lemming.bounding_rect.midtop
+        timer_surface.draw(window)
 
 class Build:
-    ICON  = Image.from_path(asset_path("ui_build.png"))
+    ICON  = retro.Image.from_path(asset_path("ui_build.png"))
     STATE = STATES.BUILD
 
     def __init__(self, lemming):
@@ -159,17 +152,18 @@ class Build:
         if   (dx > 0): rect.left = self.lemming.rect.right - (rect.width // 2)
         elif (dx < 0): rect.left  -= rect.width // 2
 
-        self.lemming.bg.original.fill(
-            pygame.Color("grey"), rect
+        self.lemming.bg.original.draw_rect(
+            color = (125, 125, 125), # grey
+            rect  = rect,
         )
 
-        self.lemming.rect.move_ip(dx * rect.width // 2, -rect.height)
+        self.lemming.rect.move(dx * rect.width // 2, -rect.height)
 
         self.count += 1
         self.lemming.start_animation("BUILD")
 
 class DigV:
-    ICON  = Image.from_path(asset_path("ui_digv.png"))
+    ICON  = retro.Image.from_path(asset_path("ui_digv.png"))
     STATE = STATES.DIGV
 
     def __init__(self, lemming):
@@ -186,13 +180,11 @@ class DigV:
         rect.left += 10 if dx > 0 else 0
         rect.size = (20, 2)
 
-        self.lemming.bg.original.fill(
-            pygame.Color("black"), rect
-        )
-        self.lemming.rect.move_ip(0, 1)
+        self.lemming.bg.original.draw_rect(retro.BLACK, rect)
+        self.lemming.rect.move(0, 1)
 
 class DigH:
-    ICON  = Image.from_path(asset_path("ui_digh.png"))
+    ICON  = retro.Image.from_path(asset_path("ui_digh.png"))
     STATE = STATES.DIGH
 
     def __init__(self, lemming):
@@ -214,13 +206,12 @@ class DigH:
         rect.left = rect.right - 15 if dx > 0 else rect.left - 1
         rect.width = 16
 
-        self.lemming.bg.original.fill(
-            pygame.Color("black"), rect
-        )
-        self.lemming.rect.move_ip(dx, 0)
+
+        self.lemming.bg.original.draw_rect(retro.BLACK, rect)
+        self.lemming.rect.move(dx, 0)
 
 class Mine:
-    ICON  = Image.from_path(asset_path("ui_mine.png"))
+    ICON  = retro.Image.from_path(asset_path("ui_mine.png"))
     STATE = STATES.MINE
 
     def __init__(self, lemming):
@@ -237,15 +228,14 @@ class Mine:
         if not self.enabled: self.start()
         if not self.lemming.animations.finished: return
 
-        pygame.draw.circle(
-            self.lemming.bg.original,
-            pygame.Color("black"),
-            self.lemming.rect.center,
-            18
+        self.lemming.bg.original.draw_circle(
+            color  = retro.BLACK,
+            center = self.lemming.rect.center,
+            radius = 18,
         )
 
         dx = self.lemming.actions.walk.dx
-        self.lemming.rect.move_ip(3 * dx, 3)
+        self.lemming.rect.move(3 * dx, 3)
         self.lemming.start_animation("MINE")
 
 class Dead:

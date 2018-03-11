@@ -1,24 +1,19 @@
 import types
-import pygame
-
-import shared.transform
+import include.retro as retro
 import shared.collisions
-from shared.image import Image
 from shared.animated_sprite import AnimatedSprite, Animations
 from lemmings.nodes.actions import Actions, STATES
 from lemmings.path import asset_path
 
 class Lemming(AnimatedSprite):
-    IMGS = Image.from_spritesheet_n(
+    SPRITES = AnimatedSprite.from_spritesheet(
         path          = asset_path("planche.png"),
         sprite_size   = (30, 30),
-        discard_color = pygame.Color("red"),
+        discard_color = retro.RED,
+        animations    = Animations({}, 0),
     )
-    IMGS += shared.transform.flip_n(
-        surfaces = IMGS,
-        xflip    = True,
-        yflip    = False
-    )
+    IMGS = [img.copy() for img in SPRITES.images] \
+         + [img.flip(x = True, y = False) for img in SPRITES.images]
 
     def __init__(self, window, bg, position):
         self.window = window
@@ -52,9 +47,9 @@ class Lemming(AnimatedSprite):
                 },
                 period  = 100,
             ),
-            position = position
         )
-        self.colorkey(pygame.Color("black"))
+        self.colorkey(retro.BLACK)
+        self.rect.topleft = position
 
         self.actions = Actions(self)
         self.state = STATES.START
@@ -81,7 +76,7 @@ class Lemming(AnimatedSprite):
 
     def collisions(self, surface):
         directions = shared.collisions.pixel_mid(
-            surface, self.bounding_rect, pygame.Color("black")
+            surface, self.bounding_rect, retro.BLACK
         ).invert()
 
         outside = (None in directions)
@@ -219,4 +214,4 @@ class Lemming(AnimatedSprite):
         elif self.state == STATES.BOMB:
             self.actions.bomb.draw_timer()
 
-        AnimatedSprite.draw(self, self.window.screen)
+        AnimatedSprite.draw(self, self.window)

@@ -1,15 +1,13 @@
 import pygame
 import types
-
 from shared.window import Window
 from lemmings.states.level1 import Level1
 from lemmings.states.level2 import Level2
 from lemmings.states.end import End
 
 window = Window(
-    size   = (800, 400),
     title  = "Lemmings",
-    cursor = True,
+    size   = (800, 400),
 )
 
 pygame.mouse.set_cursor(*pygame.cursors.diamond)

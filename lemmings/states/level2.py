@@ -1,5 +1,3 @@
-import pygame
-
 from lemmings.states.level import Level
 
 class Level2(Level):

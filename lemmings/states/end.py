@@ -1,22 +1,20 @@
-import pygame
-
+import include.retro as retro
+from shared.sprite import Sprite
 class End:
     def __init__(self, window, win):
         self.window = window
         self.restart = False
-        self.txt_surface = self.window.fonts[4].render(
-            "WIN" if win else "LOST", # text
-            False,                    # antialias
-            pygame.Color("white"),    # color
-            pygame.Color("black"),    # background color
-        )
+
+        self.txt = Sprite(self.window.fonts[4].render(
+            text    = "WIN" if win else "LOST",
+            color   = retro.WHITE,
+            bgcolor = retro.BLACK,
+        ))
+        self.txt.rect.center = self.window.rect.center
 
     def run(self):
         # Update
-        self.restart = self.window.keys[pygame.K_SPACE]
+        self.restart = self.window.events.key_press(retro.K_SPACE)
 
         # Draw
-        self.window.screen.blit(
-            self.txt_surface,
-            self.txt_surface.get_rect(center = self.window.rect.center)
-        )
+        self.txt.draw(self.window)
