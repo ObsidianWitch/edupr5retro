@@ -1,12 +1,12 @@
 import random
-import pygame
-
+import include.retro as retro
 from shared.sprite import Sprite
 
 class Fish(Sprite):
-    def __init__(self, window, sprite, speed, move):
-        Sprite.__init__(self, sprite.image, sprite.rect.topleft)
+    def __init__(self, window, path, speed, move):
         self.window = window
+        sprite = retro.Image.from_path(path)
+        Sprite.__init__(self, sprite)
         self.dx, self.dy = speed
         self.move = move
 
@@ -22,10 +22,10 @@ class Fish(Sprite):
     def move1(self):
         xnew = self.rect.x + self.dx
 
-        limits = range(50, 3 * self.window.width // 4)
+        limits = range(50, 3 * self.window.rect.w // 4)
         if xnew not in limits: self.flip(xflip = True)
 
-        self.rect.move_ip(self.dx, 0)
+        self.rect.move(self.dx, 0)
 
     # Moves diagonally.
     def move2(self):
@@ -33,10 +33,10 @@ class Fish(Sprite):
         ynew = self.rect.y + self.dy
 
         limits = lambda upper: range(20, upper - 100)
-        if xnew not in limits(self.window.width):  self.flip(xflip = True)
-        if ynew not in limits(self.window.height): self.flip(yflip = True)
+        if xnew not in limits(self.window.rect.w):  self.flip(xflip = True)
+        if ynew not in limits(self.window.rect.h): self.flip(yflip = True)
 
-        self.rect.move_ip(self.dx, self.dy)
+        self.rect.move(self.dx, self.dy)
 
     # Moves randomly.
     def move3(self):

@@ -11,24 +11,8 @@ class Image:
     )
 
     @classmethod
-    def from_path(cls, path):
-        return pygame.image.load(cls.project_path(path))
-
-    @classmethod
     def from_path_n(cls, paths):
         return [cls.from_path(p) for p in paths]
-
-    @classmethod
-    def from_ascii(cls, txt, dictionary):
-        height = len(txt)
-        width  = len(txt[0])
-
-        rgb_sprite = numpy.zeros((width, height, 3))
-        for y, x in numpy.ndindex(height, width):
-            c = txt[y][x]
-            rgb_sprite[x,y] = dictionary[c]
-
-        return pygame.surfarray.make_surface(rgb_sprite)
 
     @classmethod
     def from_ascii_n(cls, txts, dictionary):

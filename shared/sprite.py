@@ -1,36 +1,57 @@
-import pygame
+import include.retro as retro
 
-import shared.transform
-from shared.image import Image
+class Group(list):
+    def __init__(self, *args):
+        args = list(args)
+        list.__init__(self, args)
+        for e in args:
+            if self not in e.groups: e.groups.append(self)
 
-class Sprite(pygame.sprite.Sprite):
-    def __init__(self, image, position = (0, 0)):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.rect.move_ip(position)
 
-    @classmethod
-    def from_path(cls, path, position = (0, 0)): return cls(
-        image    = Image.from_path(path),
-        position = position,
-    )
+    def append(self, e):
+        list.append(self, e)
+        e.groups.append(self)
 
-    @classmethod
-    def from_ascii(cls, txt, dictionary, position = (0, 0)): return cls(
-        image    = Image.from_ascii(txt, dictionary),
-        position = position
-    )
-
-    def scale(self, ratio):
-        self.image = shared.transform.scale(self.image, ratio)
-        self.rect  = self.image.get_rect().move(self.rect.topleft)
-
-    def flip(self, xflip = False, yflip = False):
-        self.image = pygame.transform.flip(self.image, xflip, yflip)
-
-    def colorkey(self, color):
-        self.image.set_colorkey(color)
+    def update(self):
+        for e in self: e.update()
 
     def draw(self, surface):
-        surface.blit(self.image, self.rect)
+        for e in self: e.draw(surface)
+
+class Sprite:
+    def __init__(self, image):
+        self.image = image
+        self.rect = self.image.rect
+        self.groups = []
+
+    @classmethod
+    def from_path(cls, path):
+        return cls(retro.Image.from_path(path))
+
+    @classmethod
+    def from_ascii(cls, txt, dictionary):
+        height = len(txt)
+        width  = len(txt[0])
+
+        rgb_sprite = numpy.zeros((width, height, 3))
+        for y, x in numpy.ndindex(height, width):
+            c = txt[y][x]
+            rgb_sprite[x,y] = dictionary[c]
+
+        return cls(retro.Image.from_array(rgb_sprite))
+
+    def flip(self, xflip = False, yflip = False):
+        self.image.flip(xflip, yflip)
+
+    def scale(self, ratio):
+        self.image.scale(ratio)
+        self.rect  = self.image.rect.move(self.rect.topleft)
+
+    def kill(self):
+        for g in self.groups: g.remove(self)
+        self.groups = []
+
+    def update(self): pass
+
+    def draw(self, image):
+        image.draw_image(self.image, self.rect)
