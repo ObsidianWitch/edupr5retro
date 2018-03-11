@@ -45,7 +45,10 @@ class Sprite:
 
     def scale(self, ratio):
         self.image.scale(ratio)
-        self.rect  = self.image.rect.move(self.rect.topleft)
+        self.rect = self.image.rect.move(self.rect.topleft)
+
+    def colorkey(self, color):
+        self.image.colorkey(color)
 
     def kill(self):
         for g in self.groups: g.remove(self)
