@@ -1,46 +1,44 @@
 import pygame
 from src.rect import Rect
 class Image:
-    def __init__(self, size):
-        self.init_pygsurface(pygame.Surface(size))
-
-    def init_pygsurface(self, pygsurface):
-        self.pygsurface = pygsurface
-        self.rect = Rect(self.pygsurface.get_rect())
-
-    @classmethod
-    def from_pygsurface(cls, pygsurface):
-        obj = Image((0, 0))
-        obj.init_pygsurface(pygsurface)
-        return obj
+    # Image(tuple-2 size)
+    # Image(pygame.Surface surface)
+    # Image(Image image)
+    def __init__(self, arg):
+        if isinstance(arg, Image):
+            self.pygsurface = arg.pygsurface.copy()
+            self.rect = arg.rect.copy()
+        elif isinstance(arg, pygame.Surface):
+            self.pygsurface = arg
+            self.rect = Rect(self.pygsurface.get_rect())
+        else:
+            self.__init__(pygame.Surface(arg))
 
     @classmethod
     def from_path(cls, path):
-        return cls.from_pygsurface(pygame.image.load(path))
+        return Image(pygame.image.load(path))
 
     @classmethod
     def from_array(cls, array):
-        return cls.from_pygsurface(pygame.surfarray.make_surface(array))
+        return Image(pygame.surfarray.make_surface(array))
 
     # Crée une copie superficielle de l'image actuelle. L'image actuelle et la
     # copie feront toutes deux référence à la même surface sous-jacente. Leurs
     # position et taille (`rect`) seront cependant indépendantes.
     def copy(self):
-        obj = self.from_pygsurface(self.pygsurface)
+        obj = Image(self.pygsurface)
         obj.rect = self.rect.copy()
         return obj
 
     # Crée une copie complète de l'image actuelle.
     def deepcopy(self):
-        obj = self.from_pygsurface(self.pygsurface.copy())
-        obj.rect = self.rect.copy()
-        return obj
+        return Image(self)
 
     # Crée une nouvelle image faisant référence à une zone plus petite de
     # l'image actuelle. Le paramètre `area` est un Rect désignant la zone à
     # extraire de l'image actuelle.
     def subimage(self, area):
-        return self.from_pygsurface(self.pygsurface.subsurface(area))
+        return Image(self.pygsurface.subsurface(area))
 
     # Renvoie la couleur du pixel à la position spécifiée (`pos`).
     def __getitem__(self, pos):

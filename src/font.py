@@ -6,6 +6,6 @@ class Font:
 
     # Crée une Image avec le texte spécifié dessus.
     def render(self, text, antialias = False, color = (0, 0, 0), bgcolor = None):
-        return Image.from_pygsurface(
+        return Image(
             self.font.render(text, antialias, color, bgcolor)
         )

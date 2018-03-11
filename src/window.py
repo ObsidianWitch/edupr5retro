@@ -7,7 +7,7 @@ class Window(Image):
 
         pygame.display.set_caption(title)
         surface = pygame.display.set_mode(size)
-        self.init_pygsurface(surface)
+        Image.__init__(self, surface)
 
         self.clock = pygame.time.Clock()
         self.framerate = framerate
