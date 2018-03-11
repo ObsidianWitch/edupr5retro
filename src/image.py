@@ -7,10 +7,8 @@ class Image:
     def __init__(self, arg):
         if isinstance(arg, Image):
             self.pygsurface = arg.pygsurface.copy()
-            self.rect = arg.rect.copy()
         elif isinstance(arg, pygame.Surface):
             self.pygsurface = arg
-            self.rect = Rect(self.pygsurface.get_rect())
         else:
             self.__init__(pygame.Surface(arg))
 
@@ -22,16 +20,8 @@ class Image:
     def from_array(cls, array):
         return cls(pygame.surfarray.make_surface(array))
 
-    # Crée une copie superficielle de l'image actuelle. L'image actuelle et la
-    # copie feront toutes deux référence à la même surface sous-jacente. Leurs
-    # position et taille (`rect`) seront cependant indépendantes.
-    def copy(self):
-        obj = self.__class__(self.pygsurface)
-        obj.rect = self.rect.copy()
-        return obj
-
     # Crée une copie complète de l'image actuelle.
-    def deepcopy(self):
+    def copy(self):
         return self.__class__(self)
 
     # Crée une nouvelle image faisant référence à une zone plus petite de
@@ -39,6 +29,11 @@ class Image:
     # extraire de l'image actuelle.
     def subimage(self, area):
         return self.__class__(self.pygsurface.subsurface(area))
+
+    # Retourne un nouveau rectangle positionné en (0, 0) et de la taille de
+    # l'image actuelle.
+    @property
+    def rect(self): return Rect(self.pygsurface.get_rect())
 
     # Renvoie la couleur du pixel à la position spécifiée (`pos`).
     def __getitem__(self, pos):
@@ -56,12 +51,12 @@ class Image:
         self.pygsurface.fill(color)
         return self
 
-    # Dessine l'image `img` sur l'image actuelle. La position et la taille de
-    # `img` sont déterminées à partir de `img.rect`. Le paramètre optionnel
-    # `area` est un Rect et désigne quelle zone (plus petite) de `img` doit être
-    # dessinée.
-    def draw_image(self, img, area = None):
-        self.pygsurface.blit(img.pygsurface, img.rect, area)
+    # Dessine l'image `img` à la position `pos`sur l'image actuelle.
+    # Le paramètre optionnel `area` est un Rect et désigne quelle zone
+    # (plus petite) de `img` doit être dessinée.
+    # `pos`: tuple de 2 elements ou Rect. si Rect, rect.topleft est utilisé.
+    def draw_image(self, img, pos, area = None):
+        self.pygsurface.blit(img.pygsurface, pos, area)
         return self
 
     def draw_rect(self, color, rect, width = 0):
@@ -82,7 +77,6 @@ class Image:
 
     def resize(self, size):
         self.pygsurface = pygame.transform.scale(self.pygsurface, size)
-        self.rect = Rect(self.pygsurface.get_rect()).move(self.rect.topleft)
         return self
 
     def scale(self, ratio):

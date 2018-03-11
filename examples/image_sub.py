@@ -25,20 +25,23 @@ spritesheet = Image.from_path(os.path.join(
 ))
 
 s1 = spritesheet.subimage((0, 0, 30, 30))
-s1.rect.move(10, 10)
+s1_rect = s1.rect
+s1_rect.move(10, 10)
 s2 = spritesheet.subimage((30, 0, 30, 30))
-s2.rect.move(50, 10)
+s2_rect = s2.rect
+s2_rect.move(50, 10)
 s3 = spritesheet.subimage((0, 30, 30, 30))
-s3.rect.move(10, 50)
+s3_rect = s3.rect
+s3_rect.move(10, 50)
 
 while 1:
     events.update()
     if events.event(QUIT): sys.exit()
 
     window.fill(color = WHITE) \
-          .draw_image(s1) \
-          .draw_image(s2) \
-          .draw_image(s3)
+          .draw_image(s1, s1_rect) \
+          .draw_image(s2, s2_rect) \
+          .draw_image(s3, s3_rect)
 
     print(events.mouse_pos())
 

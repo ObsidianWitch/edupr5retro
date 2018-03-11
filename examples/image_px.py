@@ -26,7 +26,9 @@ spritesheet = Image.from_path(os.path.join(
 spritesheet[0, 0] = GREEN
 assert spritesheet[0, 0] == GREEN
 
-background = Image(window.rect.size).fill(WHITE).draw_image(spritesheet)
+background = Image(window.rect.size) \
+           .fill(WHITE) \
+           .draw_image(spritesheet, (0, 0))
 
 while 1:
     events.update()
@@ -36,6 +38,6 @@ while 1:
     if events.mouse_held(): background[pos] = GREEN
     print(background[pos])
 
-    window.draw_image(background)
+    window.draw_image(background, (0, 0))
 
     window.update()

@@ -65,19 +65,29 @@ def from_ascii(txt, dictionary):
     return Image.from_array(rgb_sprite)
 
 s1 = Image((100, 100))
-s1.rect.move(10, 10)
+s1_rect = s1.rect
+s1_rect.move(10, 10)
+print(s1.rect)
+print(s1_rect)
+
 s2 = Image.from_path(os.path.join(
     "examples", "data", "img.png"
 ))
-s2.rect.move(10, 110)
+s2_rect = s2.rect
+s2_rect.move(10, 110)
 s2_area = pygame.Rect(20, 10, 30, 30)
-s3 = from_ascii(ASCII_IMG, PALETTE)
-s3.rect.move(10, 150)
 
-s4 = s3.deepcopy()
-s4.rect.move(50, 0)
-s5 = s4.copy()
-s5.rect.move(50, 0)
+s3 = from_ascii(ASCII_IMG, PALETTE)
+s3_rect = s3.rect
+s3_rect.move(10, 150)
+
+s4 = s3.copy()
+s4_rect = s3_rect.copy()
+s4_rect.move(50, 0)
+
+s5 = s4
+s5_rect = s4_rect.copy()
+s5_rect.move(50, 0)
 s5.draw_line(GREEN, (0, 0), (30, 30))
 
 while 1:
@@ -85,11 +95,11 @@ while 1:
     if events.event(QUIT): sys.exit()
 
     window.fill(color = WHITE) \
-          .draw_image(s1) \
-          .draw_image(s2, s2_area) \
-          .draw_image(s3) \
-          .draw_image(s4) \
-          .draw_image(s5)
+          .draw_image(s1, s1_rect) \
+          .draw_image(s2, s2_rect, s2_area) \
+          .draw_image(s3, s3_rect) \
+          .draw_image(s4, s4_rect) \
+          .draw_image(s5, s5_rect)
 
     print(events.mouse_pos())
 
