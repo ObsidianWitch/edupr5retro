@@ -6,6 +6,7 @@ window = Window(
     size  = (800, 600),
     title = "Bouncing Ball !!!",
 )
+window.cursor(False)
 
 ball = Ball(window)
 

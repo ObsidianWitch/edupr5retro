@@ -11,6 +11,7 @@ window = Window(
     title = "Aquarium",
     size  = bg.rect.size,
 )
+window.cursor(False)
 
 fish1 = Fish(
     window = window,

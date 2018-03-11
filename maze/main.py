@@ -7,6 +7,7 @@ window = Window(
     title = "Maze",
     size  = (400, 400),
 )
+window.cursor(False)
 
 states = types.SimpleNamespace(
     START    = 0,

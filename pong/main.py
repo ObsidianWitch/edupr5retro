@@ -7,6 +7,7 @@ window = Window(
     size  = (600, 400),
     title = "Pong",
 )
+window.cursor(False)
 
 states = types.SimpleNamespace(
     START    = 0,

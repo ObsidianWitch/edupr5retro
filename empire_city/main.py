@@ -7,6 +7,7 @@ window = Window(
     title = "Empire City",
     size  = (400, 300),
 )
+window.cursor(False)
 
 states = types.SimpleNamespace(
     START    = 0,
