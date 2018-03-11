@@ -25,11 +25,11 @@ spritesheet = Image.from_path(os.path.join(
 ))
 
 s1 = spritesheet.subimage((0, 0, 30, 30))
-s1.rect.move_ip(10, 10)
+s1.rect.move(10, 10)
 s2 = spritesheet.subimage((30, 0, 30, 30))
-s2.rect.move_ip(50, 10)
+s2.rect.move(50, 10)
 s3 = spritesheet.subimage((0, 30, 30, 30))
-s3.rect.move_ip(10, 50)
+s3.rect.move(10, 50)
 
 while 1:
     events.update()

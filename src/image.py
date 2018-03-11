@@ -1,11 +1,12 @@
 import pygame
+from src.rect import Rect
 class Image:
     def __init__(self, size):
         self.init_pygsurface(pygame.Surface(size))
 
     def init_pygsurface(self, pygsurface):
         self.pygsurface = pygsurface
-        self.rect = self.pygsurface.get_rect()
+        self.rect = Rect(self.pygsurface.get_rect())
 
     @classmethod
     def from_pygsurface(cls, pygsurface):
@@ -83,7 +84,7 @@ class Image:
 
     def resize(self, size):
         self.pygsurface = pygame.transform.scale(self.pygsurface, size)
-        self.rect = self.pygsurface.get_rect().move(self.rect.topleft)
+        self.rect = Rect(self.pygsurface.get_rect()).move(self.rect.topleft)
         return self
 
     def scale(self, ratio):

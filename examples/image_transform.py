@@ -24,7 +24,7 @@ obj1 = Image((100, 100)).draw_line(
     end_pos   = (50,30),
     width     = 5,
 )
-obj1.rect.move_ip(10, 10)
+obj1.rect.move(10, 10)
 print(obj1.rect)
 
 obj2 = obj1.deepcopy().colorkey(
@@ -33,7 +33,7 @@ obj2 = obj1.deepcopy().colorkey(
     x = True,
     y = False,
 )
-obj2.rect.move_ip(100, 10)
+obj2.rect.move(100, 10)
 print(obj2.rect)
 
 obj3 = Image((50, 50)).fill(
@@ -43,15 +43,15 @@ obj3 = Image((50, 50)).fill(
     rect  = pygame.Rect(10, 10, 25, 25),
     width = 4,
 ).rotate(45)
-obj3.rect.move_ip(10, 100)
+obj3.rect.move(10, 100)
 print(obj3.rect)
 
 obj4 = obj3.deepcopy().resize((25, 25))
-obj4.rect.move_ip(0, 100)
+obj4.rect.move(0, 100)
 print(obj4.rect)
 
 obj5 = obj3.deepcopy().scale(2.0)
-obj5.rect.move_ip(0, 150)
+obj5.rect.move(0, 150)
 print(obj5.rect)
 
 while 1:

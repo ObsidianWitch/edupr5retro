@@ -65,19 +65,19 @@ def from_ascii(txt, dictionary):
     return Image.from_array(rgb_sprite)
 
 s1 = Image((100, 100))
-s1.rect.move_ip(10, 10)
+s1.rect.move(10, 10)
 s2 = Image.from_path(os.path.join(
     "examples", "data", "img.png"
 ))
-s2.rect.move_ip(10, 110)
+s2.rect.move(10, 110)
 s2_area = pygame.Rect(20, 10, 30, 30)
 s3 = from_ascii(ASCII_IMG, PALETTE)
-s3.rect.move_ip(10, 150)
+s3.rect.move(10, 150)
 
 s4 = s3.deepcopy()
-s4.rect.move_ip(50, 0)
+s4.rect.move(50, 0)
 s5 = s4.copy()
-s5.rect.move_ip(50, 0)
+s5.rect.move(50, 0)
 s5.draw_line(GREEN, (0, 0), (30, 30))
 
 while 1:
