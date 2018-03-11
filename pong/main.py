@@ -1,6 +1,4 @@
 import types
-import pygame
-
 from shared.window import Window
 from pong.states.run import StateRun
 from pong.states.end import StateEnd

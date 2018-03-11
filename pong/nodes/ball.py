@@ -1,5 +1,4 @@
-import pygame
-
+import include.retro as retro
 from shared.circle import Circle
 
 class Ball:
@@ -9,7 +8,7 @@ class Ball:
 
     def reset(self, side):
         self.circle = Circle(
-            center = [self.window.width // 2, self.window.height // 2],
+            center = [self.window.rect.w // 2, self.window.rect.h // 2],
             radius = 10,
         )
         self.dx =  2 * side
@@ -19,15 +18,15 @@ class Ball:
         if (self.circle.top < 0):
             self.circle.top = 0
             self.dy *= -1
-        if (self.circle.bottom > self.window.height):
-            self.circle.bottom = self.window.height
+        if (self.circle.bottom > self.window.rect.h):
+            self.circle.bottom = self.window.rect.h
             self.dy *= -1
 
     # Return -1 for left edge collision, 1 for right edge collision
     # and 0 otherwise.
     def edges_collision(self):
         left_edge  = (self.circle.right < 0)
-        right_edge = (self.circle.left > self.window.width)
+        right_edge = (self.circle.left > self.window.rect.w)
         collision = (right_edge - left_edge)
         if (collision != 0): self.reset(collision)
         return collision
@@ -38,9 +37,8 @@ class Ball:
         self.walls_collision()
 
     def draw(self):
-        pygame.draw.circle(
-            self.window.screen,    # surface
-            pygame.Color("white"), # color
-            self.circle.center,    # position
-            self.circle.radius     # radius
+        self.window.draw_circle(
+            color  = retro.WHITE,
+            center = self.circle.center,
+            radius = self.circle.radius,
         )

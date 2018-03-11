@@ -1,5 +1,4 @@
-import pygame
-
+import include.retro as retro
 import shared.collisions
 from pong.nodes.ball import Ball
 from pong.nodes.paddle import Paddle
@@ -27,17 +26,14 @@ class StateRun:
             self.ball.dx *= -1
 
     def draw_score(self):
-        score_surface = self.window.fonts[1].render(
-            f"{self.p1.score} - {self.p2.score}", # text
-            False,                      # antialias
-            pygame.Color("green")       # color
+        score_img = self.window.fonts[1].render(
+            text  = f"{self.p1.score} - {self.p2.score}",
+            color = retro.GREEN,
         )
-        self.window.screen.blit(
-            score_surface,
-            score_surface.get_rect(
-                midtop = self.window.rect.midtop
-            ).move(0, 10)
-        )
+        score_rect = score_img.rect
+        score_rect.midtop = self.window.rect.midtop
+        score_rect.move(0, 10)
+        self.window.draw_image(score_img, score_rect)
 
     def run(self):
         # Update
@@ -53,7 +49,7 @@ class StateRun:
         elif edge > 0: self.p1.score += 1
 
         # Draw
-        self.window.screen.fill(pygame.Color("black"))
+        self.window.fill(retro.BLACK)
         self.p1.draw()
         self.p2.draw()
         self.ball.draw()

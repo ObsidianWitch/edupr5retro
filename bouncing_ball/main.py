@@ -1,4 +1,3 @@
-import pygame
 import include.retro as retro
 from bouncing_ball.ball import Ball
 from shared.window import Window

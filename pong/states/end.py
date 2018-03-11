@@ -1,22 +1,21 @@
-import pygame
-
+import include.retro as retro
 class StateEnd:
     def __init__(self, window, winner):
         self.window = window
         self.restart = False
-        self.txt_surface = self.window.fonts[4].render(
-            f"JOUEUR {winner} GAGNANT", # text
-            False,                           # antialias
-            pygame.Color("yellow"),          # color
-            pygame.Color("red")              # background color
+
+        self.txt_img = self.window.fonts[4].render(
+            text    = f"JOUEUR {winner} GAGNANT",
+            color   = retro.YELLOW,
+            bgcolor = retro.RED,
         )
+        self.txt_rect = self.txt_img.rect
+        self.txt_rect.center = self.window.rect.center
 
     def run(self):
         # Update
-        self.restart = self.window.keys[pygame.K_SPACE]
+        key = self.window.events.key_press
+        self.restart = key(retro.K_SPACE)
 
         # Draw
-        self.window.screen.blit(
-            self.txt_surface,
-            self.txt_surface.get_rect(center = self.window.rect.center)
-        )
+        self.window.draw_image(self.txt_img, self.txt_rect)
