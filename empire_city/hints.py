@@ -23,4 +23,4 @@ class Hints:
         arrow_i = (self.camera.bg_space(
             player.crosshair.rect.center
         )[0] < enemy.rect.x)
-        self.sprites[arrow_i].draw(self.window.screen)
+        self.sprites[arrow_i].draw(self.window)

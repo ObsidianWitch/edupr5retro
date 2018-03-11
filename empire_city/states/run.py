@@ -1,5 +1,4 @@
-import pygame
-
+import include.retro as retro
 from shared.background import Background
 from shared.sprite import Sprite
 from empire_city.nodes.enemies.enemies import Enemies
@@ -7,7 +6,6 @@ from empire_city.nodes.player import Player
 from empire_city.path import asset_path
 from empire_city.camera import Camera
 from empire_city.hints  import Hints
-
 
 class StateRun:
     def __init__(self, window):
@@ -44,13 +42,11 @@ class StateRun:
         self.player.draw_bg()
 
         ## screen drawing
-        self.window.screen.blit(
-            source = self.bg.current,
-            dest   = self.bg.rect,
-            area   = self.camera.display_zone
+        self.window.draw_image(
+            img  = self.bg.current,
+            pos  = self.bg.rect,
+            area = self.camera.display_zone,
         )
         self.player.draw_screen()
         self.enemies.draw_screen()
         self.hints.draw_screen(self.player, self.enemies.mob)
-
-        return False

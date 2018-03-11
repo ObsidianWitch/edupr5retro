@@ -1,15 +1,13 @@
 import random
-import pygame
-
+import include.retro as retro
 import shared.math
 from shared.directions import Directions
-from shared.sprite import Sprite
-from shared.image import Image
+from shared.sprite import Sprite, Group
 from shared.timer import Timer
 from empire_city.path import asset_path
 
 class Crosshair(Sprite):
-    IMG = Image.from_path(asset_path("viseur.png"))
+    IMG = retro.Image.from_path(asset_path("viseur.png"))
 
     def __init__(self, window):
         self.window = window
@@ -18,10 +16,10 @@ class Crosshair(Sprite):
         self.rect.center = self.window.rect.center
 
     def draw(self):
-        Sprite.draw(self, self.window.screen)
+        Sprite.draw(self, self.window)
 
 class Ammunitions(Sprite):
-    IMG = Image.from_path(asset_path("bullet.png"))
+    IMG = retro.Image.from_path(asset_path("bullet.png"))
 
     def __init__(self, window):
         self.window = window
@@ -35,10 +33,10 @@ class Ammunitions(Sprite):
     def draw(self):
         for i in range(self.count):
             self.rect.left = i * self.rect.width
-            Sprite.draw(self, self.window.screen)
+            Sprite.draw(self, self.window)
 
 class Hide(Sprite):
-    IMG = Image.from_path(asset_path("hide.png"))
+    IMG = retro.Image.from_path(asset_path("hide.png"))
 
     def __init__(self, window):
         self.window = window
@@ -49,13 +47,13 @@ class Hide(Sprite):
         self.hidden = False
 
     def update(self):
-        self.hidden = self.window.keys[pygame.K_RETURN]
+        self.hidden = self.window.events.key_held(retro.K_RETURN)
 
     def draw(self):
-        if self.hidden: Sprite.draw(self, self.window.screen)
+        if self.hidden: Sprite.draw(self, self.window)
 
 class Explosion(Sprite):
-    IMG = Image.from_path(asset_path("bang.png"))
+    IMG = retro.Image.from_path(asset_path("bang.png"))
 
     def __init__(self, center):
         Sprite.__init__(self, self.IMG)
@@ -74,37 +72,38 @@ class Player:
         self.crosshair = Crosshair(self.window)
         self.ammunitions = Ammunitions(self.window)
         self.hide = Hide(self.window)
-        self.explosions = pygame.sprite.Group()
+        self.explosions = Group()
 
         self.speed = 10
 
     def move(self, collisions_vec):
+        key = self.window.events.key_held
         move_vec = Directions(
-            up    = self.window.keys[pygame.K_UP],
-            down  = self.window.keys[pygame.K_DOWN],
-            left  = self.window.keys[pygame.K_LEFT],
-            right = self.window.keys[pygame.K_RIGHT],
+            up    = key(retro.K_UP),
+            down  = key(retro.K_DOWN),
+            left  = key(retro.K_LEFT),
+            right = key(retro.K_RIGHT),
         ).vec
 
         for i,_ in enumerate(move_vec):
             move_vec[i] -= collisions_vec[i]
             move_vec[i] = shared.math.clamp(move_vec[i], -1, 1)
 
-        self.crosshair.rect.move_ip(
+        self.crosshair.rect.move(
             move_vec[0] * self.speed,
             move_vec[1] * self.speed,
         )
 
     def shoot(self, target):
         if self.ammunitions.count <= 0: return
-        if not self.window.keydown(pygame.K_SPACE): return
+        if not self.window.events.key_press(retro.K_SPACE): return
 
         self.ammunitions.count -= 1
-        self.crosshair.rect.move_ip(
+        self.crosshair.rect.move(
             random.randint(-2, 2),
             random.randint(-2, 2)
         )
-        self.explosions.add(Explosion(
+        self.explosions.append(Explosion(
             self.camera.bg_space(self.crosshair.rect.center)
         ))
 

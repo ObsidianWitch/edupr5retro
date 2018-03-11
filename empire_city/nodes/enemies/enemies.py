@@ -1,6 +1,5 @@
 import random
-
-from shared.image import Image
+import include.retro as retro
 from shared.sprite import Sprite
 from shared.timer import Timer
 from empire_city.nodes.enemies.enemy import Enemy
@@ -10,39 +9,39 @@ from empire_city.path import asset_path
 
 # Enemy generator.
 class Enemies:
-    STREET_IMGS = Image.from_path_n((
+    STREET_IMGS = tuple(retro.Image.from_path(p) for p in (
         asset_path("bandit_rue.png"),
         asset_path("bandit_rue2.png"),
         asset_path("bandit_rue4.png"),
     ))
 
-    WINDOW_IMGS = Image.from_path_n((
+    WINDOW_IMGS = tuple(retro.Image.from_path(p) for p in (
         asset_path("bandit_window.png"),
         asset_path("bandit_window2.png"),
         asset_path("bandit_window3.png"),
         asset_path("bandit_window4.png"),
     ))
 
-    WALL_IMGS = Image.from_path_n((
+    WALL_IMGS = tuple(retro.Image.from_path(p) for p in (
         asset_path("bandit_mur.png"),
         asset_path("bandit_mur2.png"),
     ))
 
-    TOP_IMGS = Image.from_path_n((
+    TOP_IMGS = tuple(retro.Image.from_path(p) for p in (
         asset_path("bandit_appui.png"),
         asset_path("bandit_appui2.png"),
         asset_path("bandit_appui3.png"),
     ))
 
-    SEWER_IMG = Image.from_path(
+    SEWER_IMG = retro.Image.from_path(
         asset_path("bandit_egout.png"),
     )
 
-    KIDNAPER_IMG = Image.from_path(
+    KIDNAPER_IMG = retro.Image.from_path(
         asset_path("woman.png"),
     )
 
-    RUNNER_IMG = Image.from_path(
+    RUNNER_IMG = retro.Image.from_path(
         asset_path("bandit_rue3.png"),
     )
 

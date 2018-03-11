@@ -1,5 +1,4 @@
-import pygame
-
+import include.retro as retro
 from shared.sprite import Sprite
 from shared.timer  import Timer
 
@@ -32,17 +31,12 @@ class Enemy(Sprite):
     def draw_shoot_timer(self):
         if not self.alive: return
 
-        shoot_timer_surface = self.window.fonts[1].render(
-            f"{self.shoot_timer.remaining}", # text
-            False,                           # antialias
-            pygame.Color("white")            # color
-        )
-        self.window.screen.blit(
-            shoot_timer_surface,
-            shoot_timer_surface.get_rect(
-                midbottom = self.window.rect.midbottom
-            )
-        )
+        shoot_timer = Sprite(self.window.fonts[1].render(
+            text  = f"{self.shoot_timer.remaining}",
+            color = retro.WHITE,
+        ))
+        shoot_timer.rect.midbottom = self.window.rect.midbottom
+        shoot_timer.draw(self.window)
 
     def draw_bg(self):
         if not self.alive: return

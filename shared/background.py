@@ -1,12 +1,10 @@
-import pygame
-
-from shared.image import Image
+import include.retro as retro
 
 class Background:
     def __init__(self, path):
-        self.original = Image.from_path(path)
+        self.original = retro.Image.from_path(path)
         self.current  = self.original.copy()
-        self.rect = self.original.get_rect()
+        self.rect = self.original.rect
 
     def clear(self):
-        self.current.blit(self.original, (0, 0))
+        self.current.draw_image(self.original, (0, 0))

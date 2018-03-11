@@ -1,12 +1,11 @@
 import types
-
 from shared.window import Window
 from empire_city.states.run import StateRun
 from empire_city.states.end import StateEnd
 
 window = Window(
-    size  = (400, 300),
     title = "Empire City",
+    size  = (400, 300),
 )
 
 states = types.SimpleNamespace(

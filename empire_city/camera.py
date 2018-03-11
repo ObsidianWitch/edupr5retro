@@ -1,5 +1,4 @@
-import pygame
-
+import include.retro as retro
 from shared.directions import Directions
 
 class Camera:
@@ -10,15 +9,15 @@ class Camera:
         self.display_zone = window.rect.move(position)
 
         offset = 20
-        self.scroll_zone_up = pygame.Rect(0, 0, window.width, offset)
+        self.scroll_zone_up = retro.Rect(0, 0, window.rect.w, offset)
 
         self.scroll_zone_down = self.scroll_zone_up.copy()
-        self.scroll_zone_down.bottomleft = (0, window.height)
+        self.scroll_zone_down.bottomleft = (0, window.rect.h)
 
-        self.scroll_zone_left = pygame.Rect(0, 0, offset, window.height)
+        self.scroll_zone_left = retro.Rect(0, 0, offset, window.rect.h)
 
         self.scroll_zone_right = self.scroll_zone_left.copy()
-        self.scroll_zone_right.topright = (window.width, 0)
+        self.scroll_zone_right.topright = (window.rect.w, 0)
 
         self.speed = 10
 
@@ -35,8 +34,8 @@ class Camera:
     )
 
     def update(self, scroll_vec):
-        self.display_zone.move_ip(
+        self.display_zone.move(
             scroll_vec[0] * self.speed,
             scroll_vec[1] * self.speed,
         )
-        self.display_zone.clamp_ip(self.bg.rect)
+        self.display_zone.clamp(self.bg.rect)
