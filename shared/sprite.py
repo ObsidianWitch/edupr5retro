@@ -14,7 +14,9 @@ class Group(list):
         e.groups.append(self)
 
     def update(self, *args):
-        for e in self: e.update(args)
+        for e in self:
+            if args: e.update(args)
+            else:    e.update()
 
     def draw(self, surface):
         for e in self: e.draw(surface)

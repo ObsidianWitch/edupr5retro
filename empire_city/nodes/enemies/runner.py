@@ -12,7 +12,7 @@ class Runner(Enemy):
 
         self.dx *= -1
         self.flip(xflip = True)
-        self.rect.clamp_ip(self.bg.rect)
+        self.rect.clamp(self.bg.rect)
 
     def update(self, target):
         Enemy.update(self, target)
