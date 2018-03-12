@@ -152,10 +152,7 @@ class Build:
         if   (dx > 0): rect.left = self.lemming.rect.right - (rect.width // 2)
         elif (dx < 0): rect.left  -= rect.width // 2
 
-        self.lemming.bg.original.draw_rect(
-            color = (125, 125, 125), # grey
-            rect  = rect,
-        )
+        self.lemming.bg.original.draw_rect(retro.GREY, rect)
 
         self.lemming.rect.move(dx * rect.width // 2, -rect.height)
 
