@@ -47,17 +47,6 @@ window = Window(
 )
 events = Event()
 
-def from_ascii(txt, dictionary):
-    height = len(txt)
-    width  = len(txt[0])
-
-    rgb_sprite = numpy.zeros((width, height, 3))
-    for y, x in numpy.ndindex(height, width):
-        c = txt[y][x]
-        rgb_sprite[x,y] = dictionary[c]
-
-    return Image.from_array(rgb_sprite)
-
 s1 = Image((100, 100))
 s1_rect = s1.rect
 s1_rect.move(10, 10)
@@ -71,7 +60,7 @@ s2_rect = s2.rect
 s2_rect.move(10, 110)
 s2_area = pygame.Rect(20, 10, 30, 30)
 
-s3 = from_ascii(ASCII_IMG, PALETTE)
+s3 = Image.from_ascii(ASCII_IMG, PALETTE)
 s3_rect = s3.rect
 s3_rect.move(10, 150)
 

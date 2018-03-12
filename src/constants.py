@@ -1,4 +1,5 @@
 import pygame
+import numpy
 from pygame.locals import *
 
 M_LEFT   = 1

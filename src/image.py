@@ -1,4 +1,5 @@
 import pygame
+import numpy
 from src.rect import Rect
 class Image:
     # Image(tuple-2 size)
@@ -19,6 +20,18 @@ class Image:
     @classmethod
     def from_array(cls, array):
         return cls(pygame.surfarray.make_surface(array))
+
+    @classmethod
+    def from_ascii(cls, txt, dictionary):
+        height = len(txt)
+        width  = len(txt[0])
+
+        rgb_sprite = numpy.zeros((width, height, 3))
+        for y, x in numpy.ndindex(height, width):
+            c = txt[y][x]
+            rgb_sprite[x,y] = dictionary[c]
+
+        return cls.from_array(rgb_sprite)
 
     # Crée une copie complète de l'image actuelle.
     def copy(self):
