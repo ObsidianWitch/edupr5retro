@@ -24,7 +24,7 @@ class StateRun:
 
     def run(self):
         # Update
-        key = self.window.events.key_held
+        key = self.window.events.key_hold
         self.player.update(
             directions = Directions(
                 up    = key(retro.K_UP),

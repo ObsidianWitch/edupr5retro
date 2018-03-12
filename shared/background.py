@@ -7,4 +7,4 @@ class Background:
         self.rect = self.original.rect
 
     def clear(self):
-        self.current.draw_image(self.original, (0, 0))
+        self.current.draw_img(self.original, (0, 0))

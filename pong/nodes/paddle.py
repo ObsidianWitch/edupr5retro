@@ -19,7 +19,7 @@ class Paddle:
         self.score = 0
 
     def move(self):
-        key = self.window.events.key_held
+        key = self.window.events.key_hold
         if self.side == self.SIDE.LEFT:
             if key(retro.K_UP):   self.rect.y -= self.dy
             if key(retro.K_DOWN): self.rect.y += self.dy

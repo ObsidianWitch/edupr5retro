@@ -40,7 +40,7 @@ class Level:
         self.bg.clear()
         self.lemmings.draw_bg()
 
-        self.window.draw_image(self.bg.current, self.bg.rect)
+        self.window.draw_img(self.bg.current, self.bg.rect)
         self.exit.draw(self.window)
         self.ui.draw()
         self.lemmings.draw_screen()

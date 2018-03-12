@@ -58,4 +58,4 @@ class Sprite:
     def update(self): pass
 
     def draw(self, image):
-        image.draw_image(self.image, self.rect)
+        image.draw_img(self.image, self.rect)

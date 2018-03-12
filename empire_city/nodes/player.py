@@ -47,7 +47,7 @@ class Hide(Sprite):
         self.hidden = False
 
     def update(self):
-        self.hidden = self.window.events.key_held(retro.K_RETURN)
+        self.hidden = self.window.events.key_hold(retro.K_RETURN)
 
     def draw(self):
         if self.hidden: Sprite.draw(self, self.window)
@@ -77,7 +77,7 @@ class Player:
         self.speed = 10
 
     def move(self, collisions_vec):
-        key = self.window.events.key_held
+        key = self.window.events.key_hold
         move_vec = Directions(
             up    = key(retro.K_UP),
             down  = key(retro.K_DOWN),

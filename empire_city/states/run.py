@@ -42,7 +42,7 @@ class StateRun:
         self.player.draw_bg()
 
         ## screen drawing
-        self.window.draw_image(
+        self.window.draw_img(
             img  = self.bg.current,
             pos  = self.bg.rect,
             area = self.camera.display_zone,
