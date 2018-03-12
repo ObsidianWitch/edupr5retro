@@ -7,12 +7,6 @@ from src.window import Window
 from src.event import Event
 from src.image import Image
 
-BLACK = (  0,   0,   0)
-WHITE = (255, 255, 255)
-BLUE =  (  0,   0, 255)
-GREEN = (  0, 255,   0)
-RED =   (255,   0,   0)
-
 window = Window(
     title     = "window",
     size      = (640, 480),

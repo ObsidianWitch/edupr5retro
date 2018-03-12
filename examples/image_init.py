@@ -7,20 +7,14 @@ from src.window import Window
 from src.event import Event
 from src.image import Image
 
-BLACK = (  0,   0,   0)
-WHITE = (255, 255, 255)
-BLUE =  (  0,   0, 255)
-GREEN = (  0, 255,   0)
-RED =   (255,   0,   0)
-
 PALETTE = {
-    ' ': (  0,   0,   0),
-    'W': (255, 255, 255),
-    'R': (255,   0,   0),
-    'G': (  0, 255,   0),
-    'B': (  0,   0, 255),
-    'C': (  0, 225, 255),
-    'Y': (255, 255,   0),
+    ' ': BLACK,
+    'W': WHITE,
+    'R': RED,
+    'G': GREEN,
+    'B': BLUE,
+    'C': CYAN,
+    'Y': YELLOW,
 }
 
 ASCII_IMG = (
@@ -94,7 +88,7 @@ while 1:
     events.update()
     if events.event(QUIT): sys.exit()
 
-    window.fill(color = WHITE) \
+    window.fill(WHITE) \
           .draw_img(s1, s1_rect) \
           .draw_img(s2, s2_rect, s2_area) \
           .draw_img(s3, s3_rect) \

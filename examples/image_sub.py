@@ -7,12 +7,6 @@ from src.window import Window
 from src.event import Event
 from src.image import Image
 
-BLACK = (  0,   0,   0)
-WHITE = (255, 255, 255)
-BLUE =  (  0,   0, 255)
-GREEN = (  0, 255,   0)
-RED =   (255,   0,   0)
-
 window = Window(
     title     = "window",
     size      = (640, 480),
@@ -38,7 +32,7 @@ while 1:
     events.update()
     if events.event(QUIT): sys.exit()
 
-    window.fill(color = WHITE) \
+    window.fill(WHITE) \
           .draw_img(s1, s1_rect) \
           .draw_img(s2, s2_rect) \
           .draw_img(s3, s3_rect)
