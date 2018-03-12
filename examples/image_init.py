@@ -1,11 +1,17 @@
 import os
 import sys
-import pygame
-import numpy
 from src.constants import *
 from src.window import Window
 from src.event import Event
 from src.image import Image
+from src.rect import Rect
+
+window = Window(
+    title     = "window",
+    size      = (640, 480),
+    framerate = 30,
+)
+events = Event()
 
 PALETTE = {
     ' ': BLACK,
@@ -40,12 +46,6 @@ ASCII_IMG = (
     '                    ',
 )
 
-window = Window(
-    title     = "window",
-    size      = (640, 480),
-    framerate = 30,
-)
-events = Event()
 
 s1 = Image((100, 100))
 s1_rect = s1.rect
@@ -58,7 +58,7 @@ s2 = Image.from_path(os.path.join(
 ))
 s2_rect = s2.rect
 s2_rect.move(10, 110)
-s2_area = pygame.Rect(20, 10, 30, 30)
+s2_area = Rect(20, 10, 30, 30)
 
 s3 = Image.from_ascii(ASCII_IMG, PALETTE)
 s3_rect = s3.rect
@@ -73,6 +73,14 @@ s5_rect = s4_rect.copy()
 s5_rect.move(50, 0)
 s5.draw_line(GREEN, (0, 0), (30, 30))
 
+subimages = Image.from_spritesheet(
+    path = os.path.join(
+        "examples", "data", "spritesheet.png"
+    ),
+    sprite_size = (30, 30),
+    discard_color = RED,
+)
+
 while 1:
     events.update()
     if events.event(QUIT): sys.exit()
@@ -83,6 +91,11 @@ while 1:
           .draw_img(s3, s3_rect) \
           .draw_img(s4, s4_rect) \
           .draw_img(s5, s5_rect)
+
+    for i, s in enumerate(subimages):
+        x = (i % 10) * (s.rect.width + 10) + 150
+        y = (i // 10) * (s.rect.height + 10)
+        window.draw_img(s, (x, y))
 
     print(events.mouse_pos())
 

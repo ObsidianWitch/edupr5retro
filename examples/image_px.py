@@ -1,7 +1,5 @@
 import os
 import sys
-import pygame
-import numpy
 from src.constants import *
 from src.window import Window
 from src.event import Event

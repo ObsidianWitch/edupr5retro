@@ -1,5 +1,4 @@
 import sys
-import pygame
 from src.constants import *
 from src.window import Window
 from src.event import Event

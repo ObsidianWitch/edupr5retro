@@ -33,6 +33,24 @@ class Image:
 
         return cls.from_array(rgb_sprite)
 
+    @classmethod
+    def from_spritesheet(cls, path, sprite_size, discard_color):
+        spritesheet = cls.from_path(path)
+
+        images = []
+        for y in range(spritesheet.rect.h // sprite_size[1]):
+            for x in range(spritesheet.rect.w // sprite_size[0]):
+                img = spritesheet.subimage(Rect(
+                    x * sprite_size[0], # x
+                    y * sprite_size[1], # y
+                    sprite_size[0],     # width
+                    sprite_size[1],     # height
+                ))
+                if img[0, 0] == discard_color: break
+                images.append(img)
+
+        return images
+
     # Crée une copie complète de l'image actuelle.
     def copy(self):
         return self.__class__(self)
