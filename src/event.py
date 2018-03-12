@@ -15,7 +15,7 @@ class Event:
             if (e.type == pygame.KEYDOWN) and (e.key == key): return e
         return False
 
-    def key_held(self, key):
+    def key_hold(self, key):
         return self.keyheld[key]
 
     def key_release(self, key):
@@ -30,7 +30,7 @@ class Event:
                 elif e.button == button: return e
         return False
 
-    def mouse_held(self, button = None):
+    def mouse_hold(self, button = None):
         if any(self.mouseheld):
             if button is None: return self.mouseheld
             else: return self.mouseheld[button - 1]

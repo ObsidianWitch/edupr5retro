@@ -55,7 +55,7 @@ class Image:
     # Le paramètre optionnel `area` est un Rect et désigne quelle zone
     # (plus petite) de `img` doit être dessinée.
     # `pos`: tuple de 2 elements ou Rect. si Rect, rect.topleft est utilisé.
-    def draw_image(self, img, pos, area = None):
+    def draw_img(self, img, pos, area = None):
         self.pygsurface.blit(img.pygsurface, pos, area)
         return self
 

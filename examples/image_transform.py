@@ -66,11 +66,11 @@ while 1:
     if events.event(QUIT): sys.exit()
 
     window.fill(color = WHITE) \
-          .draw_image(obj1, obj1_rect) \
-          .draw_image(obj2, obj2_rect) \
-          .draw_image(obj3, obj3_rect) \
-          .draw_image(obj4, obj4_rect) \
-          .draw_image(obj5, obj5_rect)
+          .draw_img(obj1, obj1_rect) \
+          .draw_img(obj2, obj2_rect) \
+          .draw_img(obj3, obj3_rect) \
+          .draw_img(obj4, obj4_rect) \
+          .draw_img(obj5, obj5_rect)
 
     print(events.mouse_pos())
 

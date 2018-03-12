@@ -95,11 +95,11 @@ while 1:
     if events.event(QUIT): sys.exit()
 
     window.fill(color = WHITE) \
-          .draw_image(s1, s1_rect) \
-          .draw_image(s2, s2_rect, s2_area) \
-          .draw_image(s3, s3_rect) \
-          .draw_image(s4, s4_rect) \
-          .draw_image(s5, s5_rect)
+          .draw_img(s1, s1_rect) \
+          .draw_img(s2, s2_rect, s2_area) \
+          .draw_img(s3, s3_rect) \
+          .draw_img(s4, s4_rect) \
+          .draw_img(s5, s5_rect)
 
     print(events.mouse_pos())
 

@@ -39,9 +39,9 @@ while 1:
     if events.event(QUIT): sys.exit()
 
     window.fill(color = WHITE) \
-          .draw_image(s1, s1_rect) \
-          .draw_image(s2, s2_rect) \
-          .draw_image(s3, s3_rect)
+          .draw_img(s1, s1_rect) \
+          .draw_img(s2, s2_rect) \
+          .draw_img(s3, s3_rect)
 
     print(events.mouse_pos())
 

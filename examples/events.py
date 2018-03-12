@@ -23,7 +23,7 @@ while 1:
 
     # key - methods
     check(events.key_press(K_F1))
-    check(events.key_held(K_F1))
+    check(events.key_hold(K_F1))
     check(events.key_release(K_F1))
 
     # mouse- event
@@ -32,7 +32,7 @@ while 1:
 
     # mouse- methods
     check(events.mouse_press(M_LEFT))
-    check(events.mouse_held(M_LEFT))
+    check(events.mouse_hold(M_LEFT))
     check(events.mouse_release(M_LEFT))
     # print(events.mouse_pos())
 

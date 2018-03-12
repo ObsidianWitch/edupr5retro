@@ -40,8 +40,8 @@ while 1:
     if events.event(QUIT): sys.exit()
 
     window.fill((255, 255, 255)) \
-          .draw_image(txt1, txt1_rect) \
-          .draw_image(txt2, txt2_rect.topleft) \
-          .draw_image(txt3, txt3_rect.topright)
+          .draw_img(txt1, txt1_rect) \
+          .draw_img(txt2, txt2_rect.topleft) \
+          .draw_img(txt3, txt3_rect.topright)
 
     window.update()
