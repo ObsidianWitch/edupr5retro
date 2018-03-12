@@ -1,4 +1,3 @@
-import numpy
 import include.retro as retro
 
 class Group(list):
@@ -33,15 +32,7 @@ class Sprite:
 
     @classmethod
     def from_ascii(cls, txt, dictionary):
-        height = len(txt)
-        width  = len(txt[0])
-
-        rgb_sprite = numpy.zeros((width, height, 3))
-        for y, x in numpy.ndindex(height, width):
-            c = txt[y][x]
-            rgb_sprite[x,y] = dictionary[c]
-
-        return cls(retro.Image.from_array(rgb_sprite))
+        return cls(retro.Image.from_ascii(txt, dictionary))
 
     def flip(self, xflip = False, yflip = False):
         self.image.flip(xflip, yflip)
