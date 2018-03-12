@@ -1,7 +1,7 @@
 import numpy
 import shared.math
 from shared.animated_sprite import AnimatedSprite, Animations
-from maze.nodes.palette import PALETTE
+from maze.nodes.palette import *
 
 class Player(AnimatedSprite):
     PLAYER_ASCII = [
@@ -58,7 +58,7 @@ class Player(AnimatedSprite):
 
         sprite = AnimatedSprite.from_ascii(
             txts       = self.PLAYER_ASCII,
-            dictionary = PALETTE,
+            dictionary = SPRITE_PALETTE,
             animations = Animations(
                 data = {
                     "IDLE_R": [1],
@@ -70,7 +70,7 @@ class Player(AnimatedSprite):
             ),
         )
         AnimatedSprite.__init__(self, sprite.images, sprite.animations)
-        self.colorkey(PALETTE[' '])
+        self.colorkey(SPRITE_PALETTE[' '])
         self.reset_position()
 
     def reset_position(self):

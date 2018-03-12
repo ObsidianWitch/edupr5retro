@@ -1,6 +1,6 @@
 import numpy
 from shared.sprite import Sprite, Group
-from maze.nodes.palette import PALETTE
+from maze.nodes.palette import *
 
 class Maze:
     MAZE_ASCII = (
@@ -98,11 +98,9 @@ class Maze:
     def __init__(self, window):
         self.window = window
 
-        self.square_size = 20
-        self.height = len(self.MAZE_ASCII)
-        self.width  = len(self.MAZE_ASCII[0])
-
+        self.tile_size = 20
         self.init_items()
+        self.init_maze()
 
     # Places items in the maze based on the `MAZE_ASCII` map.
     # Each item is associated with a code contained in `PALETTE`.
@@ -117,7 +115,7 @@ class Maze:
         def init_exit(code, color, xsq, ysq):
             self.exit = Sprite.from_ascii(
                 txt        = self.EXIT_ASCII,
-                dictionary = PALETTE,
+                dictionary = SPRITE_PALETTE,
             )
             self.exit.rect.move(xsq, ysq)
             self.items.append(self.exit)
@@ -125,7 +123,7 @@ class Maze:
         def init_treasure(code, color, xsq, ysq):
             sprite = Sprite.from_ascii(
                 txt        = self.TREASURE_ASCII,
-                dictionary = PALETTE,
+                dictionary = SPRITE_PALETTE,
             )
             sprite.rect.move(xsq, ysq)
             self.items.append(sprite)
@@ -134,7 +132,7 @@ class Maze:
         def init_trap(code, color, xsq, ysq):
             sprite = Sprite.from_ascii(
                 txt        = self.TRAP_ASCII,
-                dictionary = PALETTE,
+                dictionary = SPRITE_PALETTE,
             )
             sprite.rect.move(xsq, ysq)
             self.items.append(sprite)
@@ -147,28 +145,25 @@ class Maze:
 
         self.traverse(init_one)
 
-    # Traverses the maze array and executes the given `function` on each
+    def init_maze(self):
+        self.maze = Sprite.from_ascii(self.MAZE_ASCII, MAZE_PALETTE)
+        self.maze.scale(self.tile_size)
+
+    # Traverses the MAZE_ASCII array and executes the given `function` on each
     # element.
     def traverse(self, function):
-        for y, x in numpy.ndindex(self.height, self.width):
+        height = len(self.MAZE_ASCII)
+        width  = len(self.MAZE_ASCII[0])
+
+        for y, x in numpy.ndindex(height, width):
             code  = self.MAZE_ASCII[y][x]
-            color = PALETTE[code]
-            xsq   = x * self.square_size
-            ysq   = y * self.square_size
+            color = MAZE_PALETTE[code]
+            xsq   = x * self.tile_size
+            ysq   = y * self.tile_size
 
             function(code, color, xsq, ysq)
 
     # Draw the maze and the items contained in it.
     def draw(self):
-        def draw_one(code, color, xsq, ysq):
-            # skip item tiles (drawing handled by sprites)
-            if code in ("Y", "C", "R"): color = PALETTE[" "]
-
-            self.window.draw_rect(
-                color = color,
-                rect = (xsq, ysq, self.square_size, self.square_size),
-            )
-
-        self.traverse(draw_one)
-
+        self.maze.draw(self.window)
         self.items.draw(self.window)

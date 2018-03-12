@@ -4,7 +4,7 @@ from shared.directions import Directions
 from shared.sprite import Sprite
 from maze.nodes.maze import Maze
 from maze.nodes.player import Player
-from maze.nodes.palette import PALETTE
+from maze.nodes.palette import *
 
 class StateRun:
     def __init__(self, window):
@@ -35,7 +35,7 @@ class StateRun:
             collisions = shared.collisions.pixel_vertices(
                 surface = self.window,
                 rect    = self.player.rect,
-                color   = PALETTE["B"],
+                color   = MAZE_PALETTE["B"],
             ),
         )
 
