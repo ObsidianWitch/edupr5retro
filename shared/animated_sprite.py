@@ -53,21 +53,12 @@ class AnimatedSprite(Sprite):
 
     @classmethod
     def from_spritesheet(cls, path, sprite_size, discard_color, animations):
-        spritesheet = retro.Image.from_path(path)
-
-        images = []
-        for y in range(spritesheet.rect.h // sprite_size[1]):
-            for x in range(spritesheet.rect.w // sprite_size[0]):
-                img = spritesheet.subimage(retro.Rect(
-                    x * sprite_size[0], # x
-                    y * sprite_size[1], # y
-                    sprite_size[0],     # width
-                    sprite_size[1],     # height
-                ))
-                if img[0, 0] == discard_color: break
-                images.append(img)
-
-        return cls(images, animations)
+        return cls(
+            images = retro.Image.from_spritesheet(
+                path, sprite_size, discard_color
+            ),
+            animations = animations,
+        )
 
     def scale(self, ratio):
         self.images = [img.scale(ratio) for img in self.images]
