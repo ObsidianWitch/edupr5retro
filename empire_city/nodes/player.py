@@ -20,12 +20,12 @@ class Crosshair(Sprite):
 
 class Ammunitions(Sprite):
     IMG = retro.Image.from_path(asset_path("bullet.png"))
+    IMG.scale(0.5)
 
     def __init__(self, window):
         self.window = window
 
         Sprite.__init__(self, self.IMG)
-        self.scale(0.5)
         self.rect.bottomleft = self.window.rect.bottomleft
 
         self.count = 12
