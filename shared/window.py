@@ -11,7 +11,7 @@ class Window(retro.Window):
             for size in range(18, 43, 6)
         )
 
-        self.events = retro.Event()
+        self.events = retro.Events()
 
     def loop(self, instructions):
         while 1:
