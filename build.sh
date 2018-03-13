@@ -36,15 +36,8 @@ build() {
 }
 
 doc() {
-    in='out/retro.full.py'
     out='doc/3_classes.md'
-    cat "$in" \
-        | sed 's/^\s*//' \
-        | sed -n -e '/^##/,/^[^#]/{ s/^[^#].*// ; s/^##\s*// ; p }' \
-                 -e '/^#\s.*/ { s/#/##/ ; s/$/\n/ ; p}' \
-                 -e '/^class.*/ { s/^class/# Classe/ ; s/:$/\n/ ; p }' \
-        | sed 's/^#/##/' \
-        > "$out"
+    ./doc.py > "$out"
 }
 
 build
