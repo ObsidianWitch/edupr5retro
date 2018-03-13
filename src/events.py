@@ -7,6 +7,7 @@ class Events:
     ##
     ## Un événement (`pygame.event.Event`) est constitué d'un type et
     ## d'attributs différents en fonction du type de l'événement.
+    ##
     ## | type             | dict              |
     ## | ---------------- | ----------------- |
     ## | QUIT             | none              |

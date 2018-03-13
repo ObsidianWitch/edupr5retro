@@ -16,7 +16,7 @@ build() {
     }
 
     discard_comments() {
-        sed -e '/^\s*#/d'
+        sed '/^\s*#/d'
     }
 
     out1='out/retro.full.py'
@@ -35,4 +35,17 @@ build() {
     cat "$out1" | discard_comments | discard_newlines >> "$out2"
 }
 
+doc() {
+    in='out/retro.full.py'
+    out='doc/3_classes.md'
+    cat "$in" \
+        | sed 's/^\s*//' \
+        | sed -n -e '/^##/,/^[^#]/{ s/^[^#].*// ; s/^##\s*// ; p }' \
+                 -e '/^#\s.*/ { s/#/##/ ; s/$/\n/ ; p}' \
+                 -e '/^class.*/ { s/^class/# Classe/ ; s/:$/\n/ ; p }' \
+        | sed 's/^#/##/' \
+        > "$out"
+}
+
 build
+doc
