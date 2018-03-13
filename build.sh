@@ -27,7 +27,7 @@ build() {
              'src/image.py' \
              'src/font.py' \
              'src/window.py' \
-             'src/event.py'
+             'src/events.py'
     do decorate "$f" 'discard_all'; done
 }
 

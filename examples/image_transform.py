@@ -2,7 +2,7 @@ import sys
 import pygame
 from src.constants import *
 from src.window import Window
-from src.event import Event
+from src.events import Events
 from src.image import Image
 
 window = Window(
@@ -10,7 +10,7 @@ window = Window(
     size      = (640, 480),
     framerate = 30,
 )
-events = Event()
+events = Events()
 
 obj1 = Image((100, 100)).draw_line(
     color     = GREEN,

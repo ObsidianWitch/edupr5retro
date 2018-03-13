@@ -2,7 +2,7 @@ import os
 import sys
 from src.constants import *
 from src.window import Window
-from src.event import Event
+from src.events import Events
 from src.image import Image
 
 window = Window(
@@ -10,7 +10,7 @@ window = Window(
     size      = (640, 480),
     framerate = 30,
 )
-events = Event()
+events = Events()
 
 spritesheet = Image.from_path(os.path.join(
     "examples", "data", "spritesheet.png"

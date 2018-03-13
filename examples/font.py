@@ -1,7 +1,7 @@
 import sys
 from src.constants import *
 from src.window import Window
-from src.event import Event
+from src.events import Events
 from src.font import Font
 
 window = Window(
@@ -9,7 +9,7 @@ window = Window(
     size      = (640, 480),
     framerate = 30,
 )
-events = Event()
+events = Events()
 
 font = Font(size = 42)
 
