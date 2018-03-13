@@ -2,9 +2,12 @@
 
 build() {
     decorate() {
-        echo "### begin $1" >> 'out/retro.py'
-        $2 "$1" >> 'out/retro.py'
-        echo "### end $1" >> 'out/retro.py'
+        cat
+        echo
+    }
+
+    discard_newlines() {
+        cat -s
     }
 
     discard_imports() {
@@ -16,19 +19,20 @@ build() {
         sed -e '/^\s*#/d'
     }
 
-    discard_all() {
-        cat "$1" | discard_imports | discard_comments
-    }
-
-    mkdir -p 'out'
-    echo -n > 'out/retro.py'
-    decorate 'src/constants.py' 'cat'
+    out1='out/retro.full.py'
+    mkdir -p `dirname "$out1"`
+    echo -n > "$out1"
+    cat 'src/constants.py' | discard_newlines | decorate >> "$out1"
     for f in 'src/rect.py' \
              'src/image.py' \
              'src/font.py' \
              'src/window.py' \
              'src/events.py'
-    do decorate "$f" 'discard_all'; done
+    do cat "$f" | discard_imports | discard_newlines | decorate >> "$out1"; done
+
+    out2='out/retro.py'
+    echo -n > "$out2"
+    cat "$out1" | discard_comments | discard_newlines >> "$out2"
 }
 
 build
