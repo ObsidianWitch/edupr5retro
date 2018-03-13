@@ -61,7 +61,6 @@ class Rect(pygame.Rect):
     ## size, width, height, w, h
     ## ~~~
 
-    # Disable
     __lt__ = property()
     __le__ = property()
     __gt__ = property()
