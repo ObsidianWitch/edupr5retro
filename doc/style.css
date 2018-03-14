@@ -1,0 +1,158 @@
+<style type="text/css">
+body {
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #444;
+
+    margin: auto;
+    padding: 0 10px;
+    max-width: 50em;
+}
+
+h1 { font-size: 2.0em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.2em; }
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.2;
+    font-weight: normal;
+}
+
+header h1.title {
+    font-weight: light;
+    border-bottom: 1px dashed #AAA;
+}
+
+p {
+    text-align: justify;
+}
+
+a {
+    color: #8066B3;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+table {
+    margin: 10px 0;
+    border-collapse: collapse;
+    background-color: #FFF;
+}
+
+table th {
+    padding: .4em 1em;
+    border: 1px solid #CCC;
+    text-align: left;
+}
+
+table td {
+    padding: .4em 1em;
+    border: 1px solid #CCC;
+}
+
+table tr:nth-child(2n) {
+    background-color: #F9F9F9;
+}
+
+nav {
+    background-color: #F9F9F9;
+    border: 1px solid #AAA;
+    padding: 0px 10px;
+}
+
+nav > ul, nav > ol {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+blockquote {
+    color: #777;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0 10px;
+    border-left: 2px solid #AAA;
+}
+
+blockquote.method {
+    color: #444;
+    background-color: #F9F9F9;
+    border: 1px solid #AAA;
+}
+
+/* inline code */
+code {
+    background-color: #E7E7E7;
+    padding: 0.1em 0.2em;
+}
+
+/* code block */
+pre {
+    color: #CCC;
+    background-color: #282c34;
+    line-height: 1.4;
+    padding: 10px;
+    overflow: auto;
+    border: 1px solid #AAA;
+}
+
+pre code {
+    background-color: inherit;
+    padding: 0;;
+}
+
+a.sourceLine {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+/* method prototype */
+pre.prototype {
+    color: #444;
+    background-color: #F9F9F9;
+    font-weight: bold;
+    border: none;
+    padding: 0 10px;
+    margin-bottom: 5px;
+    margin-left: 2px;
+    border-left: 2px solid #AAA;
+}
+
+code span.ch { color: #56b6c2; } /* Char */
+code span.sc { color: #56b6c2; } /* SpecialChar */
+code span.st { color: #98c379; } /* String */
+code span.ss { color: #98c379; } /* SpecialString */
+code span.vs { color: #98c379; } /* VerbatimString */
+
+code span.cn { color: #d19a66; } /* Constant */
+code span.bn { color: #d19a66; } /* BaseN */
+code span.dv { color: #d19a66; } /* DecVal */
+code span.fl { color: #d19a66; } /* Float */
+
+code span.co { color: #5c6370; } /* Comment */
+code span.cv { color: #5c6370; } /* CommentVar */
+code span.do { color: #5c6370; } /* Documentation */
+
+code span.bu { color: #56b6c2; } /* BuiltIn */
+code span.fu { color: #56b6c2; } /* Function */
+code span.an { color: #56b6c2; } /* Annotation */
+code span.at { color: #56b6c2; } /* Annotation */
+code span.im { color: #c678dd; } /* Import */
+code span.pp { color: #c678dd; } /* Preprocessor */
+code span.dt { color: #c678dd; } /* DataType */
+code span.kw { color: #c678dd; } /* Keyword */
+code span.cf { color: #c678dd; } /* ControlFlow */
+
+code span.va { } /* Variable */
+code span.at { } /* Attribute */
+code span.op { } /* Operator */
+code span.ot { } /* Other */
+
+code span.al { } /* Alert */
+code span.er { } /* Error */
+code span.in { } /* Information */
+code span.wa { } /* Warning */
+code span.ex { } /* Extension */
+</style>
