@@ -1,3 +1,4 @@
+import itertools
 import include.retro as retro
 from shared.sprite import Sprite
 from shared.timer import Timer
@@ -53,12 +54,11 @@ class AnimatedSprite(Sprite):
 
     @classmethod
     def from_spritesheet(cls, path, sprite_size, discard_color, animations):
-        return cls(
-            images = retro.Image.from_spritesheet(
-                path, sprite_size, discard_color
-            ),
-            animations = animations,
+        images = retro.Image.from_spritesheet(
+            path, sprite_size, discard_color
         )
+        images = list(itertools.chain(*images))
+        return cls(images, animations)
 
     def scale(self, ratio):
         self.images = [img.scale(ratio) for img in self.images]

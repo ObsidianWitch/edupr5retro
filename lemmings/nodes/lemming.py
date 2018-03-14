@@ -6,14 +6,14 @@ from lemmings.nodes.actions import Actions, STATES
 from lemmings.path import asset_path
 
 class Lemming(AnimatedSprite):
-    SPRITES = AnimatedSprite.from_spritesheet(
+    IMGS = AnimatedSprite.from_spritesheet(
         path          = asset_path("planche.png"),
         sprite_size   = (30, 30),
         discard_color = retro.RED,
         animations    = Animations({}, 0),
-    )
-    IMGS = [img.copy() for img in SPRITES.images] \
-         + [img.flip(x = True, y = False) for img in SPRITES.images]
+    ).images
+    IMGS = [img.copy() for img in IMGS] \
+         + [img.flip(x = True, y = False) for img in IMGS]
 
     def __init__(self, window, bg, position):
         self.window = window
