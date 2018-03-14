@@ -45,16 +45,21 @@ class Image:
 
         return cls.from_array(rgb_sprite)
 
-    ## from_spritesheet(str path, 2-tuple sprite_size, 3-tuple discard_color)
+    ## from_spritesheet(
+    ##     str path, 2-tuple sprite_size, 3-tuple discard_color
+    ## ) -> 2D-list
     ### Charge une image (spritesheet) à partie de son chemin `path`, et découpe
     ### celle-ci en sous-images de taille `sprite_size`. Les sous-images
     ### possédant la couleur `discard_color` au pixel (0, 0) sont éliminées.
+    ### Retourne une liste contenant une liste d'images pour chaque ligne de la
+    ### spritesheet.
     @classmethod
     def from_spritesheet(cls, path, sprite_size, discard_color):
         spritesheet = cls.from_path(path)
 
         images = []
         for y in range(spritesheet.rect.h // sprite_size[1]):
+            line = []
             for x in range(spritesheet.rect.w // sprite_size[0]):
                 img = spritesheet.subimage(Rect(
                     x * sprite_size[0], # x
@@ -63,7 +68,8 @@ class Image:
                     sprite_size[1],     # height
                 ))
                 if img[0, 0] == discard_color: break
-                images.append(img)
+                line.append(img)
+            images.append(line)
 
         return images
 

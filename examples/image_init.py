@@ -1,5 +1,6 @@
 import os
 import sys
+import itertools
 from src.constants import *
 from src.window import Window
 from src.events import Events
@@ -80,6 +81,7 @@ subimages = Image.from_spritesheet(
     sprite_size = (30, 30),
     discard_color = RED,
 )
+subimages = list(itertools.chain(*subimages))
 
 while 1:
     events.update()
