@@ -58,9 +58,9 @@ class Image:
         spritesheet = cls.from_path(path)
 
         images = []
-        for y in range(spritesheet.rect.h // sprite_size[1]):
+        for y in range(spritesheet.rect().h // sprite_size[1]):
             line = []
-            for x in range(spritesheet.rect.w // sprite_size[0]):
+            for x in range(spritesheet.rect().w // sprite_size[0]):
                 img = spritesheet.subimage(Rect(
                     x * sprite_size[0], # x
                     y * sprite_size[1], # y
@@ -86,6 +86,11 @@ class Image:
     ### actuelle.
     def subimage(self, area):
         return self.__class__(self.pygsurface.subsurface(area))
+
+    ## rect() -> Rect
+    ### Retourne un nouveau rectangle positionné en (0, 0) et de la taille de
+    ### l'image actuelle.
+    def rect(self): return Rect(self.pygsurface.get_rect())
 
     ## [int x, int y] -> pygame.Color
     ### Renvoie la couleur du pixel à la position spécifiée.
@@ -166,8 +171,8 @@ class Image:
     ### Mise à l'échelle de l'image.
     def scale(self, ratio):
         self.resize(size = (
-                int(self.rect.w * ratio),
-                int(self.rect.h * ratio),
+                int(self.rect().w * ratio),
+                int(self.rect().h * ratio),
         ))
         return self
 
@@ -176,11 +181,3 @@ class Image:
     def rotate(self, angle):
         self.pygsurface = pygame.transform.rotate(self.pygsurface, angle)
         return self
-
-    # Propriétés
-
-    ## rect -> Rect
-    ### Retourne un nouveau rectangle positionné en (0, 0) et de la taille de
-    ### l'image actuelle.
-    @property
-    def rect(self): return Rect(self.pygsurface.get_rect())

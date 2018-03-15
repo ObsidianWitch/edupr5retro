@@ -18,7 +18,7 @@ spritesheet = Image.from_path(os.path.join(
 spritesheet[0, 0] = GREEN
 assert spritesheet[0, 0] == GREEN
 
-background = Image(window.rect.size) \
+background = Image(window.rect().size) \
            .fill(WHITE) \
            .draw_img(spritesheet, (0, 0))
 

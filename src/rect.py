@@ -11,6 +11,7 @@ class Rect(pygame.Rect):
     ### Plusieurs propriétés permettent de bouger et d'aligner le rectangle
     ### (ex. `x`, `y`, `width`, `height` ; voir la sous-section propriétés pour
     ### la liste complète).
+    ###
     ### ~~~python
     ### r = Rect(0, 0, 7, 7) # -> <rect(0, 0, 7, 7)>
     ### r.topleft = (1, 1)   # -> <rect(1, 1, 7, 7)>
@@ -20,8 +21,10 @@ class Rect(pygame.Rect):
     ### r.topleft = r.center # -> <rect(4, 4, 7, 7)>
     ### ~~~
     ###
-    ### Il faut noter que les propriété `bottom` et `right` ne font pas partie
-    ### du rectangle. Ci-dessous un schéma des propriétés de position.
+    ### Il faut noter que les propriétés `bottom` et `right` décrivent des
+    ### positions en dehors du rectangle. Ci-dessous un schéma des
+    ### propriétés de position.
+    ###
     ### ~~~
     ### +-------+    | a: topleft     == (left, top) == (x, y)
     ### |a  b   |c   | b: midtop      == (centerx, top)

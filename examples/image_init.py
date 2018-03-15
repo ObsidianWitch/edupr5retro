@@ -49,7 +49,7 @@ ASCII_IMG = (
 
 
 s1 = Image((100, 100))
-s1_rect = s1.rect
+s1_rect = s1.rect()
 s1_rect.move(10, 10)
 print(s1.rect)
 print(s1_rect)
@@ -57,12 +57,12 @@ print(s1_rect)
 s2 = Image.from_path(os.path.join(
     "examples", "data", "img.png"
 ))
-s2_rect = s2.rect
+s2_rect = s2.rect()
 s2_rect.move(10, 110)
 s2_area = Rect(20, 10, 30, 30)
 
 s3 = Image.from_ascii(ASCII_IMG, PALETTE)
-s3_rect = s3.rect
+s3_rect = s3.rect()
 s3_rect.move(10, 150)
 
 s4 = s3.copy()
@@ -95,8 +95,8 @@ while 1:
           .draw_img(s5, s5_rect)
 
     for i, s in enumerate(subimages):
-        x = (i % 10) * (s.rect.width + 10) + 150
-        y = (i // 10) * (s.rect.height + 10)
+        x = (i % 10) * (s.rect().width + 10) + 150
+        y = (i // 10) * (s.rect().height + 10)
         window.draw_img(s, (x, y))
 
     print(events.mouse_pos())

@@ -16,8 +16,8 @@ font = Font(size = 42)
 txt1 = font.render(
     text = "Example 1",
 )
-txt1_rect = txt1.rect
-txt1_rect.midtop = window.rect.midtop
+txt1_rect = txt1.rect()
+txt1_rect.midtop = window.rect().midtop
 
 txt2 = font.render(
     text      = "Example 2",
@@ -25,8 +25,8 @@ txt2 = font.render(
     color     = RED,
     bgcolor   = BLACK,
 )
-txt2_rect = txt2.rect
-txt2_rect.center = window.rect.center
+txt2_rect = txt2.rect()
+txt2_rect.center = window.rect().center
 
 txt3 = font.render(
     text      = "Example 3",
@@ -34,8 +34,8 @@ txt3 = font.render(
     color     = BLUE,
     bgcolor   = GREEN,
 )
-txt3_rect = txt3.rect
-txt3_rect.midbottom = window.rect.midbottom
+txt3_rect = txt3.rect()
+txt3_rect.midbottom = window.rect().midbottom
 
 while 1:
     events.update()
