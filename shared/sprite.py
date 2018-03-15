@@ -23,7 +23,7 @@ class Group(list):
 class Sprite:
     def __init__(self, image):
         self.image = image
-        self.rect = self.image.rect
+        self.rect = self.image.rect()
         self.groups = []
 
     @classmethod
@@ -39,7 +39,7 @@ class Sprite:
 
     def scale(self, ratio):
         self.image.scale(ratio)
-        self.rect = self.image.rect.move(self.rect.topleft)
+        self.rect = self.image.rect().move(self.rect.topleft)
 
     def colorkey(self, color):
         self.image.colorkey(color)

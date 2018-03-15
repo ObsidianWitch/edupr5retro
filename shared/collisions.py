@@ -11,7 +11,7 @@ def circle_rect(circle, rect):
     return (right - left)
 
 def pixel_checker(surface, color):
-    def inside(p): return surface.rect.collidepoint(p)
+    def inside(p): return surface.rect().collidepoint(p)
 
     def check(p, offset):
         p = (p[0] + offset[0], p[1] + offset[1])

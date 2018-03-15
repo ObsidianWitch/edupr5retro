@@ -31,7 +31,7 @@ class StateRun:
             text  = f"{self.p1.score} - {self.p2.score}",
             color = retro.GREEN,
         ))
-        score.rect.midtop = self.window.rect.midtop
+        score.rect.midtop = self.window.rect().midtop
         score.rect.move(0, 10)
         score.draw(self.window)
 

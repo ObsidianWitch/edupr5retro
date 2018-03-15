@@ -35,7 +35,7 @@ class Enemy(Sprite):
             text  = f"{self.shoot_timer.remaining}",
             color = retro.WHITE,
         ))
-        shoot_timer.rect.midbottom = self.window.rect.midbottom
+        shoot_timer.rect.midbottom = self.window.rect().midbottom
         shoot_timer.draw(self.window)
 
     def draw_bg(self):

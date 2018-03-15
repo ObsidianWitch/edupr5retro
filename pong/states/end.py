@@ -11,7 +11,7 @@ class StateEnd:
             color   = retro.YELLOW,
             bgcolor = retro.RED,
         ))
-        self.txt.rect.center = self.window.rect.center
+        self.txt.rect.center = self.window.rect().center
 
     def run(self):
         # Update

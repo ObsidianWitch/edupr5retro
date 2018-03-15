@@ -18,7 +18,7 @@ class StateRun:
             text  = f"Score: {self.player.score}",
             color = retro.WHITE,
         ))
-        score.rect.topright = self.window.rect.topright
+        score.rect.topright = self.window.rect().topright
         score.rect.move(-10, 10)
         score.draw(self.window)
 

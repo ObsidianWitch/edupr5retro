@@ -23,7 +23,7 @@ class UI:
             len(self.icons) * self.selection.rect.width,
             self.selection.rect.height
         )
-        rect.midbottom = self.window.rect.midbottom
+        rect.midbottom = self.window.rect().midbottom
 
         for i, s in enumerate(self.icons):
             s.rect.top  = rect.top

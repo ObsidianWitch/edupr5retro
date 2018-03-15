@@ -6,7 +6,7 @@ class Ball:
         self.window = window
 
         self.circle = Circle(
-            center = [50, self.window.rect.h // 2],
+            center = [50, self.window.rect().h // 2],
             radius = 10,
         )
         self.dx = 3
@@ -19,8 +19,8 @@ class Ball:
     def speed(self): return (self.dx, self.dy)
 
     def bounce(self, dx_mul = 1, dy_mul = 1):
-        y_collision = not (0 <= self.circle.y <= self.window.rect.h)
-        x_collision = not (0 <= self.circle.x <= self.window.rect.w)
+        y_collision = not (0 <= self.circle.y <= self.window.rect().h)
+        x_collision = not (0 <= self.circle.x <= self.window.rect().w)
 
         if y_collision:
             self.dy *= -1

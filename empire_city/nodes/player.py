@@ -13,7 +13,7 @@ class Crosshair(Sprite):
         self.window = window
 
         Sprite.__init__(self, self.IMG)
-        self.rect.center = self.window.rect.center
+        self.rect.center = self.window.rect().center
 
     def draw(self):
         Sprite.draw(self, self.window)
@@ -26,7 +26,7 @@ class Ammunitions(Sprite):
         self.window = window
 
         Sprite.__init__(self, self.IMG)
-        self.rect.bottomleft = self.window.rect.bottomleft
+        self.rect.bottomleft = self.window.rect().bottomleft
 
         self.count = 12
 
@@ -42,7 +42,7 @@ class Hide(Sprite):
         self.window = window
 
         Sprite.__init__(self, self.IMG)
-        self.rect.center = self.window.rect.center
+        self.rect.center = self.window.rect().center
 
         self.hidden = False
 

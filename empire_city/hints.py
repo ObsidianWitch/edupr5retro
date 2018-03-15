@@ -11,8 +11,8 @@ class Hints:
             Sprite.from_path(asset_path("fleche_gauche.png")),
             Sprite.from_path(asset_path("fleche_droite.png")),
         )
-        self.sprites[0].rect.midleft  = self.window.rect.midleft
-        self.sprites[1].rect.midright = self.window.rect.midright
+        self.sprites[0].rect.midleft  = self.window.rect().midleft
+        self.sprites[1].rect.midright = self.window.rect().midright
 
     def draw_screen(self, player, enemy):
         if not enemy.alive: return

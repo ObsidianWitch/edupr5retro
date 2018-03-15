@@ -63,7 +63,7 @@ class AnimatedSprite(Sprite):
     def scale(self, ratio):
         self.images = [img.scale(ratio) for img in self.images]
         self.image  = self.images[0]
-        self.rect   = self.image.rect.move(self.rect.topleft)
+        self.rect   = self.image.rect().move(self.rect.topleft)
 
     def flip(self, xflip = False, yflip = False):
         self.images = [img.flip(xflip, yflip) for img in self.images]

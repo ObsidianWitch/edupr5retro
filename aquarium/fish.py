@@ -22,7 +22,7 @@ class Fish(Sprite):
     def move1(self):
         xnew = self.rect.x + self.dx
 
-        limits = range(50, 3 * self.window.rect.w // 4)
+        limits = range(50, 3 * self.window.rect().w // 4)
         if xnew not in limits: self.flip(xflip = True)
 
         self.rect.move(self.dx, 0)
@@ -33,8 +33,8 @@ class Fish(Sprite):
         ynew = self.rect.y + self.dy
 
         limits = lambda upper: range(20, upper - 100)
-        if xnew not in limits(self.window.rect.w):  self.flip(xflip = True)
-        if ynew not in limits(self.window.rect.h): self.flip(yflip = True)
+        if xnew not in limits(self.window.rect().w):  self.flip(xflip = True)
+        if ynew not in limits(self.window.rect().h): self.flip(yflip = True)
 
         self.rect.move(self.dx, self.dy)
 

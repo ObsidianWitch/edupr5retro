@@ -18,7 +18,7 @@ def game():
     window.fill(retro.WHITE) \
           .draw_rect(
               color = retro.GREEN,
-              rect  = window.rect,
+              rect  = window.rect(),
               width = 5,
           )
     ball.draw()

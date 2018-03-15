@@ -12,8 +12,8 @@ class Paddle:
         if side == self.SIDE.LEFT:
             self.rect.left = offset
         elif side == self.SIDE.RIGHT:
-            self.rect.right = window.rect.w - offset
-        self.rect.centery = window.rect.h // 2
+            self.rect.right = window.rect().w - offset
+        self.rect.centery = window.rect().h // 2
 
         self.dy = 2
         self.score = 0
@@ -30,8 +30,8 @@ class Paddle:
     def walls_collision(self):
         if self.rect.top < 0:
             self.rect.top = 0
-        if self.rect.bottom > self.window.rect.h:
-            self.rect.bottom = self.window.rect.h
+        if self.rect.bottom > self.window.rect().h:
+            self.rect.bottom = self.window.rect().h
 
     def update(self):
         self.move()

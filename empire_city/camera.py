@@ -6,18 +6,18 @@ class Camera:
         self.window = window
         self.bg = bg
 
-        self.display_zone = window.rect.move(position)
+        self.display_zone = window.rect().move(position)
 
         offset = 20
-        self.scroll_zone_up = retro.Rect(0, 0, window.rect.w, offset)
+        self.scroll_zone_up = retro.Rect(0, 0, window.rect().w, offset)
 
         self.scroll_zone_down = self.scroll_zone_up.copy()
-        self.scroll_zone_down.bottomleft = (0, window.rect.h)
+        self.scroll_zone_down.bottomleft = (0, window.rect().h)
 
-        self.scroll_zone_left = retro.Rect(0, 0, offset, window.rect.h)
+        self.scroll_zone_left = retro.Rect(0, 0, offset, window.rect().h)
 
         self.scroll_zone_right = self.scroll_zone_left.copy()
-        self.scroll_zone_right.topright = (window.rect.w, 0)
+        self.scroll_zone_right.topright = (window.rect().w, 0)
 
         self.speed = 10
 
