@@ -34,8 +34,8 @@ class Events:
     ## ~~~{.python .prototype}
     ## event(int type) -> pygame.event.Event
     ## ~~~
-    ## Cherche un événement du type spécifié. Retourne le premier événement
-    ## trouvé ou `None`.
+    ## Cherche un événement du [`type`](#événements) spécifié.
+    ## Retourne le premier événement trouvé ou `None`.
     def event(self, type):
         for e in self.events:
             if e.type == type: return e
@@ -43,7 +43,8 @@ class Events:
     ## ~~~{.python .prototype}
     ## key_press(int key) -> bool
     ## ~~~
-    ## Retourne si la touche du clavier spécifiée vient d'être enfoncée.
+    ## Retourne si la [touche du clavier](#clavier) spécifiée vient d'être
+    ## enfoncée.
     def key_press(self, key):
         for e in self.events:
             if (e.type == pygame.KEYDOWN) and (e.key == key): return True
@@ -52,14 +53,16 @@ class Events:
     ## ~~~{.python .prototype}
     ## key_hold(int key) -> bool
     ## ~~~
-    ## Retourne si la touche du clavier spécifiée est maintenue enfoncée.
+    ## Retourne si la [touche du clavier](#clavier) spécifiée est maintenue
+    ## enfoncée.
     def key_hold(self, key):
         return self.keyheld[key]
 
     ## ~~~{.python .prototype}
     ## key_release(int key) -> bool
     ## ~~~
-    ## Retourne si la touche du clavier spécifiée vient d'être relâchée.
+    ## Retourne si la [touche du clavier](#clavier) spécifiée vient d'être
+    ## relâchée.
     def key_release(self, key):
         for e in self.events:
             if (e.type == pygame.KEYUP) and (e.key == key): return True
@@ -68,7 +71,7 @@ class Events:
     ## ~~~{.python .prototype}
     ## mouse_press(int button = None) -> bool
     ## ~~~
-    ## Retourne si un bouton de la souris vient d'être enfoncé.
+    ## Retourne si un [bouton de la souris](#souris) vient d'être enfoncé.
     def mouse_press(self, button = None):
         for e in self.events:
             if (e.type == pygame.MOUSEBUTTONDOWN):
@@ -79,7 +82,7 @@ class Events:
     ## ~~~{.python .prototype}
     ## mouse_hold(int button = None) -> bool
     ## ~~~
-    ## Retourne si un bouton de la souris est maintenu enfoncé.
+    ## Retourne si un [bouton de la souris](#souris) est maintenu enfoncé.
     def mouse_hold(self, button = None):
         if any(self.mouseheld):
             if button is None: return True
@@ -89,7 +92,7 @@ class Events:
     ## ~~~{.python .prototype}
     ## mouse_release(int button = None) -> bool
     ## ~~~
-    ## Retourne si un bouton de la souris vient d'être relâché.
+    ## Retourne si un [bouton de la souris](#souris) vient d'être relâché.
     def mouse_release(self, button = None):
         for e in self.events:
             if (e.type == pygame.MOUSEBUTTONUP):

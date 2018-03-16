@@ -7,9 +7,9 @@ QUIT
 USEREVENT
 ~~~
 
-La liste ci-dessus est tronquée avec les constantes les plus utiles pour cette
-unité. Vous pouvez trouver la liste complète dans la documentation du module
-[pygame.event](https://www.pygame.org/docs/ref/event.html).
+La liste ci-dessus est tronquée et contient les constantes les plus utiles pour
+cette unité. Vous pouvez trouver la liste complète dans la documentation du
+module [pygame.event](https://www.pygame.org/docs/ref/event.html).
 Les événements de souris et de clavier sont gérés par les méthodes dédiées dans
 la classe [Events](#classe-events).
 
@@ -31,9 +31,9 @@ la classe [Events](#classe-events).
 | K_RETURN        | entrée                |
 ~~~
 
-La liste ci-dessus est tronquée avec les constantes les plus utiles pour cette
-unité. Vous pouvez trouver la liste complète dans la documentation du module
-[pygame.key](https://www.pygame.org/docs/ref/key.html).
+La liste ci-dessus est tronquée et contient les constantes les plus utiles pour
+cette unité. Vous pouvez trouver la liste complète dans la documentation du
+module [pygame.key](https://www.pygame.org/docs/ref/key.html).
 
 ## Souris
 
