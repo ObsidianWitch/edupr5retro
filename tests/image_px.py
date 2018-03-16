@@ -13,7 +13,7 @@ window = Window(
 events = Events()
 
 spritesheet = Image.from_path(os.path.join(
-    "examples", "data", "spritesheet.png"
+    "tests", "data", "spritesheet.png"
 ))
 spritesheet[0, 0] = GREEN
 assert spritesheet[0, 0] == GREEN

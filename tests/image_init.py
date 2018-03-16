@@ -55,7 +55,7 @@ print(s1.rect)
 print(s1_rect)
 
 s2 = Image.from_path(os.path.join(
-    "examples", "data", "img.png"
+    "tests", "data", "img.png"
 ))
 s2_rect = s2.rect()
 s2_rect.move(10, 110)
@@ -76,7 +76,7 @@ s5.draw_line(GREEN, (0, 0), (30, 30))
 
 subimages = Image.from_spritesheet(
     path = os.path.join(
-        "examples", "data", "spritesheet.png"
+        "tests", "data", "spritesheet.png"
     ),
     sprite_size = (30, 30),
     discard_color = RED,
