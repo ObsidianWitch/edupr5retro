@@ -12,10 +12,8 @@ class Events:
     ## l'événement. Si vous souhaitez obtenir plus de détails, veuillez vous
     ## référer à la documentation du module
     ## [pygame.event](https://www.pygame.org/docs/ref/event.html).
-    ##
-    ## Les constantes des touches du clavier débutent par `K_`.
-    ## Les constantes des boutons de la souris débutent par `M_`.
-    ## Se référer à la section [Constantes](#constantes) de la documentation.
+    ## La liste des événements est disponible dans la section
+    ## [Constantes](#événements).
     def __init__(self):
         pass
 

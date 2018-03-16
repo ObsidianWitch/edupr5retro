@@ -4,7 +4,7 @@ title: Module retro
 
 `retro` est un module se basant sur le module `pygame`. Son but est de
 simplifier l'utilisation de ce dernier et d'apporter des fonctions utiles pour
-cette unité.
+l'atelier retrogaming.
 
 # Dépendances
 

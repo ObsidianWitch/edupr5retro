@@ -113,11 +113,12 @@ class Image:
     ## [int x, int y] -> pygame.Color
     ## ~~~
     ## Renvoie la couleur du pixel à la position spécifiée.
-    ## ```python
+    ##
+    ## ~~~python
     ## # Exemple
     ## i = Image((20, 20))
     ## print(i[0, 0]) # (0, 0, 0, 255)
-    ## ```
+    ## ~~~
     def __getitem__(self, pos):
         return self.pygsurface.get_at(pos)
 
@@ -125,12 +126,13 @@ class Image:
     ## [int x, int y] = 3-tuple color
     ## ~~~
     ## Définit la couleur du pixel à la position spécifiée.
-    ## ```python
+    ##
+    ## ~~~python
     ## # Exemple
     ## i = Image((20, 20))
     ## i[0, 0] = (0, 255, 0)
     ## print(i[0, 0]) # (0, 255, 0, 255)
-    ## ```
+    ## ~~~
     def __setitem__(self, pos, color):
         self.pygsurface.set_at(pos, color)
 
