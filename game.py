@@ -35,7 +35,7 @@ class Ground(Sprite):
     def draw(self):
         Sprite.draw(self, self.window)
 
-class Pipes:
+class Pipes(list):
     IMG_BOTTOM = retro.Image.from_path(assets("pipe.png"))
     IMG_TOP = IMG_BOTTOM.copy().flip(x = True, y = True)
     GAP_HEIGHT = 100
@@ -43,13 +43,13 @@ class Pipes:
 
     def __init__(self, window):
         self.window = window
-        self.lst = []
+        list.__init__(self)
         self.generate()
         self.generate()
 
     def generate(self):
-        x = self.window.rect().right if not self.lst else \
-            self.lst[-1].top.rect.x + (self.window.rect().right // 2)
+        x = self.window.rect().right if not self else \
+            self[-1].top.rect.x + (self.window.rect().right // 2)
         y = random.randrange(
             self.OFFSET_HEIGHT,
             self.window.rect().height
@@ -66,21 +66,21 @@ class Pipes:
         bot.rect.top = y + self.GAP_HEIGHT
         bot.rect.left = x
 
-        self.lst.append(types.SimpleNamespace(top = top, bot = bot))
+        self.append(types.SimpleNamespace(top = top, bot = bot))
 
     def update(self):
-        for pipe in self.lst:
+        for pipe in self:
             pipe.top.rect.x -= Ground.SPEED
             pipe.bot.rect.x -= Ground.SPEED
 
-        leftmost_rect = self.lst[0].top.rect
+        leftmost_rect = self[0].top.rect
         # generate new pipe when the leftmost pipe starts to disappear
-        if (len(self.lst) == 2) and (leftmost_rect.left < 0): self.generate()
+        if (len(self) == 2) and (leftmost_rect.left < 0): self.generate()
         # delete leftmost pipe when it goes out of screen
-        if leftmost_rect.right <= 0: del self.lst[0]
+        if leftmost_rect.right <= 0: del self[0]
 
     def draw(self):
-        for pipe in self.lst:
+        for pipe in self:
             pipe.top.draw(self.window)
             pipe.bot.draw(self.window)
 
@@ -132,7 +132,7 @@ class Game:
         self.bird.update()
 
         self.finished = self.bird.collide(
-            self.pipes.lst[0].top, self.pipes.lst[0].bot, self.ground
+            self.pipes[0].top, self.pipes[0].bot, self.ground
         )
 
         # Draw
