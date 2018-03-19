@@ -1,4 +1,3 @@
-import sys
 import os
 import types
 import random
@@ -89,78 +88,55 @@ class Bird(Sprite):
     DEFAULT_SPEED = -9
     MAX_SPEED = 9
 
-    def __init__(self, Window):
+    def __init__(self, window):
         Sprite.__init__(self, self.IMG)
         self.window = window
         self.rect.center = (75, self.window.rect().centery)
         self.accel_y = 1
         self.flap()
         self.travelled = 0
+        self.alive = True
 
     def flap(self):
         self.speed_y = self.DEFAULT_SPEED
 
     def update(self):
-        self.speed_y += self.accel_y
-        self.speed_y = min(self.speed_y, self.MAX_SPEED)
-        self.rect.y += self.speed_y
-        self.travelled += 1
+        if self.alive:
+            self.speed_y += self.accel_y
+            self.speed_y = min(self.speed_y, self.MAX_SPEED)
+            self.rect.y += self.speed_y
+            self.travelled += 1
 
     def draw(self):
-        Sprite.draw(self, self.window)
+        if self.alive: Sprite.draw(self, self.window)
 
 class Game:
-    def __init__(self, window, events):
+    def __init__(self, window, nbirds):
         self.window = window
-        self.events = events
+        self.nbirds = nbirds
 
         self.bg = retro.Image.from_path(assets("bg.png"))
         self.ground = Ground(window)
         self.pipes = Pipes(window)
-        self.bird = Bird(window)
+        self.birds = [Bird(window) for i in range(nbirds)]
 
         self.finished = False
 
     def run(self):
         # Update
-        self.events.update()
-        if self.events.event(retro.QUIT): sys.exit()
-        if self.events.key_press(retro.K_SPACE): self.bird.flap()
-
         self.pipes.update()
         self.ground.update()
-        self.bird.update()
+        for b in self.birds: b.update()
 
-        self.finished = self.bird.collide(
+        for b in self.birds: b.alive = not b.collide(
             self.pipes[0].top, self.pipes[0].bot, self.ground
         )
+        self.finished = all(not b.alive for b in self.birds)
 
         # Draw
         self.window.draw_img(self.bg, (0, 0))
         self.pipes.draw()
         self.ground.draw()
-        self.bird.draw()
+        for b in self.birds: b.draw()
 
-        self.window.update()
-
-    def end(self):
-        # Update
-        self.events.update()
-        if self.events.event(retro.QUIT): sys.exit()
-        if self.events.key_press(retro.K_SPACE):
-            self.__init__(self.window, self.events)
-
-        # Draw
-        self.window.update()
-
-window = retro.Window(
-    title = "Flappy Bird",
-    size  = (288, 512),
-)
-events = retro.Events()
-
-game = Game(window, events)
-
-while 1:
-    if not game.finished: game.run()
-    else: game.end()
+    def reset(self): self.__init__(self.window, self.nbirds)
