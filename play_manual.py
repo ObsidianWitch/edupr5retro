@@ -15,7 +15,8 @@ while 1:
     if events.event(retro.QUIT): sys.exit()
 
     if not game.finished:
-        if events.key_press(retro.K_SPACE): game.birds[0].flap()
+        b = game.birds[0]
+        if events.key_press(retro.K_SPACE): b.flap()
         game.run()
     else:
         game.reset()
