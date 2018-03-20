@@ -55,7 +55,7 @@ class NNPool(list):
             reverse = True,
         )
 
-        # keep 4/10th of the pool with the best fitness
+        # keep 2/10th of the pool with the best fitness
         nkeep = math.ceil(0.2 * len(game.birds))
         best = [self[i] for i in isorted[0:nkeep]]
 
@@ -81,9 +81,7 @@ window = retro.Window(
     framerate = 100,
 )
 events = retro.Events()
-
 game = Game(window, nbirds = 10)
-
 pool = NNPool(size = len(game.birds))
 
 while 1:
