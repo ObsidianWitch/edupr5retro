@@ -3,8 +3,9 @@ import sys
 from game import Game
 
 window = retro.Window(
-    title = "Flappy Bird",
-    size  = (288, 512),
+    title     = "Flappy Bird",
+    size      = (288, 512),
+    framerate = 100,
 )
 events = retro.Events()
 
@@ -16,8 +17,7 @@ while 1:
 
     if not game.finished:
         b = game.birds[0]
-        v_distance = b.rect.y - game.target.centery
-        if v_distance + b.speed_y > 0: b.flap()
+        if game.target.centery - b.rect.y < 0: b.flap()
         game.run()
     else:
         game.reset()
