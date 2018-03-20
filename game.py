@@ -143,7 +143,7 @@ class Game:
         if b.rect.left > self.target.centerx: self.target = self.pipes[1]
 
         ## collision between birds, ground, sky and nearest pipe
-        for b in self.birds: b.alive = (not b.collide(
+        for b in self.birds: b.alive = b.alive and (not b.collide(
             self.target.ptop, self.target.pbot, self.ground
         )) and (not b.rect.y < 0)
         self.finished = all(not b.alive for b in self.birds)
