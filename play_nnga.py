@@ -41,10 +41,10 @@ class NNPool(list):
 
     @classmethod
     def mutate(cls, w):
-        for i in range(len(w[0])):
-            if random.uniform(0, 1) < 0.15:
-                change = random.uniform(-0.5, 0.5)
-                w[0][i] += change
+        for i in range(len(w)):
+            for j in range(len(w[i])):
+                if random.uniform(0, 1) < 0.15:
+                    w[i][j] += random.uniform(-0.5, 0.5)
         return w
 
     def evolve(self):
