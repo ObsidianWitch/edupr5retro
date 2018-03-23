@@ -1,0 +1,27 @@
+buildscript {
+    ext {
+        kotlin_version = '1.2.30'
+        gdx_version = '1.9.8'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'kotlin'
+sourceSets { main.kotlin.srcDirs += 'src' }
+
+apply plugin: 'application'
+mainClassName = 'pacman.MainKt'
+
+repositories { mavenCentral() }
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "com.badlogicgames.gdx:gdx:$gdx_version"
+    compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdx_version"
+    compile "com.badlogicgames.gdx:gdx-platform:$gdx_version:natives-desktop"
+}
