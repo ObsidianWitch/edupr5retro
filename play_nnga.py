@@ -62,8 +62,11 @@ class NNPool(list):
                         nn[i][j][k] += random.uniform(-0.5, 0.5)
         return nn
 
+    # Evolve a population of NNs based on the fitness retrieved from associated
+    # `units`. Returns the best fitness from the generation before the
+    # evolution.
     def evolve(self, units):
-        # birds' indexes sorted by fitness
+        # units' indexes sorted by fitness
         isorted = sorted(
             range(len(units)),
             key     = lambda i: units[i].fitness,
@@ -75,7 +78,7 @@ class NNPool(list):
         nbest = math.ceil(0.2 * len(self))
         best = [self[i] for i in isorted[0 : nbest]]
 
-        # 6/10th of the new pool will contain evolved NNs
+        # 8/10th of the new pool will contain evolved NNs
         # 1. crossover of two different random best
         # 2. mutate the new weights
         nevolve = math.ceil(0.8 * len(self))
@@ -106,8 +109,8 @@ while 1:
 
     if not game.finished:
         for i, b in enumerate(game.birds):
-            if ANALYSIS and b.fitness >= 1000:
-                print(b.fitness)
+            if ANALYSIS and b.fitness >= 10000:
+                print(pool.generation, b.fitness)
                 sys.exit()
 
             if b.alive and pool[i].predict(
@@ -119,8 +122,8 @@ while 1:
         best_fitness = pool.evolve(game.birds)
 
         if ANALYSIS:
-            print(best_fitness)
-            if pool.generation >= 50: sys.exit()
+            print(pool.generation - 1, best_fitness)
+            if pool.generation - 1 >= 50: sys.exit()
 
         game.reset()
 
