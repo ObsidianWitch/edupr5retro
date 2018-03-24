@@ -1,51 +1,64 @@
 import random
 import math
 import sys
+import copy
 import retro
 from game import Game
 
-import numpy as np
-from keras.models import Sequential
-from keras.layers import Dense, Activation
-from keras.optimizers import SGD
+class NN(list):
+    def __init__(self, *args):
+        def genw(): return [
+            genw_neurons(i) for i,_ in enumerate(args[0:-1])
+        ]
+        def genw_neurons(i): return [
+            genw_values(i) for _ in range(args[i + 1])
+        ]
+        def genw_values(i): return [
+            random.uniform(-1.0, 1.0) for _ in range(args[i])
+        ]
+        list.__init__(self, genw())
 
-class NN(Sequential):
-    def __init__(self):
-        Sequential.__init__(self)
-        self.add(Dense(input_dim = 2, units = 1))
-        self.add(Activation("sigmoid"))
+    def predict(self, *inputs):
+        def sigmoid(x): return 1 / (1 + math.exp(-x))
+        def dot(v1, v2): return sum(v1[i] * v2[i] for i, _ in enumerate(v1))
 
-        sgd = SGD(lr = 0.01, decay = 1e-6, momentum = 0.9, nesterov = True)
-        self.compile(loss = "mse", optimizer = sgd, metrics = ["accuracy"])
+        values = inputs
+        for w in self: values = [
+            sigmoid(dot(values, n)) for n in w
+        ]
 
-    def predict(self, birdy, targety):
-        birdy = birdy / window.rect().height
-        targety = targety / window.rect().height
-
-        neural_input = np.asarray([birdy, targety])
-        neural_input = np.atleast_2d(neural_input)
-        output_prob = Sequential.predict(self, neural_input, 1)[0]
-        return (output_prob[0] >= 0.5)
+        return values
 
 class NNPool(list):
-    def __init__(self, size):
-        list.__init__(self, [NN() for i in range(size)])
+    def __init__(self, size, arch):
+        list.__init__(self, [NN(*arch) for i in range(size)])
+        self.arch = arch
         self.generation = 1
 
     @classmethod
-    def crossover(cls, m1, m2):
-        w1 = m1.get_weights()
-        w2 = m2.get_weights()
-        w1[0][0], w2[0][0] = np.copy(w2[0][0]), np.copy(w1[0][0])
-        return np.asarray([w1, w2])
+    def crossover(cls, nn1, nn2):
+        nn3 = copy.deepcopy(nn1)
+        nn4 = copy.deepcopy(nn2)
+
+        if len(nn3[0][0]) == 1:
+            pass
+        elif len(nn3[0]) == 1:
+            nn3[0][0][0], nn4[0][0][0] = nn4[0][0][0], nn3[0][0][0]
+        elif len(nn3) == 1:
+            nn3[0][0], nn4[0][0] = nn4[0][0], nn3[0][0]
+        else:
+            nn3[0], nn4[0] = nn4[0], nn3[0]
+
+        return (nn3, nn4)
 
     @classmethod
-    def mutate(cls, w):
-        for i in range(len(w)):
-            for j in range(len(w[i])):
-                if random.uniform(0, 1) < 0.15:
-                    w[i][j] += random.uniform(-0.5, 0.5)
-        return w
+    def mutate(cls, nn):
+        for i, _ in enumerate(nn):
+            for j, _ in enumerate(nn[i]):
+                for k, _ in enumerate(nn[i][j]):
+                    if random.uniform(0, 1) < 0.15:
+                        nn[i][j][k] += random.uniform(-0.5, 0.5)
+        return nn
 
     def evolve(self):
         # birds' indexes sorted by fitness
@@ -55,22 +68,22 @@ class NNPool(list):
             reverse = True,
         )
 
-        # keep 2/10th of the pool with the best fitness
-        nkeep = math.ceil(0.2 * len(game.birds))
-        best = [self[i] for i in isorted[0:nkeep]]
+        # 2/10th of the new pool will contain the best NNs from the previous
+        # generation
+        nbest = math.ceil(0.2 * len(game.birds))
+        best = [self[i] for i in isorted[0 : nbest]]
 
-        # evolve the rest of the pool
+        # 6/10th of the new pool will contain evolved NNs
         # 1. crossover of two different random best
         # 2. mutate the new weights
-        nevolve  = len(game.birds) - nkeep
+        nevolve = math.ceil(0.8 * len(game.birds))
         evolve = []
         for i in range(nevolve // 2):
-            new_weights = self.crossover(*random.sample(best, 2))
-            evolve.append(self.mutate(new_weights[0]))
-            evolve.append(self.mutate(new_weights[1]))
+            new_nns = self.crossover(*random.sample(best, 2))
+            evolve.append(self.mutate(new_nns[0]))
+            evolve.append(self.mutate(new_nns[1]))
 
-        for i, m in enumerate(best): self[i].set_weights(m.get_weights())
-        for i, w in enumerate(evolve): self[i + len(best)].set_weights(w)
+        list.__init__(self, best + evolve)
 
         self.generation += 1
         return
@@ -78,11 +91,11 @@ class NNPool(list):
 window = retro.Window(
     title     = "Flappy Bird",
     size      = (288, 512),
-    framerate = 100,
+    framerate = 10000,
 )
 events = retro.Events()
-game = Game(window, nbirds = 10)
-pool = NNPool(size = len(game.birds))
+game = Game(window, nbirds = 50)
+pool = NNPool(size = len(game.birds), arch = (2, 1))
 
 while 1:
     events.update()
@@ -91,8 +104,9 @@ while 1:
     if not game.finished:
         for i, b in enumerate(game.birds):
             if b.alive and pool[i].predict(
-                b.rect.y, game.target.centery
-            ): b.flap()
+                b.rect.y / window.rect().height,
+                game.target.centery / window.rect().height,
+            )[0] > 0.5: b.flap()
         game.run()
     else:
         pool.evolve()
