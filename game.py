@@ -1,14 +1,33 @@
+import os
 import retro
-import sys
 
-window = retro.Window(
-    title = "Pacman",
-    size  = (400, 400),
-)
-events = retro.Events()
+def assets(filename): return os.path.join("assets", filename)
 
-while 1:
-    events.update()
-    if events.event(retro.QUIT): sys.exit()
+class Sprite:
+    def __init__(self, image):
+        self.image = image
+        self.rect = self.image.rect()
 
-    window.update()
+    def collide(self, *args):
+        for elem in args:
+            if self.rect.colliderect(elem): return True
+        return False
+
+    def update(self): pass
+    def draw(self, image): image.draw_img(self.image, self.rect)
+
+class Game:
+    MAZE_IMG = retro.Image.from_path(assets("maze.png"))
+
+    def __init__(self, window):
+        self.window = window
+        self.maze = Sprite(self.MAZE_IMG.copy())
+        self.maze.rect.bottom = self.window.rect().bottom
+
+    def run(self):
+        # Update
+        # TODO
+
+        # Draw
+        self.window.fill(retro.BLACK)
+        self.maze.draw(self.window)
