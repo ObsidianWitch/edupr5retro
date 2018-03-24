@@ -100,7 +100,7 @@ class Bird(Sprite):
     def __init__(self, window):
         Sprite.__init__(self, self.IMG)
         self.window = window
-        self.travelled = 0
+        self.fitness = 0
         self.alive = True
         self.rect.center = (75, self.window.rect().centery)
         self.accel_y = 1
@@ -114,7 +114,7 @@ class Bird(Sprite):
             self.speed_y += self.accel_y
             self.speed_y = min(self.speed_y, self.MAX_SPEED)
             self.rect.y += self.speed_y
-            self.travelled += 1
+            self.fitness += 1
 
     def draw(self):
         if self.alive: Sprite.draw(self, self.window)
