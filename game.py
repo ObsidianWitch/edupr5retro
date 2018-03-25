@@ -6,7 +6,7 @@ def assets(filename): return os.path.join("assets", filename)
 
 class Collisions:
     @classmethod
-    def pixel_checker(cls, image, color):
+    def pixels(cls, image, dir, rect, color):
         def inside(p): return image.rect().collidepoint(p)
 
         def check(p, offset):
@@ -14,22 +14,28 @@ class Collisions:
             if not inside(p): return None
             return (image[p] == color)
 
-        return check
-
-    @classmethod
-    def pixel_vertices(cls, image, rect, color):
-        check = cls.pixel_checker(image, color)
-
-        return types.SimpleNamespace(
-            up    = check(rect.topleft,     ( 0, -1))
-                 or check(rect.topright,    (-1, -1)),
-            down  = check(rect.bottomleft,  ( 0,  0))
-                 or check(rect.bottomright, (-1,  0)),
-            left  = check(rect.topleft,     (-1,  0))
-                 or check(rect.bottomleft,  (-1, -1)),
-            right = check(rect.topright,    ( 0,  0))
-                 or check(rect.bottomright, ( 0, -1)),
+        # TODO simplify
+        if dir == [-1, 0]: return (
+            check(rect.topleft,       (-1,  0))
+            or check(rect.midleft,    (-1,  0))
+            or check(rect.bottomleft, (-1, -1))
         )
+        elif dir == [1, 0]: return (
+            check(rect.topright,       ( 0,  0))
+            or check(rect.midright,    ( 0,  0))
+            or check(rect.bottomright, ( 0, -1))
+        )
+        elif dir == [0, -1]: return (
+            check(rect.topleft,     ( 0, -1))
+            or check(rect.midtop,   ( 0, -1))
+            or check(rect.topright, (-1, -1))
+        )
+        elif dir == [0, 1]: return (
+            check(rect.bottomleft,      ( 0,  0))
+             or check(rect.midbottom,   ( 0,  0))
+             or check(rect.bottomright, (-1,  0))
+        )
+        else: return False
 
 class Maze(retro.Sprite):
     IMG = retro.Image.from_path(assets("maze.png"))
@@ -43,27 +49,36 @@ class Player(retro.Sprite):
     def __init__(self):
         retro.Sprite.__init__(self, self.IMG)
         self.rect.move(208, 264)
-        self.speed = [0, 0]
+        self.nxtdir = [0, 0]
+        self.curdir = [0, 0]
 
     def collide(self, maze):
-        collisions = Collisions.pixel_vertices(
+        curcol = Collisions.pixels(
             image = maze.image,
+            dir   = self.curdir,
+            rect  = self.rect,
+            color = Maze.C_WALL,
+        )
+        nxtcol = Collisions.pixels(
+            image = maze.image,
+            dir   = self.nxtdir,
             rect  = self.rect,
             color = Maze.C_WALL,
         )
 
-        if   collisions.up    is None: self.rect.bottom = maze.rect.bottom
-        elif collisions.down  is None: self.rect.top    = maze.rect.top
-        elif collisions.left  is None: self.rect.right  = maze.rect.right
-        elif collisions.right is None: self.rect.left   = maze.rect.left
+        if curcol is None:
+            if self.curdir[0]: self.rect.centerx = abs(
+                self.rect.centerx - maze.rect.w
+            )
+            if self.curdir[1]: self.rect.centery = abs(
+                self.rect.centery - maze.rect.h
+            )
+        if curcol: self.curdir = [0, 0]
+        if not nxtcol: self.curdir = self.nxtdir
 
-        if collisions.up    and (self.speed[1] == -1): self.speed[1] = 0
-        if collisions.down  and (self.speed[1] ==  1): self.speed[1] = 0
-        if collisions.left  and (self.speed[0] == -1): self.speed[0] = 0
-        if collisions.right and (self.speed[0] ==  1): self.speed[0] = 0
 
     def update(self):
-        self.rect.move(self.speed)
+        self.rect.move(self.curdir)
 
 class Game:
     def __init__(self, window):
@@ -77,6 +92,5 @@ class Game:
         self.player.update()
 
         # Draw
-        self.window.fill(retro.BLACK)
         self.maze.draw(self.window)
         self.player.draw(self.window)
