@@ -1,7 +1,7 @@
 import types
 import include.retro as retro
 import shared.collisions
-from shared.animated_sprite import AnimatedSprite, Animations
+from shared.sprite import AnimatedSprite
 from lemmings.nodes.actions import Actions, STATES
 from lemmings.path import asset_path
 
@@ -10,7 +10,7 @@ class Lemming(AnimatedSprite):
         path          = asset_path("planche.png"),
         sprite_size   = (30, 30),
         discard_color = retro.RED,
-        animations    = Animations({}, 0),
+        animations    = retro.Animations({}, 0),
     ).images
     IMGS = [img.copy() for img in IMGS] \
          + [img.flip(x = True, y = False) for img in IMGS]
@@ -22,7 +22,7 @@ class Lemming(AnimatedSprite):
         AnimatedSprite.__init__(
             self       = self,
             images     = self.IMGS,
-            animations = Animations(
+            animations = retro.Animations(
                 data = {
                     "WALK_L":  range(0, 8),
                     "WALK_R":  range(0 + 133, 8 + 133),

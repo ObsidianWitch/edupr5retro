@@ -2,8 +2,7 @@ import random
 import include.retro as retro
 import shared.math
 from shared.directions import Directions
-from shared.sprite import Sprite, Group
-from shared.timer import Timer
+from shared.sprite import Sprite
 from empire_city.path import asset_path
 
 class Crosshair(Sprite):
@@ -58,7 +57,7 @@ class Explosion(Sprite):
     def __init__(self, center):
         Sprite.__init__(self, self.IMG)
         self.rect.center = center
-        self.timer = Timer(2)
+        self.timer = retro.Timer(2)
 
     def update(self):
         if self.timer.finished: self.kill()
@@ -72,7 +71,7 @@ class Player:
         self.crosshair = Crosshair(self.window)
         self.ammunitions = Ammunitions(self.window)
         self.hide = Hide(self.window)
-        self.explosions = Group()
+        self.explosions = retro.Group()
 
         self.speed = 10
 

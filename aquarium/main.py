@@ -1,7 +1,8 @@
 import os
+import include.retro as retro
 from aquarium.fish import Fish
 from shared.window import Window
-from shared.sprite import Sprite, Group
+from shared.sprite import Sprite
 
 asset_path = lambda filename: os.path.join("aquarium", "data", filename)
 
@@ -63,11 +64,11 @@ decor2.scale(0.3)
 decor2.rect.move(260, 260)
 
 layers = (
-    Group(bg,),
-    Group(fish1, fish2),
-    Group(plant1, plant2),
-    Group(fish3,),
-    Group(decor1, decor2),
+    retro.Group(bg,),
+    retro.Group(fish1, fish2),
+    retro.Group(plant1, plant2),
+    retro.Group(fish3,),
+    retro.Group(decor1, decor2),
 )
 
 def game():

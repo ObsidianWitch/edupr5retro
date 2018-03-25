@@ -1,6 +1,5 @@
+import include.retro as retro
 from lemmings.nodes.lemming import Lemming
-from shared.sprite import Group
-from shared.timer import Timer
 
 # Lemming generator.
 class Lemmings:
@@ -8,13 +7,13 @@ class Lemmings:
         self.window = window
         self.bg = bg
 
-        self.group = Group()
+        self.group = retro.Group()
         self.position = position
         self.escaped = 0
 
         self.counter = 0
         self.max = 15
-        self.pop_timer = Timer(end = 15, period = 100)
+        self.pop_timer = retro.Timer(end = 15, period = 100)
 
     @property
     def generated(self): return (self.counter >= self.max)

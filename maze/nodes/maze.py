@@ -1,5 +1,6 @@
 import numpy
-from shared.sprite import Sprite, Group
+import include.retro as retro
+from shared.sprite import Sprite
 from maze.nodes.palette import *
 
 class Maze:
@@ -108,9 +109,9 @@ class Maze:
     # "C" -> treasures
     # "R" -> traps
     def init_items(self):
-        self.items     = Group()
-        self.treasures = Group()
-        self.traps     = Group()
+        self.items     = retro.Group()
+        self.treasures = retro.Group()
+        self.traps     = retro.Group()
 
         def init_exit(code, color, xsq, ysq):
             self.exit = Sprite.from_ascii(

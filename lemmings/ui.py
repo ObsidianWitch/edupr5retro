@@ -1,12 +1,12 @@
 import include.retro as retro
-from shared.sprite import Sprite, Group
+from shared.sprite import Sprite
 from lemmings.nodes.actions import Actions
 
 class UI:
     def __init__(self, window):
         self.window = window
 
-        self.icons = Group()
+        self.icons = retro.Group()
         self.populate_icons()
         self.selection = self.icons[0]
         self.position_icons()

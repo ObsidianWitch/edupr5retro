@@ -1,6 +1,5 @@
 import include.retro as retro
 from shared.sprite import Sprite
-from shared.timer  import Timer
 
 class Enemy(Sprite):
     def __init__(self, camera, image):
@@ -11,7 +10,7 @@ class Enemy(Sprite):
         self.bg     = camera.bg
 
         self.alive = True
-        self.shoot_timer = Timer(3)
+        self.shoot_timer = retro.Timer(3)
 
     def kill(self, p):
         killed = (self.alive and self.rect.collidepoint(p))

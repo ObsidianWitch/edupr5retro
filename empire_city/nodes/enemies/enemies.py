@@ -1,7 +1,6 @@
 import random
 import include.retro as retro
 from shared.sprite import Sprite
-from shared.timer import Timer
 from empire_city.nodes.enemies.enemy import Enemy
 from empire_city.nodes.enemies.kidnaper import Kidnaper
 from empire_city.nodes.enemies.runner import Runner
@@ -60,7 +59,7 @@ class Enemies:
         )
         self.next()
         self.mob.alive = False
-        self.repop_timer = Timer(3)
+        self.repop_timer = retro.Timer(3)
 
     def street_position(self, sprite):
         sprite.rect.bottom = self.bg.rect.bottom - 10

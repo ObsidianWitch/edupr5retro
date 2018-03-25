@@ -1,6 +1,7 @@
 import numpy
 import shared.math
-from shared.animated_sprite import AnimatedSprite, Animations
+import include.retro as retro
+from shared.sprite import AnimatedSprite
 from maze.nodes.palette import *
 
 class Player(AnimatedSprite):
@@ -59,7 +60,7 @@ class Player(AnimatedSprite):
         sprite = AnimatedSprite.from_ascii(
             txts       = self.PLAYER_ASCII,
             dictionary = SPRITE_PALETTE,
-            animations = Animations(
+            animations = retro.Animations(
                 data = {
                     "IDLE_R": [1],
                     "IDLE_L": [4],

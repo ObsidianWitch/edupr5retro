@@ -1,6 +1,5 @@
 import enum
 import include.retro as retro
-from shared.timer import Timer
 from shared.sprite import Sprite
 from lemmings.path import asset_path
 
@@ -100,7 +99,7 @@ class Bomb:
         self.lemming = lemming
 
     def wait(self):
-        self.timer = Timer(end = 3, period = 1000)
+        self.timer = retro.Timer(end = 3, period = 1000)
         self.explode = False
 
     def start(self):
