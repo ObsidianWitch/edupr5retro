@@ -57,11 +57,36 @@ class Maze(retro.Sprite):
     def __init__(self, window):
         retro.Sprite.__init__(self, self.IMG)
 
-class Player(retro.Sprite):
-    IMG = retro.Image.from_path(assets("pacman.png"))
+class Player(retro.AnimatedSprite):
+    IMGS = retro.Image.from_spritesheet(
+        path          = assets("pacman.png"),
+        sprite_size   = (32, 32),
+        discard_color = retro.RED,
+    )[0]
+    IMGS = [img.copy() for img in IMGS] \
+         + [img.copy().rotate(90) for img in IMGS] \
+         + [img.copy().rotate(180) for img in IMGS] \
+         + [img.copy().rotate(270) for img in IMGS]
 
     def __init__(self):
-        retro.Sprite.__init__(self, self.IMG)
+        retro.AnimatedSprite.__init__(
+            self = self,
+            images = self.IMGS,
+            animations = retro.Animations(
+                data = {
+                    "DEFAULT": [0],
+                    "WALK_L":  range(0, 2),
+                    "STOP_L":  [0],
+                    "WALK_U":  range(2, 4),
+                    "STOP_U":  [2],
+                    "WALK_R":  range(4, 6),
+                    "STOP_R":  [4],
+                    "WALK_D":  range(6, 8),
+                    "STOP_D":  [6],
+                },
+                period = 50,
+            ),
+        )
         self.rect.move(208, 264)
         self.nxtdir = [0, 0]
         self.curdir = [0, 0]
@@ -118,8 +143,18 @@ class Player(retro.Sprite):
             if self.curdir[1]: self.rect.centery = abs(
                 self.rect.centery - maze.rect.h
             )
-        if curcol: self.curdir = [0, 0]
-        if not nxtcol: self.curdir = self.nxtdir
+        if curcol:
+            self.set_animation("STOP")
+            self.curdir = [0, 0]
+        if not nxtcol:
+            self.set_animation("WALK")
+            self.curdir = self.nxtdir
+
+    def set_animation(self, name):
+        if   self.curdir[0] == -1: self.animations.set(f"{name}_R")
+        elif self.curdir[0] ==  1: self.animations.set(f"{name}_L")
+        elif self.curdir[1] == -1: self.animations.set(f"{name}_U")
+        elif self.curdir[1] ==  1: self.animations.set(f"{name}_D")
 
     def update(self, maze):
         self.collide_maze(maze)
@@ -136,6 +171,7 @@ class Player(retro.Sprite):
             score = 50,
         )
         self.rect.move(self.curdir)
+        retro.AnimatedSprite.update(self)
 
 class Game:
     def __init__(self, window):

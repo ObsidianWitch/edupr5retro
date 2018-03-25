@@ -5,7 +5,7 @@ from game import Game
 window = retro.Window(
     title     = "Pacman",
     size      = (448, 528),
-    framerate = 60,
+    framerate = 120,
 )
 events = retro.Events()
 game = Game(window)
