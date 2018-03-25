@@ -72,7 +72,7 @@ def step3(lines):
     return result
 
 # Generate doc/3_classes.md
-with open("out/retro.full.py") as f: lines = f.readlines()
+with open("out/retro.doc.py") as f: lines = f.readlines()
 result = "".join(step2(step1(lines)))
 with open("doc/3_classes.md", "w") as f: f.write(result)
 
