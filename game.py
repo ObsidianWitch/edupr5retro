@@ -6,7 +6,7 @@ def assets(filename): return os.path.join("assets", filename)
 
 class Collisions:
     @classmethod
-    def pixels(cls, image, dir, rect, color):
+    def pixel_checker(cls, image, color):
         def inside(p): return image.rect().collidepoint(p)
 
         def check(p, offset):
@@ -14,32 +14,46 @@ class Collisions:
             if not inside(p): return None
             return (image[p] == color)
 
-        # TODO simplify
-        if dir == [-1, 0]: return (
+        return check
+
+    @classmethod
+    def pixel1(cls, image, dir, rect, color):
+        check = cls.pixel_checker(image, color)
+        if   dir[0] == -1: return check(rect.midleft,   (-1,  0))
+        elif dir[0] ==  1: return check(rect.midright,  ( 0,  0))
+        elif dir[1] == -1: return check(rect.midtop,    ( 0, -1))
+        elif dir[1] ==  1: return check(rect.midbottom, ( 0,  0))
+
+    @classmethod
+    def pixel3(cls, image, dir, rect, color):
+        check = cls.pixel_checker(image, color)
+        if dir[0] == -1: return (
             check(rect.topleft,       (-1,  0))
             or check(rect.midleft,    (-1,  0))
             or check(rect.bottomleft, (-1, -1))
         )
-        elif dir == [1, 0]: return (
+        elif dir[0] == 1: return (
             check(rect.topright,       ( 0,  0))
             or check(rect.midright,    ( 0,  0))
             or check(rect.bottomright, ( 0, -1))
         )
-        elif dir == [0, -1]: return (
+        elif dir[1] == -1: return (
             check(rect.topleft,     ( 0, -1))
             or check(rect.midtop,   ( 0, -1))
             or check(rect.topright, (-1, -1))
         )
-        elif dir == [0, 1]: return (
-            check(rect.bottomleft,      ( 0,  0))
-             or check(rect.midbottom,   ( 0,  0))
-             or check(rect.bottomright, (-1,  0))
+        elif dir[1] == 1: return (
+            check(rect.bottomleft,     ( 0,  0))
+            or check(rect.midbottom,   ( 0,  0))
+            or check(rect.bottomright, (-1,  0))
         )
         else: return False
 
 class Maze(retro.Sprite):
     IMG = retro.Image.from_path(assets("maze.png"))
-    C_WALL = (33, 33, 222)
+    C_WALL   = ( 33,  33, 222)
+    C_BONUS1 = (255, 184, 151)
+    C_BONUS2 = (255, 136,  84)
     def __init__(self, window):
         retro.Sprite.__init__(self, self.IMG)
 
@@ -51,15 +65,46 @@ class Player(retro.Sprite):
         self.rect.move(208, 264)
         self.nxtdir = [0, 0]
         self.curdir = [0, 0]
+        self.score = 0
 
-    def collide(self, maze):
-        curcol = Collisions.pixels(
+    @property
+    def bounding_rect(self):
+        br = self.rect.copy()
+        br.size = (br.size[0] - 4, br.size[1] - 4)
+        br.center = self.rect.center
+        return br
+
+    def collide_bonus(self, maze, color, size, score):
+        sr = self.bounding_rect
+
+        bonuscol = Collisions.pixel1(
+            image = maze.image,
+            dir   = self.curdir,
+            rect  = sr,
+            color = color,
+        )
+        if not bonuscol: return
+
+        br = retro.Rect(0, 0, 0, 0)
+        br.size = (
+            abs(self.curdir[0]) * (sr.w // 2) + size[0],
+            abs(self.curdir[1]) * (sr.h // 2) + size[1],
+        )
+        br.center = sr.center
+        br.centerx += self.curdir[0] * (br.w // 2)
+        br.centery += self.curdir[1] * (br.h // 2)
+        maze.image.draw_rect(retro.BLACK, br)
+
+        self.score += score
+
+    def collide_maze(self, maze):
+        curcol = Collisions.pixel3(
             image = maze.image,
             dir   = self.curdir,
             rect  = self.rect,
             color = Maze.C_WALL,
         )
-        nxtcol = Collisions.pixels(
+        nxtcol = Collisions.pixel3(
             image = maze.image,
             dir   = self.nxtdir,
             rect  = self.rect,
@@ -76,8 +121,20 @@ class Player(retro.Sprite):
         if curcol: self.curdir = [0, 0]
         if not nxtcol: self.curdir = self.nxtdir
 
-
-    def update(self):
+    def update(self, maze):
+        self.collide_maze(maze)
+        self.collide_bonus(
+            maze  = maze,
+            color = Maze.C_BONUS1,
+            size  = (4, 4),
+            score = 10,
+        )
+        self.collide_bonus(
+            maze  = maze,
+            color = Maze.C_BONUS2,
+            size  = (16, 16),
+            score = 50,
+        )
         self.rect.move(self.curdir)
 
 class Game:
@@ -88,8 +145,7 @@ class Game:
 
     def run(self):
         # Update
-        self.player.collide(self.maze)
-        self.player.update()
+        self.player.update(self.maze)
 
         # Draw
         self.maze.draw(self.window)
