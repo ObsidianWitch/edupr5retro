@@ -12,7 +12,7 @@ class Group(list):
 
     def update(self, *args):
         for e in self:
-            if args: e.update(args)
+            if args: e.update(*args)
             else:    e.update()
 
     def draw(self, surface):
