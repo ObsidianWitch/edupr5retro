@@ -54,8 +54,10 @@ class Maze(retro.Sprite):
     C_WALL   = ( 33,  33, 222)
     C_BONUS1 = (255, 184, 151)
     C_BONUS2 = (255, 136,  84)
-    def __init__(self, window):
-        retro.Sprite.__init__(self, self.IMG)
+    N_BONUS  = 244
+
+    def __init__(self):
+        retro.Sprite.__init__(self, self.IMG.copy())
 
 class Player(retro.AnimatedSprite):
     IMGS = retro.Image.from_spritesheet(
@@ -91,13 +93,14 @@ class Player(retro.AnimatedSprite):
         self.nxtdir = [0, 0]
         self.curdir = [0, 0]
         self.score = 0
+        self.bonuses = 0
 
     @property
     def bounding_rect(self):
-        br = self.rect.copy()
-        br.size = (br.size[0] - 4, br.size[1] - 4)
-        br.center = self.rect.center
-        return br
+        r = self.rect.copy()
+        r.size = (r.size[0] - 4, r.size[1] - 4)
+        r.center = self.rect.center
+        return r
 
     def collide_bonus(self, maze, color, size, score):
         sr = self.bounding_rect
@@ -121,6 +124,7 @@ class Player(retro.AnimatedSprite):
         maze.image.draw_rect(retro.BLACK, br)
 
         self.score += score
+        self.bonuses += 1
 
     def collide_maze(self, maze):
         curcol = Collisions.pixel3(
@@ -176,8 +180,11 @@ class Player(retro.AnimatedSprite):
 class Game:
     def __init__(self, window):
         self.window = window
-        self.maze = Maze(window)
+        self.maze = Maze()
         self.player = Player()
+
+    @property
+    def finished(self): return self.player.bonuses == Maze.N_BONUS
 
     def run(self):
         # Update
@@ -186,3 +193,5 @@ class Game:
         # Draw
         self.maze.draw(self.window)
         self.player.draw(self.window)
+
+    def reset(self): self.__init__(self.window)
