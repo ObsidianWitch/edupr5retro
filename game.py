@@ -1,5 +1,6 @@
 import os
 import types
+import random
 import retro
 
 def assets(filename): return os.path.join("assets", filename)
@@ -60,7 +61,8 @@ class Maze(retro.Sprite):
         retro.Sprite.__init__(self, self.IMG.copy())
 
 class Entity:
-    def __init__(self):
+    def __init__(self, speed):
+        self.speed  = speed
         self.nxtdir = [0, 0]
         self.curdir = [0, 0]
 
@@ -117,7 +119,7 @@ class Player(retro.AnimatedSprite, Entity):
             ),
         )
         self.rect.topleft = (208, 264)
-        Entity.__init__(self)
+        Entity.__init__(self, speed = 4)
         self.score = 0
         self.bonuses = 0
 
@@ -158,13 +160,13 @@ class Player(retro.AnimatedSprite, Entity):
             if self.curdir[1]: self.rect.centery = abs(
                 self.rect.centery - maze.rect.h
             )
+        elif not nxtcol:
+            self.set_animation("WALK")
+            self.curdir = self.nxtdir
         elif curcol:
             self.set_animation("STOP")
             self.curdir = [0, 0]
 
-        if not nxtcol:
-            self.set_animation("WALK")
-            self.curdir = self.nxtdir
 
     def set_animation(self, name):
         if   self.curdir[0] == -1: self.animations.set(f"{name}_R")
@@ -186,7 +188,7 @@ class Player(retro.AnimatedSprite, Entity):
             size  = (16, 16),
             score = 50,
         )
-        self.rect.move(self.curdir)
+        self.rect.move(self.speed * self.curdir[0], self.speed * self.curdir[1])
         retro.AnimatedSprite.update(self)
 
 class Ghost(retro.Sprite, Entity):
@@ -197,14 +199,42 @@ class Ghost(retro.Sprite, Entity):
     )[0]
     IMG_WALK = IMGS[0]
     IMG_FEAR = IMGS[1]
+    DIRS = ([-1, 0], [1, 0], [0, -1], [0, 1])
 
     def __init__(self):
         retro.Sprite.__init__(self, self.IMG_WALK)
         self.rect.topleft = (208, 168)
-        Entity.__init__(self)
+        Entity.__init__(self, speed = 2)
+        self.curdir = random.choice(([-1, 0], [1, 0]))
+        self.nxtdir = random.choice(self.DIRS)
 
     @property
     def bounding_rect(self): return Entity.bounding_rect(self, 12)
+
+    def next_dir(self):
+        choice = list(self.DIRS)
+        opdir = [-self.curdir[0], -self.curdir[1]]
+        if opdir in choice: choice.remove(opdir)
+        self.nxtdir = random.choice(choice)
+
+    def collide_maze(self, maze):
+        curcol, nxtcol = Entity.collide_maze(self, maze)
+        if not nxtcol:
+            self.curdir = self.nxtdir
+        elif curcol is None:
+            self.curdir = [-self.curdir[0], -self.curdir[1]]
+        elif curcol:
+            self.next_dir()
+            return True
+
+        return False
+
+    def update(self, maze):
+        if (self.curdir == self.nxtdir): self.next_dir()
+        if not self.collide_maze(maze): self.rect.move(
+            self.speed * self.curdir[0],
+            self.speed * self.curdir[1]
+        )
 
 class Game:
     def __init__(self, window):
@@ -218,7 +248,7 @@ class Game:
 
     def run(self):
         # Update
-        self.ghost.update()
+        self.ghost.update(self.maze)
         self.player.update(self.maze)
 
         if self.player.bounding_rect.colliderect(
