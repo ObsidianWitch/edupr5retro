@@ -89,7 +89,7 @@ class Player(retro.AnimatedSprite):
                 period = 50,
             ),
         )
-        self.rect.move(208, 264)
+        self.rect.topleft = (208, 264)
         self.nxtdir = [0, 0]
         self.curdir = [0, 0]
         self.score = 0
@@ -147,9 +147,10 @@ class Player(retro.AnimatedSprite):
             if self.curdir[1]: self.rect.centery = abs(
                 self.rect.centery - maze.rect.h
             )
-        if curcol:
+        elif curcol:
             self.set_animation("STOP")
             self.curdir = [0, 0]
+
         if not nxtcol:
             self.set_animation("WALK")
             self.curdir = self.nxtdir
@@ -177,21 +178,48 @@ class Player(retro.AnimatedSprite):
         self.rect.move(self.curdir)
         retro.AnimatedSprite.update(self)
 
+class Ghost(retro.Sprite):
+    IMGS = retro.Image.from_spritesheet(
+        path          = assets("ghost.png"),
+        sprite_size   = (32, 32),
+        discard_color = retro.RED,
+    )[0]
+    IMG_WALK = IMGS[0]
+    IMG_FEAR = IMGS[1]
+
+    def __init__(self):
+        retro.Sprite.__init__(self, self.IMG_WALK)
+        self.rect.topleft = (208, 168)
+
+    @property
+    def bounding_rect(self):
+        r = self.rect.copy()
+        r.size = (r.size[0] - 12, r.size[1] - 12)
+        r.center = self.rect.center
+        return r
+
 class Game:
     def __init__(self, window):
         self.window = window
         self.maze = Maze()
         self.player = Player()
+        self.ghost = Ghost()
 
     @property
     def finished(self): return self.player.bonuses == Maze.N_BONUS
 
     def run(self):
         # Update
+        self.ghost.update()
         self.player.update(self.maze)
+
+        if self.player.bounding_rect.colliderect(
+            self.ghost.bounding_rect
+        ): self.reset()
 
         # Draw
         self.maze.draw(self.window)
+        self.ghost.draw(self.window)
         self.player.draw(self.window)
 
     def reset(self): self.__init__(self.window)
