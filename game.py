@@ -59,7 +59,34 @@ class Maze(retro.Sprite):
     def __init__(self):
         retro.Sprite.__init__(self, self.IMG.copy())
 
-class Player(retro.AnimatedSprite):
+class Entity:
+    def __init__(self):
+        self.nxtdir = [0, 0]
+        self.curdir = [0, 0]
+
+    def bounding_rect(self, offset):
+        r = self.rect.copy()
+        r.size = (r.size[0] - offset, r.size[1] - offset)
+        r.center = self.rect.center
+        return r
+
+    def collide_maze(self, maze):
+        curcol = Collisions.pixel3(
+            image = maze.image,
+            dir   = self.curdir,
+            rect  = self.rect,
+            color = Maze.C_WALL,
+        )
+        nxtcol = Collisions.pixel3(
+            image = maze.image,
+            dir   = self.nxtdir,
+            rect  = self.rect,
+            color = Maze.C_WALL,
+        )
+
+        return (curcol, nxtcol)
+
+class Player(retro.AnimatedSprite, Entity):
     IMGS = retro.Image.from_spritesheet(
         path          = assets("pacman.png"),
         sprite_size   = (32, 32),
@@ -90,17 +117,12 @@ class Player(retro.AnimatedSprite):
             ),
         )
         self.rect.topleft = (208, 264)
-        self.nxtdir = [0, 0]
-        self.curdir = [0, 0]
+        Entity.__init__(self)
         self.score = 0
         self.bonuses = 0
 
     @property
-    def bounding_rect(self):
-        r = self.rect.copy()
-        r.size = (r.size[0] - 4, r.size[1] - 4)
-        r.center = self.rect.center
-        return r
+    def bounding_rect(self): return Entity.bounding_rect(self, 4)
 
     def collide_bonus(self, maze, color, size, score):
         sr = self.bounding_rect
@@ -127,18 +149,7 @@ class Player(retro.AnimatedSprite):
         self.bonuses += 1
 
     def collide_maze(self, maze):
-        curcol = Collisions.pixel3(
-            image = maze.image,
-            dir   = self.curdir,
-            rect  = self.rect,
-            color = Maze.C_WALL,
-        )
-        nxtcol = Collisions.pixel3(
-            image = maze.image,
-            dir   = self.nxtdir,
-            rect  = self.rect,
-            color = Maze.C_WALL,
-        )
+        curcol, nxtcol = Entity.collide_maze(self, maze)
 
         if curcol is None:
             if self.curdir[0]: self.rect.centerx = abs(
@@ -178,7 +189,7 @@ class Player(retro.AnimatedSprite):
         self.rect.move(self.curdir)
         retro.AnimatedSprite.update(self)
 
-class Ghost(retro.Sprite):
+class Ghost(retro.Sprite, Entity):
     IMGS = retro.Image.from_spritesheet(
         path          = assets("ghost.png"),
         sprite_size   = (32, 32),
@@ -190,13 +201,10 @@ class Ghost(retro.Sprite):
     def __init__(self):
         retro.Sprite.__init__(self, self.IMG_WALK)
         self.rect.topleft = (208, 168)
+        Entity.__init__(self)
 
     @property
-    def bounding_rect(self):
-        r = self.rect.copy()
-        r.size = (r.size[0] - 12, r.size[1] - 12)
-        r.center = self.rect.center
-        return r
+    def bounding_rect(self): return Entity.bounding_rect(self, 12)
 
 class Game:
     def __init__(self, window):
