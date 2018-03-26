@@ -66,6 +66,12 @@ class Entity:
         self.nxtdir = [0, 0]
         self.curdir = [0, 0]
 
+    @property
+    def move_vec(self): return (
+        self.speed * self.curdir[0],
+        self.speed * self.curdir[1],
+    )
+
     def bounding_rect(self, offset):
         r = self.rect.copy()
         r.size = (r.size[0] - offset, r.size[1] - offset)
@@ -188,7 +194,7 @@ class Player(retro.AnimatedSprite, Entity):
             size  = (16, 16),
             score = 50,
         )
-        self.rect.move(self.speed * self.curdir[0], self.speed * self.curdir[1])
+        self.rect.move(self.move_vec)
         retro.AnimatedSprite.update(self)
 
 class Ghost(retro.Sprite, Entity):
@@ -204,6 +210,7 @@ class Ghost(retro.Sprite, Entity):
     def __init__(self):
         retro.Sprite.__init__(self, self.IMG_WALK)
         self.rect.topleft = (208, 168)
+
         Entity.__init__(self, speed = 2)
         self.curdir = random.choice(([-1, 0], [1, 0]))
         self.nxtdir = random.choice(self.DIRS)
@@ -231,33 +238,48 @@ class Ghost(retro.Sprite, Entity):
 
     def update(self, maze):
         if (self.curdir == self.nxtdir): self.next_dir()
-        if not self.collide_maze(maze): self.rect.move(
-            self.speed * self.curdir[0],
-            self.speed * self.curdir[1]
-        )
+        if not self.collide_maze(maze): self.rect.move(self.move_vec)
+
+class Ghosts(retro.Group):
+    def __init__(self):
+        retro.Group.__init__(self, Ghost())
+        self.spawn_timer = retro.Timer(end = 50, period = 100)
+
+    def collide(self, player):
+        for ghost in self:
+            if player.bounding_rect.colliderect(ghost.bounding_rect):
+                return True
+        return False
+
+    def update(self, player, *args):
+        retro.Group.update(self, *args)
+        if len(self) == 4: return
+        elif self.spawn_timer.elapsed > 50:
+            self.spawn_timer.restart()
+        elif self.spawn_timer.finished:
+            self.append(Ghost())
+            self.spawn_timer.restart()
 
 class Game:
     def __init__(self, window):
         self.window = window
         self.maze = Maze()
         self.player = Player()
-        self.ghost = Ghost()
+        self.ghosts = Ghosts()
 
     @property
     def finished(self): return self.player.bonuses == Maze.N_BONUS
 
     def run(self):
         # Update
-        self.ghost.update(self.maze)
         self.player.update(self.maze)
+        self.ghosts.update(self.player, self.maze)
 
-        if self.player.bounding_rect.colliderect(
-            self.ghost.bounding_rect
-        ): self.reset()
+        if self.ghosts.collide(self.player): self.reset()
 
         # Draw
         self.maze.draw(self.window)
-        self.ghost.draw(self.window)
+        self.ghosts.draw(self.window)
         self.player.draw(self.window)
 
     def reset(self): self.__init__(self.window)
