@@ -1,6 +1,6 @@
 import sys
 import retro
-from game import Game
+from game.game import Game
 
 window = retro.Window(
     title     = "Pacman",
