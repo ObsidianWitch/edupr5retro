@@ -13,14 +13,13 @@ class Game:
     @property
     def finished(self): return self.player.bonuses == Maze.N_BONUS
 
-    def run(self):
-        # Update
+    def update(self):
         self.player.update(self.maze)
         self.ghosts.update(self.maze, self.player)
 
         if self.ghosts.collide(self.player) == -1: self.reset()
 
-        # Draw
+    def draw(self):
         self.window.fill(retro.BLACK)
         self.maze.draw(self.window)
         self.ghosts.draw(self.window)
