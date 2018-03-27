@@ -1,3 +1,4 @@
+import retro
 from game.maze import Maze
 from game.player import Player
 from game.ghost import Ghosts
@@ -20,8 +21,10 @@ class Game:
         if self.ghosts.collide(self.player) == -1: self.reset()
 
         # Draw
+        self.window.fill(retro.BLACK)
         self.maze.draw(self.window)
         self.ghosts.draw(self.window)
         self.player.draw(self.window)
+        self.player.draw_score(self.window)
 
     def reset(self): self.__init__(self.window)

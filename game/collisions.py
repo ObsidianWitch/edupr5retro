@@ -1,6 +1,6 @@
 class Collisions:
     @classmethod
-    def pixel_checker(cls, image, color):
+    def pxchecker(cls, image, color):
         def inside(p): return image.rect().collidepoint(p)
 
         def check(p, offset):
@@ -11,8 +11,8 @@ class Collisions:
         return check
 
     @classmethod
-    def pixel1(cls, image, dir, rect, color):
-        check = cls.pixel_checker(image, color)
+    def px1(cls, image, dir, rect, color):
+        check = cls.pxchecker(image, color)
         if   dir[0] == -1: return check(rect.midleft,   (-1,  0))
         elif dir[0] ==  1: return check(rect.midright,  ( 0,  0))
         elif dir[1] == -1: return check(rect.midtop,    ( 0, -1))
@@ -20,8 +20,8 @@ class Collisions:
         else: return False
 
     @classmethod
-    def pixel3(cls, image, dir, rect, color):
-        check = cls.pixel_checker(image, color)
+    def px3(cls, image, dir, rect, color):
+        check = cls.pxchecker(image, color)
         if dir[0] == -1: return (
             check(rect.topleft,       (-1,  0))
             or check(rect.midleft,    (-1,  0))

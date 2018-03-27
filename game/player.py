@@ -31,15 +31,14 @@ class Player(retro.AnimatedSprite, Entity):
             images = self.IMGS,
             animations = retro.Animations(
                 data = {
-                    "DEFAULT": [0],
-                    "WALK_L":  range(0, 2),
                     "STOP_L":  [0],
-                    "WALK_U":  range(2, 4),
                     "STOP_U":  [2],
-                    "WALK_R":  range(4, 6),
                     "STOP_R":  [4],
-                    "WALK_D":  range(6, 8),
                     "STOP_D":  [6],
+                    "WALK_L":  range(0, 2),
+                    "WALK_U":  range(2, 4),
+                    "WALK_R":  range(4, 6),
+                    "WALK_D":  range(6, 8),
                 },
                 period = 50,
             ),
@@ -58,7 +57,7 @@ class Player(retro.AnimatedSprite, Entity):
     def collide_bonus(self, maze, bonus):
         sr = self.bounding_rect
 
-        bonuscol = Collisions.pixel1(
+        bonuscol = Collisions.px1(
             image = maze.image,
             dir   = self.curdir,
             rect  = sr,
@@ -110,3 +109,13 @@ class Player(retro.AnimatedSprite, Entity):
         self.collide_bonus(maze, maze.BONUS2)
         self.rect.move(self.move_vec)
         retro.AnimatedSprite.update(self)
+
+    def draw_score(self, image):
+        font = retro.Font(36)
+        txt = retro.Sprite(font.render(
+            text    = f"SCORE: {self.score}",
+            color   = retro.WHITE,
+            bgcolor = retro.BLACK,
+        ))
+        txt.rect.bottomleft = image.rect().bottomleft
+        txt.draw(image)

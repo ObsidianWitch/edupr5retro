@@ -19,13 +19,13 @@ class Entity:
         return r
 
     def collide_maze(self, maze):
-        curcol = Collisions.pixel3(
+        curcol = Collisions.px3(
             image = maze.image,
             dir   = self.curdir,
             rect  = self.rect,
             color = maze.C_WALL,
         )
-        nxtcol = Collisions.pixel3(
+        nxtcol = Collisions.px3(
             image = maze.image,
             dir   = self.nxtdir,
             rect  = self.rect,
