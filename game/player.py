@@ -3,6 +3,17 @@ from game.entity import Entity
 from game.collisions import Collisions
 from game.assets import assets
 
+class Powerup:
+    def __init__(self): self.timer = retro.Timer()
+
+    @property
+    def enabled(self): return not self.timer.finished
+
+    @property
+    def started(self): return self.enabled and (0 <= self.timer.elapsed <= 1)
+
+    def start(self): self.timer = retro.Timer(end = 50, period = 100)
+
 class Player(retro.AnimatedSprite, Entity):
     IMGS = retro.Image.from_spritesheet(
         path          = assets("pacman.png"),
@@ -34,36 +45,41 @@ class Player(retro.AnimatedSprite, Entity):
             ),
         )
         self.rect.topleft = (208, 264)
+
         Entity.__init__(self, speed = 4)
+
         self.score = 0
         self.bonuses = 0
+        self.powerup = Powerup()
 
     @property
     def bounding_rect(self): return Entity.bounding_rect(self, 4)
 
-    def collide_bonus(self, maze, color, size, score):
+    def collide_bonus(self, maze, bonus):
         sr = self.bounding_rect
 
         bonuscol = Collisions.pixel1(
             image = maze.image,
             dir   = self.curdir,
             rect  = sr,
-            color = color,
+            color = bonus.color,
         )
         if not bonuscol: return
 
         br = retro.Rect(0, 0, 0, 0)
         br.size = (
-            abs(self.curdir[0]) * (sr.w // 2) + size[0],
-            abs(self.curdir[1]) * (sr.h // 2) + size[1],
+            abs(self.curdir[0]) * (sr.w // 2) + bonus.size[0],
+            abs(self.curdir[1]) * (sr.h // 2) + bonus.size[1],
         )
         br.center = sr.center
         br.centerx += self.curdir[0] * (br.w // 2)
         br.centery += self.curdir[1] * (br.h // 2)
         maze.image.draw_rect(retro.BLACK, br)
 
-        self.score += score
+        self.score += bonus.value
         self.bonuses += 1
+
+        if (bonus == maze.BONUS2): self.powerup.start()
 
     def collide_maze(self, maze):
         curcol, nxtcol = Entity.collide_maze(self, maze)
@@ -82,7 +98,6 @@ class Player(retro.AnimatedSprite, Entity):
             self.set_animation("STOP")
             self.curdir = [0, 0]
 
-
     def set_animation(self, name):
         if   self.curdir[0] == -1: self.animations.set(f"{name}_R")
         elif self.curdir[0] ==  1: self.animations.set(f"{name}_L")
@@ -91,17 +106,7 @@ class Player(retro.AnimatedSprite, Entity):
 
     def update(self, maze):
         self.collide_maze(maze)
-        self.collide_bonus(
-            maze  = maze,
-            color = maze.C_BONUS1,
-            size  = (4, 4),
-            score = 10,
-        )
-        self.collide_bonus(
-            maze  = maze,
-            color = maze.C_BONUS2,
-            size  = (16, 16),
-            score = 50,
-        )
+        self.collide_bonus(maze, maze.BONUS1)
+        self.collide_bonus(maze, maze.BONUS2)
         self.rect.move(self.move_vec)
         retro.AnimatedSprite.update(self)

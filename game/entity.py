@@ -1,10 +1,10 @@
 from game.collisions import Collisions
 
 class Entity:
-    def __init__(self, speed):
+    def __init__(self, speed, curdir = [0, 0], nxtdir = [0, 0]):
         self.speed  = speed
-        self.nxtdir = [0, 0]
-        self.curdir = [0, 0]
+        self.curdir = curdir
+        self.nxtdir = nxtdir
 
     @property
     def move_vec(self): return (

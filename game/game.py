@@ -15,9 +15,9 @@ class Game:
     def run(self):
         # Update
         self.player.update(self.maze)
-        self.ghosts.update(self.player, self.maze)
+        self.ghosts.update(self.maze, self.player)
 
-        if self.ghosts.collide(self.player): self.reset()
+        if self.ghosts.collide(self.player) == -1: self.reset()
 
         # Draw
         self.maze.draw(self.window)
