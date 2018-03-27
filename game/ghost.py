@@ -18,12 +18,13 @@ class Ghosts(retro.Group):
             player.bounding_rect
         )]
         if not cghosts: return 0
-        elif not player.powerup.enabled: return -1
 
         for g in cghosts:
+            if g.state != g.STATES.FEAR: return -1
             g.kill()
             player.score += self.bonus
             self.bonus *= 2
+
         return 1
 
     def reset_bonus(self): self.bonus = 200

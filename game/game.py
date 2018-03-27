@@ -10,9 +10,7 @@ class Game:
         self.maze = Maze()
         self.player = Player()
         self.ghosts = Ghosts()
-
-    @property
-    def finished(self): return self.player.bonuses == Maze.N_BONUS
+        self.finished = False
 
     @property
     def fitness(self): return self.player.score
@@ -30,7 +28,8 @@ class Game:
         self.player.update(self.maze)
         self.ghosts.update(self.maze, self.player)
 
-        if self.ghosts.collide(self.player) == -1: self.reset()
+        self.finished = self.player.bonuses == Maze.N_BONUS \
+                     or (self.ghosts.collide(self.player) == -1)
 
     def draw(self):
         self.window.fill(retro.BLACK)
