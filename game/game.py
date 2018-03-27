@@ -2,6 +2,7 @@ import retro
 from game.maze import Maze
 from game.player import Player
 from game.ghost import Ghosts
+from game.collisions import Collisions
 
 class Game:
     def __init__(self, window):
@@ -12,6 +13,18 @@ class Game:
 
     @property
     def finished(self): return self.player.bonuses == Maze.N_BONUS
+
+    @property
+    def fitness(self): return self.player.score
+
+    @property
+    def target(self): return sorted(
+        self.ghosts,
+        key = lambda g: Collisions.distance(
+            self.player.rect.topleft,
+            g.rect.topleft,
+        ),
+    )[0]
 
     def update(self):
         self.player.update(self.maze)

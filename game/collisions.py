@@ -1,3 +1,5 @@
+import math
+
 class Collisions:
     @classmethod
     def pxchecker(cls, image, color):
@@ -43,3 +45,8 @@ class Collisions:
             or check(rect.bottomright, (-1,  0))
         )
         else: return False
+
+    @classmethod
+    def distance(cls, p1, p2): return \
+        math.pow(p2[0] - p1[0], 2) \
+      + math.pow(p2[1] - p1[1], 2)

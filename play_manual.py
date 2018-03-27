@@ -24,5 +24,4 @@ while 1:
     else:
         game.reset()
 
-
     window.update()
