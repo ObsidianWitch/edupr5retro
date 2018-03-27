@@ -79,7 +79,7 @@ class Bonuses(list):
             and j in range(len(self.RANGEH))
         )
 
-        i, j = pos[0] // 16, pos[1] // 16
+        i, j = Maze.tile_pos(pos)
         if reach == 0: it = ((0, 0),)
         else: it = itertools.chain(
             itertools.product(range(-reach, reach + 1), (-reach, reach)),
@@ -107,6 +107,14 @@ class Maze(retro.Sprite):
     def __init__(self):
         retro.Sprite.__init__(self, self.IMG.copy())
         self.bonuses = Bonuses()
+
+    @classmethod
+    def tile_pos(cls, pos): return (pos[0] // 16, pos[1] // 16)
+
+    @classmethod
+    def tile_index(cls, pos):
+        p = cls.tile_pos(pos)
+        return p[0] + len(Bonuses.RANGEW) * p[1]
 
     def draw(self, image):
         retro.Sprite.draw(self, image)

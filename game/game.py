@@ -1,8 +1,26 @@
+import types
 import retro
 from game.maze import Maze
 from game.player import Player
-from game.ghost import Ghosts
+from game.ghost import Ghost, Ghosts
 from game.collisions import Collisions
+
+class Games(list):
+    def __init__(self, window, size):
+        list.__init__(self, [Game(window) for _ in range(size)])
+
+    @property
+    def finished(self): return all(g.finished for g in self)
+
+    @property
+    def best(self): return sorted(
+        self,
+        key = lambda g: g.fitness,
+        reverse = True
+    )[0]
+
+    def reset(self):
+        for g in self: g.reset()
 
 class Game:
     def __init__(self, window):
