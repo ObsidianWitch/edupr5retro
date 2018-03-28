@@ -48,37 +48,17 @@ class Player(retro.AnimatedSprite, Entity):
         Entity.__init__(self, speed = 4)
 
         self.score = 0
-        self.bonuses = 0
         self.powerup = Powerup()
 
     @property
     def bounding_rect(self): return Entity.bounding_rect(self, 4)
 
-    def collide_bonus(self, maze, bonus):
-        sr = self.bounding_rect
-
-        col = Collisions.px1(
-            image = maze.image,
-            dir   = self.curdir,
-            rect  = sr,
-            color = bonus.color,
-        )
-        if not col: return
-
-        br = retro.Rect(0, 0, 0, 0)
-        br.size = (
-            abs(self.curdir[0]) * (sr.w // 2) + bonus.size[0],
-            abs(self.curdir[1]) * (sr.h // 2) + bonus.size[1],
-        )
-        br.center = sr.center
-        br.centerx += self.curdir[0] * (br.w // 2)
-        br.centery += self.curdir[1] * (br.h // 2)
-        maze.image.draw_rect(retro.BLACK, br)
-
-        self.score += bonus.value
-        self.bonuses += 1
-
-        if (bonus == maze.BONUS2): self.powerup.start()
+    def collide_bonus(self, maze):
+        for i, b in enumerate(maze.bonuses):
+            if not b.rect.colliderect(self.bounding_rect): continue
+            del maze.bonuses[i]
+            if (b.id == b.BONUS2.id): self.powerup.start()
+            self.score += b.value
 
     def collide_maze(self, maze):
         curcol, nxtcol = Entity.collide_maze(self, maze)
@@ -105,10 +85,8 @@ class Player(retro.AnimatedSprite, Entity):
         elif self.curdir[1] ==  1: self.animations.set(f"{name}_D")
 
     def update(self, maze):
-        cmaze = self.collide_maze(maze)
-        self.collide_bonus(maze, maze.BONUS1)
-        self.collide_bonus(maze, maze.BONUS2)
-        if not cmaze: self.rect.move(self.move_vec)
+        if not self.collide_maze(maze): self.rect.move(self.move_vec)
+        self.collide_bonus(maze)
         retro.AnimatedSprite.update(self)
 
     def draw_score(self, image):

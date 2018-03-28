@@ -29,7 +29,7 @@ class Game:
         self.player.update(self.maze)
         self.ghosts.update(self.maze, self.player)
 
-        self.finished = (self.player.bonuses == Maze.N_BONUS) \
+        self.finished = (not self.maze.bonuses) \
                      or (self.ghosts.collide(self.player) == -1)
 
     def draw(self):
