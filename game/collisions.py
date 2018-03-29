@@ -13,15 +13,6 @@ class Collisions:
         return check
 
     @classmethod
-    def px1(cls, image, dir, rect, color):
-        check = cls.pxchecker(image, color)
-        if   dir[0] == -1: return check(rect.midleft,   (-1,  0))
-        elif dir[0] ==  1: return check(rect.midright,  ( 0,  0))
-        elif dir[1] == -1: return check(rect.midtop,    ( 0, -1))
-        elif dir[1] ==  1: return check(rect.midbottom, ( 0,  0))
-        else: return False
-
-    @classmethod
     def px3(cls, image, dir, rect, color):
         check = cls.pxchecker(image, color)
         if dir[0] == -1: return (

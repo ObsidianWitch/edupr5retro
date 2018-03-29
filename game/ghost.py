@@ -5,14 +5,9 @@ from game.entity import Entity
 from game.assets import assets
 
 class Ghosts(retro.Group):
-    BONUS = 200
-
     def __init__(self):
         retro.Group.__init__(self, Ghost())
         self.spawn_timer = retro.Timer(end = 50, period = 100)
-        self.reset_bonus()
-
-    def reset_bonus(self): self.bonus = 200
 
     def update(self, maze, player):
         retro.Group.update(self, maze, player)
@@ -24,25 +19,35 @@ class Ghosts(retro.Group):
             self.append(Ghost())
             self.spawn_timer.restart()
 
-class Ghost(retro.Sprite, Entity):
+class Ghost(Entity):
     STATES = enum.Enum("STATES", "WALK FEAR")
 
     DIRS = ([-1, 0], [1, 0], [0, -1], [0, 1])
+
+    BONUS = 200
 
     IMGS = retro.Image.from_spritesheet(
         path          = assets("ghost.png"),
         sprite_size   = (32, 32),
         discard_color = retro.RED,
     )[0]
-    IMG_WALK = IMGS[0]
-    IMG_FEAR = IMGS[1]
 
     def __init__(self):
-        retro.Sprite.__init__(self, self.IMG_WALK)
-        self.rect.topleft = (208, 168)
-
         Entity.__init__(self,
-            speed  = 2,
+            sprite = retro.AnimatedSprite(
+                images     = self.IMGS,
+                animations = retro.Animations(
+                    data = {
+                        "WALK_L": [0], "WALK_U": [0],
+                        "WALK_R": [0], "WALK_D": [0],
+                        "FEAR_L": [1], "FEAR_U": [1],
+                        "FEAR_R": [1], "FEAR_D": [1],
+                    },
+                    period = 50,
+                ),
+            ),
+            pos   = (208, 168),
+            speed = 2,
             curdir = random.choice(([-1, 0], [1, 0])),
             nxtdir = random.choice(self.DIRS),
         )
@@ -59,7 +64,8 @@ class Ghost(retro.Sprite, Entity):
         self.nxtdir = random.choice(choice)
 
     def collide_maze(self, maze):
-        curcol, nxtcol = Entity.collide_maze(self, maze)
+        curcol, nxtcol = self.mazecol(maze)
+
         if not nxtcol:
             self.curdir = self.nxtdir
         elif curcol is None:
@@ -73,13 +79,13 @@ class Ghost(retro.Sprite, Entity):
     def update(self, maze, player):
         if self.state == self.STATES.WALK:
             if player.powerup.started:
-                self.image = self.IMG_FEAR
+                self.set_animation("FEAR")
                 self.curdir = [-self.curdir[0], -self.curdir[1]]
                 self.state = self.STATES.FEAR
         elif self.state == self.STATES.FEAR:
             if not player.powerup.enabled:
-                self.image = self.IMG_WALK
+                self.set_animation("WALK")
                 self.state = self.STATES.WALK
 
         if (self.curdir == self.nxtdir): self.next_dir()
-        if not self.collide_maze(maze): self.rect.move(self.move_vec)
+        Entity.update(self, maze)
