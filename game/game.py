@@ -30,7 +30,7 @@ class Game:
         self.ghosts.update(self.maze, self.player)
 
         self.finished = (not self.maze.bonuses) \
-                     or (self.ghosts.collide(self.player) == -1)
+                     or (self.player.collide_ghost(self.ghosts) == -1)
 
     def draw(self):
         self.window.fill(retro.BLACK)

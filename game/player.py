@@ -12,7 +12,9 @@ class Powerup:
     @property
     def started(self): return self.enabled and (0 <= self.timer.elapsed <= 1)
 
-    def start(self): self.timer = retro.Timer(end = 50, period = 100)
+    def start(self):
+        self.mul   = 1
+        self.timer = retro.Timer(end = 50, period = 100)
 
 class Player(retro.AnimatedSprite, Entity):
     IMGS = retro.Image.from_spritesheet(
@@ -78,6 +80,22 @@ class Player(retro.AnimatedSprite, Entity):
             return True
         return False
 
+    # Returns 0 if no collision happened,
+    #         1 if the player killed a ghost,
+    #        -1 if a ghost killed the player.
+    def collide_ghost(self, ghosts):
+        g = next((g for g in ghosts if g.bounding_rect.colliderect(
+            self.bounding_rect
+        )), None)
+        if not g: return 0
+
+        if g.state != g.STATES.FEAR: return -1
+
+        g.kill()
+        self.score += self.powerup.mul * ghosts.BONUS
+        self.powerup.mul *= 2
+        return 1
+
     def set_animation(self, name):
         if   self.curdir[0] == -1: self.animations.set(f"{name}_R")
         elif self.curdir[0] ==  1: self.animations.set(f"{name}_L")
@@ -86,8 +104,8 @@ class Player(retro.AnimatedSprite, Entity):
 
     def update(self, maze):
         if not self.collide_maze(maze): self.rect.move(self.move_vec)
-        self.collide_bonus(maze)
         retro.AnimatedSprite.update(self)
+        self.collide_bonus(maze)
 
     def draw_score(self, image):
         font = retro.Font(36)

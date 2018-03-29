@@ -5,27 +5,12 @@ from game.entity import Entity
 from game.assets import assets
 
 class Ghosts(retro.Group):
+    BONUS = 200
+
     def __init__(self):
         retro.Group.__init__(self, Ghost())
         self.spawn_timer = retro.Timer(end = 50, period = 100)
         self.reset_bonus()
-
-    # Returns 0 if no collision happened,
-    #         1 if the player killed a ghost,
-    #        -1 if a ghost killed the player.
-    def collide(self, player):
-        cghosts = [ g for g in self if g.bounding_rect.colliderect(
-            player.bounding_rect
-        )]
-        if not cghosts: return 0
-
-        for g in cghosts:
-            if g.state != g.STATES.FEAR: return -1
-            g.kill()
-            player.score += self.bonus
-            self.bonus *= 2
-
-        return 1
 
     def reset_bonus(self): self.bonus = 200
 
@@ -38,8 +23,6 @@ class Ghosts(retro.Group):
         elif self.spawn_timer.finished:
             self.append(Ghost())
             self.spawn_timer.restart()
-
-        if player.powerup.started: self.reset_bonus()
 
 class Ghost(retro.Sprite, Entity):
     STATES = enum.Enum("STATES", "WALK FEAR")
