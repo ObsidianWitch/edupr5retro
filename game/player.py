@@ -57,13 +57,13 @@ class Player(retro.AnimatedSprite, Entity):
     def collide_bonus(self, maze, bonus):
         sr = self.bounding_rect
 
-        bonuscol = Collisions.px1(
+        col = Collisions.px1(
             image = maze.image,
             dir   = self.curdir,
             rect  = sr,
             color = bonus.color,
         )
-        if not bonuscol: return
+        if not col: return
 
         br = retro.Rect(0, 0, 0, 0)
         br.size = (
@@ -95,7 +95,8 @@ class Player(retro.AnimatedSprite, Entity):
             self.curdir = self.nxtdir
         elif curcol:
             self.set_animation("STOP")
-            self.curdir = [0, 0]
+            return True
+        return False
 
     def set_animation(self, name):
         if   self.curdir[0] == -1: self.animations.set(f"{name}_R")
@@ -104,10 +105,10 @@ class Player(retro.AnimatedSprite, Entity):
         elif self.curdir[1] ==  1: self.animations.set(f"{name}_D")
 
     def update(self, maze):
-        self.collide_maze(maze)
+        cmaze = self.collide_maze(maze)
         self.collide_bonus(maze, maze.BONUS1)
         self.collide_bonus(maze, maze.BONUS2)
-        self.rect.move(self.move_vec)
+        if not cmaze: self.rect.move(self.move_vec)
         retro.AnimatedSprite.update(self)
 
     def draw_score(self, image):
