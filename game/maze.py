@@ -64,7 +64,16 @@ class Bonuses(list):
             for _, b in enumerate(self[i]):
                 if b: yield b
 
-    def neighbours(self, pos, reach = 0):
+    def nearest(self, pos):
+        max_reach = max(len(self.RANGEW), len(self.RANGEH))
+
+        for reach in range(0, max_reach):
+            _, _, b = next(self.neighborhood(pos, reach), (None, None, None))
+            if b: return b
+
+        return None
+
+    def neighborhood(self, pos, reach = 0):
         def inside(i, j): return (
             i in range(len(self.RANGEW))
             and j in range(len(self.RANGEH))
