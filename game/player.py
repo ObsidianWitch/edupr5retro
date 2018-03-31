@@ -74,7 +74,7 @@ class Player(Entity):
         return False
 
     def collide_bonus(self, maze):
-        for i, j, b in maze.bonuses.chunkxy(self.rect.topleft):
+        for i, j, b in maze.bonuses.neighbours(self.rect.topleft):
             if not b.rect.colliderect(self.bounding_rect): continue
             maze.bonuses.remove(i, j)
             if (b.id == b.BONUS2.id): self.powerup.start()

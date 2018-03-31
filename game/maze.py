@@ -39,14 +39,15 @@ class Bonus(retro.Sprite):
 
 class Bonuses(list):
     IMG = retro.Image.from_path(assets("bonuses.png"))
+    RANGEW = range(22, IMG.rect().w - 16, 16)
+    RANGEH = range(22, IMG.rect().h - 16, 16)
     BONUSES = []
     COUNT = 0
 
     @classmethod
     def init(cls):
-        itw = enumerate(range(22, cls.IMG.rect().w, 16))
-        ith = enumerate(range(22, cls.IMG.rect().h, 16))
-
+        itw = enumerate(cls.RANGEW)
+        ith = enumerate(cls.RANGEH)
         for (i, x), (j, y) in itertools.product(itw, ith):
             if j == 0: cls.BONUSES.append([])
             b = Bonus((x, y), cls.IMG[x, y])
@@ -58,26 +59,17 @@ class Bonuses(list):
         list.__init__(self, [l.copy() for l in self.BONUSES])
         self.count = self.COUNT
 
+        self.neighbours((8+32, 8+32))
+
     def iterator(self):
         for i, _ in enumerate(self):
             for _, b in enumerate(self[i]):
                 if b: yield b
 
-    def chunkxy(self, pos, div = 2):
-        lx = self.IMG.rect().w // div
-        ly = self.IMG.rect().h // div
-        i = pos[0] // lx
-        j = pos[1] // ly
-        return self.chunk(i, j, div)
-
-    def chunk(self, i, j, div = 2):
-        def iterator(seq, k):
-            l = len(seq) // div
-            return itertools.islice(enumerate(seq), k * l, (k + 1) * l)
-
-        for x,_ in iterator(self, i):
-            for y, b in iterator(self[x], j):
-                if b: yield x, y, b
+    def neighbours(self, pos):
+        i, j = pos[0] // 16, pos[1] // 16
+        b = self[i][j]
+        if b: yield i, j, b
 
     def remove(self, x, y):
         self[x][y] = None
