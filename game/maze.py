@@ -39,14 +39,17 @@ class Bonus(retro.Sprite):
 
 class Bonuses(list):
     IMG = retro.Image.from_path(assets("bonuses.png"))
+    BONUSES = []
 
     def __init__(self):
-        list.__init__(self, [])
-        rw = range(22, self.IMG.rect().w, 16)
-        rh = range(22, self.IMG.rect().h, 16)
-        for x, y in itertools.product(rw, rh):
-            b = Bonus((x, y), self.IMG[x, y])
-            if b: self.append(b)
+        if not self.BONUSES:
+            rw = range(22, self.IMG.rect().w, 16)
+            rh = range(22, self.IMG.rect().h, 16)
+            for x, y in itertools.product(rw, rh):
+                b = Bonus((x, y), self.IMG[x, y])
+                if b: self.BONUSES.append(b)
+
+        list.__init__(self, self.BONUSES)
 
     def draw(self, image):
         for s in self:
