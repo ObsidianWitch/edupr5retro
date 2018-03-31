@@ -59,17 +59,29 @@ class Bonuses(list):
         list.__init__(self, [l.copy() for l in self.BONUSES])
         self.count = self.COUNT
 
-        self.neighbours((8+32, 8+32))
-
     def iterator(self):
         for i, _ in enumerate(self):
             for _, b in enumerate(self[i]):
                 if b: yield b
 
-    def neighbours(self, pos):
+    def neighbours(self, pos, reach = 0):
+        def inside(i, j): return (
+            i in range(len(self.RANGEW))
+            and j in range(len(self.RANGEH))
+        )
+
         i, j = pos[0] // 16, pos[1] // 16
-        b = self[i][j]
-        if b: yield i, j, b
+        if reach == 0: it = ((0, 0),)
+        else: it = itertools.chain(
+            itertools.product(range(-reach, reach + 1), (-reach, reach)),
+            itertools.product((-reach, reach), range(-reach + 1, reach)),
+        )
+
+        for k, l in it:
+            k += i ; l += j
+            if not inside(k, l): continue
+            b = self[k][l]
+            if b: yield k, l, b
 
     def remove(self, x, y):
         self[x][y] = None
