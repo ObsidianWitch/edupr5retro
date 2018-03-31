@@ -15,21 +15,21 @@ class Game:
     @property
     def fitness(self): return self.player.score
 
-    def target(self, lst):
-        if not lst: return None
-        return sorted(
-            lst,
-            key = lambda t: Collisions.distance(
+    def target(self, iterable):
+        target = sorted(
+            iterable,
+            key = lambda elem: Collisions.distance(
                 self.player.rect.topleft,
-                t.rect.topleft
+                elem.rect.topleft
             )
-        )[0]
+        )
+        if target: return target[0]
 
     def update(self):
         self.player.update(self.maze)
         self.ghosts.update(self.maze, self.player)
 
-        self.finished = (not self.maze.bonuses) \
+        self.finished = (self.maze.bonuses.count <= 0) \
                      or (self.player.collide_ghost(self.ghosts) == -1)
 
     def draw(self):

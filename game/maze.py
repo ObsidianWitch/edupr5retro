@@ -40,20 +40,52 @@ class Bonus(retro.Sprite):
 class Bonuses(list):
     IMG = retro.Image.from_path(assets("bonuses.png"))
     BONUSES = []
+    COUNT = 0
+
+    @classmethod
+    def init(cls):
+        itw = enumerate(range(22, cls.IMG.rect().w, 16))
+        ith = enumerate(range(22, cls.IMG.rect().h, 16))
+
+        for (i, x), (j, y) in itertools.product(itw, ith):
+            if j == 0: cls.BONUSES.append([])
+            b = Bonus((x, y), cls.IMG[x, y])
+            cls.BONUSES[i].append(b)
+            if b: cls.COUNT += 1
 
     def __init__(self):
-        if not self.BONUSES:
-            rw = range(22, self.IMG.rect().w, 16)
-            rh = range(22, self.IMG.rect().h, 16)
-            for x, y in itertools.product(rw, rh):
-                b = Bonus((x, y), self.IMG[x, y])
-                if b: self.BONUSES.append(b)
+        if self.COUNT == 0: self.init()
+        list.__init__(self, [l.copy() for l in self.BONUSES])
+        self.count = self.COUNT
 
-        list.__init__(self, self.BONUSES)
+    def iterator(self):
+        for i, _ in enumerate(self):
+            for _, b in enumerate(self[i]):
+                if b: yield b
+
+    def chunkxy(self, pos, div = 2):
+        lx = self.IMG.rect().w // div
+        ly = self.IMG.rect().h // div
+        i = pos[0] // lx
+        j = pos[1] // ly
+        return self.chunk(i, j, div)
+
+    def chunk(self, i, j, div = 2):
+        def iterator(seq, k):
+            l = len(seq) // div
+            return itertools.islice(enumerate(seq), k * l, (k + 1) * l)
+
+        for x,_ in iterator(self, i):
+            for y, b in iterator(self[x], j):
+                if b: yield x, y, b
+
+    def remove(self, x, y):
+        self[x][y] = None
+        self.count -= 1
 
     def draw(self, image):
-        for s in self:
-            image.draw_img(s.image, s.rect)
+        for b in self.iterator():
+            image.draw_img(b.image, b.rect)
 
 class Maze(retro.Sprite):
     IMG = retro.Image.from_path(assets("maze.png"))
