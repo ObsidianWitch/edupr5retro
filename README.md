@@ -3,7 +3,7 @@
 ## Run (CLI)
 
 ~~~sh
-python play_manual # play with space bar
-python play_auto   # play automatically (simple condition)
-python play_nnga   # play automatically (ANN with GA)
+python play_manual.py # play with space bar
+python play_auto.py   # play automatically (simple condition)
+python play_nnga.py   # play automatically (ANN with GA)
 ~~~
