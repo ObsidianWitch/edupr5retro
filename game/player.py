@@ -90,7 +90,7 @@ class Player(Entity):
         )), None)
         if not g: return 0
 
-        if g.state != g.STATES.FEAR: return -1
+        if g.state != g.state.FEAR: return -1
 
         g.kill()
         self.score += self.powerup.mul * g.BONUS

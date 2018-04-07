@@ -48,7 +48,7 @@ def bonuses(player, bonus):
     else: return direction(bonus, player)
 
 def ghosts(player, ghost):
-    if (not ghost) or (ghost.state == ghost.STATES.FEAR): return False
+    if (not ghost) or (ghost.state == ghost.state.FEAR): return False
 
     distance = Collisions.distance(player.rect.center, ghost.rect.center)
     if distance > 2500 : return False

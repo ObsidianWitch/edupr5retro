@@ -35,7 +35,7 @@ while 1:
             p = pool[i].predict(
                 *vsub(ghost, player) if ghost else (-1.0, -1.0),
                 *vsub(bonus, player) if bonus else (-1.0, -1.0),
-                (ghost.state == ghost.STATES.FEAR) if ghost else 0.0,
+                ghost.state.current if ghost else 0.0,
                 1.0 if player.curcol else 0.0,
                 1.0 if player.nxtcol else 0.0,
             )

@@ -19,9 +19,31 @@ class Ghosts(retro.Group):
             self.append(Ghost())
             self.spawn_timer.restart()
 
-class Ghost(Entity):
-    STATES = enum.Enum("STATES", "WALK FEAR")
+class State:
+    WALK = 0
+    FEAR = 1
 
+    def __init__(self, ghost):
+        self.ghost = ghost
+        self.current = self.WALK
+
+    def __eq__(self, v): return (self.current == v)
+
+    def update(self, player):
+        if self.current == self.WALK:
+            if player.powerup.started:
+                self.ghost.set_animation("FEAR")
+                self.ghost.curdir = [
+                    -self.ghost.curdir[0],
+                    -self.ghost.curdir[1]
+                ]
+                self.current = self.FEAR
+        elif self.current == self.FEAR:
+            if not player.powerup.enabled:
+                self.ghost.set_animation("WALK")
+                self.current = self.WALK
+
+class Ghost(Entity):
     DIRS = ([-1, 0], [1, 0], [0, -1], [0, 1])
 
     BONUS = 200
@@ -52,7 +74,7 @@ class Ghost(Entity):
             nxtdir = random.choice(self.DIRS),
         )
 
-        self.state = self.STATES.WALK
+        self.state = State(self)
 
     @property
     def bounding_rect(self): return Entity.bounding_rect(self, 12)
@@ -77,15 +99,6 @@ class Ghost(Entity):
         return False
 
     def update(self, maze, player):
-        if self.state == self.STATES.WALK:
-            if player.powerup.started:
-                self.set_animation("FEAR")
-                self.curdir = [-self.curdir[0], -self.curdir[1]]
-                self.state = self.STATES.FEAR
-        elif self.state == self.STATES.FEAR:
-            if not player.powerup.enabled:
-                self.set_animation("WALK")
-                self.state = self.STATES.WALK
-
+        self.state.update(player)
         if (self.curdir == self.nxtdir): self.next_dir()
         Entity.update(self, maze)
