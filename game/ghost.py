@@ -44,15 +44,13 @@ class State:
                 self.current = self.WALK
 
 class Ghost(Entity):
-    DIRS = ([-1, 0], [1, 0], [0, -1], [0, 1])
-
-    BONUS = 200
-
     IMGS = retro.Image.from_spritesheet(
         path          = assets("ghost.png"),
         sprite_size   = (32, 32),
         discard_color = retro.RED,
     )[0]
+
+    BONUS = 200
 
     def __init__(self):
         Entity.__init__(self,
@@ -70,8 +68,8 @@ class Ghost(Entity):
             ),
             pos   = (208, 168),
             speed = 2,
-            curdir = random.choice(([-1, 0], [1, 0])),
-            nxtdir = random.choice(self.DIRS),
+            curdir = [0, 0],
+            nxtdir = random.choice(([-1, 0], [1, 0])),
         )
 
         self.state = State(self)
@@ -80,10 +78,10 @@ class Ghost(Entity):
     def bounding_rect(self): return Entity.bounding_rect(self, 12)
 
     def next_dir(self):
-        choice = list(self.DIRS)
+        dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]]
         opdir = [-self.curdir[0], -self.curdir[1]]
-        if opdir in choice: choice.remove(opdir)
-        self.nxtdir = random.choice(choice)
+        if opdir in dirs: dirs.remove(opdir)
+        self.nxtdir = random.choice(dirs)
 
     def collide_maze(self, maze):
         curcol, nxtcol = self.mazecol(maze)
