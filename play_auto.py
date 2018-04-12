@@ -43,16 +43,18 @@ def walls(player):
     else:
         return [-player.nxtdir[0], -player.nxtdir[1]]
 
-def bonuses(player, bonus):
-    if not bonus: return False
-    else: return direction(bonus, player)
+def attract(player, sprite):
+    if not sprite: return False
+    else: return direction(sprite, player)
 
-def ghosts(player, ghost):
-    if (not ghost) or (ghost.state == ghost.state.FEAR): return False
-
-    distance = Collisions.distance(player.rect.center, ghost.rect.center)
+def repel(player, sprite):
+    distance = Collisions.distance(player.rect.center, sprite.rect.center)
     if distance > 2500 : return False
-    else: return direction(ghost, player, invert = True)
+    else: return direction(sprite, player, invert = True)
+
+def repel_ghosts(player, ghost):
+    if (not ghost) or (ghost.state == ghost.state.FEAR): return False
+    return repel(player, ghost)
 
 window = retro.Window(
     title     = "Pacman",
@@ -73,8 +75,8 @@ while 1:
         ghost  = game.target(game.ghosts)
 
         nxtdir_w = walls(player)
-        nxtdir_g = ghosts(player, ghost)
-        nxtdir_b = bonuses(player, bonus)
+        nxtdir_g = repel_ghosts(player, ghost)
+        nxtdir_b = attract(player, bonus)
         nxtdir_r = randwalk.run(player)
 
         if game.player.curdir == [0, 0]: game.player.nxtdir = [-1, 0]
