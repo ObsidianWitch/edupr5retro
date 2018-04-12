@@ -37,14 +37,12 @@ class NNGAPool(list):
         nn3 = copy.deepcopy(nn1)
         nn4 = copy.deepcopy(nn2)
 
-        if len(nn3[0][0]) == 1:
-            pass
-        elif len(nn3[0]) == 1:
-            nn3[0][0][0], nn4[0][0][0] = nn4[0][0][0], nn3[0][0][0]
-        elif len(nn3) == 1:
-            nn3[0][0], nn4[0][0] = nn4[0][0], nn3[0][0]
-        else:
+        if len(nn3) != 1:
             nn3[0], nn4[0] = nn4[0], nn3[0]
+        elif len(nn3[0]) != 1:
+            nn3[0][0], nn4[0][0] = nn4[0][0], nn3[0][0]
+        elif len(nn3[0][0]) != 1:
+            nn3[0][0][0], nn4[0][0][0] = nn4[0][0][0], nn3[0][0][0]
 
         return (nn3, nn4)
 
