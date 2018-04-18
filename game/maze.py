@@ -92,8 +92,8 @@ class Bonuses(list):
             b = self[k][l]
             if b: yield k, l, b
 
-    def remove(self, x, y):
-        self[x][y] = None
+    def remove(self, i, j):
+        self[i][j] = None
         self.count -= 1
 
     def draw(self, image):
@@ -110,11 +110,6 @@ class Maze(retro.Sprite):
 
     @classmethod
     def tile_pos(cls, pos): return (pos[0] // 16, pos[1] // 16)
-
-    @classmethod
-    def tile_index(cls, pos):
-        p = cls.tile_pos(pos)
-        return p[0] + len(Bonuses.RANGEW) * p[1]
 
     def draw(self, image):
         retro.Sprite.draw(self, image)
