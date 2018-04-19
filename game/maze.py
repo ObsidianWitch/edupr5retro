@@ -59,11 +59,23 @@ class Bonuses(list):
         list.__init__(self, [l.copy() for l in self.BONUSES])
         self.count = self.COUNT
 
-    def debug(self):
-        for i, j, b in self.iterator(transpose = True):
+    def debug(self, player, ghosts):
+        for i, j, s in self.symbols(player, ghosts, transpose = True):
             if j == 0: print()
-            print("1" if b else "0", end = '')
+            print(s, end = '')
         print()
+
+    # Iterator returning integers each representing an element in the maze.
+    def symbols(self, player, ghosts, transpose = False):
+        def veq(p1, p2): return (p1[0] == p2[0]) and (p1[1] == p2[1])
+
+        ij_player = Maze.tile_pos(player.rect.topleft)
+        ij_player = (ij_player[1], ij_player[0]) if transpose else ij_player
+
+        for i, j, b in self.iterator(transpose):
+            if veq((i, j), ij_player): yield i, j, 1
+            elif b: yield i, j, 2
+            else: yield i, j, 0
 
     def iterator(self, transpose = False):
         iterable = self if not transpose else zip(*self)
