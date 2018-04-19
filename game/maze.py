@@ -39,8 +39,8 @@ class Bonus(retro.Sprite):
 
 class Bonuses(list):
     IMG = retro.Image.from_path(assets("bonuses.png"))
-    RANGEW = range(22, IMG.rect().w - 16, 16)
-    RANGEH = range(22, IMG.rect().h - 16, 16)
+    RANGEW = range(0, IMG.rect().w, 16)
+    RANGEH = range(0, IMG.rect().h, 16)
     BONUSES = []
     COUNT = 0
 
@@ -50,7 +50,8 @@ class Bonuses(list):
         ith = enumerate(cls.RANGEH)
         for (i, x), (j, y) in itertools.product(itw, ith):
             if j == 0: cls.BONUSES.append([])
-            b = Bonus((x, y), cls.IMG[x, y])
+            pos = (x + 6, y + 6)
+            b = Bonus(pos, cls.IMG[pos])
             cls.BONUSES[i].append(b)
             if b: cls.COUNT += 1
 
@@ -69,7 +70,7 @@ class Bonuses(list):
     def symbols(self, player, ghosts, transpose = False):
         def veq(p1, p2): return (p1[0] == p2[0]) and (p1[1] == p2[1])
 
-        ij_player = Maze.tile_pos(player.rect.topleft)
+        ij_player = Maze.tile_pos(player.rect.center)
         ij_player = (ij_player[1], ij_player[0]) if transpose else ij_player
 
         for i, j, b in self.iterator(transpose):
