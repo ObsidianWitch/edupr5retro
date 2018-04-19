@@ -60,12 +60,6 @@ class Bonuses(list):
         list.__init__(self, [l.copy() for l in self.BONUSES])
         self.count = self.COUNT
 
-    def debug(self, player, ghosts):
-        for i, j, s in self.symbols(player, ghosts, transpose = True):
-            if j == 0: print()
-            print(s, end = '')
-        print()
-
     # Iterator returning integers each representing an element in the maze.
     def symbols(self, player, ghosts, transpose = False):
         def veq(p1, p2): return (p1[0] == p2[0]) and (p1[1] == p2[1])
@@ -119,6 +113,12 @@ class Bonuses(list):
     def draw(self, image):
         for _, _, b in self.iterator():
             if b: image.draw_img(b.image, b.rect)
+
+    def print(self, player, ghosts):
+        for i, j, s in self.symbols(player, ghosts, transpose = True):
+            if j == 0: print()
+            print(s, end = '')
+        print()
 
 class Maze(retro.Sprite):
     IMG = retro.Image.from_path(assets("maze.png"))

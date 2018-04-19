@@ -19,7 +19,7 @@ while 1:
         elif events.key_press(retro.K_DOWN):  game.player.nxtdir = [ 0,  1]
         elif events.key_press(retro.K_LEFT):  game.player.nxtdir = [-1,  0]
         elif events.key_press(retro.K_RIGHT): game.player.nxtdir = [ 1,  0]
-        elif events.key_press(retro.K_SPACE): game.maze.bonuses.debug(
+        elif events.key_press(retro.K_SPACE): game.maze.bonuses.print(
             game.player, game.ghosts
         )
         game.update()
