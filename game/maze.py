@@ -61,6 +61,7 @@ class Bonuses(list):
             for j, b in enumerate(line):
                 yield i, j, b
 
+    # Search inside growing neighborhoods until a bonus is found.
     def nearest(self, sprite):
         max_reach = max(len(Maze.RANGEW), len(Maze.RANGEH))
 
@@ -70,6 +71,15 @@ class Bonuses(list):
 
         return None
 
+    # Iterator yielding bonuses contained inside a neighborhood centered around
+    # `sprite` and defined by a hollow rectangle of a specific `reach`.
+    # examples:
+    # reach = 0 | reach = 1 | reach = 2
+    # ·····     | ·····     | ▫▫▫▫▫
+    # ·····     | ·▫▫▫·     | ▫···▫
+    # ··▫··     | ·▫s▫·     | ▫·s·▫
+    # ·····     | ·▫▫▫·     | ▫···▫
+    # ·····     | ·····     | ▫▫▫▫▫
     def neighborhood(self, sprite, reach = 0):
         def inside(i, j): return (
             i in range(len(Maze.RANGEW))
