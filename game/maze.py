@@ -62,7 +62,7 @@ class Bonuses(list):
     def iterator(self):
         for i, _ in enumerate(self):
             for _, b in enumerate(self[i]):
-                if b: yield b
+                yield b
 
     def nearest(self, pos):
         max_reach = max(len(self.RANGEW), len(self.RANGEH))
@@ -98,7 +98,7 @@ class Bonuses(list):
 
     def draw(self, image):
         for b in self.iterator():
-            image.draw_img(b.image, b.rect)
+            if b: image.draw_img(b.image, b.rect)
 
 class Maze(retro.Sprite):
     IMG = retro.Image.from_path(assets("maze.png"))
