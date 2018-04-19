@@ -61,22 +61,22 @@ class Bonuses(list):
             for j, b in enumerate(line):
                 yield i, j, b
 
-    def nearest(self, pos):
+    def nearest(self, sprite):
         max_reach = max(len(Maze.RANGEW), len(Maze.RANGEH))
 
         for reach in range(0, max_reach):
-            _, _, b = next(self.neighborhood(pos, reach), (None, None, None))
+            _, _, b = next(self.neighborhood(sprite, reach), (None, None, None))
             if b: return b
 
         return None
 
-    def neighborhood(self, pos, reach = 0):
+    def neighborhood(self, sprite, reach = 0):
         def inside(i, j): return (
             i in range(len(Maze.RANGEW))
             and j in range(len(Maze.RANGEH))
         )
 
-        i, j = Maze.tile_pos(pos)
+        i, j = Maze.tile_pos(sprite.rect.center)
         if reach == 0: it = ((0, 0),)
         else: it = itertools.chain(
             itertools.product(range(-reach, reach + 1), (-reach, reach)),

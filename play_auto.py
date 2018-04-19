@@ -71,7 +71,7 @@ while 1:
 
     if not game.finished:
         player = game.player
-        bonus  = game.maze.bonuses.nearest(player.rect.center)
+        bonus  = game.maze.bonuses.nearest(player)
         ghost  = game.target(game.ghosts)
 
         nxtdir_w = walls(player)
