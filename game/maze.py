@@ -39,22 +39,22 @@ class Bonus(retro.Sprite):
 
 class Bonuses(list):
     IMG = retro.Image.from_path(assets("bonuses.png"))
-    BONUSES = []
-    COUNT = 0
-
-    @classmethod
-    def init(cls):
-        for (i, x), (j, y) in Maze.iterator():
-            if j == 0: cls.BONUSES.append([])
-            pos = (x + 6, y + 6)
-            b = Bonus(pos, cls.IMG[pos])
-            cls.BONUSES[i].append(b)
-            if b: cls.COUNT += 1
 
     def __init__(self):
-        if self.COUNT == 0: self.init()
-        list.__init__(self, [l.copy() for l in self.BONUSES])
-        self.count = self.COUNT
+        self.count = 0
+        list.__init__(self, [])
+        for (i, x), (j, y) in Maze.iterator():
+            if j == 0: self.append([])
+            pos = (x + 6, y + 6)
+            b = Bonus(pos, self.IMG[pos])
+            self[i].append(b)
+            if b: self.count += 1
+
+    def copy(self):
+        new = list.__new__(self.__class__)
+        new.count = self.count
+        list.__init__(new, [lst.copy() for lst in self])
+        return new
 
     def iterator(self):
         for i, line in enumerate(self):
@@ -111,11 +111,17 @@ class Maze(retro.Sprite):
     IMG = retro.Image.from_path(assets("maze.png"))
     RANGEW = range(0, IMG.rect().w, 16)
     RANGEH = range(0, IMG.rect().h, 16)
+    BONUSES = None
     C_WALL  = (33, 33, 222)
+
+    # Defer BONUSES initialization to avoid circular dependency problems.
+    def __new__(cls):
+        if not cls.BONUSES: cls.BONUSES = Bonuses()
+        return retro.Sprite.__new__(cls)
 
     def __init__(self):
         retro.Sprite.__init__(self, self.IMG.copy())
-        self.bonuses = Bonuses()
+        self.bonuses = self.BONUSES.copy()
 
     @classmethod
     def tile_pos(cls, pos): return (pos[0] // 16, pos[1] // 16)
