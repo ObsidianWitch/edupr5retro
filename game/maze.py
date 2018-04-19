@@ -39,16 +39,12 @@ class Bonus(retro.Sprite):
 
 class Bonuses(list):
     IMG = retro.Image.from_path(assets("bonuses.png"))
-    RANGEW = range(0, IMG.rect().w, 16)
-    RANGEH = range(0, IMG.rect().h, 16)
     BONUSES = []
     COUNT = 0
 
     @classmethod
     def init(cls):
-        itw = enumerate(cls.RANGEW)
-        ith = enumerate(cls.RANGEH)
-        for (i, x), (j, y) in itertools.product(itw, ith):
+        for (i, x), (j, y) in Maze.iterator():
             if j == 0: cls.BONUSES.append([])
             pos = (x + 6, y + 6)
             b = Bonus(pos, cls.IMG[pos])
@@ -60,26 +56,13 @@ class Bonuses(list):
         list.__init__(self, [l.copy() for l in self.BONUSES])
         self.count = self.COUNT
 
-    # Iterator returning integers each representing an element in the maze.
-    def symbols(self, player, ghosts, transpose = False):
-        def veq(p1, p2): return (p1[0] == p2[0]) and (p1[1] == p2[1])
-
-        ij_player = Maze.tile_pos(player.rect.center)
-        ij_player = (ij_player[1], ij_player[0]) if transpose else ij_player
-
-        for i, j, b in self.iterator(transpose):
-            if veq((i, j), ij_player): yield i, j, 1
-            elif b: yield i, j, 2
-            else: yield i, j, 0
-
-    def iterator(self, transpose = False):
-        iterable = self if not transpose else zip(*self)
-        for i, line in enumerate(iterable):
+    def iterator(self):
+        for i, line in enumerate(self):
             for j, b in enumerate(line):
                 yield i, j, b
 
     def nearest(self, pos):
-        max_reach = max(len(self.RANGEW), len(self.RANGEH))
+        max_reach = max(len(Maze.RANGEW), len(Maze.RANGEH))
 
         for reach in range(0, max_reach):
             _, _, b = next(self.neighborhood(pos, reach), (None, None, None))
@@ -89,8 +72,8 @@ class Bonuses(list):
 
     def neighborhood(self, pos, reach = 0):
         def inside(i, j): return (
-            i in range(len(self.RANGEW))
-            and j in range(len(self.RANGEH))
+            i in range(len(Maze.RANGEW))
+            and j in range(len(Maze.RANGEH))
         )
 
         i, j = Maze.tile_pos(pos)
@@ -114,14 +97,10 @@ class Bonuses(list):
         for _, _, b in self.iterator():
             if b: image.draw_img(b.image, b.rect)
 
-    def print(self, player, ghosts):
-        for i, j, s in self.symbols(player, ghosts, transpose = True):
-            if j == 0: print()
-            print(s, end = '')
-        print()
-
 class Maze(retro.Sprite):
     IMG = retro.Image.from_path(assets("maze.png"))
+    RANGEW = range(0, IMG.rect().w, 16)
+    RANGEH = range(0, IMG.rect().h, 16)
     C_WALL  = (33, 33, 222)
 
     def __init__(self):
@@ -131,6 +110,31 @@ class Maze(retro.Sprite):
     @classmethod
     def tile_pos(cls, pos): return (pos[0] // 16, pos[1] // 16)
 
+    @classmethod
+    def iterator(self, transpose = False):
+        it1, it2 = enumerate(self.RANGEW), enumerate(self.RANGEH)
+        if transpose: it1, it2 = it2, it1
+        for ix, jy in itertools.product(it1, it2):
+            if transpose: ix, jy = jy, ix
+            yield ix, jy
+
+    # Iterator returning integers each representing an element in the maze.
+    def symbols(self, player, ghosts, transpose = False):
+        def veq(p1, p2): return (p1[0] == p2[0]) and (p1[1] == p2[1])
+
+        ij_player = self.tile_pos(player.rect.center)
+
+        for (i, _), (j, _) in self.iterator(transpose):
+            if veq((i, j), ij_player): yield i, j, 1
+            elif self.bonuses[i][j]: yield i, j, 2
+            else: yield i, j, 0
+
     def draw(self, image):
         retro.Sprite.draw(self, image)
         self.bonuses.draw(image)
+
+    def print(self, player, ghosts):
+        for i, j, s in self.symbols(player, ghosts, transpose = True):
+            if i == 0: print()
+            print(s, end = '')
+        print()
