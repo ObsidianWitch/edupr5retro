@@ -59,10 +59,17 @@ class Bonuses(list):
         list.__init__(self, [l.copy() for l in self.BONUSES])
         self.count = self.COUNT
 
-    def iterator(self):
-        for i, _ in enumerate(self):
-            for _, b in enumerate(self[i]):
-                yield b
+    def debug(self):
+        for i, j, b in self.iterator(transpose = True):
+            if j == 0: print()
+            print("1" if b else "0", end = '')
+        print()
+
+    def iterator(self, transpose = False):
+        iterable = self if not transpose else zip(*self)
+        for i, line in enumerate(iterable):
+            for j, b in enumerate(line):
+                yield i, j, b
 
     def nearest(self, pos):
         max_reach = max(len(self.RANGEW), len(self.RANGEH))
@@ -97,7 +104,7 @@ class Bonuses(list):
         self.count -= 1
 
     def draw(self, image):
-        for b in self.iterator():
+        for _, _, b in self.iterator():
             if b: image.draw_img(b.image, b.rect)
 
 class Maze(retro.Sprite):
