@@ -37,8 +37,8 @@ class Game:
         target = sorted(
             iterable,
             key = lambda elem: Collisions.distance(
-                self.player.rect.topleft,
-                elem.rect.topleft
+                self.player.rect.center,
+                elem.rect.center
             )
         )
         if target: return target[0]

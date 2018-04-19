@@ -30,7 +30,7 @@ while 1:
             if g.finished: continue
             player = g.player
             ghost  = g.target(g.ghosts)
-            bonus  = g.maze.bonuses.nearest(player.rect.topleft)
+            bonus  = g.maze.bonuses.nearest(player.rect.center)
 
             p = pool[i].predict(
                 *vsub(ghost, player) if ghost else (-1.0, -1.0),
