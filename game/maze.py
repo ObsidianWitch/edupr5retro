@@ -2,6 +2,7 @@ import types
 import itertools
 import retro
 from game.assets import assets
+from game.collisions import Collisions
 
 class Bonus(retro.Sprite):
     BONUS1 = types.SimpleNamespace(
@@ -107,21 +108,36 @@ class Bonuses(list):
         for _, _, b in self.iterator():
             if b: image.draw_img(b.image, b.rect)
 
+class Walls(list):
+    COLOR = (33, 33, 222)
+
+    def __init__(self):
+        print("init walls")
+        list.__init__(self, [])
+        for (i, x), (j, y) in Maze.iterator():
+            if j == 0: self.append([])
+            pos = (x + 8, y + 8)
+            w = Collisions.square3(Maze.IMG, pos, self.COLOR)
+            self[i].append(1 if w else 0)
+
 class Maze(retro.Sprite):
     IMG = retro.Image.from_path(assets("maze.png"))
     RANGEW = range(0, IMG.rect().w, 16)
     RANGEH = range(0, IMG.rect().h, 16)
+    WALLS = None
     BONUSES = None
-    C_WALL  = (33, 33, 222)
 
-    # Defer BONUSES initialization to avoid circular dependency problems.
+    # Defer BONUSES & WALLS initializations to avoid circular dependency
+    # problems.
     def __new__(cls):
+        if not cls.WALLS: cls.WALLS = Walls()
         if not cls.BONUSES: cls.BONUSES = Bonuses()
         return retro.Sprite.__new__(cls)
 
     def __init__(self):
         retro.Sprite.__init__(self, self.IMG.copy())
         self.bonuses = self.BONUSES.copy()
+        self.walls = self.WALLS
 
     @classmethod
     def tile_pos(cls, pos): return (pos[0] // 16, pos[1] // 16)
@@ -142,7 +158,8 @@ class Maze(retro.Sprite):
 
         for (i, _), (j, _) in self.iterator(transpose):
             if veq((i, j), ij_player): yield i, j, 1
-            elif self.bonuses[i][j]: yield i, j, 2
+            elif self.walls[i][j]: yield i, j, 2
+            elif self.bonuses[i][j]: yield i, j, 3
             else: yield i, j, 0
 
     def draw(self, image):
@@ -150,7 +167,14 @@ class Maze(retro.Sprite):
         self.bonuses.draw(image)
 
     def print(self, player, ghosts):
+        symchars = (
+            " ", # 0 - floor
+            "P", # 1 - player
+            "▒", # 2 - wall
+            "•", # 3 - bonus
+        )
+
         for i, j, s in self.symbols(player, ghosts, transpose = True):
             if i == 0: print()
-            print(s, end = '')
+            print(symchars[s], end = '')
         print()

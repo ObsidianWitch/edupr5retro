@@ -26,7 +26,7 @@ class Entity(retro.AnimatedSprite):
             image = maze.image,
             dir   = dir,
             rect  = self.rect,
-            color = maze.C_WALL,
+            color = maze.walls.COLOR,
         )
         return (col(self.curdir), col(self.nxtdir))
 

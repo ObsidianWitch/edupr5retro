@@ -1,4 +1,5 @@
 import math
+import itertools
 
 class Collisions:
     @classmethod
@@ -11,6 +12,12 @@ class Collisions:
             return (image[p] == color)
 
         return check
+
+    @classmethod
+    def square3(cls, image, center, color):
+        check = cls.pxchecker(image, color)
+        it = itertools.product(range(-1, 2), repeat = 2)
+        return any(check(p = center, offset = (i, j)) for i, j in it)
 
     @classmethod
     def px3(cls, image, dir, rect, color):
