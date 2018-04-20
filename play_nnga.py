@@ -44,7 +44,7 @@ def update_one(game, nn):
 def update_parallel(icore):
     window = retro.Window(
         title     = "Pacman",
-        size      = (448, 528),
+        size      = (320, 240),
         framerate = 0,
     )
     games = Games(window, size = len(nn_pool) // cores)
@@ -89,7 +89,7 @@ def main_sequential(window = None, games = None):
 
     window = window or retro.Window(
         title     = "Pacman",
-        size      = (448, 528),
+        size      = (320, 240),
         framerate = 0,
     )
     games = games or Games(window, size = len(nn_pool))

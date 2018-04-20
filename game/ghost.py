@@ -15,7 +15,7 @@ class Ghosts(retro.Group):
     def update(self, maze, player):
         retro.Group.update(self, maze, player)
 
-        if len(self) == 4: return
+        if len(self) == 1: return
         elif self.spawn_timer.elapsed > 50:
             self.spawn_timer.restart()
         elif self.spawn_timer.finished:

@@ -56,7 +56,7 @@ def repel_ghosts(player, ghost):
 
 window = retro.Window(
     title     = "Pacman",
-    size      = (448, 528),
+    size      = (320, 240),
     framerate = 0,
 )
 events = retro.Events()
@@ -77,7 +77,7 @@ while 1:
         nxtdir_b = attract(player, bonus)
         nxtdir_r = randwalk.run(player)
 
-        if game.player.curdir == [0, 0]: game.player.nxtdir = [-1, 0]
+        if game.player.curdir == [0, 0]: game.player.nxtdir = [1, 0]
         elif nxtdir_w: player.nxtdir = nxtdir_w
         elif nxtdir_g: player.nxtdir = nxtdir_g
         elif nxtdir_r:

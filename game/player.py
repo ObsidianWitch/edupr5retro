@@ -44,7 +44,7 @@ class Player(Entity):
                     period = 50,
                 ),
             ),
-            pos   = (208, 264),
+            pos   = (8, 8),
             speed = 4,
         )
 
