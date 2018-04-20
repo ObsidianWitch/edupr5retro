@@ -1,8 +1,8 @@
+import math
 import types
 import itertools
 import retro
 from game.assets import assets
-from game.collisions import Collisions
 
 class Bonus(retro.Sprite):
     BONUS1 = types.SimpleNamespace(
@@ -112,13 +112,54 @@ class Walls(list):
     COLOR = (33, 33, 222)
 
     def __init__(self):
-        print("init walls")
         list.__init__(self, [])
         for (i, x), (j, y) in Maze.iterator():
             if j == 0: self.append([])
             pos = (x + 8, y + 8)
-            w = Collisions.square3(Maze.IMG, pos, self.COLOR)
+            w = self.square3(pos)
             self[i].append(1 if w else 0)
+
+    @classmethod
+    def pxchecker(cls, image, color):
+        def inside(p): return image.rect().collidepoint(p)
+
+        def check(p, offset):
+            p = (p[0] + offset[0], p[1] + offset[1])
+            if not inside(p): return None
+            return (image[p] == color)
+
+        return check
+
+    @classmethod
+    def px3(cls, dir, rect):
+        check = cls.pxchecker(Maze.IMG, cls.COLOR)
+        if dir[0] == -1: return (
+            check(rect.topleft,       (-1,  0))
+            or check(rect.midleft,    (-1,  0))
+            or check(rect.bottomleft, (-1, -1))
+        )
+        elif dir[0] == 1: return (
+            check(rect.topright,       ( 0,  0))
+            or check(rect.midright,    ( 0,  0))
+            or check(rect.bottomright, ( 0, -1))
+        )
+        elif dir[1] == -1: return (
+            check(rect.topleft,     ( 0, -1))
+            or check(rect.midtop,   ( 0, -1))
+            or check(rect.topright, (-1, -1))
+        )
+        elif dir[1] == 1: return (
+            check(rect.bottomleft,     ( 0,  0))
+            or check(rect.midbottom,   ( 0,  0))
+            or check(rect.bottomright, (-1,  0))
+        )
+        else: return False
+
+    @classmethod
+    def square3(cls, center):
+        check = check = cls.pxchecker(Maze.IMG, cls.COLOR)
+        it = itertools.product(range(-1, 2), repeat = 2)
+        return any(check(p = center, offset = (i, j)) for i, j in it)
 
 class Maze(retro.Sprite):
     IMG = retro.Image.from_path(assets("maze.png"))
@@ -141,6 +182,11 @@ class Maze(retro.Sprite):
 
     @classmethod
     def tile_pos(cls, pos): return (pos[0] // 16, pos[1] // 16)
+
+    @classmethod
+    def distance(cls, p1, p2): return \
+        math.pow(p2[0] - p1[0], 2) \
+      + math.pow(p2[1] - p1[1], 2)
 
     @classmethod
     def iterator(self, transpose = False):

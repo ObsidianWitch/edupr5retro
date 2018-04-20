@@ -1,6 +1,5 @@
 import retro
 from game.entity import Entity
-from game.collisions import Collisions
 from game.assets import assets
 
 class Powerup:

@@ -3,7 +3,6 @@ import retro
 from game.maze import Maze
 from game.player import Player
 from game.ghost import Ghost, Ghosts
-from game.collisions import Collisions
 
 class Games(list):
     def __init__(self, window, size):
@@ -36,7 +35,7 @@ class Game:
     def target(self, iterable):
         target = sorted(
             iterable,
-            key = lambda elem: Collisions.distance(
+            key = lambda elem: Maze.distance(
                 self.player.rect.center,
                 elem.rect.center
             )

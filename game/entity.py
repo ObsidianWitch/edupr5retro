@@ -1,5 +1,5 @@
 import retro
-from game.collisions import Collisions
+from game.maze import Walls
 
 class Entity(retro.AnimatedSprite):
     def __init__(self, sprite, pos, speed, curdir = [0, 0], nxtdir = [0, 0]):
@@ -22,13 +22,10 @@ class Entity(retro.AnimatedSprite):
         return r
 
     def mazecol(self, maze):
-        def col(dir): return Collisions.px3(
-            image = maze.image,
-            dir   = dir,
-            rect  = self.rect,
-            color = maze.walls.COLOR,
+        return (
+            Walls.px3(self.curdir, self.rect),
+            Walls.px3(self.nxtdir, self.rect),
         )
-        return (col(self.curdir), col(self.nxtdir))
 
     def update(self, maze):
         if not self.collide_maze(maze): self.rect.move((

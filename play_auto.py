@@ -1,8 +1,8 @@
 import sys
 import random
 import retro
-from game.collisions import Collisions
 from game.game import Game
+from game.maze import Maze
 
 class RandWalk:
     def __init__(self):
@@ -48,7 +48,7 @@ def attract(player, sprite):
     else: return direction(sprite, player)
 
 def repel(player, sprite):
-    distance = Collisions.distance(player.rect.center, sprite.rect.center)
+    distance = Maze.distance(player.rect.center, sprite.rect.center)
     if distance > 2500 : return False
     else: return direction(sprite, player, invert = True)
 
