@@ -200,13 +200,29 @@ class Maze(retro.Sprite):
     def symbols(self, player, ghosts, transpose = False):
         def veq(p1, p2): return (p1[0] == p2[0]) and (p1[1] == p2[1])
 
-        ij_player = self.tile_pos(player.rect.center)
+        def process_player(i, j):
+            player_ij = self.tile_pos(player.rect.center)
+            if veq((i, j), player_ij): return 1
+
+        def process_walls(i, j):
+            if self.walls[i][j]: return 2
+
+        def process_ghosts(i, j):
+            for ghost in ghosts:
+                ghost_ij = self.tile_pos(ghost.rect.center)
+                if veq((i, j), ghost_ij): return 5 + ghost.state.current
+
+        def process_bonuses(i, j):
+            bonus = self.bonuses[i][j]
+            if bonus: return 3 + bonus.id
 
         for (i, _), (j, _) in self.iterator(transpose):
-            if veq((i, j), ij_player): yield i, j, 1
-            elif self.walls[i][j]: yield i, j, 2
-            elif self.bonuses[i][j]: yield i, j, 3
-            else: yield i, j, 0
+            code = process_ghosts(i, j) \
+                or process_player(i, j) \
+                or process_walls(i, j) \
+                or process_bonuses(i, j) \
+                or 0
+            yield i, j, code
 
     def draw(self, image):
         retro.Sprite.draw(self, image)
@@ -218,6 +234,9 @@ class Maze(retro.Sprite):
             "P", # 1 - player
             "▒", # 2 - wall
             "•", # 3 - bonus
+            "●", # 4 - powerup
+            "△", # 5 - ghost (normal)
+            "▲", # 6 - ghost (fear)
         )
 
         for i, j, s in self.symbols(player, ghosts, transpose = True):
