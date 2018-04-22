@@ -82,11 +82,6 @@ class Bonuses(list):
     # ·····     | ·▫▫▫·     | ▫···▫
     # ·····     | ·····     | ▫▫▫▫▫
     def neighborhood(self, sprite, reach = 0):
-        def inside(i, j): return (
-            i in range(len(Maze.RANGEW))
-            and j in range(len(Maze.RANGEH))
-        )
-
         i, j = Maze.tile_pos(sprite.rect.center)
         if reach == 0: it = ((0, 0),)
         else: it = itertools.chain(
@@ -96,7 +91,7 @@ class Bonuses(list):
 
         for k, l in it:
             k += i ; l += j
-            if not inside(k, l): continue
+            if not Maze.inside(k, l): continue
             b = self[k][l]
             if b: yield k, l, b
 
@@ -161,6 +156,24 @@ class Walls(list):
         it = itertools.product(range(-1, 2), repeat = 2)
         return any(check(p = center, offset = (i, j)) for i, j in it)
 
+    # returns the number of floor cells available on the left, right, top and
+    # bottom of the (`i`, `j`) cell
+    def floor_cells(self, i, j):
+        def helper(it1, it2):
+            counter = 0
+            for i, j in itertools.product(it1, it2):
+                if not Maze.inside(i, j): break
+                if self[i][j] == 1: break
+                counter += 1
+            return counter
+
+        return (
+            helper(range(i - 1, -1, -1), [j]),           # left
+            helper(range(i + 1, len(Maze.RANGEW)), [j]), # right
+            helper([i], range(j - 1, -1, -1)),           # top
+            helper([i], range(j + 1, len(Maze.RANGEH))), # bottom
+        )
+
 class Maze(retro.Sprite):
     IMG = retro.Image.from_path(assets("maze.png"))
     RANGEW = range(0, IMG.rect().w, 16)
@@ -179,6 +192,13 @@ class Maze(retro.Sprite):
         retro.Sprite.__init__(self, self.IMG.copy())
         self.bonuses = self.BONUSES.copy()
         self.walls = self.WALLS
+
+    # Checks whether the (`i, `j`) coordinates are inside the maze.
+    @classmethod
+    def inside(cls, i, j): return (
+        i in range(len(cls.RANGEW))
+        and j in range(len(cls.RANGEH))
+    )
 
     @classmethod
     def tile_pos(cls, pos): return (pos[0] // 16, pos[1] // 16)
