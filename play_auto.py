@@ -49,7 +49,7 @@ def attract(player, sprite):
 
 def repel(player, sprite):
     distance = Maze.distance(player.rect.center, sprite.rect.center)
-    if distance > 2500 : return False
+    if distance > 50 : return False
     else: return direction(sprite, player, invert = True)
 
 def repel_ghosts(player, ghost):
