@@ -217,6 +217,8 @@ class Maze(retro.Sprite):
             yield ix, jy
 
     # Iterator returning integers each representing an element in the maze.
+    # floor: 0 ; player: 1 ; walls: 2 ; bonus: 3 ; powerup: 4
+    # ghost normal: 5 ; ghost fear: 6
     def symbols(self, player, ghosts, transpose = False):
         def veq(p1, p2): return (p1[0] == p2[0]) and (p1[1] == p2[1])
 
