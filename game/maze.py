@@ -208,18 +208,31 @@ class Maze(retro.Sprite):
         abs(p2[0] - p1[0]) \
       + abs(p2[1] - p1[1])
 
+    # Returns a Maze iterator.
+    # If `window` is specified, iterates over the neighborhood centered on
+    # `window.center` and of reach `window.reach`.
     @classmethod
-    def iterator(self, transpose = False):
+    def iterator(self, transpose = False, window = None):
+        def windowit(range, i):
+            minv = window.center[i] - window.reach
+            maxv = window.center[i] + window.reach + 1
+            if minv < 0: maxv += abs(minv) ; minv = 0
+            if maxv >= len(range): minv -= maxv - len(range) ; maxv = len(range)
+            return itertools.islice(enumerate(range), minv, maxv)
+
         it1, it2 = enumerate(self.RANGEW), enumerate(self.RANGEH)
+        if window: it1, it2 = windowit(self.RANGEW, 0), windowit(self.RANGEH, 1)
         if transpose: it1, it2 = it2, it1
         for ix, jy in itertools.product(it1, it2):
             if transpose: ix, jy = jy, ix
             yield ix, jy
 
     # Iterator returning integers each representing an element in the maze.
+    # If `reach` is a positive integer, iterates over the neighborhood
+    # centered on `player` with the specified `reach`.
     # floor: 0 ; player: 1 ; walls: 2 ; bonus: 3 ; powerup: 4
     # ghost normal: 5 ; ghost fear: 6
-    def symbols(self, player, ghosts, transpose = False):
+    def symbols(self, player, ghosts, transpose = False, reach = -1):
         def veq(p1, p2): return (p1[0] == p2[0]) and (p1[1] == p2[1])
 
         def process_player(i, j):
@@ -238,7 +251,11 @@ class Maze(retro.Sprite):
             bonus = self.bonuses[i][j]
             if bonus: return 3 + bonus.id
 
-        for (i, _), (j, _) in self.iterator(transpose):
+        window = None if reach < 0 else types.SimpleNamespace(
+            center = self.tile_pos(player.rect.center),
+            reach  = reach,
+        )
+        for (i, _), (j, _) in self.iterator(transpose, window):
             code = process_ghosts(i, j) \
                 or process_player(i, j) \
                 or process_walls(i, j) \
@@ -250,7 +267,7 @@ class Maze(retro.Sprite):
         retro.Sprite.draw(self, image)
         self.bonuses.draw(image)
 
-    def print(self, player, ghosts):
+    def print(self, player, ghosts, reach = -1):
         symchars = (
             " ", # 0 - floor
             "P", # 1 - player
@@ -261,7 +278,11 @@ class Maze(retro.Sprite):
             "▲", # 6 - ghost (fear)
         )
 
-        for i, j, s in self.symbols(player, ghosts, transpose = True):
-            if i == 0: print()
+        oldj = -1
+        for i, j, s in self.symbols(
+            player, ghosts, transpose = True, reach = reach
+        ):
+            if j != oldj: print()
+            oldj = j
             print(symchars[s], end = '')
         print()
