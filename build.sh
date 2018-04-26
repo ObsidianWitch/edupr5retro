@@ -21,4 +21,6 @@ cat "$out1" | dcomments | dnewlines > "$out2"
 
 out3='out/retro.plus.py'
 cat "$out2" > "$out3"
-cat 'src/sprite.py' | dimports | dcomments | dnewlines >> "$out3"
+for f in 'src/sprite.py' \
+         'src/vector.py'
+do cat "$f" | dimports | dcomments | dnewlines | decorate >> "$out3"; done
