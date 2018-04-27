@@ -1,3 +1,4 @@
+import types
 import random
 import math
 import copy
@@ -85,4 +86,7 @@ class NNGAPool(list):
 
         self.generation += 1
 
-        return units[isorted[0]].fitness
+        return types.SimpleNamespace(
+            fitness = units[isorted[0]].fitness,
+            nn      = best[0],
+        )

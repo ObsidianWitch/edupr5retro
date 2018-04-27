@@ -1,3 +1,7 @@
+import multiprocessing
+import itertools
+import types
+import time
 import sys
 import retro
 from game.game import Games
@@ -9,52 +13,103 @@ def vsub(s1, s2): return (
     s1.rect.centery - s2.rect.centery,
 )
 
-def update(i, g):
-    if g.finished: return
-    player = g.player
-    ghost  = g.target(g.ghosts)
-    bonus  = g.maze.bonuses.nearest(player)
+def update_one(game, nn):
+    if game.finished: return False
 
-    p = pool[i].predict(
+    maze   = game.maze
+    player = game.player
+    ghost  = game.target(game.ghosts)
+    bonus  = maze.bonuses.nearest(player)
+
+    p = nn.predict(
         *vsub(ghost, player) if ghost else (-1.0, -1.0),
         ghost.state.current if ghost else -1,
         *vsub(bonus, player) if bonus else (-1.0, -1.0),
-        g.maze.bonuses.count,
-        *g.maze.walls.floor_cells(
-            *g.maze.tile_pos(player.rect.center)
+        maze.bonuses.count,
+        *maze.walls.floor_cells(
+            *maze.tile_pos(player.rect.center)
         )
     )
 
     dirs = ([-1, 0], [ 0, -1], [ 1,  0], [ 0,  1])
-    idir = sorted(
+    i = sorted(
         range(len(p)),
         key = lambda i: p[i],
         reverse = True,
     )[0]
-    player.nxtdir = dirs[idir]
+    player.nxtdir = dirs[i]
 
-    g.update()
+    game.update()
+    return True
 
-window = retro.Window(
-    title     = "Pacman",
-    size      = (448, 528),
-    framerate = 0,
-)
-events = retro.Events()
-
-games = Games(window, size = 200)
-pool = NNGAPool(size = len(games), arch = (10, 10, 10, 4))
-
-while pool.generation <= 50:
-    events.update()
-    if events.event(retro.QUIT): sys.exit()
-
-    if not games.finished:
-        for i, g in enumerate(games): update(i, g)
+def update_parallel(icore):
+    window = retro.Window(
+        title     = "Pacman",
+        size      = (448, 528),
+        framerate = 0,
+    )
+    games = Games(window, size = len(nn_pool) // cores)
+    while not games.finished:
+        for igame, game in enumerate(games):
+            ipool = (len(games) * icore) + igame
+            update_one(game, nn_pool[ipool])
         games.best.draw()
-    else:
-        best_fitness = pool.evolve(games)
-        print(pool.generation - 1, best_fitness)
-        games.reset()
+        window.update()
 
-    window.update()
+    return tuple(g.fitness for g in games)
+
+def main_parallel():
+    if nn_pool.generation > 50: return
+
+    # Update
+    start = time.time()
+    with multiprocessing.Pool(cores) as mp_pool:
+        scores = mp_pool.map(update_parallel, range(cores))
+    end = time.time()
+
+    # Adapt
+    units = tuple(
+        types.SimpleNamespace(fitness = score)
+        for score in itertools.chain.from_iterable(scores)
+    )
+
+    # Evolve
+    best = nn_pool.evolve(units)
+    print(nn_pool.generation - 1, best.fitness, end - start)
+    main_parallel()
+
+def update_sequential(window, games):
+    while not games.finished:
+        for i, game in enumerate(games):
+            update_one(game, nn_pool[i])
+        games.best.draw()
+        window.update()
+
+def main_sequential(window = None, games = None):
+    if nn_pool.generation > 50: return
+
+    window = window or retro.Window(
+        title     = "Pacman",
+        size      = (448, 528),
+        framerate = 0,
+    )
+    games = games or Games(window, size = len(nn_pool))
+
+    # Update
+    start = time.time()
+    update_sequential(window, games)
+    end = time.time()
+
+    # Evolve
+    best = nn_pool.evolve(games)
+    print(nn_pool.generation - 1, best.fitness, end - start)
+    games.reset()
+    main_sequential(window, games)
+
+nn_pool = NNGAPool(size = 200, arch = (10, 10, 10, 4))
+cores = multiprocessing.cpu_count()
+
+if __name__ == '__main__':
+    parallel = (len(sys.argv) >= 2) and (sys.argv[1] == "--parallel")
+    if parallel: main_parallel()
+    else: main_sequential()
