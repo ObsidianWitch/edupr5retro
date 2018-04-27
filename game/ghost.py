@@ -9,6 +9,9 @@ class Ghosts(retro.Group):
         retro.Group.__init__(self, Ghost())
         self.spawn_timer = retro.Timer(end = 50, period = 100)
 
+    def notify_kill(self):
+        self.spawn_timer.restart()
+
     def update(self, maze, player):
         retro.Group.update(self, maze, player)
 
@@ -95,6 +98,10 @@ class Ghost(Entity):
             return True
 
         return False
+
+    def kill(self):
+        for g in self.groups: g.notify_kill()
+        Entity.kill(self)
 
     def update(self, maze, player):
         self.state.update(player)
