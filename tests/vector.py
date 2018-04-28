@@ -6,14 +6,22 @@ def v1():
 
     assert Vec.eq(va, va)
     assert Vec.ne(va, vb)
+
     assert Vec.eq(
         Vec.add(va, vb),
         (6,)
     )
+
     assert Vec.eq(
         Vec.sub(va, vb),
         (-2,)
     )
+
+    assert Vec.eq(
+        Vec.mul(va, vb),
+        (8,)
+    )
+
     assert Vec.dot(va, vb) == 8
 
 def v2():
@@ -22,14 +30,22 @@ def v2():
 
     assert Vec.eq(va, va)
     assert Vec.ne(va, vb)
+
     assert Vec.eq(
         Vec.add(va, vb),
         (6, 8)
     )
+
     assert Vec.eq(
         Vec.sub(va, vb),
         (-2, -2)
     )
+
+    assert Vec.eq(
+        Vec.mul(va, vb),
+        (8, 15),
+    )
+
     assert Vec.dot(va, vb) == 23
 
 def v10():
@@ -38,14 +54,22 @@ def v10():
 
     assert Vec.eq(va, va)
     assert Vec.ne(va, vb)
+
     assert Vec.eq(
         Vec.add(va, vb),
         (11, 11, 11, 11, 11, 11, 11, 11, 11, 11)
     )
+
     assert Vec.eq(
         Vec.sub(va, vb),
         (-9, -7, -5, -3, -1, 1, 3, 5, 7, 9)
     )
+
+    assert Vec.eq(
+        Vec.mul(va, vb),
+        (10, 18, 24, 28, 30, 30, 28, 24, 18, 10)
+    )
+
     assert Vec.dot(va, vb) == 220
 
 def v10n():
@@ -68,6 +92,15 @@ def v10n():
     assert Vec.eq(
         Vec.sub(n, va),
         (2, 1, 0, -1, -2, -3, -4, -5, -6, -7)
+    )
+
+    assert Vec.eq(
+        Vec.mul(va, n),
+        (3, 6, 9, 12, 15, 18, 21, 24, 27, 30)
+    )
+    assert Vec.eq(
+        Vec.mul(va, n),
+        Vec.mul(n, va),
     )
 
     assert Vec.dot(va, n) == 165

@@ -12,6 +12,11 @@ class Vec:
     ]
 
     @classmethod
+    def mul(cls, a, b): return [
+        c * d for c, d in cls.iterator(a, b)
+    ]
+
+    @classmethod
     def dot(cls, a, b): return sum(
         c * d for c, d in cls.iterator(a, b)
     )
