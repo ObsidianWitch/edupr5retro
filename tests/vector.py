@@ -48,6 +48,32 @@ def v10():
     )
     assert Vec.dot(va, vb) == 220
 
+def v10n():
+    va = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    n = 3
+
+    assert Vec.eq(
+        Vec.add(va, n),
+        (4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
+    )
+    assert Vec.eq(
+        Vec.add(va, n),
+        Vec.add(n, va),
+    )
+
+    assert Vec.eq(
+        Vec.sub(va, n),
+        (-2, -1, 0, 1, 2, 3, 4, 5, 6, 7)
+    )
+    assert Vec.eq(
+        Vec.sub(n, va),
+        (2, 1, 0, -1, -2, -3, -4, -5, -6, -7)
+    )
+
+    assert Vec.dot(va, n) == 165
+    assert Vec.dot(va, n) == Vec.dot(n, va)
+
 v1()
 v2()
 v10()
+v10n()
