@@ -8,6 +8,11 @@ def v1():
     assert Vec.ne(va, vb)
 
     assert Vec.eq(
+        Vec.neg(va),
+        (-2,),
+    )
+
+    assert Vec.eq(
         Vec.add(va, vb),
         (6,)
     )
@@ -32,6 +37,11 @@ def v2():
     assert Vec.ne(va, vb)
 
     assert Vec.eq(
+        Vec.neg(va),
+        (-2, -3),
+    )
+
+    assert Vec.eq(
         Vec.add(va, vb),
         (6, 8)
     )
@@ -54,6 +64,11 @@ def v10():
 
     assert Vec.eq(va, va)
     assert Vec.ne(va, vb)
+
+    assert Vec.eq(
+        Vec.neg(va),
+        (-1, -2, -3, -4, -5, -6, -7, -8, -9, -10),
+    )
 
     assert Vec.eq(
         Vec.add(va, vb),

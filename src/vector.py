@@ -2,6 +2,11 @@ from numbers import Number
 
 class Vec:
     @classmethod
+    def neg(cls, va): return [
+        -a for a in va
+    ]
+
+    @classmethod
     def add(cls, a, b): return [
         c + d for c, d in cls.iterator(a, b)
     ]
