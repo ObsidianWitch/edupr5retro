@@ -5,8 +5,10 @@ from game.entity import Entity
 from game.assets import assets
 
 class Ghosts(retro.Group):
-    def __init__(self):
-        retro.Group.__init__(self, Ghost())
+    def __init__(self, num, pos):
+        retro.Group.__init__(self, Ghost(pos))
+        self.num = num
+        self.pos = pos
         self.spawn_timer = retro.Timer(end = 50, period = 100)
 
     def notify_kill(self):
@@ -15,11 +17,11 @@ class Ghosts(retro.Group):
     def update(self, maze, player):
         retro.Group.update(self, maze, player)
 
-        if len(self) == 1: return
+        if len(self) == self.num: return
         elif self.spawn_timer.elapsed > 50:
             self.spawn_timer.restart()
         elif self.spawn_timer.finished:
-            self.append(Ghost())
+            self.append(Ghost(self.pos))
             self.spawn_timer.restart()
 
 class State:
@@ -52,7 +54,7 @@ class Ghost(Entity):
 
     BONUS = 200
 
-    def __init__(self):
+    def __init__(self, pos):
         Entity.__init__(self,
             sprite = retro.AnimatedSprite(
                 images     = self.IMGS,
@@ -66,7 +68,7 @@ class Ghost(Entity):
                     period = 50,
                 ),
             ),
-            pos   = (208, 168),
+            pos   = pos,
             speed = 2,
             curdir = [0, 0],
             nxtdir = random.choice(([-1, 0], [1, 0])),

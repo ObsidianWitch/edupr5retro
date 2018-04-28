@@ -26,7 +26,7 @@ class Player(Entity):
          + [img.copy().rotate(180) for img in IMGS] \
          + [img.copy().rotate(270) for img in IMGS]
 
-    def __init__(self):
+    def __init__(self, pos):
         Entity.__init__(self,
             sprite = retro.AnimatedSprite(
                 images     = self.IMGS,
@@ -44,7 +44,7 @@ class Player(Entity):
                     period = 50,
                 ),
             ),
-            pos   = (8, 8),
+            pos   = pos,
             speed = 4,
         )
 

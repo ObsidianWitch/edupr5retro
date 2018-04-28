@@ -1,6 +1,7 @@
 import sys
 import random
 import retro
+from game.parameters import Parameters
 from game.game import Game
 from game.maze import Maze
 
@@ -54,13 +55,15 @@ def repel_ghosts(player, ghost):
     if (not ghost) or (ghost.state == ghost.state.FEAR): return False
     return repel(player, ghost)
 
+small_maze = any(arg == "--small" for arg in sys.argv)
+parameters = Parameters.small() if small_maze else Parameters.classic()
 window = retro.Window(
     title     = "Pacman",
-    size      = (320, 240),
+    size      = parameters.window_size,
     framerate = 0,
 )
 events = retro.Events()
-game = Game(window)
+game = Game(window, parameters)
 randwalk = RandWalk()
 
 while 1:

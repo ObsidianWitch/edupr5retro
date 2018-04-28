@@ -1,14 +1,17 @@
 import sys
 import retro
+from game.parameters import Parameters
 from game.game import Game
 
+small_maze = any(arg == "--small" for arg in sys.argv)
+parameters = Parameters.small() if small_maze else Parameters.classic()
 window = retro.Window(
     title     = "Pacman",
-    size      = (320, 240),
+    size      = parameters.window_size,
     framerate = 60,
 )
 events = retro.Events()
-game = Game(window)
+game = Game(window, parameters)
 
 while 1:
     events.update()
