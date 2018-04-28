@@ -36,10 +36,7 @@ class State:
         if self.current == self.WALK:
             if player.powerup.started:
                 self.ghost.set_animation("FEAR")
-                self.ghost.curdir = [
-                    -self.ghost.curdir[0],
-                    -self.ghost.curdir[1]
-                ]
+                self.ghost.curdir = retro.Vec.neg(self.ghost.curdir)
                 self.current = self.FEAR
         elif self.current == self.FEAR:
             if not player.powerup.enabled:
@@ -82,7 +79,7 @@ class Ghost(Entity):
 
     def next_dir(self):
         dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]]
-        opdir = [-self.curdir[0], -self.curdir[1]]
+        opdir = retro.Vec.neg(self.curdir)
         if opdir in dirs: dirs.remove(opdir)
         self.nxtdir = random.choice(dirs)
 
@@ -92,7 +89,7 @@ class Ghost(Entity):
         if not nxtcol:
             self.curdir = self.nxtdir
         elif curcol is None:
-            self.curdir = [-self.curdir[0], -self.curdir[1]]
+            self.curdir = retro.Vec.neg(self.curdir)
         elif curcol:
             self.next_dir()
             return True

@@ -17,7 +17,7 @@ class Entity(retro.AnimatedSprite):
 
     def bounding_rect(self, offset):
         r = self.rect.copy()
-        r.size = (r.size[0] - offset, r.size[1] - offset)
+        r.size = retro.Vec.sub(r.size, offset)
         r.center = self.rect.center
         return r
 
@@ -28,8 +28,7 @@ class Entity(retro.AnimatedSprite):
         )
 
     def update(self, maze):
-        if not self.collide_maze(maze): self.rect.move((
-            self.speed * self.curdir[0],
-            self.speed * self.curdir[1],
-        ))
+        if not self.collide_maze(maze): self.rect.move(
+            retro.Vec.mul(self.speed, self.curdir)
+        )
         retro.AnimatedSprite.update(self)

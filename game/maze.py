@@ -27,10 +27,7 @@ class Bonus(retro.Sprite):
 
         self = retro.Sprite.__new__(cls)
         retro.Sprite.__init__(self, bonus.img)
-        self.rect.topleft = (
-            pos[0] + bonus.offset[0],
-            pos[1] + bonus.offset[1],
-        )
+        self.rect.topleft = retro.Vec.add(pos, bonus.offset)
         self.id = bonus.id
         self.value = bonus.value
 
@@ -119,7 +116,7 @@ class Walls(list):
         def inside(p): return image.rect().collidepoint(p)
 
         def check(p, offset):
-            p = (p[0] + offset[0], p[1] + offset[1])
+            p = retro.Vec.add(p, offset)
             if not inside(p): return None
             return (image[p] == color)
 
@@ -233,11 +230,9 @@ class Maze(retro.Sprite):
     # floor: 0 ; player: 1 ; walls: 2 ; bonus: 3 ; powerup: 4
     # ghost normal: 5 ; ghost fear: 6
     def symbols(self, player, ghosts, transpose = False, reach = -1):
-        def veq(p1, p2): return (p1[0] == p2[0]) and (p1[1] == p2[1])
-
         def process_player(i, j):
             player_ij = self.tile_pos(player.rect.center)
-            if veq((i, j), player_ij): return 1
+            if retro.Vec.eq((i, j), player_ij): return 1
 
         def process_walls(i, j):
             if self.walls[i][j]: return 2
@@ -245,7 +240,8 @@ class Maze(retro.Sprite):
         def process_ghosts(i, j):
             for ghost in ghosts:
                 ghost_ij = self.tile_pos(ghost.rect.center)
-                if veq((i, j), ghost_ij): return 5 + ghost.state.current
+                if retro.Vec.eq((i, j), ghost_ij):
+                    return 5 + ghost.state.current
 
         def process_bonuses(i, j):
             bonus = self.bonuses[i][j]

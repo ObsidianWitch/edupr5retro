@@ -26,14 +26,12 @@ class RandWalk:
             return True
 
 def direction(s1, s2, invert = False):
-    dx = s1.rect.centerx - s2.rect.centerx
-    dy = s1.rect.centery - s2.rect.centery
-    dx = -dx if invert else dx
-    dy = -dy if invert else dy
-    if   dx < 0: return [-1,  0]
-    elif dx > 0: return [ 1,  0]
-    elif dy < 0: return [ 0, -1]
-    elif dy > 0: return [ 0,  1]
+    dv = retro.Vec.sub(s1.rect.center, s2.rect.center)
+    if invert: dv = retro.Vec.neg(dv)
+    if   dv[0] < 0: return [-1,  0]
+    elif dv[0] > 0: return [ 1,  0]
+    elif dv[1] < 0: return [ 0, -1]
+    elif dv[1] > 0: return [ 0,  1]
     else: return False
 
 def walls(player):

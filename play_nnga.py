@@ -8,11 +8,6 @@ from game.game import Games
 from game.maze import Maze
 from nn import NNGAPool
 
-def vsub(s1, s2): return (
-    s1.rect.centerx - s2.rect.centerx,
-    s1.rect.centery - s2.rect.centery,
-)
-
 def update_one(game, nn):
     if game.finished: return False
 
@@ -22,9 +17,13 @@ def update_one(game, nn):
     bonus  = maze.bonuses.nearest(player)
 
     p = nn.predict(
-        *vsub(ghost, player) if ghost else (-1.0, -1.0),
+        *retro.Vec.sub(
+            ghost.rect.center, player.rect.center
+        ) if ghost else (-1.0, -1.0),
         ghost.state.current if ghost else -1,
-        *vsub(bonus, player) if bonus else (-1.0, -1.0),
+        *retro.Vec.sub(
+            bonus.rect.center, player.rect.center
+        ) if bonus else (-1.0, -1.0),
         maze.bonuses.count,
         *maze.walls.floor_cells(
             *maze.tile_pos(player.rect.center)

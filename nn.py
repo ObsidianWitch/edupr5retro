@@ -2,6 +2,7 @@ import types
 import random
 import math
 import copy
+import retro
 
 class NN(list):
     def __init__(self, arch):
@@ -18,11 +19,11 @@ class NN(list):
         list.__init__(self, genw_layers())
 
     def predict(self, *inputs):
-        def dot(v1, v2): return sum(v1[i] * v2[i] for i, _ in enumerate(v1))
-
         values = inputs
         for w in self: values = [
-            math.tanh(dot(values, n)) for n in w
+            math.tanh(
+                retro.Vec.dot(values, n)
+            ) for n in w
         ]
 
         return values
