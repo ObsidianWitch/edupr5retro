@@ -1,25 +1,36 @@
-class Vector:
+from numbers import Number
+
+class Vec:
     @classmethod
-    def add(cls, va, vb): return [
-        va[i] + vb[i] for i, _ in enumerate(va)
+    def add(cls, a, b): return [
+        c + d for c, d in cls.iterator(a, b)
     ]
 
     @classmethod
-    def sub(cls, va, vb): return [
-        va[i] - vb[i] for i, _ in enumerate(va)
+    def sub(cls, a, b): return [
+        c - d for c, d in cls.iterator(a, b)
     ]
 
     @classmethod
-    def dot(cls, va, vb): return sum(
-        va[i] * vb[i] for i, _ in enumerate(va)
+    def dot(cls, a, b): return sum(
+        c * d for c, d in cls.iterator(a, b)
     )
 
     @classmethod
-    def eq(cls, va, vb): return (len(va) == len(vb)) and all(
-        va[i] == vb[i] for i, _ in enumerate(va)
+    def eq(cls, a, b): return (len(a) == len(b)) and all(
+        c == d for c, d in cls.iterator(a, b)
     )
 
     @classmethod
-    def ne(cls, va, vb): return (len(va) != len(vb)) or all(
-        va[i] != vb[i] for i, _ in enumerate(va)
+    def ne(cls, a, b): return (len(a) != len(b)) or all(
+        c != d for c, d in cls.iterator(a, b)
     )
+
+    @classmethod
+    def iterator(cls, a, b):
+        if isinstance(a, Number):
+            for i, _ in enumerate(b): yield a, b[i]
+        elif isinstance(b, Number):
+            for i, _ in enumerate(a): yield a[i], b
+        else:
+            for i, _ in enumerate(a): yield a[i], b[i]
