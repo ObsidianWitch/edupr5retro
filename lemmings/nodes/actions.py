@@ -15,28 +15,29 @@ class Walk:
         self.dx = -1
 
     def run(self, collisions):
+        self.walk(collisions)
+        self.slope()
+
+    def walk(self, collisions):
         if collisions.side:
             self.dx *= -1
             self.lemming.rect.move(-self.dx * 20, 0)
 
         self.lemming.set_animation("WALK")
         self.lemming.rect.move(self.dx, 0)
-        self.slope()
 
     def slope(self):
-        up = self.slope_up()
-        if not up: self.slope_down()
+        c = self.lemming.collisions(self.lemming.bg.current)
+        if not c.fall: self.slope_up()
+        else:          self.slope_down()
 
     def slope_up(self):
         self.lemming.rect.move(0, -2)
         c = self.lemming.collisions(self.lemming.bg.current)
         if c.fall: self.lemming.rect.move(0, 2)
-        return (not c.fall)
 
     def slope_down(self):
-        c = self.lemming.collisions(self.lemming.bg.current)
-        if c.fall: self.lemming.rect.move(0, 2)
-
+        self.lemming.rect.move(0, 2)
         c = self.lemming.collisions(self.lemming.bg.current)
         if c.fall: self.lemming.rect.move(0, -2)
 
