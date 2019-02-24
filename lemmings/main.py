@@ -26,7 +26,7 @@ def game():
         states.instance = Level1(window)
         states.current  = states.LEVEL1
 
-    if states.current == states.LEVEL1:
+    elif states.current == states.LEVEL1:
         if states.instance.win:
             states.instance = Level2(window)
             states.current  = states.LEVEL2
@@ -36,7 +36,7 @@ def game():
         else:
             states.instance.run()
 
-    if states.current == states.LEVEL2:
+    elif states.current == states.LEVEL2:
         if states.instance.win:
             states.instance = End(window, win = True)
             states.current  = states.END
@@ -46,7 +46,7 @@ def game():
         else:
             states.instance.run()
 
-    if states.current == states.END:
+    elif states.current == states.END:
         if states.instance.restart:
             states.instance = Level1(window)
             states.current  = states.LEVEL1

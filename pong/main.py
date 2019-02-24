@@ -22,14 +22,14 @@ def game():
         states.instance = StateRun(window)
         states.current  = states.RUN
 
-    if states.current == states.RUN:
+    elif states.current == states.RUN:
         if states.instance.winner:
             states.instance = StateEnd(window, states.instance.winner)
             states.current  = states.END
         else:
             states.instance.run()
 
-    if states.current == states.END:
+    elif states.current == states.END:
         if states.instance.restart:
             states.instance = StateRun(window)
             states.current  = states.RUN
