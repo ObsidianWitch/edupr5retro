@@ -4,8 +4,9 @@ from pong.states.run import StateRun
 from pong.states.end import StateEnd
 
 window = Window(
-    size  = (600, 400),
-    title = "Pong",
+    size      = (600, 400),
+    title     = "Pong",
+    framerate = 60,
 )
 window.cursor(False)
 

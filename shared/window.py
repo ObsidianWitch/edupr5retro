@@ -2,8 +2,8 @@ import sys
 import include.retro as retro
 
 class Window(retro.Window):
-    def __init__(self, title, size):
-        retro.Window.__init__(self, title, size)
+    def __init__(self, *args, **kwargs):
+        retro.Window.__init__(self, *args, **kwargs)
 
         # Ascending size fonts
         self.fonts = list(
