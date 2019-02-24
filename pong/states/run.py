@@ -1,5 +1,4 @@
 import include.retro as retro
-import shared.collisions
 from shared.sprite import Sprite
 from pong.nodes.ball import Ball
 from pong.nodes.paddle import Paddle
@@ -18,7 +17,7 @@ class StateRun:
         else: return 0
 
     def ball_paddle_collision(self, paddle):
-        collision = shared.collisions.circle_rect(self.ball.circle, paddle.rect)
+        collision = self.ball.circle.colliderect(paddle.rect)
         if (collision == -1):
             self.ball.circle.left = paddle.rect.right
             self.ball.dx *= -1

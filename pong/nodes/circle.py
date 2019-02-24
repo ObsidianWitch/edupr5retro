@@ -32,3 +32,11 @@ class Circle:
     def right(self): return (self.center[0] + self.radius)
     @right.setter
     def right(self, v): self.center[0] = v - self.radius
+
+    # Returns  1 when `self`'s right side collides `rect`'s left side.
+    # Returns -1 when `self`'s left side collides `rect`'s right side.
+    # Returns  0 when no collision happens.
+    def colliderect(self, rect):
+        right = rect.collidepoint(self.right, self.y)
+        left  = rect.collidepoint(self.left, self.y)
+        return (right - left)

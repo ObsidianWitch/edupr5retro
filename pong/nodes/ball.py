@@ -1,5 +1,5 @@
 import include.retro as retro
-from shared.circle import Circle
+from pong.nodes.circle import Circle
 
 class Ball:
     def __init__(self, window):
