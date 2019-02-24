@@ -28,7 +28,7 @@ fish2 = Fish(
     window = window,
     speed  = (2, 1),
     move   = Fish.move2,
-    path     = asset_path("fish2.bmp"),
+    path   = asset_path("fish2.bmp"),
 )
 fish2.colorkey((170, 238, 255))
 fish2.rect.move(200, 300)
@@ -37,7 +37,7 @@ fish3 = Fish(
     window = window,
     speed  = (2, 2),
     move   = Fish.move3,
-    path     = asset_path("fish3.bmp"),
+    path   = asset_path("fish3.bmp"),
 )
 fish3.colorkey((170, 255, 238))
 fish3.scale(1.1)
@@ -64,10 +64,10 @@ decor2.scale(0.3)
 decor2.rect.move(260, 260)
 
 layers = (
-    retro.Group(bg,),
+    retro.Group(bg),
     retro.Group(fish1, fish2),
     retro.Group(plant1, plant2),
-    retro.Group(fish3,),
+    retro.Group(fish3),
     retro.Group(decor1, decor2),
 )
 
