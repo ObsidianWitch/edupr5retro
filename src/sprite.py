@@ -51,27 +51,76 @@ class Timer:
     def restart(self): self.t0 = self.time
 
 class Animations:
-    # `data` must be a dictionary where the key is the name of one animation
-    # and the value contains frames (a list containing indices each referencing
-    # an image).
-    # `period` corresponds to the time in ms needed to switch from one frame to
-    # another.
+    # Constructeur
+
+    ## ~~~{.python .prototype}
+    ## Animations(dict data, int period) -> Animations
+    ## ~~~
+    ##
+    ## Les animations sont contenues dans le dictionnaire `data`. Chaque entrée
+    ## fait correspondre le nom d'une animation (clé) à des frames (valeur).
+    ## Les frames sont représentées par une liste d'indices, chaque indice
+    ## faisant référence à une image.
+    ##
+    ## Le paramètre `period` correspond au temps (en ms) nécessaire pour passer
+    ## d'une frame à la suivante.
+    ##
+    ## ~~~python
+    ## # Exemple
+    ## animations = retro.Animations(
+    ##     data = {
+    ##         "WALK_L":  range(0, 8),
+    ##         "WALK_R":  range(0 + 133, 8 + 133),
+    ##         "FALL_L":  range(8, 12),
+    ##         "FALL_R":  range(8 + 133, 12 + 133),
+    ##         ...
+    ##     },
+    ##     period  = 100,
+    ## )
+    ## ~~~
     def __init__(self, data, period):
         self.data   = data
         self.period = period
         if len(data) > 0: self.start(name = next(iter(self.data)))
 
+    # Propriétés
+
+    ## ~~~{.python .prototype}
+    ## frame -> int
+    ## ~~~
+    ##
+    ## Retourne l'indice de la frame de l'animation actuellement jouée.
+    ## Les animations sont jouées en boucle.
     @property
     def frame(self):
         i = self.timer.elapsed % len(self.current)
         return self.current[i]
 
+    ## ~~~{.python .prototype}
+    ## finished -> bool
+    ## ~~~
+    ##
+    ## Retourne si l'animation a été complétée au moins une fois.
     @property
     def finished(self): return self.timer.finished
 
+    # Méthodes
+
+    ## ~~~{.python .prototype}
+    ## set(str name)
+    ## ~~~
+    ##
+    ## Définit l'animation à jouer (`current`).
     def set(self, name):
         self.current = self.data[name]
 
+    ## ~~~{.python .prototype}
+    ## start(str name)
+    ## ~~~
+    ##
+    ## Définit et démarre l'animation à jouer (`current`). L'attribut
+    ## [`timer`](#classe-timer) permet de gérer le passage d'une frame à
+    ## l'autre.
     def start(self, name):
         self.set(name)
         self.timer = Timer(
