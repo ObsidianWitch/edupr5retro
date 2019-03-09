@@ -1,6 +1,14 @@
+image: debian:testing-slim
+
+before_script:
+    - apt update
+    - apt -y install python3 pandoc
+
 pages:
   stage: deploy
   script:
+    - ./build.sh
+    - ./doc.py
     - mkdir -p public
     - cp out/doc.html public/index.html
   artifacts:
