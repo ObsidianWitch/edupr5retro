@@ -1,5 +1,4 @@
 import retro
-import sys
 from game import Game
 
 window = retro.Window(
@@ -7,14 +6,10 @@ window = retro.Window(
     size      = (288, 512),
     framerate = 100,
 )
-events = retro.Events()
 
 game = Game(window, nbirds = 1)
 
-while 1:
-    events.update()
-    if events.event(retro.QUIT): sys.exit()
-
+def main():
     if not game.finished:
         b = game.birds[0]
         if game.target.centery - b.rect.y < 0: b.flap()
@@ -22,4 +17,4 @@ while 1:
     else:
         game.reset()
 
-    window.update()
+window.loop(main)

@@ -10,14 +10,10 @@ window = retro.Window(
     size      = (288, 512),
     framerate = 0,
 )
-events = retro.Events()
 game = Game(window, nbirds = 10)
 pool = NNGAPool(size = len(game.birds), arch = (2, 1))
 
-while 1:
-    events.update()
-    if events.event(retro.QUIT): sys.exit()
-
+def main():
     if not game.finished:
         for i, b in enumerate(game.birds):
             if ANALYSIS and b.fitness >= 10000:
@@ -38,4 +34,4 @@ while 1:
 
         game.reset()
 
-    window.update()
+window.loop(main)

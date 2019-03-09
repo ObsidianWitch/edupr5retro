@@ -94,6 +94,7 @@ class Pipes(list):
 
 class Bird(Sprite):
     IMG = retro.Image.from_path(assets("bird.png"))
+    ACCEL = 1
     DEFAULT_SPEED = -9
     MAX_SPEED = 9
 
@@ -103,7 +104,6 @@ class Bird(Sprite):
         self.fitness = 0
         self.alive = True
         self.rect.center = (75, self.window.rect().centery)
-        self.accel_y = 1
         self.flap()
 
     def flap(self):
@@ -111,7 +111,7 @@ class Bird(Sprite):
 
     def update(self):
         if self.alive:
-            self.speed_y += self.accel_y
+            self.speed_y += self.ACCEL
             self.speed_y = min(self.speed_y, self.MAX_SPEED)
             self.rect.y += self.speed_y
             self.fitness += 1
