@@ -46,7 +46,7 @@ class Hide(Sprite):
         self.hidden = False
 
     def update(self):
-        self.hidden = self.window.events.key_hold(retro.K_RETURN)
+        self.hidden = self.window.events.key_hold(retro.K_LSHIFT)
 
     def draw(self):
         if self.hidden: Sprite.draw(self, self.window)
@@ -95,6 +95,7 @@ class Player:
 
     def shoot(self, target):
         if self.ammunitions.count <= 0: return
+        if self.hide.hidden: return
         if not self.window.events.key_press(retro.K_SPACE): return
 
         self.ammunitions.count -= 1
@@ -109,8 +110,8 @@ class Player:
         killed = target.kill(
             self.camera.bg_space(self.crosshair.rect.center)
         )
-        if killed ==  1: self.ammunitions.count += 2
-        if killed == -1: self.ammunitions.count -= 3
+        if   killed ==  1: self.ammunitions.count += 2
+        elif killed == -1: self.ammunitions.count -= 3
 
     def update(self, collisions_vec, target):
         self.move(collisions_vec)
