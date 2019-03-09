@@ -2,6 +2,7 @@ import sys
 import pygame
 from src.image import Image
 from src.events import Events
+from src.font import Font
 class Window(Image):
     # Héritage
 
@@ -27,7 +28,16 @@ class Window(Image):
 
         self.events = Events()
 
+        self.fonts = list(
+            Font(size) for size in range(18, 43, 6)
+        )
+
     # Attributs
+
+    ## ~~~{.python .prototype}
+    ## fonts -> list<Font>
+    ## ~~~
+    ## Liste de polices de tailles ascendantes (18, 24, 30, 36 et 42).
 
     ## ~~~{.python .prototype}
     ## events -> Events

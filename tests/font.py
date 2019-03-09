@@ -8,15 +8,16 @@ window = Window(
     framerate = 30,
 )
 
-font = Font(size = 42)
+font1 = Font(size = 74)
+font2 = window.fonts[4]
 
-txt1 = font.render(
+txt1 = font1.render(
     text = "Example 1",
 )
 txt1_rect = txt1.rect()
 txt1_rect.midtop = window.rect().midtop
 
-txt2 = font.render(
+txt2 = font1.render(
     text      = "Example 2",
     antialias = True,
     color     = RED,
@@ -25,7 +26,7 @@ txt2 = font.render(
 txt2_rect = txt2.rect()
 txt2_rect.center = window.rect().center
 
-txt3 = font.render(
+txt3 = font2.render(
     text      = "Example 3",
     antialias = True,
     color     = BLUE,
