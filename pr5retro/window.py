@@ -1,8 +1,8 @@
 import sys
 import pygame
-from src.image import Image
-from src.events import Events
-from src.font import Font
+from pr5retro.image import Image
+from pr5retro.events import Events
+from pr5retro.font import Font
 class Window(Image):
     # Héritage
 

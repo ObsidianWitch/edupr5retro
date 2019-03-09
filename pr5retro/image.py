@@ -1,6 +1,6 @@
 import pygame
 import numpy
-from src.rect import Rect
+from pr5retro.rect import Rect
 class Image:
     # Constructeur
 

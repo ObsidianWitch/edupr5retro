@@ -1,5 +1,5 @@
 import pygame
-from src.image import Image
+from pr5retro.image import Image
 
 class Group(list):
     def __init__(self, *args):

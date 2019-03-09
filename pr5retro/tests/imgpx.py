@@ -1,7 +1,7 @@
-import os
-from src.constants import *
-from src.window import Window
-from src.image import Image
+from pr5retro.tests.path import assets
+from pr5retro.constants import *
+from pr5retro.window import Window
+from pr5retro.image import Image
 
 window = Window(
     title     = "window",
@@ -9,9 +9,7 @@ window = Window(
     framerate = 30,
 )
 
-spritesheet = Image.from_path(os.path.join(
-    "tests", "data", "spritesheet.png"
-))
+spritesheet = Image.from_path(assets("spritesheet.png"))
 spritesheet[0, 0] = GREEN
 assert spritesheet[0, 0] == GREEN
 

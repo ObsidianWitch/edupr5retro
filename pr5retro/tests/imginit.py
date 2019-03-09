@@ -1,9 +1,9 @@
-import os
 import itertools
-from src.constants import *
-from src.window import Window
-from src.image import Image
-from src.rect import Rect
+from pr5retro.tests.path import assets
+from pr5retro.constants import *
+from pr5retro.window import Window
+from pr5retro.image import Image
+from pr5retro.rect import Rect
 
 window = Window(
     title     = "window",
@@ -51,9 +51,7 @@ s1_rect.move(10, 10)
 print(s1.rect)
 print(s1_rect)
 
-s2 = Image.from_path(os.path.join(
-    "tests", "data", "img.png"
-))
+s2 = Image.from_path(assets("img.png"))
 s2_rect = s2.rect()
 s2_rect.move(10, 110)
 s2_area = Rect(20, 10, 30, 30)
@@ -72,9 +70,7 @@ s5_rect.move(50, 0)
 s5.draw_line(GREEN, (0, 0), (30, 30))
 
 subimages = Image.from_spritesheet(
-    path = os.path.join(
-        "tests", "data", "spritesheet.png"
-    ),
+    path = assets("spritesheet.png"),
     sprite_size = (30, 30),
     discard_color = RED,
 )

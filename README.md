@@ -19,5 +19,5 @@ module extending [pygame](https://www.pygame.org).
 ## Tests
 
 ~~~sh
-python -m tests.test_name # e.g. python -m tests.image_init
+python -m pr5retro.tests.test_name # e.g. python -m pr5retro.tests.sprite
 ~~~

@@ -1,6 +1,6 @@
 import pygame
-from src.constants import *
-from src.image import Image
+from pr5retro.constants import *
+from pr5retro.image import Image
 class Font:
     # Constructeur
 
