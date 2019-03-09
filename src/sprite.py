@@ -10,10 +10,8 @@ class Group(list):
         list.append(self, e)
         e.groups.append(self)
 
-    def update(self, *args):
-        for e in self:
-            if args: e.update(*args)
-            else:    e.update()
+    def update(self, *args, **kargs):
+        for e in self: e.update(*args, **kwargs)
 
     def draw(self, surface):
         for e in self: e.draw(surface)
