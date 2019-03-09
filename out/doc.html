@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<title>Module retro</title>
+
+<style type="text/css">
+body {
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #444;
+
+    margin: auto;
+    padding: 0 10px;
+    max-width: 50em;
+}
+
+h1 { font-size: 2.0em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.2em; }
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.2;
+    font-weight: normal;
+}
+
+header h1.title {
+    font-weight: lighter;
+    border-bottom: 1px dashed #AAA;
+}
+
+p {
+    text-align: justify;
+}
+
+a {
+    color: #8066B3;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+table {
+    margin: 10px 0;
+    border-collapse: collapse;
+    background-color: #FFF;
+}
+
+table th {
+    padding: .4em 1em;
+    border: 1px solid #CCC;
+    text-align: left;
+}
+
+table td {
+    padding: .4em 1em;
+    border: 1px solid #CCC;
+}
+
+table tr:nth-child(2n) {
+    background-color: #F9F9F9;
+}
+
+nav {
+    background-color: #F9F9F9;
+    border: 1px solid #AAA;
+    padding: 0px 10px;
+}
+
+nav > ul, nav > ol {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+blockquote {
+    color: #777;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0 10px;
+    border-left: 2px solid #AAA;
+}
+
+blockquote.method {
+    color: #444;
+    background-color: #F9F9F9;
+    border: 1px solid #AAA;
+}
+
+/* inline code */
+code {
+    background-color: #E7E7E7;
+    padding: 0.1em 0.2em;
+}
+
+/* code block */
+pre {
+    color: #CCC;
+    background-color: #282c34;
+    line-height: 1.4;
+    padding: 10px;
+    overflow: auto;
+    border: 1px solid #AAA;
+}
+
+pre code {
+    background-color: inherit;
+    padding: 0;;
+}
+
+a.sourceLine {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+/* method prototype */
+pre.prototype {
+    color: #444;
+    background-color: #F9F9F9;
+    font-weight: bold;
+    border: none;
+    padding: 0 10px;
+    margin-bottom: 5px;
+    margin-left: 2px;
+    border-left: 2px solid #AAA;
+}
+
+code span.ch { color: #56b6c2; } /* Char */
+code span.sc { color: #56b6c2; } /* SpecialChar */
+code span.st { color: #98c379; } /* String */
+code span.ss { color: #98c379; } /* SpecialString */
+code span.vs { color: #98c379; } /* VerbatimString */
+
+code span.cn { color: #d19a66; } /* Constant */
+code span.bn { color: #d19a66; } /* BaseN */
+code span.dv { color: #d19a66; } /* DecVal */
+code span.fl { color: #d19a66; } /* Float */
+
+code span.co { color: #5c6370; } /* Comment */
+code span.cv { color: #5c6370; } /* CommentVar */
+code span.do { color: #5c6370; } /* Documentation */
+
+code span.bu { color: #56b6c2; } /* BuiltIn */
+code span.fu { color: #56b6c2; } /* Function */
+code span.an { color: #56b6c2; } /* Annotation */
+code span.at { color: #56b6c2; } /* Annotation */
+code span.im { color: #c678dd; } /* Import */
+code span.pp { color: #c678dd; } /* Preprocessor */
+code span.dt { color: #c678dd; } /* DataType */
+code span.kw { color: #c678dd; } /* Keyword */
+code span.cf { color: #c678dd; } /* ControlFlow */
+
+code span.va { } /* Variable */
+code span.at { } /* Attribute */
+code span.op { } /* Operator */
+code span.ot { } /* Other */
+
+code span.al { } /* Alert */
+code span.er { } /* Error */
+code span.in { } /* Information */
+code span.wa { } /* Warning */
+code span.ex { } /* Extension */
+</style>
+</head>
+<body>
+<header>
+<h1 class="title">Module retro</h1>
+</header>
+
+<nav id="TOC">
+<ul>
+<li><a href="#dépendances">Dépendances</a></li>
+<li><a href="#constantes">Constantes</a><ul>
+<li><a href="#événements">Événements</a></li>
+<li><a href="#clavier">Clavier</a></li>
+<li><a href="#souris">Souris</a></li>
+<li><a href="#couleurs">Couleurs</a></li>
+</ul></li>
+<li><a href="#classe-rect">Classe Rect</a><ul>
+<li><a href="#constructeur">Constructeur</a></li>
+<li><a href="#méthodes">Méthodes</a></li>
+</ul></li>
+<li><a href="#classe-image">Classe Image</a><ul>
+<li><a href="#constructeur-1">Constructeur</a></li>
+<li><a href="#méthodes-de-classe">Méthodes de classe</a></li>
+<li><a href="#méthodes-1">Méthodes</a></li>
+</ul></li>
+<li><a href="#classe-font">Classe Font</a><ul>
+<li><a href="#constructeur-2">Constructeur</a></li>
+<li><a href="#méthodes-2">Méthodes</a></li>
+</ul></li>
+<li><a href="#classe-window">Classe Window</a><ul>
+<li><a href="#héritage">Héritage</a></li>
+<li><a href="#constructeur-3">constructeur</a></li>
+<li><a href="#méthodes-de-classe-1">Méthodes de classe</a></li>
+<li><a href="#méthodes-3">Méthodes</a></li>
+</ul></li>
+<li><a href="#classe-events">Classe Events</a><ul>
+<li><a href="#constructeur-4">Constructeur</a></li>
+<li><a href="#méthodes-4">Méthodes</a></li>
+</ul></li>
+</ul>
+</nav>
+
+<article>
+<p><code>retro</code> est un module se basant sur le module <code>pygame</code>. Son but est de simplifier l’utilisation de ce dernier et d’apporter des fonctions utiles pour l’atelier retrogaming.</p>
+<h1 id="dépendances">Dépendances</h1>
+<ul>
+<li><a href="https://www.pygame.org">pygame</a></li>
+<li><a href="http://www.numpy.org/">numpy</a></li>
+</ul>
+<h1 id="constantes">Constantes</h1>
+<h2 id="événements">Événements</h2>
+<pre><code>| Constante       | Attributs
+| --------------- | --------------------- |
+| General                                 |
+| QUIT            | none                  |
+| USEREVENT       | code                  |
+| --------------- | --------------------- |
+| Fenêtre                                 |
+| ACTIVEEVENT     | gain, state           |
+| VIDEORESIZE     | size, w, h            |
+| VIDEOEXPOSE     | none                  |
+| --------------- | --------------------- |
+| Clavier                                 |
+| KEYDOWN         | unicode, key, mod     |
+| KEYUP           | key, mod              |
+| --------------- | --------------------- |
+| Souris                                  |
+| MOUSEMOTION     | pos, rel, buttons     |
+| MOUSEBUTTONDOWN | pos, button           |
+| MOUSEBUTTONUP   | pos, button           |
+| --------------- | --------------------- |
+| Joystick / Manette                      |
+| JOYAXISMOTION   | joy, axis, value      |
+| JOYBALLMOTION   | joy, ball, rel        |
+| JOYHATMOTION    | joy, hat, value       |
+| JOYBUTTONUP     | joy, button           |
+| JOYBUTTONDOWN   | joy, button           |
+</code></pre>
+<h2 id="clavier">Clavier</h2>
+<pre><code>| Constante       | Nom                   |
+| --------------- | --------------------- |
+| K_0 -&gt; K_9      | 0 -&gt; 9                |
+| K_a -&gt; K_z      | a -&gt; z                |
+| --------------- | --------------------- |
+| K_UP            | flèche haut           |
+| K_DOWN          | flèche bas            |
+| K_RIGHT         | flèche droite         |
+| K_LEFT          | flèche gauche         |
+| --------------- | --------------------- |
+| K_ESCAPE        | echap                 |
+| K_SPACE         | espace                |
+| K_RETURN        | entrée                |</code></pre>
+<p>La liste ci-dessus est tronquée et contient les constantes les plus couramment utilisées. Vous pouvez trouver la liste complète dans la documentation du module <a href="https://www.pygame.org/docs/ref/key.html">pygame.key</a>.</p>
+<h2 id="souris">Souris</h2>
+<pre><code>M_LEFT
+M_MIDDLE
+M_RIGHT</code></pre>
+<h2 id="couleurs">Couleurs</h2>
+<pre><code>BLACK
+GREY
+WHITE
+RED
+GREEN
+BLUE
+CYAN
+MAGENTA
+YELLOW</code></pre>
+<h1 id="classe-rect">Classe Rect</h1>
+<h2 id="constructeur">Constructeur</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb5"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" title="1">Rect(<span class="bu">int</span> left, <span class="bu">int</span> top, <span class="bu">int</span> width, <span class="bu">int</span> height) <span class="op">-&gt;</span> Rect</a>
+<a class="sourceLine" id="cb5-2" title="2">Rect(<span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span> topleft, <span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span> size) <span class="op">-&gt;</span> Rect</a>
+<a class="sourceLine" id="cb5-3" title="3">Rect(Rect rect) <span class="op">-&gt;</span> Rect</a></code></pre></div>
+<p>Crée un rectangle.</p>
+<p>Les propriétés ci-dessous permettent de bouger et d’aligner le rectangle.</p>
+<pre><code>x, y
+top, left, bottom, right
+topleft, bottomleft, topright, bottomright
+midtop, midleft, midbottom, midright
+center, centerx, centery
+size, width, height, w, h</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># Exemple</span></a>
+<a class="sourceLine" id="cb7-2" title="2">r <span class="op">=</span> Rect((<span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">7</span>, <span class="dv">7</span>)) <span class="co"># -&gt; &lt;rect(0, 0, 7, 7)&gt;</span></a>
+<a class="sourceLine" id="cb7-3" title="3">r <span class="op">=</span> Rect(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">7</span>, <span class="dv">7</span>)     <span class="co"># -&gt; &lt;rect(0, 0, 7, 7)&gt;</span></a>
+<a class="sourceLine" id="cb7-4" title="4">r.topleft <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">1</span>)       <span class="co"># -&gt; &lt;rect(1, 1, 7, 7)&gt;</span></a>
+<a class="sourceLine" id="cb7-5" title="5">r.size                   <span class="co"># -&gt; (7, 7)</span></a>
+<a class="sourceLine" id="cb7-6" title="6">r.center                 <span class="co"># -&gt; (4, 4)</span></a>
+<a class="sourceLine" id="cb7-7" title="7">r.bottomright            <span class="co"># -&gt; (8, 8)</span></a>
+<a class="sourceLine" id="cb7-8" title="8">r.topleft <span class="op">=</span> r.center     <span class="co"># -&gt; &lt;rect(4, 4, 7, 7)&gt;</span></a></code></pre></div>
+<p>Il faut noter que les propriétés <code>bottom</code> et <code>right</code> décrivent des positions en dehors du rectangle. Ci-dessous un schéma des propriétés de position.</p>
+<pre class="interpunct"><code>+-------+<span class=co>·</span>   | a: topleft     == (left, top) == (x, y)
+|a<span class=co>·</span><span class=co>·</span>b<span class=co>·</span><span class=co>·</span><span class=co>·</span>|c   | b: midtop      == (centerx, top)
+|<span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span>|<span class=co>·</span>   | c: topright    == (right, top)
+|d<span class=co>·</span><span class=co>·</span>e<span class=co>·</span><span class=co>·</span><span class=co>·</span>|f   | d: midleft     == (left, centery)
+|<span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span>|<span class=co>·</span>   | e: center      == (centerx, centery)
+|<span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span>|<span class=co>·</span>   | f: midright    == (right, centery)
++-------+<span class=co>·</span>   | g: bottomleft  == (left, bottom)
+<span class=co>·</span>g<span class=co>·</span><span class=co>·</span>h<span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span>i   | h: midbottom   == (centerx, bottom)
+             | i: bottomright == (right, bottom)</code></pre>
+</blockquote>
+<h2 id="méthodes">Méthodes</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb9"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" title="1">copy() <span class="op">-&gt;</span> Rect</a></code></pre></div>
+Retourne un nouveau rectangle possédant la même position et la même taille que l’original.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb10"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" title="1">Move(<span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span> v)</a>
+<a class="sourceLine" id="cb10-2" title="2">Move(<span class="bu">int</span> x, <span class="bu">int</span> y)</a></code></pre></div>
+Déplace le rectangle de <code>x</code> et <code>y</code>.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb11"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" title="1">clamp(Rect rect)</a></code></pre></div>
+Déplace le rectangle actuel dans <code>rect</code>. Si le rectangle actuel est trop grand pour rentrer dans <code>rect</code>, il sera centré à l’intérieur et sa taille ne changera pas.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb12"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" title="1">union(Rect rect) <span class="op">-&gt;</span> Rect</a></code></pre></div>
+Retourne un nouveau rectangle étant l’union du rectangle actuel et de <code>rect</code>.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb13"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" title="1">intersection(Rect rect) <span class="op">-&gt;</span> Rect</a></code></pre></div>
+Retourne un nouveau rectangle étant l’intersection du rectangle actuel et de <code>rect</code>.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb14"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" title="1">contains(Rect rect) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+Teste si <code>rect</code> est complétement à l’intérieur du rectangle actuel.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb15"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" title="1">collidepoint(<span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span> p) <span class="op">-&gt;</span> <span class="bu">bool</span></a>
+<a class="sourceLine" id="cb15-2" title="2">collidepoint(<span class="bu">int</span> x, <span class="bu">int</span> y) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+Teste si <code>p</code> est à l’intérieur du rectangle actuel.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb16"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" title="1">colliderect(Rect rect) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+Teste s’il y intersection entre <code>rect</code> et le rectangle actuel.
+</blockquote>
+<h1 id="classe-image">Classe Image</h1>
+<h2 id="constructeur-1">Constructeur</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb17"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" title="1">Image(<span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span> size) <span class="op">-&gt;</span> Image</a>
+<a class="sourceLine" id="cb17-2" title="2">Image(Image image) <span class="op">-&gt;</span> Image</a></code></pre></div>
+Crée une image.
+</blockquote>
+<h2 id="méthodes-de-classe">Méthodes de classe</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb18"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" title="1">from_path(<span class="bu">str</span> path) <span class="op">-&gt;</span> Image</a></code></pre></div>
+Crée une image à partir d’un fichier dont le chemin est <code>path</code>.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb19"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb19-1" title="1">from_array(2D<span class="op">-</span>array array) <span class="op">-&gt;</span> Image</a></code></pre></div>
+Crée une image à partir du tableau à 2 dimensions <code>array</code>.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb20"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb20-1" title="1">from_ascii(<span class="bu">list</span> txt, <span class="bu">dict</span> dictionary) <span class="op">-&gt;</span> Image</a></code></pre></div>
+Crée une image à partir de <code>txt</code>, une liste de chaînes de caractères. A chaque caractère possible dans <code>txt</code> est associé une couleur correspondante dans <code>dictionnary</code>. L’image est crée en remplaçant chaque caractère par sa couleur associée.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb21"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb21-1" title="1">from_spritesheet(</a>
+<a class="sourceLine" id="cb21-2" title="2">    <span class="bu">str</span> path, <span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span> sprite_size, <span class="dv">3</span><span class="op">-</span><span class="bu">tuple</span> discard_color</a>
+<a class="sourceLine" id="cb21-3" title="3">) <span class="op">-&gt;</span> 2D<span class="op">-</span><span class="bu">list</span></a></code></pre></div>
+Charge une image (spritesheet) à partie de son chemin <code>path</code>, et découpe celle-ci en sous-images de taille <code>sprite_size</code>. Les sous-images possédant la couleur <code>discard_color</code> au pixel (0, 0) sont éliminées. Retourne une liste contenant une liste d’images pour chaque ligne de la spritesheet.
+</blockquote>
+<h2 id="méthodes-1">Méthodes</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb22"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb22-1" title="1">copy() <span class="op">-&gt;</span> Image</a></code></pre></div>
+Crée une copie complète de l’image actuelle.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb23"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb23-1" title="1">subimage(Rect area) <span class="op">-&gt;</span> Image</a></code></pre></div>
+Crée une nouvelle image faisant référence à une zone plus petite de l’image actuelle. <code>area</code> correspond à la zone à extraire de l’image actuelle.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb24"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb24-1" title="1">rect() <span class="op">-&gt;</span> Rect</a></code></pre></div>
+Retourne un nouveau rectangle positionné en (0, 0) et de la taille de l’image actuelle.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb25"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb25-1" title="1">[<span class="bu">int</span> x, <span class="bu">int</span> y] <span class="op">-&gt;</span> pygame.Color</a></code></pre></div>
+<p>Renvoie la couleur du pixel à la position spécifiée.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb26-1" title="1"><span class="co"># Exemple</span></a>
+<a class="sourceLine" id="cb26-2" title="2">i <span class="op">=</span> Image((<span class="dv">20</span>, <span class="dv">20</span>))</a>
+<a class="sourceLine" id="cb26-3" title="3"><span class="bu">print</span>(i[<span class="dv">0</span>, <span class="dv">0</span>]) <span class="co"># (0, 0, 0, 255)</span></a></code></pre></div>
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb27"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb27-1" title="1">[<span class="bu">int</span> x, <span class="bu">int</span> y] <span class="op">=</span> <span class="dv">3</span><span class="op">-</span><span class="bu">tuple</span> color</a></code></pre></div>
+<p>Définit la couleur du pixel à la position spécifiée.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb28-1" title="1"><span class="co"># Exemple</span></a>
+<a class="sourceLine" id="cb28-2" title="2">i <span class="op">=</span> Image((<span class="dv">20</span>, <span class="dv">20</span>))</a>
+<a class="sourceLine" id="cb28-3" title="3">i[<span class="dv">0</span>, <span class="dv">0</span>] <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb28-4" title="4"><span class="bu">print</span>(i[<span class="dv">0</span>, <span class="dv">0</span>]) <span class="co"># (0, 255, 0, 255)</span></a></code></pre></div>
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb29"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb29-1" title="1">colorkey(<span class="dv">3</span><span class="op">-</span><span class="bu">tuple</span> color)</a></code></pre></div>
+Définit la couleur de transparence de l’image.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb30"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb30-1" title="1">fill(<span class="dv">3</span><span class="op">-</span><span class="bu">tuple</span> color)</a></code></pre></div>
+Remplit l’image d’une couleur.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb31"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb31-1" title="1">draw_img(Image img, <span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span> pos, Rect area <span class="op">=</span> <span class="va">None</span>)</a></code></pre></div>
+Dessine une image (<code>img</code>) à la position spécifiée (<code>pos</code>) sur l’image actuelle. Une zone spécifique de <code>img</code> peut être dessinée à l’aide de <code>area</code>.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb32"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb32-1" title="1">draw_rect(<span class="dv">3</span><span class="op">-</span><span class="bu">tuple</span> color, Rect rect, <span class="bu">int</span> width <span class="op">=</span> <span class="dv">0</span>)</a></code></pre></div>
+Dessine un rectangle <code>rect</code> de couleur <code>color</code> et d’épaisseur de bordure <code>width</code>. Si width est égal à 0, le rectangle sera plein.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb33"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb33-1" title="1">draw_circle(<span class="dv">3</span><span class="op">-</span><span class="bu">tuple</span> color, <span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span> center, <span class="bu">int</span> radius, <span class="bu">int</span> width <span class="op">=</span> <span class="dv">0</span>)</a></code></pre></div>
+Dessine un cercle de couleur <code>color</code>, de centre <code>center</code>, de rayon <code>radius</code> et d’épaisseur de bordure <code>width</code>. Si <code>width</code> est égal à 0, le cercle sera plein.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb34"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb34-1" title="1">draw_line(</a>
+<a class="sourceLine" id="cb34-2" title="2">    <span class="dv">3</span><span class="op">-</span><span class="bu">tuple</span> color, <span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span> start_pos, <span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span> end_pos, <span class="bu">int</span> width <span class="op">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb34-3" title="3">)</a></code></pre></div>
+Dessine une ligne de couleur <code>color</code>, de position de départ <code>start_pos</code>, de position d’arrivée <code>end_pos</code> et d’épaisseur <code>width</code>.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb35"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb35-1" title="1">flip(<span class="bu">bool</span> x, <span class="bu">bool</span> y)</a></code></pre></div>
+Inverse l’image horizontalement (<code>x</code>) et/ou verticalement (<code>y</code>).
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb36"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb36-1" title="1">resize(<span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span> size)</a></code></pre></div>
+Redimensionne l’image. Sa nouvelle taille sera <code>size</code>.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb37"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb37-1" title="1">scale(<span class="bu">float</span> ratio)</a></code></pre></div>
+Mise à l’échelle de l’image.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb38"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb38-1" title="1">rotate(<span class="bu">int</span> angle)</a></code></pre></div>
+Fait pivoter l’image d’un <code>angle</code> spécifié en degrés.
+</blockquote>
+<h1 id="classe-font">Classe Font</h1>
+<h2 id="constructeur-2">Constructeur</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb39"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb39-1" title="1">Font(<span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span> size) <span class="op">-&gt;</span> Font</a></code></pre></div>
+Création d’un objet permettant d’écrire du texte sur une image. La taille de la police d’écriture est spécifiée par <code>size</code>.
+</blockquote>
+<h2 id="méthodes-2">Méthodes</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb40"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb40-1" title="1">render(</a>
+<a class="sourceLine" id="cb40-2" title="2">    <span class="bu">str</span> text, <span class="bu">bool</span> antialias <span class="op">=</span> <span class="va">False</span>,</a>
+<a class="sourceLine" id="cb40-3" title="3">    <span class="dv">3</span><span class="op">-</span><span class="bu">tuple</span> color <span class="op">=</span> BLACK, <span class="dv">3</span><span class="op">-</span><span class="bu">tuple</span> bgcolor <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb40-4" title="4">)</a></code></pre></div>
+Crée une Image avec le texte (<code>text</code>) spécifié dessus. Ce texte peut être lissé (<code>antialias</code>), d’une couleur spécifique (<code>color</code>) et avoir une couleur de fond (<code>bgcolor</code>). Si aucune couleur de fond n’est spécifiée, le fond sera transparent.
+</blockquote>
+<h1 id="classe-window">Classe Window</h1>
+<h2 id="héritage">Héritage</h2>
+<blockquote>
+<p><a href="#classe-image">Image</a></p>
+</blockquote>
+<h2 id="constructeur-3">constructeur</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb41"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb41-1" title="1">Window(<span class="bu">str</span> title, <span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span> size, <span class="bu">int</span> framerate <span class="op">=</span> <span class="dv">30</span>)</a></code></pre></div>
+Crée une fenêtre ayant pour titre <code>title</code> et de taille <code>size</code>. Le <code>framerate</code> est limité à 30 FPS par défaut.
+</blockquote>
+<h2 id="méthodes-de-classe-1">Méthodes de classe</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb42"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb42-1" title="1">time() <span class="op">-&gt;</span> <span class="bu">int</span></a></code></pre></div>
+Retourne le temps en millisecondes qui s’est écoulé depuis l’initialisation d’une fenêtre.
+</blockquote>
+<h2 id="méthodes-3">Méthodes</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb43"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb43-1" title="1">cursor(<span class="bu">bool</span> enable)</a></code></pre></div>
+Active ou désactive le curseur. Par défaut, le curseur est activé.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb44"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb44-1" title="1">update()</a></code></pre></div>
+Met à jour le contenu de la fenêtre et limite le framerate. Cette méthode doit être appelée à chaque itération de la boucle principale du jeu.
+</blockquote>
+<h1 id="classe-events">Classe Events</h1>
+<h2 id="constructeur-4">Constructeur</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb45"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb45-1" title="1">Events() <span class="op">-&gt;</span> Events</a></code></pre></div>
+<p>Gestion de la file d’événements, de la souris et du clavier.</p>
+Un événement (<a href="https://www.pygame.org/docs/ref/event.html#pygame.event.Event"><code>pygame.event.Event</code></a>) est constitué d’un type et d’attributs différents en fonction du type de l’événement. Si vous souhaitez obtenir plus de détails, veuillez vous référer à la documentation du module <a href="https://www.pygame.org/docs/ref/event.html">pygame.event</a>. La liste des événements est disponible dans la section <a href="#événements">Constantes</a>.
+</blockquote>
+<h2 id="méthodes-4">Méthodes</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb46"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb46-1" title="1">update()</a></code></pre></div>
+Récupère les nouveaux événements disponibles. Cette méthode doit être appelée à chaque <em>frame</em> dans le jeu.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb47"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb47-1" title="1">event(<span class="bu">int</span> <span class="bu">type</span>) <span class="op">-&gt;</span> pygame.event.Event</a></code></pre></div>
+Cherche un événement du <a href="#événements"><code>type</code></a> spécifié. Retourne le premier événement trouvé ou <code>None</code>.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb48"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb48-1" title="1">key_press(<span class="bu">int</span> key) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+Retourne si la <a href="#clavier">touche du clavier</a> spécifiée vient d’être enfoncée.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb49"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb49-1" title="1">key_hold(<span class="bu">int</span> key) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+Retourne si la <a href="#clavier">touche du clavier</a> spécifiée est maintenue enfoncée.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb50"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb50-1" title="1">key_release(<span class="bu">int</span> key) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+Retourne si la <a href="#clavier">touche du clavier</a> spécifiée vient d’être relâchée.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb51"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb51-1" title="1">mouse_press(<span class="bu">int</span> button <span class="op">=</span> <span class="va">None</span>) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+Retourne si un <a href="#souris">bouton de la souris</a> vient d’être enfoncé.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb52"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb52-1" title="1">mouse_hold(<span class="bu">int</span> button <span class="op">=</span> <span class="va">None</span>) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+Retourne si un <a href="#souris">bouton de la souris</a> est maintenu enfoncé.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb53"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb53-1" title="1">mouse_release(<span class="bu">int</span> button <span class="op">=</span> <span class="va">None</span>) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+Retourne si un <a href="#souris">bouton de la souris</a> vient d’être relâché.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb54"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb54-1" title="1">mouse_pose() <span class="op">-&gt;</span> <span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span></a></code></pre></div>
+Récupère la position de la souris.
+</blockquote>
+</article>
+</body>
+</html>
