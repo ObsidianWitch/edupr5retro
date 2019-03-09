@@ -1,7 +1,7 @@
 import types
 import include.retro as retro
-from empire_city.states.run import StateRun
-from empire_city.states.end import StateEnd
+from shooter.states.run import StateRun
+from shooter.states.end import StateEnd
 
 window = retro.Window(
     title = "Empire City",

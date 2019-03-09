@@ -3,7 +3,7 @@ import include.retro as retro
 import shared.math
 from shared.directions import Directions
 from shared.sprite import Sprite
-from empire_city.path import asset_path
+from shooter.path import asset_path
 
 class Crosshair(Sprite):
     IMG = retro.Image.from_path(asset_path("viseur.png"))

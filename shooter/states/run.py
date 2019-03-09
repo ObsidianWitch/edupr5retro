@@ -1,11 +1,11 @@
 import include.retro as retro
 from shared.background import Background
 from shared.sprite import Sprite
-from empire_city.nodes.enemies.enemies import Enemies
-from empire_city.nodes.player import Player
-from empire_city.path import asset_path
-from empire_city.camera import Camera
-from empire_city.hints  import Hints
+from shooter.nodes.enemies.enemies import Enemies
+from shooter.nodes.player import Player
+from shooter.path import asset_path
+from shooter.camera import Camera
+from shooter.hints  import Hints
 
 class StateRun:
     def __init__(self, window):

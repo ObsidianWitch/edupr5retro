@@ -1,10 +1,10 @@
 import random
 import include.retro as retro
 from shared.sprite import Sprite
-from empire_city.nodes.enemies.enemy import Enemy
-from empire_city.nodes.enemies.kidnaper import Kidnaper
-from empire_city.nodes.enemies.runner import Runner
-from empire_city.path import asset_path
+from shooter.nodes.enemies.enemy import Enemy
+from shooter.nodes.enemies.kidnaper import Kidnaper
+from shooter.nodes.enemies.runner import Runner
+from shooter.path import asset_path
 
 # Enemy generator.
 class Enemies:

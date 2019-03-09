@@ -1,4 +1,4 @@
-from empire_city.nodes.enemies.enemy import Enemy
+from shooter.nodes.enemies.enemy import Enemy
 
 class Runner(Enemy):
     def __init__(self, camera, image):
