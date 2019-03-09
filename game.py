@@ -4,25 +4,12 @@ import retro
 
 def assets(filename): return os.path.join("assets", filename)
 
-class Sprite:
-    def __init__(self, image):
-        self.image = image
-        self.rect = self.image.rect()
-
-    def collide(self, *args):
-        for elem in args:
-            if self.rect.colliderect(elem): return True
-        return False
-
-    def update(self): pass
-    def draw(self, image): image.draw_img(self.image, self.rect)
-
-class Ground(Sprite):
+class Ground(retro.Sprite):
     IMG = retro.Image.from_path(assets("ground.png"))
     SPEED = 4
 
     def __init__(self, window):
-        Sprite.__init__(self, self.IMG)
+        retro.Sprite.__init__(self, self.IMG)
         self.window = window
         self.shift = (self.rect.width - self.window.rect().width)
         self.rect.bottom = self.window.rect().bottom
@@ -31,7 +18,7 @@ class Ground(Sprite):
         self.rect.x = (self.rect.x - self.SPEED) % -self.shift
 
     def draw(self):
-        Sprite.draw(self, self.window)
+        retro.Sprite.draw(self, self.window)
 
 class Pipe:
     def __init__(self, ptop, pbot): self.ptop = ptop ; self.pbot = pbot
@@ -67,11 +54,11 @@ class Pipes(list):
             - self.OFFSET_HEIGHT
         )
 
-        ptop = Sprite(self.IMG_TOP)
+        ptop = retro.Sprite(self.IMG_TOP)
         ptop.rect.bottom = ptop.rect.top + y
         ptop.rect.left = x
 
-        pbot = Sprite(self.IMG_BOTTOM)
+        pbot = retro.Sprite(self.IMG_BOTTOM)
         pbot.rect.top = y + self.GAP_HEIGHT
         pbot.rect.left = x
 
@@ -92,14 +79,14 @@ class Pipes(list):
             pipe.ptop.draw(self.window)
             pipe.pbot.draw(self.window)
 
-class Bird(Sprite):
+class Bird(retro.Sprite):
     IMG = retro.Image.from_path(assets("bird.png"))
     ACCEL = 1
     DEFAULT_SPEED = -9
     MAX_SPEED = 9
 
     def __init__(self, window):
-        Sprite.__init__(self, self.IMG)
+        retro.Sprite.__init__(self, self.IMG)
         self.window = window
         self.fitness = 0
         self.alive = True
@@ -109,6 +96,10 @@ class Bird(Sprite):
     def flap(self):
         if self.alive: self.speed_y = self.DEFAULT_SPEED
 
+    def collide(self, *elements): return any(
+        self.rect.colliderect(e.rect) for e in elements
+    )
+
     def update(self):
         if self.alive:
             self.speed_y += self.ACCEL
@@ -117,7 +108,7 @@ class Bird(Sprite):
             self.fitness += 1
 
     def draw(self):
-        if self.alive: Sprite.draw(self, self.window)
+        if self.alive: retro.Sprite.draw(self, self.window)
 
 class Game:
     def __init__(self, window, nbirds):
@@ -143,9 +134,11 @@ class Game:
         if b.rect.left > self.target.centerx: self.target = self.pipes[1]
 
         ## collision between birds, ground, sky and nearest pipe
-        for b in self.birds: b.alive = b.alive and (not b.collide(
-            self.target.ptop, self.target.pbot, self.ground
-        )) and (not b.rect.y < 0)
+        for b in self.birds: b.alive = (
+            b.alive
+            and not b.collide(self.target.ptop, self.target.pbot, self.ground)
+            and (not b.rect.y < 0)
+        )
         self.finished = all(not b.alive for b in self.birds)
 
         # Draw
