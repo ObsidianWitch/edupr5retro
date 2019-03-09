@@ -1,11 +1,11 @@
 import pygame
 import types
-from shared.window import Window
+import include.retro as retro
 from lemmings.states.level1 import Level1
 from lemmings.states.level2 import Level2
 from lemmings.states.end import End
 
-window = Window(
+window = retro.Window(
     title  = "Lemmings",
     size   = (800, 400),
 )

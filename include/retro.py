@@ -1,5 +1,7 @@
+import sys
 import pygame
 import numpy
+from numbers import Number
 from pygame.locals import *
 
 M_LEFT   = 1
@@ -186,6 +188,12 @@ class Window(Image):
         self.clock = pygame.time.Clock()
         self.framerate = framerate
 
+        self.events = Events()
+
+        self.fonts = list(
+            Font(size) for size in range(18, 43, 6)
+        )
+
     @classmethod
     def time(cls): return pygame.time.get_ticks()
 
@@ -195,6 +203,15 @@ class Window(Image):
     def update(self):
         self.clock.tick(self.framerate)
         pygame.display.flip()
+
+    def loop(self, instructions):
+        while 1:
+            self.events.update()
+            if self.events.event(pygame.QUIT): sys.exit()
+
+            instructions()
+
+            self.update()
 
 class Events:
 
@@ -246,7 +263,6 @@ class Events:
     def mouse_pos(self):
         return pygame.mouse.get_pos()
 
-
 class Group(list):
     def __init__(self, *args):
         list.__init__(self, args)
@@ -256,10 +272,8 @@ class Group(list):
         list.append(self, e)
         e.groups.append(self)
 
-    def update(self, *args):
-        for e in self:
-            if args: e.update(args)
-            else:    e.update()
+    def update(self, *args, **kwargs):
+        for e in self: e.update(*args, **kwargs)
 
     def draw(self, surface):
         for e in self: e.draw(surface)
@@ -299,6 +313,7 @@ class Timer:
     def restart(self): self.t0 = self.time
 
 class Animations:
+
     def __init__(self, data, period):
         self.data   = data
         self.period = period
@@ -323,9 +338,56 @@ class Animations:
         )
 
 class AnimatedSprite(Sprite):
+
     def __init__(self, images, animations):
         Sprite.__init__(self, images[0])
         self.images = images
         self.animations = animations
 
     def update(self): self.image = self.images[self.animations.frame]
+
+class Vec:
+    @classmethod
+    def neg(cls, va): return [
+        -a for a in va
+    ]
+
+    @classmethod
+    def add(cls, a, b): return [
+        c + d for c, d in cls.iterator(a, b)
+    ]
+
+    @classmethod
+    def sub(cls, a, b): return [
+        c - d for c, d in cls.iterator(a, b)
+    ]
+
+    @classmethod
+    def mul(cls, a, b): return [
+        c * d for c, d in cls.iterator(a, b)
+    ]
+
+    @classmethod
+    def dot(cls, a, b): return sum(
+        c * d for c, d in cls.iterator(a, b)
+    )
+
+    @classmethod
+    def eq(cls, a, b): return (len(a) == len(b)) and all(
+        c == d for c, d in cls.iterator(a, b)
+    )
+
+    @classmethod
+    def ne(cls, a, b): return (len(a) != len(b)) or all(
+        c != d for c, d in cls.iterator(a, b)
+    )
+
+    @classmethod
+    def iterator(cls, a, b):
+        if isinstance(a, Number):
+            for i, _ in enumerate(b): yield a, b[i]
+        elif isinstance(b, Number):
+            for i, _ in enumerate(a): yield a[i], b
+        else:
+            for i, _ in enumerate(a): yield a[i], b[i]
+

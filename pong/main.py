@@ -1,9 +1,9 @@
 import types
-from shared.window import Window
+import include.retro as retro
 from pong.states.run import StateRun
 from pong.states.end import StateEnd
 
-window = Window(
+window = retro.Window(
     size      = (600, 400),
     title     = "Pong",
     framerate = 60,

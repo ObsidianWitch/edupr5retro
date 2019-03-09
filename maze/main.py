@@ -1,9 +1,9 @@
 import types
-from shared.window import Window
+import include.retro as retro
 from maze.states.run import StateRun
 from maze.states.end import StateEnd
 
-window = Window(
+window = retro.Window(
     title = "Maze",
     size  = (400, 400),
 )

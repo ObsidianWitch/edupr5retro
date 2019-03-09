@@ -1,14 +1,13 @@
 import os
 import include.retro as retro
 from aquarium.fish import Fish
-from shared.window import Window
 from shared.sprite import Sprite
 
 asset_path = lambda filename: os.path.join("aquarium", "data", filename)
 
 bg = Sprite.from_path(asset_path("fond.png"))
 
-window = Window(
+window = retro.Window(
     title = "Aquarium",
     size  = bg.rect.size,
 )

@@ -1,9 +1,9 @@
 import types
-from shared.window import Window
+import include.retro as retro
 from empire_city.states.run import StateRun
 from empire_city.states.end import StateEnd
 
-window = Window(
+window = retro.Window(
     title = "Empire City",
     size  = (400, 300),
 )
