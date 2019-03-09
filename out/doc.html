@@ -201,6 +201,19 @@ code span.ex { } /* Extension */
 <li><a href="#constructeur-4">Constructeur</a></li>
 <li><a href="#méthodes-4">Méthodes</a></li>
 </ul></li>
+<li><a href="#classe-group">Classe Group</a></li>
+<li><a href="#classe-sprite">Classe Sprite</a></li>
+<li><a href="#classe-timer">Classe Timer</a></li>
+<li><a href="#classe-animations">Classe Animations</a><ul>
+<li><a href="#constructeur-5">Constructeur</a></li>
+<li><a href="#propriétés">Propriétés</a></li>
+<li><a href="#méthodes-5">Méthodes</a></li>
+</ul></li>
+<li><a href="#classe-animatedsprite">Classe AnimatedSprite</a><ul>
+<li><a href="#constructeur-6">Constructeur</a></li>
+<li><a href="#méthodes-6">Méthodes</a></li>
+</ul></li>
+<li><a href="#classe-vec">Classe Vec</a></li>
 </ul>
 </nav>
 
@@ -515,6 +528,58 @@ Retourne si un <a href="#souris">bouton de la souris</a> vient d’être relâch
 <div class="sourceCode" id="cb54"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb54-1" title="1">mouse_pose() <span class="op">-&gt;</span> <span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span></a></code></pre></div>
 Récupère la position de la souris.
 </blockquote>
+<h1 id="classe-group">Classe Group</h1>
+<h1 id="classe-sprite">Classe Sprite</h1>
+<h1 id="classe-timer">Classe Timer</h1>
+<h1 id="classe-animations">Classe Animations</h1>
+<h2 id="constructeur-5">Constructeur</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb55"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb55-1" title="1">Animations(<span class="bu">dict</span> data, <span class="bu">int</span> period) <span class="op">-&gt;</span> Animations</a></code></pre></div>
+<p>Les animations sont contenues dans le dictionnaire <code>data</code>. Chaque entrée fait correspondre le nom d’une animation (clé) à des frames (valeur). Les frames sont représentées par une liste d’indices, chaque indice faisant référence à une image.</p>
+<p>Le paramètre <code>period</code> correspond au temps (en ms) nécessaire pour passer d’une frame à la suivante.</p>
+<p>Par défaut, la première animation définie dans <code>data</code> est lancée.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb56-1" title="1"><span class="co"># Exemple</span></a>
+<a class="sourceLine" id="cb56-2" title="2">animations <span class="op">=</span> retro.Animations(</a>
+<a class="sourceLine" id="cb56-3" title="3">    data <span class="op">=</span> {</a>
+<a class="sourceLine" id="cb56-4" title="4">        <span class="st">&quot;WALK_L&quot;</span>:  <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">8</span>),</a>
+<a class="sourceLine" id="cb56-5" title="5">        <span class="st">&quot;WALK_R&quot;</span>:  <span class="bu">range</span>(<span class="dv">0</span> <span class="op">+</span> <span class="dv">133</span>, <span class="dv">8</span> <span class="op">+</span> <span class="dv">133</span>),</a>
+<a class="sourceLine" id="cb56-6" title="6">        <span class="st">&quot;FALL_L&quot;</span>:  <span class="bu">range</span>(<span class="dv">8</span>, <span class="dv">12</span>),</a>
+<a class="sourceLine" id="cb56-7" title="7">        <span class="st">&quot;FALL_R&quot;</span>:  <span class="bu">range</span>(<span class="dv">8</span> <span class="op">+</span> <span class="dv">133</span>, <span class="dv">12</span> <span class="op">+</span> <span class="dv">133</span>),</a>
+<a class="sourceLine" id="cb56-8" title="8">        ...</a>
+<a class="sourceLine" id="cb56-9" title="9">    },</a>
+<a class="sourceLine" id="cb56-10" title="10">    period  <span class="op">=</span> <span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb56-11" title="11">)</a></code></pre></div>
+</blockquote>
+<h2 id="propriétés">Propriétés</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb57"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb57-1" title="1">frame <span class="op">-&gt;</span> <span class="bu">int</span></a></code></pre></div>
+Retourne l’indice de la frame de l’animation actuellement jouée. Les animations sont jouées en boucle.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb58"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb58-1" title="1">finished <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+Retourne si l’animation a été complétée au moins une fois.
+</blockquote>
+<h2 id="méthodes-5">Méthodes</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb59"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb59-1" title="1"><span class="bu">set</span>(<span class="bu">str</span> name)</a></code></pre></div>
+Définit l’animation à jouer (<code>current</code>).
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb60"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb60-1" title="1">start(<span class="bu">str</span> name)</a></code></pre></div>
+Définit et démarre l’animation à jouer (<code>current</code>). L’attribut <a href="#classe-timer"><code>timer</code></a> permet de gérer le passage d’une frame à l’autre.
+</blockquote>
+<h1 id="classe-animatedsprite">Classe AnimatedSprite</h1>
+<h2 id="constructeur-6">Constructeur</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb61"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb61-1" title="1">AnimatedSprite(<span class="bu">list</span> images, Animations animations) <span class="op">-&gt;</span> AnimatedSprite</a></code></pre></div>
+Crée un sprite animé à partir d’une liste d’<a href="#¢lasse-image"><code>images</code></a> et d’<a href="#classe-animations"><code>animations</code></a>.
+</blockquote>
+<h2 id="méthodes-6">Méthodes</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb62"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb62-1" title="1">update()</a></code></pre></div>
+Affiche la frame actuelle de l’animation en cours.
+</blockquote>
+<h1 id="classe-vec">Classe Vec</h1>
 </article>
 </body>
 </html>
