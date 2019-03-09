@@ -10,23 +10,20 @@ window = retro.Window(
     size      = parameters.window_size,
     framerate = 60,
 )
-events = retro.Events()
 game = Game(window, parameters)
 
-while 1:
-    events.update()
-    if events.event(retro.QUIT): sys.exit()
-
+def main():
     if not game.finished:
         maze = game.maze
         player = game.player
         ghosts = game.ghosts
 
-        if   events.key_press(retro.K_UP):    player.nxtdir = [ 0, -1]
-        elif events.key_press(retro.K_DOWN):  player.nxtdir = [ 0,  1]
-        elif events.key_press(retro.K_LEFT):  player.nxtdir = [-1,  0]
-        elif events.key_press(retro.K_RIGHT): player.nxtdir = [ 1,  0]
-        elif events.key_press(retro.K_SPACE):
+        key = window.events.key_press
+        if   key(retro.K_UP):    player.nxtdir = [ 0, -1]
+        elif key(retro.K_DOWN):  player.nxtdir = [ 0,  1]
+        elif key(retro.K_LEFT):  player.nxtdir = [-1,  0]
+        elif key(retro.K_RIGHT): player.nxtdir = [ 1,  0]
+        elif key(retro.K_SPACE):
             maze.print(player, ghosts)
             print(maze.walls.floor_cells(
                 *maze.tile_pos(player.rect.center)
@@ -37,4 +34,4 @@ while 1:
     else:
         game.reset()
 
-    window.update()
+window.loop(main)

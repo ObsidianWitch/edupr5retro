@@ -62,14 +62,10 @@ window = retro.Window(
     size      = parameters.window_size,
     framerate = 0,
 )
-events = retro.Events()
 game = Game(window, parameters)
 randwalk = RandWalk()
 
-while 1:
-    events.update()
-    if events.event(retro.QUIT): sys.exit()
-
+def main():
     if not game.finished:
         player = game.player
         bonus  = game.maze.bonuses.nearest(player)
@@ -92,4 +88,4 @@ while 1:
     else:
         game.reset()
 
-    window.update()
+window.loop(main)
