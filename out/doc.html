@@ -194,6 +194,7 @@ code span.ex { } /* Extension */
 <li><a href="#classe-window">Classe Window</a><ul>
 <li><a href="#héritage">Héritage</a></li>
 <li><a href="#constructeur-3">constructeur</a></li>
+<li><a href="#attributs">Attributs</a></li>
 <li><a href="#méthodes-de-classe-1">Méthodes de classe</a></li>
 <li><a href="#méthodes-3">Méthodes</a></li>
 </ul></li>
@@ -470,62 +471,79 @@ Crée une Image avec le texte (<code>text</code>) spécifié dessus. Ce texte pe
 <div class="sourceCode" id="cb41"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb41-1" title="1">Window(<span class="bu">str</span> title, <span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span> size, <span class="bu">int</span> framerate <span class="op">=</span> <span class="dv">30</span>)</a></code></pre></div>
 Crée une fenêtre ayant pour titre <code>title</code> et de taille <code>size</code>. Le <code>framerate</code> est limité à 30 FPS par défaut.
 </blockquote>
+<h2 id="attributs">Attributs</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb42"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb42-1" title="1">fonts <span class="op">-&gt;</span> <span class="bu">list</span><span class="op">&lt;</span>Font<span class="op">&gt;</span></a></code></pre></div>
+Liste de polices de tailles ascendantes (18, 24, 30, 36 et 42).
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb43"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb43-1" title="1">events <span class="op">-&gt;</span> Events</a></code></pre></div>
+</blockquote>
 <h2 id="méthodes-de-classe-1">Méthodes de classe</h2>
 <blockquote class="method">
-<div class="sourceCode" id="cb42"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb42-1" title="1">time() <span class="op">-&gt;</span> <span class="bu">int</span></a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb44-1" title="1">time() <span class="op">-&gt;</span> <span class="bu">int</span></a></code></pre></div>
 Retourne le temps en millisecondes qui s’est écoulé depuis l’initialisation d’une fenêtre.
 </blockquote>
 <h2 id="méthodes-3">Méthodes</h2>
 <blockquote class="method">
-<div class="sourceCode" id="cb43"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb43-1" title="1">cursor(<span class="bu">bool</span> enable)</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb45-1" title="1">cursor(<span class="bu">bool</span> enable)</a></code></pre></div>
 Active ou désactive le curseur. Par défaut, le curseur est activé.
 </blockquote>
 <blockquote class="method">
-<div class="sourceCode" id="cb44"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb44-1" title="1">update()</a></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb46-1" title="1">update()</a></code></pre></div>
 Met à jour le contenu de la fenêtre et limite le framerate. Cette méthode doit être appelée à chaque itération de la boucle principale du jeu.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb47"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb47-1" title="1">loop(function instructions)</a></code></pre></div>
+<p>Boucle principale du jeu.</p>
+<ol type="1">
+<li>récupère les nouveaux événements (<code>events.update()</code>)</li>
+<li>exécute <code>instructions</code></li>
+<li>met à jour le contenu de la fenêtre (<code>update()</code>)</li>
+</ol>
 </blockquote>
 <h1 id="classe-events">Classe Events</h1>
 <h2 id="constructeur-4">Constructeur</h2>
 <blockquote class="method">
-<div class="sourceCode" id="cb45"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb45-1" title="1">Events() <span class="op">-&gt;</span> Events</a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb48-1" title="1">Events() <span class="op">-&gt;</span> Events</a></code></pre></div>
 <p>Gestion de la file d’événements, de la souris et du clavier.</p>
 Un événement (<a href="https://www.pygame.org/docs/ref/event.html#pygame.event.Event"><code>pygame.event.Event</code></a>) est constitué d’un type et d’attributs différents en fonction du type de l’événement. Si vous souhaitez obtenir plus de détails, veuillez vous référer à la documentation du module <a href="https://www.pygame.org/docs/ref/event.html">pygame.event</a>. La liste des événements est disponible dans la section <a href="#événements">Constantes</a>.
 </blockquote>
 <h2 id="méthodes-4">Méthodes</h2>
 <blockquote class="method">
-<div class="sourceCode" id="cb46"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb46-1" title="1">update()</a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb49-1" title="1">update()</a></code></pre></div>
 Récupère les nouveaux événements disponibles. Cette méthode doit être appelée à chaque <em>frame</em> dans le jeu.
 </blockquote>
 <blockquote class="method">
-<div class="sourceCode" id="cb47"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb47-1" title="1">event(<span class="bu">int</span> <span class="bu">type</span>) <span class="op">-&gt;</span> pygame.event.Event</a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb50-1" title="1">event(<span class="bu">int</span> <span class="bu">type</span>) <span class="op">-&gt;</span> pygame.event.Event</a></code></pre></div>
 Cherche un événement du <a href="#événements"><code>type</code></a> spécifié. Retourne le premier événement trouvé ou <code>None</code>.
 </blockquote>
 <blockquote class="method">
-<div class="sourceCode" id="cb48"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb48-1" title="1">key_press(<span class="bu">int</span> key) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb51-1" title="1">key_press(<span class="bu">int</span> key) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
 Retourne si la <a href="#clavier">touche du clavier</a> spécifiée vient d’être enfoncée.
 </blockquote>
 <blockquote class="method">
-<div class="sourceCode" id="cb49"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb49-1" title="1">key_hold(<span class="bu">int</span> key) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb52-1" title="1">key_hold(<span class="bu">int</span> key) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
 Retourne si la <a href="#clavier">touche du clavier</a> spécifiée est maintenue enfoncée.
 </blockquote>
 <blockquote class="method">
-<div class="sourceCode" id="cb50"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb50-1" title="1">key_release(<span class="bu">int</span> key) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb53-1" title="1">key_release(<span class="bu">int</span> key) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
 Retourne si la <a href="#clavier">touche du clavier</a> spécifiée vient d’être relâchée.
 </blockquote>
 <blockquote class="method">
-<div class="sourceCode" id="cb51"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb51-1" title="1">mouse_press(<span class="bu">int</span> button <span class="op">=</span> <span class="va">None</span>) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb54-1" title="1">mouse_press(<span class="bu">int</span> button <span class="op">=</span> <span class="va">None</span>) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
 Retourne si un <a href="#souris">bouton de la souris</a> vient d’être enfoncé.
 </blockquote>
 <blockquote class="method">
-<div class="sourceCode" id="cb52"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb52-1" title="1">mouse_hold(<span class="bu">int</span> button <span class="op">=</span> <span class="va">None</span>) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb55-1" title="1">mouse_hold(<span class="bu">int</span> button <span class="op">=</span> <span class="va">None</span>) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
 Retourne si un <a href="#souris">bouton de la souris</a> est maintenu enfoncé.
 </blockquote>
 <blockquote class="method">
-<div class="sourceCode" id="cb53"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb53-1" title="1">mouse_release(<span class="bu">int</span> button <span class="op">=</span> <span class="va">None</span>) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb56-1" title="1">mouse_release(<span class="bu">int</span> button <span class="op">=</span> <span class="va">None</span>) <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
 Retourne si un <a href="#souris">bouton de la souris</a> vient d’être relâché.
 </blockquote>
 <blockquote class="method">
-<div class="sourceCode" id="cb54"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb54-1" title="1">mouse_pose() <span class="op">-&gt;</span> <span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span></a></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb57-1" title="1">mouse_pose() <span class="op">-&gt;</span> <span class="dv">2</span><span class="op">-</span><span class="bu">tuple</span></a></code></pre></div>
 Récupère la position de la souris.
 </blockquote>
 <h1 id="classe-group">Classe Group</h1>
@@ -534,49 +552,49 @@ Récupère la position de la souris.
 <h1 id="classe-animations">Classe Animations</h1>
 <h2 id="constructeur-5">Constructeur</h2>
 <blockquote class="method">
-<div class="sourceCode" id="cb55"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb55-1" title="1">Animations(<span class="bu">dict</span> data, <span class="bu">int</span> period) <span class="op">-&gt;</span> Animations</a></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb58-1" title="1">Animations(<span class="bu">dict</span> data, <span class="bu">int</span> period) <span class="op">-&gt;</span> Animations</a></code></pre></div>
 <p>Les animations sont contenues dans le dictionnaire <code>data</code>. Chaque entrée fait correspondre le nom d’une animation (clé) à des frames (valeur). Les frames sont représentées par une liste d’indices, chaque indice faisant référence à une image.</p>
 <p>Le paramètre <code>period</code> correspond au temps (en ms) nécessaire pour passer d’une frame à la suivante.</p>
 <p>Par défaut, la première animation définie dans <code>data</code> est lancée.</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb56-1" title="1"><span class="co"># Exemple</span></a>
-<a class="sourceLine" id="cb56-2" title="2">animations <span class="op">=</span> retro.Animations(</a>
-<a class="sourceLine" id="cb56-3" title="3">    data <span class="op">=</span> {</a>
-<a class="sourceLine" id="cb56-4" title="4">        <span class="st">&quot;WALK_L&quot;</span>:  <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">8</span>),</a>
-<a class="sourceLine" id="cb56-5" title="5">        <span class="st">&quot;WALK_R&quot;</span>:  <span class="bu">range</span>(<span class="dv">0</span> <span class="op">+</span> <span class="dv">133</span>, <span class="dv">8</span> <span class="op">+</span> <span class="dv">133</span>),</a>
-<a class="sourceLine" id="cb56-6" title="6">        <span class="st">&quot;FALL_L&quot;</span>:  <span class="bu">range</span>(<span class="dv">8</span>, <span class="dv">12</span>),</a>
-<a class="sourceLine" id="cb56-7" title="7">        <span class="st">&quot;FALL_R&quot;</span>:  <span class="bu">range</span>(<span class="dv">8</span> <span class="op">+</span> <span class="dv">133</span>, <span class="dv">12</span> <span class="op">+</span> <span class="dv">133</span>),</a>
-<a class="sourceLine" id="cb56-8" title="8">        ...</a>
-<a class="sourceLine" id="cb56-9" title="9">    },</a>
-<a class="sourceLine" id="cb56-10" title="10">    period  <span class="op">=</span> <span class="dv">100</span>,</a>
-<a class="sourceLine" id="cb56-11" title="11">)</a></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb59-1" title="1"><span class="co"># Exemple</span></a>
+<a class="sourceLine" id="cb59-2" title="2">animations <span class="op">=</span> retro.Animations(</a>
+<a class="sourceLine" id="cb59-3" title="3">    data <span class="op">=</span> {</a>
+<a class="sourceLine" id="cb59-4" title="4">        <span class="st">&quot;WALK_L&quot;</span>:  <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">8</span>),</a>
+<a class="sourceLine" id="cb59-5" title="5">        <span class="st">&quot;WALK_R&quot;</span>:  <span class="bu">range</span>(<span class="dv">0</span> <span class="op">+</span> <span class="dv">133</span>, <span class="dv">8</span> <span class="op">+</span> <span class="dv">133</span>),</a>
+<a class="sourceLine" id="cb59-6" title="6">        <span class="st">&quot;FALL_L&quot;</span>:  <span class="bu">range</span>(<span class="dv">8</span>, <span class="dv">12</span>),</a>
+<a class="sourceLine" id="cb59-7" title="7">        <span class="st">&quot;FALL_R&quot;</span>:  <span class="bu">range</span>(<span class="dv">8</span> <span class="op">+</span> <span class="dv">133</span>, <span class="dv">12</span> <span class="op">+</span> <span class="dv">133</span>),</a>
+<a class="sourceLine" id="cb59-8" title="8">        ...</a>
+<a class="sourceLine" id="cb59-9" title="9">    },</a>
+<a class="sourceLine" id="cb59-10" title="10">    period  <span class="op">=</span> <span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb59-11" title="11">)</a></code></pre></div>
 </blockquote>
 <h2 id="propriétés">Propriétés</h2>
 <blockquote class="method">
-<div class="sourceCode" id="cb57"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb57-1" title="1">frame <span class="op">-&gt;</span> <span class="bu">int</span></a></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb60-1" title="1">frame <span class="op">-&gt;</span> <span class="bu">int</span></a></code></pre></div>
 Retourne l’indice de la frame de l’animation actuellement jouée. Les animations sont jouées en boucle.
 </blockquote>
 <blockquote class="method">
-<div class="sourceCode" id="cb58"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb58-1" title="1">finished <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb61-1" title="1">finished <span class="op">-&gt;</span> <span class="bu">bool</span></a></code></pre></div>
 Retourne si l’animation a été complétée au moins une fois.
 </blockquote>
 <h2 id="méthodes-5">Méthodes</h2>
 <blockquote class="method">
-<div class="sourceCode" id="cb59"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb59-1" title="1"><span class="bu">set</span>(<span class="bu">str</span> name)</a></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb62-1" title="1"><span class="bu">set</span>(<span class="bu">str</span> name)</a></code></pre></div>
 Définit l’animation à jouer (<code>current</code>).
 </blockquote>
 <blockquote class="method">
-<div class="sourceCode" id="cb60"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb60-1" title="1">start(<span class="bu">str</span> name)</a></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb63-1" title="1">start(<span class="bu">str</span> name)</a></code></pre></div>
 Définit et démarre l’animation à jouer (<code>current</code>). L’attribut <a href="#classe-timer"><code>timer</code></a> permet de gérer le passage d’une frame à l’autre.
 </blockquote>
 <h1 id="classe-animatedsprite">Classe AnimatedSprite</h1>
 <h2 id="constructeur-6">Constructeur</h2>
 <blockquote class="method">
-<div class="sourceCode" id="cb61"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb61-1" title="1">AnimatedSprite(<span class="bu">list</span> images, Animations animations) <span class="op">-&gt;</span> AnimatedSprite</a></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb64-1" title="1">AnimatedSprite(<span class="bu">list</span> images, Animations animations) <span class="op">-&gt;</span> AnimatedSprite</a></code></pre></div>
 Crée un sprite animé à partir d’une liste d’<a href="#¢lasse-image"><code>images</code></a> et d’<a href="#classe-animations"><code>animations</code></a>.
 </blockquote>
 <h2 id="méthodes-6">Méthodes</h2>
 <blockquote class="method">
-<div class="sourceCode" id="cb62"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb62-1" title="1">update()</a></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode python prototype"><code class="sourceCode python"><a class="sourceLine" id="cb65-1" title="1">update()</a></code></pre></div>
 Affiche la frame actuelle de l’animation en cours.
 </blockquote>
 <h1 id="classe-vec">Classe Vec</h1>

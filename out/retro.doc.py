@@ -1,3 +1,4 @@
+import sys
 import pygame
 import numpy
 from numbers import Number
@@ -420,6 +421,23 @@ class Window(Image):
         self.clock = pygame.time.Clock()
         self.framerate = framerate
 
+        self.events = Events()
+
+        self.fonts = list(
+            Font(size) for size in range(18, 43, 6)
+        )
+
+    # Attributs
+
+    ## ~~~{.python .prototype}
+    ## fonts -> list<Font>
+    ## ~~~
+    ## Liste de polices de tailles ascendantes (18, 24, 30, 36 et 42).
+
+    ## ~~~{.python .prototype}
+    ## events -> Events
+    ## ~~~
+
     # Méthodes de classe
 
     ## ~~~{.python .prototype}
@@ -448,6 +466,23 @@ class Window(Image):
     def update(self):
         self.clock.tick(self.framerate)
         pygame.display.flip()
+
+    ## ~~~{.python .prototype}
+    ## loop(function instructions)
+    ## ~~~
+    ## Boucle principale du jeu.
+    ##
+    ## 1. récupère les nouveaux événements (`events.update()`)
+    ## 2. exécute `instructions`
+    ## 3. met à jour le contenu de la fenêtre (`update()`)
+    def loop(self, instructions):
+        while 1:
+            self.events.update()
+            if self.events.event(pygame.QUIT): sys.exit()
+
+            instructions()
+
+            self.update()
 
 class Events:
     # Constructeur
@@ -565,7 +600,7 @@ class Group(list):
         list.append(self, e)
         e.groups.append(self)
 
-    def update(self, *args, **kargs):
+    def update(self, *args, **kwargs):
         for e in self: e.update(*args, **kwargs)
 
     def draw(self, surface):
