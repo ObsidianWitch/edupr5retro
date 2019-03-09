@@ -65,6 +65,8 @@ class Animations:
     ## Le paramètre `period` correspond au temps (en ms) nécessaire pour passer
     ## d'une frame à la suivante.
     ##
+    ## Par défaut, la première animation définie dans `data` est lancée.
+    ##
     ## ~~~python
     ## # Exemple
     ## animations = retro.Animations(
@@ -129,9 +131,24 @@ class Animations:
         )
 
 class AnimatedSprite(Sprite):
+    # Constructeur
+
+    ## ~~~{.python .prototype}
+    ## AnimatedSprite(list images, Animations animations) -> AnimatedSprite
+    ## ~~~
+    ##
+    ## Crée un sprite animé à partir d'une liste d'[`images`](#¢lasse-image)
+    ## et d'[`animations`](#classe-animations).
     def __init__(self, images, animations):
         Sprite.__init__(self, images[0])
         self.images = images
         self.animations = animations
 
+    # Méthodes
+
+    ## ~~~{.python .prototype}
+    ## update()
+    ## ~~~
+    ##
+    ## Affiche la frame actuelle de l'animation en cours.
     def update(self): self.image = self.images[self.animations.frame]
