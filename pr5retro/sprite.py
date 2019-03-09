@@ -17,17 +17,54 @@ class Group(list):
         for e in self: e.draw(surface)
 
 class Sprite:
+    # Constructeur
+
+    ## ~~~{.python .prototype}
+    ## Sprite(Image image) -> Sprite
+    ## ~~~
+    ## Un `Sprite` possède une `image` qui peut être dessinée sur une surface et
+    ## positionnée à l'aide d'un `rect`.
     def __init__(self, image):
         self.image = image
         self.rect = self.image.rect()
         self.groups = []
 
+    # Attributs
+
+    ## ~~~{.python .prototype}
+    ## image -> Image
+    ## ~~~
+
+    ## ~~~{.python .prototype}
+    ## rect -> Rect
+    ## ~~~
+
+    ## ~~~{.python .prototype}
+    ## groups -> List<group>
+    ## ~~~
+
+    # Méthodes
+
+    ## ~~~{.python .prototype}
+    ## kill()
+    ## ~~~
+    ## Supprime le sprite de tous les groupes (`groups`) auxquels il appartient.
     def kill(self):
         for g in self.groups: g.remove(self)
         self.groups = []
 
+    ## ~~~{.python .prototype}
+    ## update()
+    ## ~~~
+    ## Met à jour le sprite. Ne fait rien par défaut, à redéfinir.<br>
+    ## **Note**: Cette méthode est appelée par `Group.update()`.
     def update(self): pass
 
+    ## ~~~{.python .prototype}
+    ## draw(Image image)
+    ## ~~~
+    ## Dessine le sprite sur la surface spécifiée (`image`) à la position
+    ## définie par le rectangle du sprite (`rect`).
     def draw(self, image): image.draw_img(self.image, self.rect)
 
 class Timer:
