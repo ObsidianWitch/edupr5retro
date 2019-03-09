@@ -1,5 +1,8 @@
 # Retro module
 
+Retro ([doc](https://obsidienne_edu.gitlab.io/PR_Retrogaming_Library)) is a python
+module extending [pygame](https://www.pygame.org).
+
 ## Dependencies
 
 * (lib) [pygame](https://www.pygame.org)
