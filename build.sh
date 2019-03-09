@@ -13,14 +13,10 @@ for f in 'src/rect.py' \
          'src/image.py' \
          'src/font.py' \
          'src/window.py' \
-         'src/events.py'
+         'src/events.py' \
+         'src/sprite.py' \
+         'src/vector.py'
 do cat "$f" | dimports | dnewlines | decorate >> "$out1"; done
 
 out2='out/retro.py'
 cat "$out1" | dcomments | dnewlines > "$out2"
-
-out3='out/retro.plus.py'
-cat "$out2" > "$out3"
-for f in 'src/sprite.py' \
-         'src/vector.py'
-do cat "$f" | dimports | dcomments | dnewlines | decorate >> "$out3"; done
