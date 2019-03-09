@@ -1,4 +1,4 @@
-import include.retro as retro
+import shared.retro as retro
 from pong.nodes.circle import Circle
 
 class Ball:

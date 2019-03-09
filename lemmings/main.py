@@ -1,6 +1,6 @@
 import pygame
 import types
-import include.retro as retro
+import shared.retro as retro
 from lemmings.states.level1 import Level1
 from lemmings.states.level2 import Level2
 from lemmings.states.end import End

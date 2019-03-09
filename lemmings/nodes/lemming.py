@@ -1,5 +1,5 @@
 import types
-import include.retro as retro
+import shared.retro as retro
 import shared.collisions
 from shared.sprite import AnimatedSprite
 from lemmings.nodes.actions import Actions, STATES

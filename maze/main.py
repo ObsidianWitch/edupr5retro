@@ -1,5 +1,5 @@
 import types
-import include.retro as retro
+import shared.retro as retro
 from maze.states.run import StateRun
 from maze.states.end import StateEnd
 

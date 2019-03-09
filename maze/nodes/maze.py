@@ -1,5 +1,5 @@
 import numpy
-import include.retro as retro
+import shared.retro as retro
 from shared.sprite import Sprite
 from maze.nodes.palette import *
 

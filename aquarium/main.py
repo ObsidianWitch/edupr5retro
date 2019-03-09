@@ -1,5 +1,5 @@
 import os
-import include.retro as retro
+import shared.retro as retro
 from aquarium.fish import Fish
 from shared.sprite import Sprite
 

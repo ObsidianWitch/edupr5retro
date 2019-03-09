@@ -1,5 +1,5 @@
 import types
-import include.retro as retro
+import shared.retro as retro
 from pong.states.run import StateRun
 from pong.states.end import StateEnd
 

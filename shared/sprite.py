@@ -1,5 +1,5 @@
 import itertools
-import include.retro as retro
+import shared.retro as retro
 
 class Sprite(retro.Sprite):
     @classmethod

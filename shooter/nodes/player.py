@@ -1,5 +1,5 @@
 import random
-import include.retro as retro
+import shared.retro as retro
 import shared.math
 from shared.directions import Directions
 from shared.sprite import Sprite

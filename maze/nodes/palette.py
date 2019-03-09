@@ -1,5 +1,5 @@
 import collections
-import include.retro as retro
+import shared.retro as retro
 
 MAZE_PALETTE = collections.defaultdict(
     lambda: retro.BLACK, {'B': retro.BLUE }

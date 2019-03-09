@@ -1,4 +1,4 @@
-import include.retro as retro
+import shared.retro as retro
 from shared.background import Background
 from shared.sprite import Sprite
 from shooter.nodes.enemies.enemies import Enemies

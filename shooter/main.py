@@ -1,5 +1,5 @@
 import types
-import include.retro as retro
+import shared.retro as retro
 from shooter.states.run import StateRun
 from shooter.states.end import StateEnd
 

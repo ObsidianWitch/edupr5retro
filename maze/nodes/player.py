@@ -1,6 +1,6 @@
 import numpy
 import shared.math
-import include.retro as retro
+import shared.retro as retro
 from shared.sprite import AnimatedSprite
 from maze.nodes.palette import *
 

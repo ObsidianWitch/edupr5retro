@@ -1,5 +1,5 @@
 import enum
-import include.retro as retro
+import shared.retro as retro
 from shared.sprite import Sprite
 from lemmings.path import asset_path
 
