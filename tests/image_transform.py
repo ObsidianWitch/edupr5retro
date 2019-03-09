@@ -1,8 +1,6 @@
-import sys
 import pygame
 from src.constants import *
 from src.window import Window
-from src.events import Events
 from src.image import Image
 
 window = Window(
@@ -10,7 +8,6 @@ window = Window(
     size      = (640, 480),
     framerate = 30,
 )
-events = Events()
 
 obj1 = Image((100, 100)).draw_line(
     color     = GREEN,
@@ -55,10 +52,7 @@ obj5_rect.topleft = obj3_rect.topleft
 obj5_rect.move(0, 150)
 print(obj5_rect)
 
-while 1:
-    events.update()
-    if events.event(QUIT): sys.exit()
-
+def main():
     window.fill(WHITE) \
           .draw_img(obj1, obj1_rect) \
           .draw_img(obj2, obj2_rect) \
@@ -66,6 +60,6 @@ while 1:
           .draw_img(obj4, obj4_rect) \
           .draw_img(obj5, obj5_rect)
 
-    print(events.mouse_pos())
+    print(window.events.mouse_pos())
 
-    window.update()
+window.loop(main)

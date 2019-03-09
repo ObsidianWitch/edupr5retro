@@ -1,5 +1,7 @@
+import sys
 import pygame
 from src.image import Image
+from src.events import Events
 class Window(Image):
     # Héritage
 
@@ -22,6 +24,14 @@ class Window(Image):
 
         self.clock = pygame.time.Clock()
         self.framerate = framerate
+
+        self.events = Events()
+
+    # Attributs
+
+    ## ~~~{.python .prototype}
+    ## events -> Events
+    ## ~~~
 
     # Méthodes de classe
 
@@ -51,3 +61,20 @@ class Window(Image):
     def update(self):
         self.clock.tick(self.framerate)
         pygame.display.flip()
+
+    ## ~~~{.python .prototype}
+    ## loop(function instructions)
+    ## ~~~
+    ## Boucle principale du jeu.
+    ##
+    ## 1. récupère les nouveaux événements (`events.update()`)
+    ## 2. exécute `instructions`
+    ## 3. met à jour le contenu de la fenêtre (`update()`)
+    def loop(self, instructions):
+        while 1:
+            self.events.update()
+            if self.events.event(pygame.QUIT): sys.exit()
+
+            instructions()
+
+            self.update()

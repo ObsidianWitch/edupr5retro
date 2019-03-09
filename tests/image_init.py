@@ -1,9 +1,7 @@
 import os
-import sys
 import itertools
 from src.constants import *
 from src.window import Window
-from src.events import Events
 from src.image import Image
 from src.rect import Rect
 
@@ -12,7 +10,6 @@ window = Window(
     size      = (640, 480),
     framerate = 30,
 )
-events = Events()
 
 PALETTE = {
     ' ': BLACK,
@@ -83,10 +80,7 @@ subimages = Image.from_spritesheet(
 )
 subimages = list(itertools.chain(*subimages))
 
-while 1:
-    events.update()
-    if events.event(QUIT): sys.exit()
-
+def main():
     window.fill(WHITE) \
           .draw_img(s1, s1_rect) \
           .draw_img(s2, s2_rect, s2_area) \
@@ -99,6 +93,6 @@ while 1:
         y = (i // 10) * (s.rect().height + 10)
         window.draw_img(s, (x, y))
 
-    print(events.mouse_pos())
+    print(window.events.mouse_pos())
 
-    window.update()
+window.loop(main)

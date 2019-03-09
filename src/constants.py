@@ -1,3 +1,4 @@
+import sys
 import pygame
 import numpy
 from numbers import Number

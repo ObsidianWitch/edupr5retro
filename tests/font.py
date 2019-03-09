@@ -1,7 +1,5 @@
-import sys
 from src.constants import *
 from src.window import Window
-from src.events import Events
 from src.font import Font
 
 window = Window(
@@ -9,7 +7,6 @@ window = Window(
     size      = (640, 480),
     framerate = 30,
 )
-events = Events()
 
 font = Font(size = 42)
 
@@ -37,13 +34,10 @@ txt3 = font.render(
 txt3_rect = txt3.rect()
 txt3_rect.midbottom = window.rect().midbottom
 
-while 1:
-    events.update()
-    if events.event(QUIT): sys.exit()
-
+def main():
     window.fill(WHITE) \
           .draw_img(txt1, txt1_rect) \
           .draw_img(txt2, txt2_rect.topleft) \
           .draw_img(txt3, txt3_rect.topright)
 
-    window.update()
+window.loop(main)
