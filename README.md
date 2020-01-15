@@ -6,7 +6,7 @@
 # play with arrow keys
 python play_manual.py [--small]
 
-# play automatically (simple)
+# play automatically (heuristic)
 python play_auto.py [--small]
 
 # play automatically (ANN with GA)

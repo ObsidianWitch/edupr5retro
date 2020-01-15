@@ -5,7 +5,7 @@ from game.parameters import Parameters
 from game.game import Game
 from game.maze import Maze
 
-class RandWalk:
+class RandImpulse:
     def __init__(self):
         self.i = 0
 
@@ -35,25 +35,25 @@ def direction(s1, s2, invert = False):
     elif dv[1] > 0: return [ 0,  1]
     else: return False
 
-def walls(player):
+def follow_wall(player):
     if not player.curcol: return False
     elif (not player.nxtcol) or (player.curdir == player.nxtdir):
         return [-player.curdir[1], player.curdir[0]]
     else:
         return [-player.nxtdir[0], -player.nxtdir[1]]
 
-def attract(player, sprite):
-    if not sprite: return False
-    else: return direction(sprite, player)
-
-def repel(player, sprite):
+def avoid(player, sprite):
     distance = Maze.distance(player.rect.center, sprite.rect.center)
     if distance > 50 : return False
     else: return direction(sprite, player, invert = True)
 
-def repel_ghosts(player, ghost):
+def avoid_ghosts(player, ghost):
     if (not ghost) or (ghost.state == ghost.state.FEAR): return False
-    return repel(player, ghost)
+    return avoid(player, ghost)
+
+def seek_sprite(player, sprite):
+    if not sprite: return False
+    else: return direction(sprite, player)
 
 small_maze = any(arg == "--small" for arg in sys.argv)
 parameters = Parameters.small() if small_maze else Parameters.classic()
@@ -63,7 +63,7 @@ window = retro.Window(
     framerate = 0,
 )
 game = Game(window, parameters)
-randwalk = RandWalk()
+rand_impulse = RandImpulse()
 
 def main():
     if not game.finished:
@@ -71,17 +71,22 @@ def main():
         bonus  = game.maze.bonuses.nearest(player)
         ghost  = game.target(game.ghosts)
 
-        nxtdir_w = walls(player)
-        nxtdir_g = repel_ghosts(player, ghost)
-        nxtdir_b = attract(player, bonus)
-        nxtdir_r = randwalk.run(player)
+        nxtdir_wall  = follow_wall(player)
+        nxtdir_ghost = avoid_ghosts(player, ghost)
+        nxtdir_bonus = seek_sprite(player, bonus)
+        nxtdir_rand  = rand_impulse.run(player)
 
-        if game.player.curdir == [0, 0]: game.player.nxtdir = [1, 0]
-        elif nxtdir_w: player.nxtdir = nxtdir_w
-        elif nxtdir_g: player.nxtdir = nxtdir_g
-        elif nxtdir_r:
-            if isinstance(nxtdir_r, tuple): player.nxtdir = nxtdir_r
-        elif nxtdir_b: player.nxtdir = nxtdir_b
+        if player.curdir == [0, 0]:
+            player.nxtdir = [1, 0]
+        elif nxtdir_wall:
+            player.nxtdir = nxtdir_wall
+        elif nxtdir_ghost:
+            player.nxtdir = nxtdir_ghost
+        elif nxtdir_rand:
+            if isinstance(nxtdir_rand, tuple):
+                player.nxtdir = nxtdir_rand
+        elif nxtdir_bonus:
+            player.nxtdir = nxtdir_bonus
 
         game.update()
         game.draw()
