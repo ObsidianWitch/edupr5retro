@@ -27,6 +27,9 @@ class Entity(retro.AnimatedSprite):
             Walls.px3(self.nxtdir, self.rect),
         )
 
+    def collide_maze(self, maze):
+        raise NotImplementedError
+
     def update(self, maze):
         if not self.collide_maze(maze): self.rect.move(
             retro.Vec.mul(self.speed, self.curdir)
