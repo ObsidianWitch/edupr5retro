@@ -86,13 +86,11 @@ class Ghost(Entity):
         self.nxtdir = random.choice(dirs)
 
     def collide_maze(self, maze):
-        curcol, nxtcol = self.mazecol(maze)
-
-        if not nxtcol:
+        if not self.nxtcol:
             self.curdir = self.nxtdir
-        elif curcol is None:
+        elif self.curcol is None:
             self.curdir = retro.Vec.neg(self.curdir)
-        elif curcol:
+        elif self.curcol:
             self.next_dir()
             return True
 

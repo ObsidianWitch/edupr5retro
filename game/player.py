@@ -50,14 +50,11 @@ class Player(Entity):
 
         self.score = 0
         self.powerup = Powerup()
-        self.curcol, self.nxtcol = False, False
 
     @property
     def bounding_rect(self): return Entity.bounding_rect(self, 4)
 
     def collide_maze(self, maze):
-        self.curcol, self.nxtcol = self.mazecol(maze)
-
         if self.curcol is None:
             if self.curdir[0]: self.rect.centerx = abs(
                 self.rect.centerx - maze.rect.w

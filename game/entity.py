@@ -21,11 +21,13 @@ class Entity(retro.AnimatedSprite):
         r.center = self.rect.center
         return r
 
-    def mazecol(self, maze):
-        return (
-            Walls.px3(self.curdir, self.rect),
-            Walls.px3(self.nxtdir, self.rect),
-        )
+    @property
+    def curcol(self):
+        return Walls.px3(self.curdir, self.rect)
+
+    @property
+    def nxtcol(self):
+        return Walls.px3(self.nxtdir, self.rect)
 
     def collide_maze(self, maze):
         raise NotImplementedError
