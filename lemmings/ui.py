@@ -14,7 +14,7 @@ class UI:
     def populate_icons(self):
         for A in Actions.USABLE:
             sprite = Sprite(A.ICON)
-            sprite.state = A.STATE
+            sprite.state = A
             self.icons.append(sprite)
 
     def position_icons(self):

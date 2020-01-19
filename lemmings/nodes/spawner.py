@@ -1,7 +1,6 @@
 import shared.retro as retro
 from lemmings.nodes.lemming import Lemming
 
-# Lemming generator.
 class Spawner:
     def __init__(self, window, bg, position):
         self.window = window

@@ -2,7 +2,7 @@ import types
 import shared.retro as retro
 import shared.collisions
 from shared.sprite import AnimatedSprite
-from lemmings.nodes.actions import Actions, STATES
+from lemmings.nodes.actions import Actions
 from lemmings.path import asset_path
 
 class Lemming(AnimatedSprite):
@@ -52,7 +52,7 @@ class Lemming(AnimatedSprite):
         self.rect.topleft = position
 
         self.actions = Actions(self)
-        self.state = STATES.START
+        self.state = None
 
     @property
     def bounding_rect(self):
@@ -97,121 +97,92 @@ class Lemming(AnimatedSprite):
         collisions_all = self.collisions(self.bg.current)
         collisions_bg  = self.collisions(self.bg.original)
 
-        if self.state == STATES.START:
-            self.actions.walk.start()
-            self.actions.fall.start()
-            self.state = STATES.FALL
+        if self.state is None:
+            self.state = self.actions.fall.start()
 
-        elif self.state == STATES.WALK:
+        elif self.state == self.actions.walk:
             if collisions_all.fall:
-                self.state = STATES.FALL
-                self.actions.fall.start()
-            elif new_action == STATES.FLOAT:
-                self.state = new_action
-                self.actions.float.wait()
-            elif new_action == STATES.STOP:
-                self.state = new_action
-                self.actions.stop.start()
-            elif new_action == STATES.BOMB:
-                self.state = new_action
-                self.actions.bomb.wait()
-            elif new_action == STATES.BUILD:
-                self.state = new_action
-                self.actions.build.start()
-            elif new_action == STATES.DIGV:
-                self.state = new_action
-                self.actions.digv.start()
-            elif new_action == STATES.DIGH:
-                self.state = new_action
-                self.actions.digh.wait()
-            elif new_action == STATES.MINE:
-                self.state = new_action
-                self.actions.mine.wait()
+                self.state = self.actions.fall.start()
+            elif new_action:
+                self.state = self.actions.from_class(new_action).start()
             else:
                 self.actions.walk.run(collisions_all)
 
-        elif self.state == STATES.FALL:
+        elif self.state == self.actions.fall:
             if collisions_all.fall:
                 self.actions.fall.run()
             elif self.actions.fall.dead:
-                self.state = STATES.DEAD
-                self.actions.dead.start()
+                self.state = self.actions.dead.start()
             else:
                 self.actions.fall.clamp()
-                self.state = STATES.WALK
+                self.state = self.actions.walk.start()
 
-        elif self.state == STATES.FLOAT:
+        elif self.state == self.actions.float:
             if collisions_all.fall:
                 self.actions.float.run()
             elif self.actions.float.enabled:
-                self.state = STATES.WALK
+                self.state = self.actions.walk.start()
             else:
                 self.actions.walk.run(collisions_all)
 
-        elif self.state == STATES.STOP:
+        elif self.state == self.actions.stop:
             self.actions.stop.run()
 
-        elif self.state == STATES.BOMB:
-            if self.actions.bomb.explode:
+        elif self.state == self.actions.bomb:
+            if self.actions.bomb.timer.finished or collisions_all.fall:
                 self.actions.bomb.run()
-            elif self.actions.bomb.timer.finished:
-                self.actions.bomb.start()
-            elif collisions_all.fall:
-                self.actions.bomb.start()
             else:
                 self.actions.walk.run(collisions_all)
 
-        elif self.state == STATES.BUILD:
+        elif self.state == self.actions.build:
             if self.actions.build.finished or collisions_bg.side:
-                self.state = STATES.WALK
+                self.state = self.actions.walk.start()
             else:
                 self.actions.build.run()
 
-        elif self.state == STATES.DIGV:
+        elif self.state == self.actions.digv:
             if (not collisions_bg.fall) and (not collisions_bg.outside):
                 self.actions.digv.run()
             else:
-                self.state = STATES.WALK
+                self.state = self.actions.walk.start()
 
-        elif self.state == STATES.DIGH:
+        elif self.state == self.actions.digh:
             if (
                 collisions_bg.side
                 and (not collisions_bg.fall)
                 and (not collisions_bg.outside)
             ):
                 self.actions.digh.run()
-            elif collisions_all.fall:
-                self.state = STATES.WALK
-            elif self.actions.digh.enabled:
-                self.state = STATES.WALK
+            elif collisions_all.fall or self.actions.digh.enabled:
+                self.state = self.actions.walk.start()
             else:
                 self.actions.walk.run(collisions_all)
 
-        elif self.state == STATES.MINE:
+        elif self.state == self.actions.mine:
             if (
                 collisions_bg.side
                 and (not collisions_bg.fall)
                 and (not collisions_bg.outside)
             ):
                 self.actions.mine.run()
-            elif (collisions_all.fall) or (self.actions.mine.enabled):
-                self.state = STATES.WALK
+            elif collisions_all.fall or self.actions.mine.enabled:
+                self.state = self.actions.walk.start()
             else:
                 self.actions.walk.run(collisions_all)
 
-        elif self.state == STATES.DEAD:
+        elif self.state == self.actions.dead:
             self.actions.dead.run()
 
         AnimatedSprite.update(self)
 
     def draw_bg(self):
-        if self.state != STATES.STOP: return
+        if self.state != self.actions.stop: return
 
         AnimatedSprite.draw(self, self.bg.current)
 
     def draw_screen(self):
-        if self.state == STATES.STOP: return
-        elif self.state == STATES.BOMB:
+        if self.state == self.actions.stop: return
+        elif self.state == self.actions.bomb:
             self.actions.bomb.draw_timer()
 
         AnimatedSprite.draw(self, self.window)

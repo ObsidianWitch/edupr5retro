@@ -1,18 +1,14 @@
-import enum
 import shared.retro as retro
 from shared.sprite import Sprite
 from lemmings.path import asset_path
 
-STATES = enum.Enum("STATES", """START WALK FALL FLOAT STOP BOMB
-                                BUILD DIGV DIGH MINE DEAD""")
-
 class Walk:
     def __init__(self, lemming):
         self.lemming = lemming
-        self.dx = 0
+        self.dx = -1
 
     def start(self):
-        self.dx = -1
+        return self
 
     def run(self, collisions):
         self.walk(collisions)
@@ -51,6 +47,7 @@ class Fall:
     def start(self):
         self.lemming.start_animation("FALL")
         self.fallcount = 0
+        return self
 
     def run(self):
         self.lemming.rect.move(0, 3)
@@ -64,58 +61,56 @@ class Fall:
 
 class Float:
     ICON  = retro.Image.from_path(asset_path("ui_float.png"))
-    STATE = STATES.FLOAT
 
     def __init__(self, lemming):
         self.lemming = lemming
 
-    def wait(self):
-        self.enabled = False
-
     def start(self):
-        self.lemming.start_animation("FLOAT")
-        self.enabled = True
+        self.enabled = False
+        return self
 
     def run(self):
-        if not self.enabled: self.start()
+        if not self.enabled:
+            self.lemming.start_animation("FLOAT")
+            self.enabled = True
         self.lemming.rect.move(0, 1)
 
 class Stop:
     ICON  = retro.Image.from_path(asset_path("ui_stop.png"))
-    STATE = STATES.STOP
 
     def __init__(self, lemming):
         self.lemming = lemming
 
     def start(self):
         self.lemming.start_animation("STOP")
+        return self
 
-    def run(self): pass
+    def run(self):
+        pass
 
 class Bomb:
     ICON = retro.Image.from_path(asset_path("ui_bomb.png"))
-    STATE = STATES.BOMB
 
     def __init__(self, lemming):
         self.lemming = lemming
 
-    def wait(self):
+    def start(self):
         self.timer = retro.Timer(end = 3, period = 1000)
         self.explode = False
-
-    def start(self):
-        self.lemming.start_animation("BOMB")
-        self.explode = True
-
-        self.lemming.bg.original.draw_circle(
-            color  = retro.BLACK,
-            center = self.lemming.bounding_rect.midbottom,
-            radius = 20,
-        )
+        return self
 
     def run(self):
-        if not self.lemming.animations.finished: return
-        self.lemming.kill()
+        if not self.explode:
+            self.lemming.start_animation("BOMB")
+            self.explode = True
+
+            self.lemming.bg.original.draw_circle(
+                color  = retro.BLACK,
+                center = self.lemming.bounding_rect.midbottom,
+                radius = 20,
+            )
+        elif self.lemming.animations.finished:
+            self.lemming.kill()
 
     def draw_timer(self):
         if self.explode: return
@@ -130,7 +125,6 @@ class Bomb:
 
 class Build:
     ICON  = retro.Image.from_path(asset_path("ui_build.png"))
-    STATE = STATES.BUILD
 
     def __init__(self, lemming):
         self.lemming = lemming
@@ -141,6 +135,7 @@ class Build:
 
     def start(self):
         self.lemming.start_animation("BUILD")
+        return self
 
     def run(self):
         if not self.lemming.animations.finished: return
@@ -161,13 +156,13 @@ class Build:
 
 class DigV:
     ICON  = retro.Image.from_path(asset_path("ui_digv.png"))
-    STATE = STATES.DIGV
 
     def __init__(self, lemming):
         self.lemming = lemming
 
     def start(self):
         self.lemming.start_animation("DIGV")
+        return self
 
     def run(self):
         dx = self.lemming.actions.walk.dx
@@ -182,20 +177,18 @@ class DigV:
 
 class DigH:
     ICON  = retro.Image.from_path(asset_path("ui_digh.png"))
-    STATE = STATES.DIGH
 
     def __init__(self, lemming):
         self.lemming = lemming
 
-    def wait(self):
-        self.enabled = False
-
     def start(self):
-        self.lemming.start_animation("DIGH")
-        self.enabled = True
+        self.enabled = False
+        return self
 
     def run(self):
-        if not self.enabled: self.start()
+        if not self.enabled:
+            self.lemming.start_animation("DIGH")
+            self.enabled = True
 
         dx = self.lemming.actions.walk.dx
 
@@ -209,21 +202,21 @@ class DigH:
 
 class Mine:
     ICON  = retro.Image.from_path(asset_path("ui_mine.png"))
-    STATE = STATES.MINE
 
     def __init__(self, lemming):
         self.lemming = lemming
 
-    def wait(self):
-        self.enabled = False
-
     def start(self):
-        self.lemming.start_animation("MINE")
-        self.enabled = True
+        self.enabled = False
+        return self
 
     def run(self):
-        if not self.enabled: self.start()
-        if not self.lemming.animations.finished: return
+        if not self.enabled:
+            self.lemming.start_animation("MINE")
+            self.enabled = True
+
+        if not self.lemming.animations.finished:
+            return
 
         self.lemming.bg.original.draw_circle(
             color  = retro.BLACK,
@@ -241,6 +234,7 @@ class Dead:
 
     def start(self):
         self.lemming.start_animation("DEAD")
+        return self
 
     def run(self):
         if self.lemming.animations.finished: self.lemming.kill()
@@ -259,3 +253,10 @@ class Actions:
         self.digh  = DigH(lemming)
         self.mine  = Mine(lemming)
         self.dead  = Dead(lemming)
+        self.lst = (
+            self.walk, self.fall, self.float, self.stop, self.bomb,
+            self.build, self.digv, self.digh, self.mine, self.dead,
+        )
+
+    def from_class(self, cls):
+        return next(action for action in self.lst if type(action) == cls)
