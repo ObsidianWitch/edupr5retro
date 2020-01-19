@@ -3,8 +3,7 @@ import shared.retro as retro
 from shared.sprite import Sprite
 
 class Fish(Sprite):
-    def __init__(self, window, path, speed, move):
-        self.window = window
+    def __init__(self, path, speed, move):
         sprite = retro.Image.from_path(path)
         Sprite.__init__(self, sprite)
         self.dx, self.dy = speed
@@ -18,31 +17,30 @@ class Fish(Sprite):
         if yflip: self.dy *= -1
         Sprite.flip(self, xflip, False)
 
-    # Moves from left to right.
-    def move1(self):
+    # Moves from left to right, constrained by `rect`.
+    def move1(self, rect):
         xnew = self.rect.x + self.dx
 
-        limits = range(50, 3 * self.window.rect().w // 4)
+        limits = range(50, 3 * rect.w // 4)
         if xnew not in limits: self.flip(xflip = True)
 
         self.rect.move(self.dx, 0)
 
-    # Moves diagonally.
-    def move2(self):
+    # Moves diagonally, constrained by `rect`.
+    def move2(self, rect):
         xnew = self.rect.x + self.dx
         ynew = self.rect.y + self.dy
 
         limits = lambda upper: range(20, upper - 100)
-        if xnew not in limits(self.window.rect().w):  self.flip(xflip = True)
-        if ynew not in limits(self.window.rect().h): self.flip(yflip = True)
+        if xnew not in limits(rect.w):  self.flip(xflip = True)
+        if ynew not in limits(rect.h): self.flip(yflip = True)
 
         self.rect.move(self.dx, self.dy)
 
-    # Moves randomly.
-    def move3(self):
+    # Moves randomly, constrained by rect.
+    def move3(self, rect):
         self.flip(
             xflip = (random.randrange(0, 100) == 0),
             yflip = (random.randrange(0, 100) == 0),
         )
-
-        self.move2()
+        self.move2(rect)
