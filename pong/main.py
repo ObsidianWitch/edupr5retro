@@ -1,7 +1,27 @@
-import types
 import shared.retro as retro
 from pong.states.run import StateRun
 from pong.states.end import StateEnd
+
+class Game:
+    def __init__(self, window):
+        self.window = window
+        self.state = None
+
+    def run(self):
+        if self.state is None:
+            self.state = StateRun(self.window)
+
+        elif type(self.state) == StateRun:
+            if self.state.winner:
+                self.state = StateEnd(self.window, self.state.winner)
+            else:
+                self.state.run()
+
+        elif type(self.state) == StateEnd:
+            if self.state.restart:
+                self.state = StateRun(self.window)
+            else:
+                self.state.run()
 
 window = retro.Window(
     size      = (600, 400),
@@ -9,32 +29,5 @@ window = retro.Window(
     framerate = 60,
 )
 window.cursor(False)
-
-states = types.SimpleNamespace(
-    START    = 0,
-    RUN      = 1,
-    END      = 2,
-    current  = 0,
-    instance = None,
-)
-
-def game():
-    if states.current == states.START:
-        states.instance = StateRun(window)
-        states.current  = states.RUN
-
-    elif states.current == states.RUN:
-        if states.instance.winner:
-            states.instance = StateEnd(window, states.instance.winner)
-            states.current  = states.END
-        else:
-            states.instance.run()
-
-    elif states.current == states.END:
-        if states.instance.restart:
-            states.instance = StateRun(window)
-            states.current  = states.RUN
-        else:
-            states.instance.run()
-
-window.loop(game)
+game = Game(window)
+window.loop(game.run)
