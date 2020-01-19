@@ -2,11 +2,8 @@ import shared.retro as retro
 from pong.nodes.circle import Circle
 
 class Ball:
-    def __init__(self, window):
+    def __init__(self, window, side = -1):
         self.window = window
-        self.reset(-1)
-
-    def reset(self, side):
         self.circle = Circle(
             center = [self.window.rect().w // 2, self.window.rect().h // 2],
             radius = 10,
@@ -28,7 +25,8 @@ class Ball:
         left_edge  = (self.circle.right < 0)
         right_edge = (self.circle.left > self.window.rect().w)
         collision = (right_edge - left_edge)
-        if (collision != 0): self.reset(collision)
+        if collision != 0:
+            self.__init__(self.window, collision)
         return collision
 
     def update(self):
