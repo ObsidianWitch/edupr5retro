@@ -1,4 +1,3 @@
-import shared.retro as retro
 import shared.collisions
 from shared.background import Background
 from shared.sprite import Sprite

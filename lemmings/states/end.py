@@ -1,5 +1,6 @@
 import shared.retro as retro
 from shared.sprite import Sprite
+
 class End:
     def __init__(self, window, win):
         self.window = window
