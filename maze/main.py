@@ -1,4 +1,3 @@
-import types
 import shared.retro as retro
 from maze.states.run import StateRun
 from maze.states.end import StateEnd

@@ -9,39 +9,39 @@ from shooter.path import asset_path
 # Enemy generator.
 class Enemies:
     STREET_IMGS = tuple(retro.Image.from_path(p) for p in (
-        asset_path("bandit_rue.png"),
-        asset_path("bandit_rue2.png"),
-        asset_path("bandit_rue4.png"),
+        asset_path("bandit_street1.png"),
+        asset_path("bandit_street2.png"),
+        asset_path("bandit_street4.png"),
     ))
 
     WINDOW_IMGS = tuple(retro.Image.from_path(p) for p in (
-        asset_path("bandit_window.png"),
+        asset_path("bandit_window1.png"),
         asset_path("bandit_window2.png"),
         asset_path("bandit_window3.png"),
         asset_path("bandit_window4.png"),
     ))
 
     WALL_IMGS = tuple(retro.Image.from_path(p) for p in (
-        asset_path("bandit_mur.png"),
-        asset_path("bandit_mur2.png"),
+        asset_path("bandit_wall1.png"),
+        asset_path("bandit_wall2.png"),
     ))
 
     TOP_IMGS = tuple(retro.Image.from_path(p) for p in (
-        asset_path("bandit_appui.png"),
-        asset_path("bandit_appui2.png"),
-        asset_path("bandit_appui3.png"),
+        asset_path("bandit_support1.png"),
+        asset_path("bandit_support2.png"),
+        asset_path("bandit_support3.png"),
     ))
 
     SEWER_IMG = retro.Image.from_path(
-        asset_path("bandit_egout.png"),
+        asset_path("bandit_sewer.png"),
     )
 
     KIDNAPER_IMG = retro.Image.from_path(
-        asset_path("woman.png"),
+        asset_path("bandit_kidnaper.png"),
     )
 
     RUNNER_IMG = retro.Image.from_path(
-        asset_path("bandit_rue3.png"),
+        asset_path("bandit_street3.png"),
     )
 
     def __init__(self, camera):

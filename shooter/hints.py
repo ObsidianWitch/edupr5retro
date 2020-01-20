@@ -8,8 +8,8 @@ class Hints:
         self.bg     = camera.bg
 
         self.sprites = (
-            Sprite.from_path(asset_path("fleche_gauche.png")),
-            Sprite.from_path(asset_path("fleche_droite.png")),
+            Sprite.from_path(asset_path("arrow_left.png")),
+            Sprite.from_path(asset_path("arrow_right.png")),
         )
         self.sprites[0].rect.midleft  = self.window.rect().midleft
         self.sprites[1].rect.midright = self.window.rect().midright

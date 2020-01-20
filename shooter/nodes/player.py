@@ -6,7 +6,7 @@ from shared.sprite import Sprite
 from shooter.path import asset_path
 
 class Crosshair(Sprite):
-    IMG = retro.Image.from_path(asset_path("viseur.png"))
+    IMG = retro.Image.from_path(asset_path("crosshair.png"))
 
     def __init__(self, window):
         self.window = window
