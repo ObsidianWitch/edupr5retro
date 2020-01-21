@@ -20,11 +20,13 @@ class RandImpulse:
 
     def run(self, player):
         if not self.enabled:
-            if random.uniform(0, 1) < 0.01: return self.start(player)
-            else: return False
+            if random.uniform(0, 1) < 0.01:
+                return self.start(player)
+            else:
+                return False
         else:
             self.i -= 1
-            return True
+            return player.nxtdir
 
 def direction(s1, s2, invert = False):
     dv = retro.Vec.sub(s1.rect.center, s2.rect.center)
@@ -83,14 +85,14 @@ def main():
         elif nxtdir_ghost:
             player.nxtdir = nxtdir_ghost
         elif nxtdir_rand:
-            if isinstance(nxtdir_rand, tuple):
-                player.nxtdir = nxtdir_rand
+            player.nxtdir = nxtdir_rand
         elif nxtdir_bonus:
             player.nxtdir = nxtdir_bonus
 
         game.update()
         game.draw()
     else:
+        print(game.fitness)
         game.reset()
 
 window.loop(main)
