@@ -1,18 +1,13 @@
-image: debian:testing-slim
-
-before_script:
-    - apt update
-    - apt -y install python3 pandoc
+image: alpine:latest
 
 pages:
-  stage: deploy
-  script:
-    - ./build.sh
-    - ./doc.py
-    - mkdir -p public
-    - cp out/doc.html public/index.html
-  artifacts:
-    paths:
-      - public
-  only:
-    - tags
+    stage: deploy
+    script:
+        - mkdir -p public
+        - cp out/doc.html public/index.html
+    artifacts:
+        paths:
+            - public
+    when: manual
+    only:
+        - master
