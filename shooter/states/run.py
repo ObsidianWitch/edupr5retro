@@ -3,7 +3,7 @@ from shared.background import Background
 from shared.sprite import Sprite
 from shooter.nodes.enemies.enemies import Enemies
 from shooter.nodes.player import Player
-from shooter.path import asset_path
+from shooter.path import asset
 from shooter.camera import Camera
 from shooter.hints  import Hints
 
@@ -11,7 +11,7 @@ class StateRun:
     def __init__(self, window):
         self.window = window
 
-        self.bg = Background(asset_path("map.png"))
+        self.bg = Background(asset("map.png"))
 
         self.camera = Camera(
             window   = self.window,

@@ -1,6 +1,6 @@
 import shared.retro as retro
 from shared.sprite import Sprite
-from lemmings.path import asset_path
+from lemmings.path import asset
 
 class Walk:
     def __init__(self, lemming):
@@ -60,7 +60,7 @@ class Fall:
         else: self.clamp()
 
 class Float:
-    ICON  = retro.Image.from_path(asset_path("ui_float.png"))
+    ICON  = retro.Image.from_path(asset("ui_float.png"))
 
     def __init__(self, lemming):
         self.lemming = lemming
@@ -76,7 +76,7 @@ class Float:
         self.lemming.rect.move(0, 1)
 
 class Stop:
-    ICON  = retro.Image.from_path(asset_path("ui_stop.png"))
+    ICON  = retro.Image.from_path(asset("ui_stop.png"))
 
     def __init__(self, lemming):
         self.lemming = lemming
@@ -89,7 +89,7 @@ class Stop:
         pass
 
 class Bomb:
-    ICON = retro.Image.from_path(asset_path("ui_bomb.png"))
+    ICON = retro.Image.from_path(asset("ui_bomb.png"))
 
     def __init__(self, lemming):
         self.lemming = lemming
@@ -124,7 +124,7 @@ class Bomb:
         timer_surface.draw(window)
 
 class Build:
-    ICON  = retro.Image.from_path(asset_path("ui_build.png"))
+    ICON  = retro.Image.from_path(asset("ui_build.png"))
 
     def __init__(self, lemming):
         self.lemming = lemming
@@ -155,7 +155,7 @@ class Build:
         self.lemming.start_animation("BUILD")
 
 class DigV:
-    ICON  = retro.Image.from_path(asset_path("ui_digv.png"))
+    ICON  = retro.Image.from_path(asset("ui_digv.png"))
 
     def __init__(self, lemming):
         self.lemming = lemming
@@ -176,7 +176,7 @@ class DigV:
         self.lemming.rect.move(0, 1)
 
 class DigH:
-    ICON  = retro.Image.from_path(asset_path("ui_digh.png"))
+    ICON  = retro.Image.from_path(asset("ui_digh.png"))
 
     def __init__(self, lemming):
         self.lemming = lemming
@@ -201,7 +201,7 @@ class DigH:
         self.lemming.rect.move(dx, 0)
 
 class Mine:
-    ICON  = retro.Image.from_path(asset_path("ui_mine.png"))
+    ICON  = retro.Image.from_path(asset("ui_mine.png"))
 
     def __init__(self, lemming):
         self.lemming = lemming

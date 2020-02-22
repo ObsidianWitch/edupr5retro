@@ -3,10 +3,10 @@ import shared.retro as retro
 import shared.math
 from shared.directions import Directions
 from shared.sprite import Sprite
-from shooter.path import asset_path
+from shooter.path import asset
 
 class Crosshair(Sprite):
-    IMG = retro.Image.from_path(asset_path("crosshair.png"))
+    IMG = retro.Image.from_path(asset("crosshair.png"))
 
     def __init__(self, window):
         self.window = window
@@ -18,7 +18,7 @@ class Crosshair(Sprite):
         Sprite.draw(self, self.window)
 
 class Ammunitions(Sprite):
-    IMG = retro.Image.from_path(asset_path("bullet.png"))
+    IMG = retro.Image.from_path(asset("bullet.png"))
     IMG.scale(0.5)
 
     def __init__(self, window):
@@ -35,7 +35,7 @@ class Ammunitions(Sprite):
             Sprite.draw(self, self.window)
 
 class Hide(Sprite):
-    IMG = retro.Image.from_path(asset_path("hide.png"))
+    IMG = retro.Image.from_path(asset("hide.png"))
 
     def __init__(self, window):
         self.window = window
@@ -52,7 +52,7 @@ class Hide(Sprite):
         if self.hidden: Sprite.draw(self, self.window)
 
 class Explosion(Sprite):
-    IMG = retro.Image.from_path(asset_path("bang.png"))
+    IMG = retro.Image.from_path(asset("bang.png"))
 
     def __init__(self, center):
         Sprite.__init__(self, self.IMG)

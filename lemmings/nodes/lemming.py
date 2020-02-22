@@ -3,11 +3,11 @@ import shared.retro as retro
 import shared.collisions
 from shared.sprite import AnimatedSprite
 from lemmings.nodes.actions import Actions
-from lemmings.path import asset_path
+from lemmings.path import asset
 
 class Lemming(AnimatedSprite):
     IMGS = AnimatedSprite.from_spritesheet(
-        path          = asset_path("planche.png"),
+        path          = asset("planche.png"),
         sprite_size   = (30, 30),
         discard_color = retro.RED,
         animations    = retro.Animations({}, 0),

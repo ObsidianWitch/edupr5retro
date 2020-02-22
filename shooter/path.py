@@ -1,3 +1,4 @@
-import os
+from pathlib import Path
 
-asset_path = lambda filename: os.path.join("shooter", "data", filename)
+def asset(filename):
+    return str(Path('shooter/data') / filename)

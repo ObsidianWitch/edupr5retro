@@ -1,3 +1,4 @@
-import os
+from pathlib import Path
 
-asset_path = lambda filename: os.path.join("lemmings", "data", filename)
+def asset(filename):
+    return str(Path('lemmings/data') / filename)

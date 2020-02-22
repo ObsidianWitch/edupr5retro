@@ -1,15 +1,14 @@
 from shared.sprite import Sprite
-from shooter.path import asset_path
+from shooter.path import asset
 
 class Hints:
     def __init__(self, camera):
         self.camera = camera
         self.window = camera.window
-        self.bg     = camera.bg
 
         self.sprites = (
-            Sprite.from_path(asset_path("arrow_left.png")),
-            Sprite.from_path(asset_path("arrow_right.png")),
+            Sprite.from_path(asset("arrow_left.png")),
+            Sprite.from_path(asset("arrow_right.png")),
         )
         self.sprites[0].rect.midleft  = self.window.rect().midleft
         self.sprites[1].rect.midright = self.window.rect().midright

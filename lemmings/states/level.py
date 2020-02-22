@@ -2,18 +2,18 @@ import shared.collisions
 from shared.background import Background
 from shared.sprite import Sprite
 from lemmings.nodes.spawner import Spawner
-from lemmings.path import asset_path
+from lemmings.path import asset
 from lemmings.ui import UI
 
 class Level:
     def __init__(self, window, map, startp, endp):
         self.window = window
-        self.bg = Background(asset_path(map))
+        self.bg = Background(asset(map))
 
         self.ui = UI(self.window)
 
         self.spawner = Spawner(self.window, self.bg, startp)
-        self.exit = Sprite.from_path(asset_path("sortie.png"))
+        self.exit = Sprite.from_path(asset("sortie.png"))
         self.exit.rect.topleft = endp
 
     @property
