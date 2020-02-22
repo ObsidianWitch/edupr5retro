@@ -1,7 +1,7 @@
 # Retro module
 
-Retro ([doc](https://obsidienne_edu.gitlab.io/PR_Retrogaming_Library)) is a python
-module extending [pygame](https://www.pygame.org).
+Retro ([doc](https://obsidienne.gitlab.io/prretrolib)) is a
+python module extending [pygame](https://www.pygame.org).
 
 ## Dependencies
 
@@ -19,5 +19,5 @@ module extending [pygame](https://www.pygame.org).
 ## Tests
 
 ~~~sh
-python -m pr5retro.tests.test_name # e.g. python -m pr5retro.tests.sprite
+python -m tests.{test} # e.g. python -m tests.sprite
 ~~~

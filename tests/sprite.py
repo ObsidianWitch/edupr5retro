@@ -1,5 +1,5 @@
 import os
-from pr5retro.tests.path import assets
+from tests.path import assets
 from pr5retro.constants import *
 from pr5retro.window import Window
 from pr5retro.image import Image
