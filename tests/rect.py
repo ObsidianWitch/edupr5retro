@@ -1,5 +1,5 @@
 import pygame
-from pr5retro.rect import Rect
+from src.rect import Rect
 
 pygame.init()
 

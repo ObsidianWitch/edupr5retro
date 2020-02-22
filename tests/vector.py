@@ -1,4 +1,4 @@
-from pr5retro.vector import Vec
+from src.vector import Vec
 
 def v1():
     va = (2,)

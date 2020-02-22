@@ -1,6 +1,6 @@
-from pr5retro.constants import *
-from pr5retro.window import Window
-from pr5retro.font import Font
+from src.constants import *
+from src.window import Window
+from src.font import Font
 
 window = Window(
     title     = "window",

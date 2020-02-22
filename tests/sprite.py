@@ -1,9 +1,9 @@
 import os
 from tests.path import assets
-from pr5retro.constants import *
-from pr5retro.window import Window
-from pr5retro.image import Image
-from pr5retro.sprite import Sprite, AnimatedSprite, Animations
+from src.constants import *
+from src.window import Window
+from src.image import Image
+from src.sprite import Sprite, AnimatedSprite, Animations
 
 window = Window(
     title     = "window",

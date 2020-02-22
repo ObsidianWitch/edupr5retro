@@ -8,14 +8,14 @@ decorate() { cat ; echo ; }
 mkdir -p 'out'
 
 out1='out/retro.doc.py'
-cat 'pr5retro/constants.py' | dnewlines | decorate > "$out1"
-for f in 'pr5retro/rect.py' \
-         'pr5retro/image.py' \
-         'pr5retro/font.py' \
-         'pr5retro/window.py' \
-         'pr5retro/events.py' \
-         'pr5retro/sprite.py' \
-         'pr5retro/vector.py'
+cat 'src/constants.py' | dnewlines | decorate > "$out1"
+for f in 'src/rect.py' \
+         'src/image.py' \
+         'src/font.py' \
+         'src/window.py' \
+         'src/events.py' \
+         'src/sprite.py' \
+         'src/vector.py'
 do cat "$f" | dimports | dnewlines | decorate >> "$out1"; done
 
 out2='out/retro.py'
