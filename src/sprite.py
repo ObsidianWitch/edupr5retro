@@ -67,25 +67,51 @@ class Sprite:
     ## définie par le rectangle du sprite (`rect`).
     def draw(self, image): image.draw_img(self.image, self.rect)
 
-class Timer:
+class Counter:
+    # Constructeur
+
+    ## ~~~{.python .prototype}
+    ## Counter(end: int = 0, period: int = 0) -> Counter
+    ## ~~~
+    ## Un `Counter` permet de compter de 0 jusqu'à `end` en incrémentant sa
+    ## valeur périodiquement (`period`). Par défaut, le compteur n'a pas de
+    ## valeur de fin (`end = 0`) et est incrémenté toutes les 1000 ms
+    ## (`period = 1000`).
     def __init__(self, end = 0, period = 1000):
         self.end = end
         self.period = period
         self.restart()
 
+    # Propriétés
+
+    ## ~~~{.python .prototype}
+    ## elapsed -> int
+    ## ~~~
+    ## Valeur du compteur.
     @property
-    def time(self): return (pygame.time.get_ticks() // self.period)
+    def elapsed(self):
+        return (pygame.time.get_ticks() - self.t0) // self.period
 
     @property
-    def elapsed(self): return (self.time - self.t0)
+    def remaining(self):
+        return (self.end - self.elapsed)
 
+    ## ~~~{.python .prototype}
+    ## finished -> bool
+    ## ~~~
+    ## Vérifie si le compteur a fini.
     @property
-    def remaining(self): return (self.end - self.elapsed)
+    def finished(self):
+        return (self.elapsed >= self.end)
 
-    @property
-    def finished(self): return (self.elapsed >= self.end)
+    # Méthodes
 
-    def restart(self): self.t0 = self.time
+    ## ~~~{.python .prototype}
+    ## restart()
+    ## ~~~
+    ## Démarre ou redémarre le compteur.
+    def restart(self):
+        self.t0 = pygame.time.get_ticks()
 
 class Animations:
     # Constructeur
@@ -132,7 +158,7 @@ class Animations:
     ## Les animations sont jouées en boucle.
     @property
     def frame(self):
-        i = self.timer.elapsed % len(self.current)
+        i = self.counter.elapsed % len(self.current)
         return self.current[i]
 
     ## ~~~{.python .prototype}
@@ -141,7 +167,7 @@ class Animations:
     ##
     ## Retourne si l'animation a été complétée au moins une fois.
     @property
-    def finished(self): return self.timer.finished
+    def finished(self): return self.counter.finished
 
     # Méthodes
 
@@ -158,11 +184,11 @@ class Animations:
     ## ~~~
     ##
     ## Définit et démarre l'animation à jouer (`current`). L'attribut
-    ## [`timer`](#classe-timer) permet de gérer le passage d'une frame à
+    ## [`counter`](#classe-counter) permet de gérer le passage d'une frame à
     ## l'autre.
     def start(self, name):
         self.set(name)
-        self.timer = Timer(
+        self.counter = Counter(
             end    = len(self.current),
             period = self.period,
         )
