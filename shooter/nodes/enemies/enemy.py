@@ -10,7 +10,7 @@ class Enemy(Sprite):
         self.bg     = camera.bg
 
         self.alive = True
-        self.shoot_timer = retro.Timer(3)
+        self.shoot_timer = retro.Counter(3)
 
     def kill(self, p):
         killed = (self.alive and self.rect.collidepoint(p))

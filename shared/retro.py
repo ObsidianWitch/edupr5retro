@@ -279,6 +279,7 @@ class Group(list):
         for e in self: e.draw(surface)
 
 class Sprite:
+
     def __init__(self, image):
         self.image = image
         self.rect = self.image.rect()
@@ -292,25 +293,27 @@ class Sprite:
 
     def draw(self, image): image.draw_img(self.image, self.rect)
 
-class Timer:
+class Counter:
+
     def __init__(self, end = 0, period = 1000):
         self.end = end
         self.period = period
         self.restart()
 
     @property
-    def time(self): return (pygame.time.get_ticks() // self.period)
+    def elapsed(self):
+        return (pygame.time.get_ticks() - self.t0) // self.period
 
     @property
-    def elapsed(self): return (self.time - self.t0)
+    def remaining(self):
+        return (self.end - self.elapsed)
 
     @property
-    def remaining(self): return (self.end - self.elapsed)
+    def finished(self):
+        return (self.elapsed >= self.end)
 
-    @property
-    def finished(self): return (self.elapsed >= self.end)
-
-    def restart(self): self.t0 = self.time
+    def restart(self):
+        self.t0 = pygame.time.get_ticks()
 
 class Animations:
 
@@ -321,18 +324,18 @@ class Animations:
 
     @property
     def frame(self):
-        i = self.timer.elapsed % len(self.current)
+        i = self.counter.elapsed % len(self.current)
         return self.current[i]
 
     @property
-    def finished(self): return self.timer.finished
+    def finished(self): return self.counter.finished
 
     def set(self, name):
         self.current = self.data[name]
 
     def start(self, name):
         self.set(name)
-        self.timer = Timer(
+        self.counter = Counter(
             end    = len(self.current),
             period = self.period,
         )

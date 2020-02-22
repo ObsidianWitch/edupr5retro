@@ -57,7 +57,7 @@ class Explosion(Sprite):
     def __init__(self, center):
         Sprite.__init__(self, self.IMG)
         self.rect.center = center
-        self.timer = retro.Timer(2)
+        self.timer = retro.Counter(2)
 
     def update(self):
         if self.timer.finished: self.kill()

@@ -12,7 +12,7 @@ class Spawner:
 
         self.counter = 0
         self.max = 15
-        self.pop_timer = retro.Timer(end = 15, period = 100)
+        self.pop_timer = retro.Counter(end = 1, period = 1500)
 
     @property
     def generated(self): return (self.counter >= self.max)

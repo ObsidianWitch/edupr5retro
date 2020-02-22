@@ -95,7 +95,7 @@ class Bomb:
         self.lemming = lemming
 
     def start(self):
-        self.timer = retro.Timer(end = 3, period = 1000)
+        self.timer = retro.Counter(end = 3, period = 1000)
         self.explode = False
         return self
 
