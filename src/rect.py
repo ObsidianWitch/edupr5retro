@@ -59,8 +59,8 @@ class Rect(pygame.Rect):
     def copy(self): return pygame.Rect.copy(self)
 
     ## ~~~{.python .prototype}
-    ## Move(2-tuple v)
-    ## Move(int x, int y)
+    ## move(2-tuple v)
+    ## move(int x, int y)
     ## ~~~
     ## Déplace le rectangle de `x` et `y`.
     def move(self, *v): pygame.Rect.move_ip(self, v) ; return self
