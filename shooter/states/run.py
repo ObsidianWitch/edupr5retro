@@ -44,7 +44,7 @@ class StateRun:
         self.window.draw_img(
             img  = self.bg.current,
             pos  = self.bg.rect,
-            area = self.camera.display_zone,
+            area = self.camera.camera_space,
         )
         self.player.draw_screen()
         self.spawner.draw_screen()

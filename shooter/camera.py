@@ -6,7 +6,7 @@ class Camera:
         self.window = window
         self.bg = bg
 
-        self.display_zone = window.rect().move(position)
+        self.camera_space = window.rect().move(position)
 
         offset = 20
         self.scroll_zone_up = retro.Rect(0, 0, window.rect().w, offset)
@@ -29,13 +29,13 @@ class Camera:
     ).vec
 
     def bg_space(self, p): return (
-        p[0] + self.display_zone.x,
-        p[1] + self.display_zone.y,
+        p[0] + self.camera_space.x,
+        p[1] + self.camera_space.y,
     )
 
     def update(self, scroll_vec):
-        self.display_zone.move(
+        self.camera_space.move(
             scroll_vec[0] * self.speed,
             scroll_vec[1] * self.speed,
         )
-        self.display_zone.clamp(self.bg.rect)
+        self.camera_space.clamp(self.bg.rect)

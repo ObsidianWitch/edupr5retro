@@ -86,7 +86,6 @@ class Player:
     def __init__(self, camera):
         self.camera = camera
         self.window = camera.window
-        self.bg     = camera.bg
 
         self.crosshair = Crosshair(self.window)
         self.ammunitions = Ammunitions(self.window)
@@ -120,7 +119,7 @@ class Player:
         self.hide.update()
 
     def draw_bg(self):
-        self.explosions.draw(self.bg.current)
+        self.explosions.draw(self.camera.bg.current)
 
     def draw_screen(self):
         self.crosshair.draw()
