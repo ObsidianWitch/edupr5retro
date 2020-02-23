@@ -12,7 +12,7 @@ class Game:
             self.state = StateRun(window)
 
         elif type(self.state) == StateRun:
-            if self.state.end:
+            if self.state.finished:
                 self.state = StateEnd(window)
             else:
                 self.state.run()

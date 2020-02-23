@@ -24,7 +24,8 @@ class StateRun:
         self.hints   = Hints(self.camera)
 
     @property
-    def end(self): return (self.player.ammunitions.count <= 0)
+    def finished(self):
+        return (self.player.ammunitions.count <= 0)
 
     def run(self):
         # Update

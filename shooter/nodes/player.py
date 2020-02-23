@@ -76,12 +76,12 @@ class Player:
         self.speed = 10
 
     def move(self, collisions_vec):
-        key = self.window.events.key_hold
+        key_hold = self.window.events.key_hold
         move_vec = Directions(
-            up    = key(retro.K_UP),
-            down  = key(retro.K_DOWN),
-            left  = key(retro.K_LEFT),
-            right = key(retro.K_RIGHT),
+            up    = key_hold(retro.K_UP),
+            down  = key_hold(retro.K_DOWN),
+            left  = key_hold(retro.K_LEFT),
+            right = key_hold(retro.K_RIGHT),
         ).vec
 
         for i,_ in enumerate(move_vec):
