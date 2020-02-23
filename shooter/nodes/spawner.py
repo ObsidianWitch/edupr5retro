@@ -6,8 +6,7 @@ from shooter.nodes.kidnaper import Kidnaper
 from shooter.nodes.runner import Runner
 from shooter.path import asset
 
-# Enemy generator.
-class Enemies:
+class Spawner:
     STREET_IMGS = tuple(retro.Image.from_path(p) for p in (
         asset("bandit_street1.png"),
         asset("bandit_street2.png"),

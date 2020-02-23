@@ -1,7 +1,7 @@
 import shared.retro as retro
 from shared.background import Background
 from shared.sprite import Sprite
-from shooter.nodes.enemies import Enemies
+from shooter.nodes.spawner import Spawner
 from shooter.nodes.player import Player
 from shooter.path import asset
 from shooter.camera import Camera
@@ -20,7 +20,7 @@ class StateRun:
         )
 
         self.player  = Player(self.camera)
-        self.enemies = Enemies(self.camera)
+        self.spawner = Spawner(self.camera)
         self.hints   = Hints(self.camera)
 
     @property
@@ -32,13 +32,13 @@ class StateRun:
             self.player.crosshair.rect.center
         ).vec
         self.camera.update(scroll_vec)
-        self.player.update(scroll_vec, self.enemies)
-        self.enemies.update(self.player)
+        self.player.update(scroll_vec, self.spawner)
+        self.spawner.update(self.player)
 
         # Draw
         ## bg drawing
         self.bg.clear()
-        self.enemies.draw_bg()
+        self.spawner.draw_bg()
         self.player.draw_bg()
 
         ## screen drawing
@@ -48,5 +48,5 @@ class StateRun:
             area = self.camera.display_zone,
         )
         self.player.draw_screen()
-        self.enemies.draw_screen()
-        self.hints.draw_screen(self.player, self.enemies.mob)
+        self.spawner.draw_screen()
+        self.hints.draw_screen(self.player, self.spawner.mob)
