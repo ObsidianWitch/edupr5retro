@@ -14,6 +14,26 @@ class Crosshair(Sprite):
         Sprite.__init__(self, self.IMG)
         self.rect.center = self.window.rect().center
 
+        self.speed = 10
+
+    def move(self, scroll_vec):
+        key_hold = self.window.events.key_hold
+        move_vec = Directions(
+            up    = key_hold(retro.K_UP),
+            down  = key_hold(retro.K_DOWN),
+            left  = key_hold(retro.K_LEFT),
+            right = key_hold(retro.K_RIGHT),
+        ).vec
+
+        for i,_ in enumerate(move_vec):
+            move_vec[i] -= scroll_vec[i]
+            move_vec[i] = shared.math.clamp(move_vec[i], -1, 1)
+
+        self.rect.move(
+            move_vec[0] * self.speed,
+            move_vec[1] * self.speed,
+        )
+
     def draw(self):
         Sprite.draw(self, self.window)
 
@@ -73,26 +93,6 @@ class Player:
         self.hide = Hide(self.window)
         self.explosions = retro.Group()
 
-        self.speed = 10
-
-    def move(self, collisions_vec):
-        key_hold = self.window.events.key_hold
-        move_vec = Directions(
-            up    = key_hold(retro.K_UP),
-            down  = key_hold(retro.K_DOWN),
-            left  = key_hold(retro.K_LEFT),
-            right = key_hold(retro.K_RIGHT),
-        ).vec
-
-        for i,_ in enumerate(move_vec):
-            move_vec[i] -= collisions_vec[i]
-            move_vec[i] = shared.math.clamp(move_vec[i], -1, 1)
-
-        self.crosshair.rect.move(
-            move_vec[0] * self.speed,
-            move_vec[1] * self.speed,
-        )
-
     def shoot(self, target):
         if self.ammunitions.count <= 0: return
         if self.hide.hidden: return
@@ -113,8 +113,8 @@ class Player:
         if   killed ==  1: self.ammunitions.count += 2
         elif killed == -1: self.ammunitions.count -= 3
 
-    def update(self, collisions_vec, target):
-        self.move(collisions_vec)
+    def update(self, scroll_vec, target):
+        self.crosshair.move(scroll_vec)
         self.shoot(target)
         self.explosions.update()
         self.hide.update()
