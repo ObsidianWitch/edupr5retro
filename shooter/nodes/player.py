@@ -1,6 +1,5 @@
 import random
 import shared.retro as retro
-import shared.math
 from shared.directions import Directions
 from shared.sprite import Sprite
 from shooter.path import asset
@@ -42,7 +41,7 @@ class Crosshair(Sprite):
 
         for i,_ in enumerate(move_vec):
             move_vec[i] -= scroll_vec[i]
-            move_vec[i] = shared.math.clamp(move_vec[i], -1, 1)
+            move_vec[i] = retro.Math.clamp(move_vec[i], -1, 1)
 
         self.rect.move(
             move_vec[0] * self.speed,
