@@ -16,7 +16,22 @@ class Crosshair(Sprite):
 
         self.speed = 10
 
-    def move(self, scroll_vec):
+    def scroll_vec(self):
+        p = self.rect.center
+        offset = 20
+        w = self.window.rect().w
+        h = self.window.rect().h
+        return Directions(
+            up    = (0 <= p[1] <= offset),
+            down  = (h - offset <= p[1] <= h),
+            left  = (0 <= p[0] <= offset),
+            right = (w - offset <= p[0] <= w),
+        ).vec
+
+    def move(self, camera):
+        scroll_vec = self.scroll_vec()
+
+        # move crosshair
         key_hold = self.window.events.key_hold
         move_vec = Directions(
             up    = key_hold(retro.K_UP),
@@ -33,6 +48,13 @@ class Crosshair(Sprite):
             move_vec[0] * self.speed,
             move_vec[1] * self.speed,
         )
+
+        # move camera
+        camera.rect.move(
+            scroll_vec[0] * self.speed,
+            scroll_vec[1] * self.speed,
+        )
+        camera.rect.clamp(camera.bg.rect)
 
     def draw(self):
         Sprite.draw(self, self.window)
@@ -112,8 +134,8 @@ class Player:
         if   killed ==  1: self.ammunitions.count += 2
         elif killed == -1: self.ammunitions.count -= 3
 
-    def update(self, scroll_vec, target):
-        self.crosshair.move(scroll_vec)
+    def update(self, target):
+        self.crosshair.move(self.camera)
         self.shoot(target)
         self.explosions.update()
         self.hide.update()

@@ -16,7 +16,7 @@ class Hints:
     def draw_screen(self, player, enemy):
         if not enemy.alive: return
 
-        enemy_visible = self.camera.camera_space.colliderect(enemy.rect)
+        enemy_visible = self.camera.rect.colliderect(enemy.rect)
         if enemy_visible: return
 
         arrow_i = (self.camera.bg_space(

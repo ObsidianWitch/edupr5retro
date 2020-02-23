@@ -29,9 +29,7 @@ class StateRun:
 
     def run(self):
         # Update
-        scroll_vec = self.camera.scroll_vec(self.player.crosshair.rect.center)
-        self.camera.update(scroll_vec)
-        self.player.update(scroll_vec, self.spawner)
+        self.player.update(self.spawner)
         self.spawner.update(self.player)
 
         # Draw
@@ -44,7 +42,7 @@ class StateRun:
         self.window.draw_img(
             img  = self.bg.current,
             pos  = self.bg.rect,
-            area = self.camera.camera_space,
+            area = self.camera.rect,
         )
         self.player.draw_screen()
         self.spawner.draw_screen()
