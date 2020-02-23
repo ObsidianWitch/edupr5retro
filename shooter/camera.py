@@ -6,7 +6,8 @@ class Camera:
         self.window = window
         self.bg = bg
 
-        self.camera_space = window.rect().move(position)
+        self.camera_space = window.rect()
+        self.camera_space.move(position)
 
         offset = 20
         self.scroll_zone_up = retro.Rect(0, 0, window.rect().w, offset)
