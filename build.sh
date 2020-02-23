@@ -9,7 +9,8 @@ mkdir -p 'out'
 
 out1='out/retro.doc.py'
 cat 'src/constants.py' | dnewlines | decorate > "$out1"
-for f in 'src/rect.py' \
+for f in 'src/math.py' \
+         'src/rect.py' \
          'src/image.py' \
          'src/font.py' \
          'src/window.py' \
