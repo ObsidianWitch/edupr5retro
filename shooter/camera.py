@@ -9,25 +9,18 @@ class Camera:
         self.camera_space = window.rect()
         self.camera_space.move(position)
 
-        offset = 20
-        self.scroll_zone_up = retro.Rect(0, 0, window.rect().w, offset)
-
-        self.scroll_zone_down = self.scroll_zone_up.copy()
-        self.scroll_zone_down.bottomleft = (0, window.rect().h)
-
-        self.scroll_zone_left = retro.Rect(0, 0, offset, window.rect().h)
-
-        self.scroll_zone_right = self.scroll_zone_left.copy()
-        self.scroll_zone_right.topright = (window.rect().w, 0)
-
         self.speed = 10
 
-    def scroll_vec(self, p): return Directions(
-        up    = self.scroll_zone_up.collidepoint(p),
-        down  = self.scroll_zone_down.collidepoint(p),
-        left  = self.scroll_zone_left.collidepoint(p),
-        right = self.scroll_zone_right.collidepoint(p),
-    ).vec
+    def scroll_vec(self, p):
+        offset = 20
+        w = self.window.rect().w
+        h = self.window.rect().h
+        return Directions(
+            up    = (0 <= p[1] <= offset),
+            down  = (h - offset <= p[1] <= h),
+            left  = (0 <= p[0] <= offset),
+            right = (w - offset <= p[0] <= w),
+        ).vec
 
     def bg_space(self, p): return (
         p[0] + self.camera_space.x,
