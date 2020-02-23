@@ -1,9 +1,9 @@
 import random
 import shared.retro as retro
 from shared.sprite import Sprite
-from shooter.nodes.enemies.enemy import Enemy
-from shooter.nodes.enemies.kidnaper import Kidnaper
-from shooter.nodes.enemies.runner import Runner
+from shooter.nodes.enemy import Enemy
+from shooter.nodes.kidnaper import Kidnaper
+from shooter.nodes.runner import Runner
 from shooter.path import asset
 
 # Enemy generator.

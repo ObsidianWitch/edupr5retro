@@ -1,4 +1,4 @@
-from shooter.nodes.enemies.enemy import Enemy
+from shooter.nodes.enemy import Enemy
 
 class Kidnaper(Enemy):
     def __init__(self, camera, image):
