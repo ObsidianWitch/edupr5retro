@@ -39,7 +39,7 @@ class Level:
         self.bg.clear()
         self.spawner.draw_bg()
 
-        self.window.draw_img(self.bg.current, self.bg.rect)
+        self.window.draw_img(self.bg.current, (0, 0))
         self.exit.draw(self.window)
         self.ui.draw()
         self.spawner.draw_screen()
