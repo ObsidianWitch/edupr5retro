@@ -5,7 +5,6 @@ from shooter.nodes.spawner import Spawner
 from shooter.nodes.player import Player
 from shooter.path import asset
 from shooter.camera import Camera
-from shooter.hints  import Hints
 
 class StateRun:
     def __init__(self, window):
@@ -21,7 +20,6 @@ class StateRun:
 
         self.player  = Player(self.camera)
         self.spawner = Spawner(self.camera)
-        self.hints   = Hints(self.camera)
 
     @property
     def finished(self):
@@ -47,5 +45,5 @@ class StateRun:
         self.player.crosshair.draw(self.window)
         self.player.hide.draw(self.window)
         self.player.ammunitions.draw(self.window)
+        self.player.hints.draw(self.player, self.spawner.mob, self.window)
         self.spawner.mob.draw_shoot_timer(self.window)
-        self.hints.draw(self.player, self.spawner.mob, self.window)

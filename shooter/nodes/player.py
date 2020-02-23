@@ -101,6 +101,28 @@ class Explosion(Sprite):
     def update(self):
         if self.timer.finished: self.kill()
 
+class Hints:
+    def __init__(self, camera):
+        self.camera = camera
+
+        self.sprites = (
+            Sprite.from_path(asset("arrow_left.png")),
+            Sprite.from_path(asset("arrow_right.png")),
+        )
+        self.sprites[0].rect.midleft  = camera.window.rect().midleft
+        self.sprites[1].rect.midright = camera.window.rect().midright
+
+    def draw(self, player, enemy, dest):
+        if not enemy.alive: return
+
+        enemy_visible = self.camera.rect.colliderect(enemy.rect)
+        if enemy_visible: return
+
+        arrow_i = (self.camera.bg_space(
+            player.crosshair.rect.center
+        )[0] < enemy.rect.x)
+        self.sprites[arrow_i].draw(dest)
+
 class Player:
     def __init__(self, camera):
         self.camera = camera
@@ -110,6 +132,7 @@ class Player:
         self.ammunitions = Ammunitions(self.window)
         self.hide = Hide(self.window)
         self.explosions = retro.Group()
+        self.hints = Hints(self.camera)
 
     def shoot(self, target):
         if self.ammunitions.count <= 0: return
