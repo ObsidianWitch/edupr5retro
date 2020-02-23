@@ -82,7 +82,7 @@ class Rect(pygame.Rect):
     ## move(int x, int y)
     ## ~~~
     ## Déplace le rectangle de `x` et `y`.
-    def move(self, *v): pygame.Rect.move_ip(self, v) ; return self
+    def move(self, *v): pygame.Rect.move_ip(self, v)
 
     ## ~~~{.python .prototype}
     ## clamp(Rect rect)
@@ -90,7 +90,7 @@ class Rect(pygame.Rect):
     ## Déplace le rectangle actuel dans `rect`. Si le rectangle actuel est
     ## trop grand pour rentrer dans `rect`, il sera centré à l'intérieur et sa
     ## taille ne changera pas.
-    def clamp(self, rect): pygame.Rect.clamp_ip(self, rect) ; return self
+    def clamp(self, rect): pygame.Rect.clamp_ip(self, rect)
 
     ## ~~~{.python .prototype}
     ## union(Rect rect) -> Rect

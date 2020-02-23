@@ -25,9 +25,9 @@ class Rect(pygame.Rect):
 
     def copy(self): return pygame.Rect.copy(self)
 
-    def move(self, *v): pygame.Rect.move_ip(self, v) ; return self
+    def move(self, *v): pygame.Rect.move_ip(self, v)
 
-    def clamp(self, rect): pygame.Rect.clamp_ip(self, rect) ; return self
+    def clamp(self, rect): pygame.Rect.clamp_ip(self, rect)
 
     def union(self, rect): return pygame.Rect.union(self, rect)
 
