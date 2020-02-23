@@ -1,5 +1,5 @@
 import shared.collisions
-from shared.background import Background
+from shared.stage import Stage
 from shared.sprite import Sprite
 from lemmings.nodes.spawner import Spawner
 from lemmings.path import asset
@@ -8,7 +8,7 @@ from lemmings.ui import UI
 class Level:
     def __init__(self, window, map, startp, endp):
         self.window = window
-        self.bg = Background(asset(map))
+        self.bg = Stage(asset(map))
 
         self.ui = UI(self.window)
 
@@ -36,10 +36,10 @@ class Level:
         ): self.spawner.escaped += 1
 
         # Draw
-        self.bg.clear()
+        self.bg.clear_all()
         self.spawner.draw_bg()
 
-        self.window.draw_img(self.bg.current, (0, 0))
+        self.bg.draw(self.window)
         self.exit.draw(self.window)
         self.ui.draw()
         self.spawner.draw_screen()

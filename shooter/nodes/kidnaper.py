@@ -7,8 +7,8 @@ class Kidnaper(Enemy):
         asset("bandit_kidnaper.png"),
     )
 
-    def __init__(self, camera):
-        Enemy.__init__(self, camera, self.KIDNAPER_IMG)
+    def __init__(self):
+        Enemy.__init__(self, self.KIDNAPER_IMG)
 
     def kill(self, p):
         kidnaper = self.rect.copy()

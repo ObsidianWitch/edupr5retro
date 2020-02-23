@@ -7,18 +7,17 @@ class Runner(Enemy):
         asset("bandit_street3.png"),
     )
 
-    def __init__(self, camera):
-        Enemy.__init__(self, camera, self.RUNNER_IMG)
+    def __init__(self, stage):
+        Enemy.__init__(self, self.RUNNER_IMG)
+        self.stage = stage
         self.dx = -2
 
     def move(self):
         self.rect.x += self.dx
-
-        if self.camera.bg.rect.contains(self.rect): return
-
-        self.dx *= -1
-        self.flip(xflip = True)
-        self.rect.clamp(self.camera.bg.rect)
+        if not self.stage.image.rect().contains(self.rect):
+            self.dx *= -1
+            self.flip(xflip = True)
+            self.rect.clamp(self.stage.image.rect())
 
     def update(self, target):
         Enemy.update(self, target)

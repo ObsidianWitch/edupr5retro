@@ -23,18 +23,18 @@ class Walk:
         self.lemming.rect.move(self.dx, 0)
 
     def slope(self):
-        c = self.lemming.collisions(self.lemming.bg.current)
+        c = self.lemming.collisions(self.lemming.bg.image)
         if not c.fall: self.slope_up()
         else:          self.slope_down()
 
     def slope_up(self):
         self.lemming.rect.move(0, -2)
-        c = self.lemming.collisions(self.lemming.bg.current)
+        c = self.lemming.collisions(self.lemming.bg.image)
         if c.fall: self.lemming.rect.move(0, 2)
 
     def slope_down(self):
         self.lemming.rect.move(0, 2)
-        c = self.lemming.collisions(self.lemming.bg.current)
+        c = self.lemming.collisions(self.lemming.bg.image)
         if c.fall: self.lemming.rect.move(0, -2)
 
 class Fall:
@@ -55,7 +55,7 @@ class Fall:
 
     def clamp(self):
         self.lemming.rect.move(0, -1)
-        c = self.lemming.collisions(self.lemming.bg.current)
+        c = self.lemming.collisions(self.lemming.bg.image)
         if c.fall: self.lemming.rect.move(0, 1)
         else: self.clamp()
 

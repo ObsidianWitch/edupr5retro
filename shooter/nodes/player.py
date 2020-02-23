@@ -27,7 +27,7 @@ class Crosshair(Sprite):
             right = (w - offset <= p[0] <= w),
         ).vec
 
-    def move(self, camera):
+    def move(self, stage):
         scroll_vec = self.scroll_vec()
 
         # move crosshair
@@ -49,11 +49,11 @@ class Crosshair(Sprite):
         )
 
         # move camera
-        camera.rect.move(
+        stage.camera.move(
             scroll_vec[0] * self.speed,
             scroll_vec[1] * self.speed,
         )
-        camera.rect.clamp(camera.bg.rect)
+        stage.camera.clamp(stage.image.rect())
 
 class Ammunitions(Sprite):
     IMG = retro.Image.from_path(asset("bullet.png"))
@@ -102,37 +102,38 @@ class Explosion(Sprite):
         if self.timer.finished: self.kill()
 
 class Hints:
-    def __init__(self, camera):
-        self.camera = camera
+    def __init__(self, window, stage):
+        self.window = window
+        self.stage = stage
 
         self.sprites = (
             Sprite.from_path(asset("arrow_left.png")),
             Sprite.from_path(asset("arrow_right.png")),
         )
-        self.sprites[0].rect.midleft  = camera.window.rect().midleft
-        self.sprites[1].rect.midright = camera.window.rect().midright
+        self.sprites[0].rect.midleft  = self.window.rect().midleft
+        self.sprites[1].rect.midright = self.window.rect().midright
 
     def draw(self, player, enemy, dest):
         if not enemy.alive: return
 
-        enemy_visible = self.camera.rect.colliderect(enemy.rect)
+        enemy_visible = self.stage.camera.colliderect(enemy.rect)
         if enemy_visible: return
 
-        arrow_i = (self.camera.bg_space(
+        arrow_i = (self.stage.camera2stage(
             player.crosshair.rect.center
         )[0] < enemy.rect.x)
         self.sprites[arrow_i].draw(dest)
 
 class Player:
-    def __init__(self, camera):
-        self.camera = camera
-        self.window = camera.window
+    def __init__(self, window, stage):
+        self.window = window
+        self.stage = stage
 
         self.crosshair = Crosshair(self.window)
         self.ammunitions = Ammunitions(self.window)
         self.hide = Hide(self.window)
         self.explosions = retro.Group()
-        self.hints = Hints(self.camera)
+        self.hints = Hints(self.window, self.stage)
 
     def shoot(self, target):
         if self.ammunitions.count <= 0: return
@@ -145,17 +146,17 @@ class Player:
             random.randint(-2, 2)
         )
         self.explosions.append(Explosion(
-            self.camera.bg_space(self.crosshair.rect.center)
+            self.stage.camera2stage(self.crosshair.rect.center)
         ))
 
         killed = target.kill(
-            self.camera.bg_space(self.crosshair.rect.center)
+            self.stage.camera2stage(self.crosshair.rect.center)
         )
         if   killed ==  1: self.ammunitions.count += 2
         elif killed == -1: self.ammunitions.count -= 3
 
     def update(self, target):
-        self.crosshair.move(self.camera)
+        self.crosshair.move(self.stage)
         self.shoot(target)
         self.explosions.update()
         self.hide.update()

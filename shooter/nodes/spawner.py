@@ -35,9 +35,8 @@ class Spawner:
         asset("bandit_sewer.png"),
     )
 
-    def __init__(self, camera):
-        self.camera = camera
-        self.bg = camera.bg
+    def __init__(self, stage):
+        self.stage = stage
 
         self.generators = (
             self.new_street_mob,
@@ -53,45 +52,45 @@ class Spawner:
         self.repop_timer = retro.Counter(3)
 
     def street_position(self, sprite):
-        sprite.rect.bottom = self.bg.rect.bottom - 10
-        sprite.rect.left = random.randint(100, self.bg.rect.width - 100)
+        sprite.rect.x = random.randint(100, 1900)
+        sprite.rect.bottom = 676
 
     def new_street_mob(self):
-        mob = Enemy(self.camera, random.choice(self.STREET_IMGS))
+        mob = Enemy(random.choice(self.STREET_IMGS))
         self.street_position(mob)
         return mob
 
     def new_window_mob(self):
         i = random.randrange(len(self.WINDOW_IMGS))
         positions = ((1244, 78), (1312, 258), (952, 84), (790, 88))
-        mob = Enemy(self.camera, self.WINDOW_IMGS[i])
+        mob = Enemy(self.WINDOW_IMGS[i])
         mob.rect.topleft = positions[i]
         return mob
 
     def new_wall_mob(self):
         positions = ((710, 600), (1140, 600), (1823, 600))
-        mob = Enemy(self.camera, random.choice(self.WALL_IMGS))
+        mob = Enemy(random.choice(self.WALL_IMGS))
         mob.rect.bottomright = random.choice(positions)
         return mob
 
     def new_top_mob(self):
         positions = ((29, 191), (356, 191), (1712, 411))
-        mob = Enemy(self.camera, random.choice(self.TOP_IMGS))
+        mob = Enemy(random.choice(self.TOP_IMGS))
         mob.rect.midbottom = random.choice(positions)
         return mob
 
     def new_sewer_mob(self):
-        mob = Enemy(self.camera, self.SEWER_IMG)
+        mob = Enemy(self.SEWER_IMG)
         mob.rect.topleft = (410, 642)
         return mob
 
     def new_kidnaper_mob(self):
-        mob = Kidnaper(self.camera)
+        mob = Kidnaper()
         self.street_position(mob)
         return mob
 
     def new_runner_mob(self):
-        mob = Runner(self.camera)
+        mob = Runner(self.stage)
         self.street_position(mob)
         return mob
 

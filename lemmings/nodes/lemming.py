@@ -94,7 +94,7 @@ class Lemming(AnimatedSprite):
         )
 
     def update(self, new_action):
-        collisions_all = self.collisions(self.bg.current)
+        collisions_all = self.collisions(self.bg.image)
         collisions_bg  = self.collisions(self.bg.original)
 
         if self.state is None:
@@ -178,7 +178,7 @@ class Lemming(AnimatedSprite):
     def draw_bg(self):
         if self.state != self.actions.stop: return
 
-        AnimatedSprite.draw(self, self.bg.current)
+        AnimatedSprite.draw(self, self.bg.image)
 
     def draw_screen(self):
         if self.state == self.actions.stop: return
