@@ -21,12 +21,12 @@ class Camera:
 
         self.speed = 10
 
-    def scroll_zone_collide(self, p): return Directions(
+    def scroll_vec(self, p): return Directions(
         up    = self.scroll_zone_up.collidepoint(p),
         down  = self.scroll_zone_down.collidepoint(p),
         left  = self.scroll_zone_left.collidepoint(p),
         right = self.scroll_zone_right.collidepoint(p),
-    )
+    ).vec
 
     def bg_space(self, p): return (
         p[0] + self.display_zone.x,

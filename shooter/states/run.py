@@ -29,9 +29,7 @@ class StateRun:
 
     def run(self):
         # Update
-        scroll_vec = self.camera.scroll_zone_collide(
-            self.player.crosshair.rect.center
-        ).vec
+        scroll_vec = self.camera.scroll_vec(self.player.crosshair.rect.center)
         self.camera.update(scroll_vec)
         self.player.update(scroll_vec, self.spawner)
         self.spawner.update(self.player)
