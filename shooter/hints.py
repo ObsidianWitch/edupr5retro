@@ -13,7 +13,7 @@ class Hints:
         self.sprites[0].rect.midleft  = self.window.rect().midleft
         self.sprites[1].rect.midright = self.window.rect().midright
 
-    def draw_screen(self, player, enemy):
+    def draw(self, player, enemy, dest):
         if not enemy.alive: return
 
         enemy_visible = self.camera.rect.colliderect(enemy.rect)
@@ -22,4 +22,4 @@ class Hints:
         arrow_i = (self.camera.bg_space(
             player.crosshair.rect.center
         )[0] < enemy.rect.x)
-        self.sprites[arrow_i].draw(self.window)
+        self.sprites[arrow_i].draw(dest)

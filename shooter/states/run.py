@@ -35,15 +35,17 @@ class StateRun:
         # Draw
         ## bg drawing
         self.bg.clear()
-        self.spawner.draw_bg()
-        self.player.draw_bg()
+        self.spawner.mob.draw(self.bg.current)
+        self.player.explosions.draw(self.bg.current)
 
         ## screen drawing
         self.window.draw_img(
             img  = self.bg.current,
-            pos  = self.bg.rect,
+            pos  = (0, 0),
             area = self.camera.rect,
         )
-        self.player.draw_screen()
-        self.spawner.draw_screen()
-        self.hints.draw_screen(self.player, self.spawner.mob)
+        self.player.crosshair.draw(self.window)
+        self.player.hide.draw(self.window)
+        self.player.ammunitions.draw(self.window)
+        self.spawner.mob.draw_shoot_timer(self.window)
+        self.hints.draw(self.player, self.spawner.mob, self.window)

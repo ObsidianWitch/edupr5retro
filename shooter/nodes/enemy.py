@@ -7,7 +7,6 @@ class Enemy(Sprite):
 
         self.camera = camera
         self.window = camera.window
-        self.bg     = camera.bg
 
         self.alive = True
         self.shoot_timer = retro.Counter(3)
@@ -27,20 +26,16 @@ class Enemy(Sprite):
         if not self.alive: return
         self.shoot(target)
 
-    def draw_shoot_timer(self):
+    def draw_shoot_timer(self, dest):
         if not self.alive: return
 
         shoot_timer = Sprite(self.window.fonts[1].render(
             text  = f"{self.shoot_timer.remaining}",
             color = retro.WHITE,
         ))
-        shoot_timer.rect.midbottom = self.window.rect().midbottom
-        shoot_timer.draw(self.window)
+        shoot_timer.rect.midbottom = dest.rect().midbottom
+        shoot_timer.draw(dest)
 
-    def draw_bg(self):
+    def draw(self, dest):
         if not self.alive: return
-        self.draw(self.bg.current)
-
-    def draw_screen(self):
-        if not self.alive: return
-        self.draw_shoot_timer()
+        Sprite.draw(self, dest)

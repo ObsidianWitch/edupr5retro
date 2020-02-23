@@ -1,8 +1,14 @@
+import shared.retro as retro
+from shooter.path import asset
 from shooter.nodes.enemy import Enemy
 
 class Kidnaper(Enemy):
-    def __init__(self, camera, image):
-        Enemy.__init__(self, camera, image)
+    KIDNAPER_IMG = retro.Image.from_path(
+        asset("bandit_kidnaper.png"),
+    )
+
+    def __init__(self, camera):
+        Enemy.__init__(self, camera, self.KIDNAPER_IMG)
 
     def kill(self, p):
         kidnaper = self.rect.copy()

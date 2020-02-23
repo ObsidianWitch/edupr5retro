@@ -56,9 +56,6 @@ class Crosshair(Sprite):
         )
         camera.rect.clamp(camera.bg.rect)
 
-    def draw(self):
-        Sprite.draw(self, self.window)
-
 class Ammunitions(Sprite):
     IMG = retro.Image.from_path(asset("bullet.png"))
     IMG.scale(0.5)
@@ -71,10 +68,10 @@ class Ammunitions(Sprite):
 
         self.count = 12
 
-    def draw(self):
+    def draw(self, dest):
         for i in range(self.count):
             self.rect.left = i * self.rect.width
-            Sprite.draw(self, self.window)
+            Sprite.draw(self, dest)
 
 class Hide(Sprite):
     IMG = retro.Image.from_path(asset("hide.png"))
@@ -90,8 +87,9 @@ class Hide(Sprite):
     def update(self):
         self.hidden = self.window.events.key_hold(retro.K_LSHIFT)
 
-    def draw(self):
-        if self.hidden: Sprite.draw(self, self.window)
+    def draw(self, dest):
+        if self.hidden:
+            Sprite.draw(self, dest)
 
 class Explosion(Sprite):
     IMG = retro.Image.from_path(asset("bang.png"))
@@ -139,11 +137,3 @@ class Player:
         self.shoot(target)
         self.explosions.update()
         self.hide.update()
-
-    def draw_bg(self):
-        self.explosions.draw(self.camera.bg.current)
-
-    def draw_screen(self):
-        self.crosshair.draw()
-        self.hide.draw()
-        self.ammunitions.draw()

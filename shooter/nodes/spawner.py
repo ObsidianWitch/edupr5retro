@@ -35,14 +35,6 @@ class Spawner:
         asset("bandit_sewer.png"),
     )
 
-    KIDNAPER_IMG = retro.Image.from_path(
-        asset("bandit_kidnaper.png"),
-    )
-
-    RUNNER_IMG = retro.Image.from_path(
-        asset("bandit_street3.png"),
-    )
-
     def __init__(self, camera):
         self.camera = camera
         self.bg = camera.bg
@@ -94,12 +86,12 @@ class Spawner:
         return mob
 
     def new_kidnaper_mob(self):
-        mob = Kidnaper(self.camera, self.KIDNAPER_IMG)
+        mob = Kidnaper(self.camera)
         self.street_position(mob)
         return mob
 
     def new_runner_mob(self):
-        mob = Runner(self.camera, self.RUNNER_IMG)
+        mob = Runner(self.camera)
         self.street_position(mob)
         return mob
 
@@ -119,9 +111,3 @@ class Spawner:
         if repop: self.next()
 
         self.mob.update(target)
-
-    def draw_bg(self):
-        self.mob.draw_bg()
-
-    def draw_screen(self):
-        self.mob.draw_screen()
