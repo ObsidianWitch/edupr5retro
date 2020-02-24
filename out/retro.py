@@ -357,6 +357,35 @@ class AnimatedSprite(Sprite):
 
     def update(self): self.image = self.images[self.animations.frame]
 
+class Stage(Sprite):
+
+    def __init__(self, path):
+        self.original = Image.from_path(path)
+        Sprite.__init__(self, self.original.copy())
+
+    @property
+    def camera(self):
+        return self.rect
+    @camera.setter
+    def camera(self, rect):
+        self.rect = rect
+
+    def camera2stage(self, p): return (
+        p[0] + self.camera.x,
+        p[1] + self.camera.y,
+    )
+
+    def stage2camera(self, p): return (
+        p[0] - self.rect.x,
+        p[1] - self.rect.y,
+    )
+
+    def clear_all(self):
+        self.image.draw_img(self.original, (0, 0))
+
+    def clear_focus(self):
+        self.image.draw_img(self.original, self.camera.topleft, self.camera)
+
 class Vec:
     @classmethod
     def neg(cls, va): return [

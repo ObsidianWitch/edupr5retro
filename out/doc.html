@@ -236,6 +236,13 @@ code span.ex { } /* Extension */
 <li><a href="#constructeur-8">Constructeur</a></li>
 <li><a href="#méthodes-8">Méthodes</a></li>
 </ul></li>
+<li><a href="#classe-stage">Classe Stage</a>
+<ul>
+<li><a href="#héritage-1">Héritage</a></li>
+<li><a href="#constructeur-9">Constructeur</a></li>
+<li><a href="#propriétés-2">Propriétés</a></li>
+<li><a href="#méthodes-9">Méthodes</a></li>
+</ul></li>
 <li><a href="#classe-vec">Classe Vec</a></li>
 </ul>
 </nav>
@@ -671,6 +678,38 @@ Crée un sprite animé à partir d’une liste d’<a href="#¢lasse-image"><cod
 <blockquote class="method">
 <div class="sourceCode" id="cb77"><pre class="sourceCode python prototype"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1"></a>update()</span></code></pre></div>
 Affiche la frame actuelle de l’animation en cours.
+</blockquote>
+<h1 id="classe-stage">Classe Stage</h1>
+<h2 id="héritage-1">Héritage</h2>
+<blockquote>
+<p><a href="#classe-sprite">Sprite</a></p>
+</blockquote>
+<h2 id="constructeur-9">Constructeur</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb78"><pre class="sourceCode python prototype"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1"></a>Stage(path:<span class="bu">str</span>) <span class="op">-&gt;</span> Stage</span></code></pre></div>
+Un Stage est un Sprite qui peut être altéré et restauré dans son état d’origine (<code>original:Image</code>). Il est possible de se focaliser sur une portion restreinte de l’image du sprite en manipulant <code>rect</code>/<code>camera</code>.
+</blockquote>
+<h2 id="propriétés-2">Propriétés</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb79"><pre class="sourceCode python prototype"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1"></a>camera <span class="op">-&gt;</span> Rect</span>
+<span id="cb79-2"><a href="#cb79-2"></a>camera <span class="op">=</span> rect:Rect</span></code></pre></div>
+</blockquote>
+<h2 id="méthodes-9">Méthodes</h2>
+<blockquote class="method">
+<div class="sourceCode" id="cb80"><pre class="sourceCode python prototype"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1"></a>camera2stage(p: Tuple[<span class="bu">int</span>, <span class="bu">int</span>]) <span class="op">-&gt;</span> Tuple[<span class="bu">int</span>, <span class="bu">int</span>]</span></code></pre></div>
+Transform point <code>p</code> from camera space to stage space.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb81"><pre class="sourceCode python prototype"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1"></a>stage2camera(p: Tuple[<span class="bu">int</span>, <span class="bu">int</span>]) <span class="op">-&gt;</span> Tuple[<span class="bu">int</span>, <span class="bu">int</span>]</span></code></pre></div>
+Transform point <code>p</code> from stage space to camera space.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb82"><pre class="sourceCode python prototype"><code class="sourceCode python"><span id="cb82-1"><a href="#cb82-1"></a>clear_all()</span></code></pre></div>
+Restore stage to its <code>self.original</code> state.
+</blockquote>
+<blockquote class="method">
+<div class="sourceCode" id="cb83"><pre class="sourceCode python prototype"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1"></a>clear_focus()</span></code></pre></div>
+Restore a portion (<code>self.camera</code>) of the stage to its <code>self.original</code> state.
 </blockquote>
 <h1 id="classe-vec">Classe Vec</h1>
 </article>

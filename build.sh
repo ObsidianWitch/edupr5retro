@@ -16,6 +16,7 @@ for f in 'src/math.py' \
          'src/window.py' \
          'src/events.py' \
          'src/sprite.py' \
+         'src/stage.py' \
          'src/vector.py'
 do cat "$f" | dimports | dnewlines | decorate >> "$out1"; done
 
