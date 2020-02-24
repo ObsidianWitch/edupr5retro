@@ -1,4 +1,4 @@
-from src.vector import Vec
+from src.math import Vec
 
 def v1():
     va = (2,)
