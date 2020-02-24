@@ -484,7 +484,7 @@ Création d’un objet permettant d’écrire du texte sur une image. La taille 
 <h2 id="méthodes-2">Méthodes</h2>
 <blockquote class="method">
 <div class="sourceCode" id="cb41"><pre class="sourceCode python prototype"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1"></a>render(</span>
-<span id="cb41-2"><a href="#cb41-2"></a>    <span class="bu">str</span> text, <span class="bu">bool</span> antialias <span class="op">=</span> <span class="va">False</span>,</span>
+<span id="cb41-2"><a href="#cb41-2"></a>    <span class="bu">str</span> text, <span class="bu">bool</span> antialias <span class="op">=</span> <span class="va">True</span>,</span>
 <span id="cb41-3"><a href="#cb41-3"></a>    <span class="dv">3</span><span class="op">-</span><span class="bu">tuple</span> color <span class="op">=</span> BLACK, <span class="dv">3</span><span class="op">-</span><span class="bu">tuple</span> bgcolor <span class="op">=</span> <span class="va">None</span></span>
 <span id="cb41-4"><a href="#cb41-4"></a>)</span></code></pre></div>
 Crée une Image avec le texte (<code>text</code>) spécifié dessus. Ce texte peut être lissé (<code>antialias</code>), d’une couleur spécifique (<code>color</code>) et avoir une couleur de fond (<code>bgcolor</code>). Si aucune couleur de fond n’est spécifiée, le fond sera transparent.

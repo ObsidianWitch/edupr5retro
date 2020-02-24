@@ -398,7 +398,7 @@ class Font:
 
     ## ~~~{.python .prototype}
     ## render(
-    ##     str text, bool antialias = False,
+    ##     str text, bool antialias = True,
     ##     3-tuple color = BLACK, 3-tuple bgcolor = None
     ## )
     ## ~~~
@@ -406,7 +406,7 @@ class Font:
     ## lissé (`antialias`), d'une couleur spécifique (`color`) et avoir une
     ## couleur de fond (`bgcolor`). Si aucune couleur de fond n'est spécifiée,
     ## le fond sera transparent.
-    def render(self, text, antialias = False, color = BLACK, bgcolor = None):
+    def render(self, text, antialias = True, color = BLACK, bgcolor = None):
         return Image(
             self.pygfont.render(text, antialias, color, bgcolor)
         )

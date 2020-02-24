@@ -19,7 +19,7 @@ txt1_rect.midtop = window.rect().midtop
 
 txt2 = font1.render(
     text      = "Example 2",
-    antialias = True,
+    antialias = False,
     color     = RED,
     bgcolor   = BLACK,
 )
