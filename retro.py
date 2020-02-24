@@ -18,6 +18,59 @@ CYAN    = (  0, 255, 255)
 MAGENTA = (255,   0, 255)
 YELLOW  = (255, 255,   0)
 
+class Math:
+
+    @classmethod
+    def clamp(cls, val, minval, maxval):
+        return minval if val < minval \
+          else maxval if val > maxval \
+          else val
+
+class Vec:
+    @classmethod
+    def neg(cls, va): return [
+        -a for a in va
+    ]
+
+    @classmethod
+    def add(cls, a, b): return [
+        c + d for c, d in cls.iterator(a, b)
+    ]
+
+    @classmethod
+    def sub(cls, a, b): return [
+        c - d for c, d in cls.iterator(a, b)
+    ]
+
+    @classmethod
+    def mul(cls, a, b): return [
+        c * d for c, d in cls.iterator(a, b)
+    ]
+
+    @classmethod
+    def dot(cls, a, b): return sum(
+        c * d for c, d in cls.iterator(a, b)
+    )
+
+    @classmethod
+    def eq(cls, a, b): return (len(a) == len(b)) and all(
+        c == d for c, d in cls.iterator(a, b)
+    )
+
+    @classmethod
+    def ne(cls, a, b): return (len(a) != len(b)) or all(
+        c != d for c, d in cls.iterator(a, b)
+    )
+
+    @classmethod
+    def iterator(cls, a, b):
+        if isinstance(a, Number):
+            for i, _ in enumerate(b): yield a, b[i]
+        elif isinstance(b, Number):
+            for i, _ in enumerate(a): yield a[i], b
+        else:
+            for i, _ in enumerate(a): yield a[i], b[i]
+
 class Rect(pygame.Rect):
 
     def __init__(self, *args):
@@ -25,9 +78,9 @@ class Rect(pygame.Rect):
 
     def copy(self): return pygame.Rect.copy(self)
 
-    def move(self, *v): pygame.Rect.move_ip(self, v) ; return self
+    def move(self, *v): pygame.Rect.move_ip(self, v)
 
-    def clamp(self, rect): pygame.Rect.clamp_ip(self, rect) ; return self
+    def clamp(self, rect): pygame.Rect.clamp_ip(self, rect)
 
     def union(self, rect): return pygame.Rect.union(self, rect)
 
@@ -170,7 +223,7 @@ class Font:
     def __init__(self, size):
         self.pygfont = pygame.font.SysFont(None, size)
 
-    def render(self, text, antialias = False, color = BLACK, bgcolor = None):
+    def render(self, text, antialias = True, color = BLACK, bgcolor = None):
         return Image(
             self.pygfont.render(text, antialias, color, bgcolor)
         )
@@ -279,6 +332,7 @@ class Group(list):
         for e in self: e.draw(surface)
 
 class Sprite:
+
     def __init__(self, image):
         self.image = image
         self.rect = self.image.rect()
@@ -292,25 +346,27 @@ class Sprite:
 
     def draw(self, image): image.draw_img(self.image, self.rect)
 
-class Timer:
+class Counter:
+
     def __init__(self, end = 0, period = 1000):
         self.end = end
         self.period = period
         self.restart()
 
     @property
-    def time(self): return (pygame.time.get_ticks() // self.period)
+    def elapsed(self):
+        return (pygame.time.get_ticks() - self.t0) // self.period
 
     @property
-    def elapsed(self): return (self.time - self.t0)
+    def remaining(self):
+        return (self.end - self.elapsed)
 
     @property
-    def remaining(self): return (self.end - self.elapsed)
+    def finished(self):
+        return (self.elapsed >= self.end)
 
-    @property
-    def finished(self): return (self.elapsed >= self.end)
-
-    def restart(self): self.t0 = self.time
+    def restart(self):
+        self.t0 = pygame.time.get_ticks()
 
 class Animations:
 
@@ -321,18 +377,18 @@ class Animations:
 
     @property
     def frame(self):
-        i = self.timer.elapsed % len(self.current)
+        i = self.counter.elapsed % len(self.current)
         return self.current[i]
 
     @property
-    def finished(self): return self.timer.finished
+    def finished(self): return self.counter.finished
 
     def set(self, name):
         self.current = self.data[name]
 
     def start(self, name):
         self.set(name)
-        self.timer = Timer(
+        self.counter = Counter(
             end    = len(self.current),
             period = self.period,
         )
@@ -346,47 +402,32 @@ class AnimatedSprite(Sprite):
 
     def update(self): self.image = self.images[self.animations.frame]
 
-class Vec:
-    @classmethod
-    def neg(cls, va): return [
-        -a for a in va
-    ]
+class Stage(Sprite):
 
-    @classmethod
-    def add(cls, a, b): return [
-        c + d for c, d in cls.iterator(a, b)
-    ]
+    def __init__(self, path):
+        self.original = Image.from_path(path)
+        Sprite.__init__(self, self.original.copy())
 
-    @classmethod
-    def sub(cls, a, b): return [
-        c - d for c, d in cls.iterator(a, b)
-    ]
+    @property
+    def camera(self):
+        return self.rect
+    @camera.setter
+    def camera(self, rect):
+        self.rect = rect
 
-    @classmethod
-    def mul(cls, a, b): return [
-        c * d for c, d in cls.iterator(a, b)
-    ]
-
-    @classmethod
-    def dot(cls, a, b): return sum(
-        c * d for c, d in cls.iterator(a, b)
+    def camera2stage(self, p): return (
+        p[0] + self.camera.x,
+        p[1] + self.camera.y,
     )
 
-    @classmethod
-    def eq(cls, a, b): return (len(a) == len(b)) and all(
-        c == d for c, d in cls.iterator(a, b)
+    def stage2camera(self, p): return (
+        p[0] - self.rect.x,
+        p[1] - self.rect.y,
     )
 
-    @classmethod
-    def ne(cls, a, b): return (len(a) != len(b)) or all(
-        c != d for c, d in cls.iterator(a, b)
-    )
+    def clear_all(self):
+        self.image.draw_img(self.original, (0, 0))
 
-    @classmethod
-    def iterator(cls, a, b):
-        if isinstance(a, Number):
-            for i, _ in enumerate(b): yield a, b[i]
-        elif isinstance(b, Number):
-            for i, _ in enumerate(a): yield a[i], b
-        else:
-            for i, _ in enumerate(a): yield a[i], b[i]
+    def clear_focus(self):
+        self.image.draw_img(self.original, self.camera.topleft, self.camera)
+
