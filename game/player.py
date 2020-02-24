@@ -3,17 +3,20 @@ from game.entity import Entity
 from game.assets import assets
 
 class Powerup:
-    def __init__(self): self.timer = retro.Timer()
+    def __init__(self):
+        self.timer = retro.Counter()
 
     @property
-    def enabled(self): return not self.timer.finished
+    def enabled(self):
+        return not self.timer.finished
 
     @property
-    def started(self): return self.enabled and (0 <= self.timer.elapsed <= 1)
+    def started(self):
+        return self.enabled and (0 <= self.timer.elapsed <= 1)
 
     def start(self):
         self.mul   = 1
-        self.timer = retro.Timer(end = 50, period = 100)
+        self.timer = retro.Counter(end = 50, period = 100)
 
 class Player(Entity):
     IMGS = retro.Image.from_spritesheet(

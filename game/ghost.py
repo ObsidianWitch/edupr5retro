@@ -9,7 +9,7 @@ class Ghosts(retro.Group):
         retro.Group.__init__(self, Ghost(pos))
         self.num = num
         self.pos = pos
-        self.spawn_timer = retro.Timer(end = 50, period = 100)
+        self.spawn_timer = retro.Counter(end = 50, period = 100)
 
     def notify_kill(self):
         self.spawn_timer.restart()
