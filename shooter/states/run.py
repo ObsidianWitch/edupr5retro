@@ -1,5 +1,4 @@
 import shared.retro as retro
-from shared.stage import Stage
 from shared.sprite import Sprite
 from shooter.nodes.spawner import Spawner
 from shooter.nodes.player import Player
@@ -9,7 +8,7 @@ class StateRun:
     def __init__(self, window):
         self.window = window
 
-        self.stage = Stage(asset("map.png"))
+        self.stage = retro.Stage(asset("map.png"))
         self.stage.camera = self.window.rect()
         self.stage.camera.move(350, 170)
 

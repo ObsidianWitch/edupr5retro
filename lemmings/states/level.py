@@ -1,5 +1,5 @@
+import shared.retro as retro
 import shared.collisions
-from shared.stage import Stage
 from shared.sprite import Sprite
 from lemmings.nodes.spawner import Spawner
 from lemmings.path import asset
@@ -8,7 +8,7 @@ from lemmings.ui import UI
 class Level:
     def __init__(self, window, map, startp, endp):
         self.window = window
-        self.bg = Stage(asset(map))
+        self.bg = retro.Stage(asset(map))
 
         self.ui = UI(self.window)
 
