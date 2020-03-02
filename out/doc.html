@@ -342,14 +342,14 @@ size, width, height, w, h</code></pre>
 <span id="cb8-7"><a href="#cb8-7"></a>r.bottomright            <span class="co"># -&gt; (8, 8)</span></span>
 <span id="cb8-8"><a href="#cb8-8"></a>r.topleft <span class="op">=</span> r.center     <span class="co"># -&gt; &lt;rect(4, 4, 7, 7)&gt;</span></span></code></pre></div>
 <p>Il faut noter que les propriétés <code>bottom</code> et <code>right</code> décrivent des positions en dehors du rectangle. Ci-dessous un schéma des propriétés de position.</p>
-<pre class="interpunct"><code>+-------+<span class=co>·</span>   | a: topleft     == (left, top) == (x, y)
-|a<span class=co>·</span><span class=co>·</span>b<span class=co>·</span><span class=co>·</span><span class=co>·</span>|c   | b: midtop      == (centerx, top)
+<pre class="interpunct"><code>a---b---+c   | a: topleft     == (left, top) == (x, y)
+|<span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span>|<span class=co>·</span>   | b: midtop      == (centerx, top)
 |<span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span>|<span class=co>·</span>   | c: topright    == (right, top)
-|d<span class=co>·</span><span class=co>·</span>e<span class=co>·</span><span class=co>·</span><span class=co>·</span>|f   | d: midleft     == (left, centery)
+d<span class=co>·</span><span class=co>·</span><span class=co>·</span>e<span class=co>·</span><span class=co>·</span><span class=co>·</span>|f   | d: midleft     == (left, centery)
 |<span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span>|<span class=co>·</span>   | e: center      == (centerx, centery)
 |<span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span>|<span class=co>·</span>   | f: midright    == (right, centery)
 +-------+<span class=co>·</span>   | g: bottomleft  == (left, bottom)
-<span class=co>·</span>g<span class=co>·</span><span class=co>·</span>h<span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span>i   | h: midbottom   == (centerx, bottom)
+g<span class=co>·</span><span class=co>·</span><span class=co>·</span>h<span class=co>·</span><span class=co>·</span><span class=co>·</span><span class=co>·</span>i   | h: midbottom   == (centerx, bottom)
              | i: bottomright == (right, bottom)</code></pre>
 </blockquote>
 <h2 id="méthodes">Méthodes</h2>

@@ -114,14 +114,14 @@ class Rect(pygame.Rect):
     ## propriétés de position.
     ##
     ## ~~~{ .interpunct }
-    ## +-------+·   | a: topleft     == (left, top) == (x, y)
-    ## |a··b···|c   | b: midtop      == (centerx, top)
+    ## a---b---+c   | a: topleft     == (left, top) == (x, y)
+    ## |·······|·   | b: midtop      == (centerx, top)
     ## |·······|·   | c: topright    == (right, top)
-    ## |d··e···|f   | d: midleft     == (left, centery)
+    ## d···e···|f   | d: midleft     == (left, centery)
     ## |·······|·   | e: center      == (centerx, centery)
     ## |·······|·   | f: midright    == (right, centery)
     ## +-------+·   | g: bottomleft  == (left, bottom)
-    ## ·g··h····i   | h: midbottom   == (centerx, bottom)
+    ## g···h····i   | h: midbottom   == (centerx, bottom)
     ##              | i: bottomright == (right, bottom)
     ## ~~~
     def __init__(self, *args):
