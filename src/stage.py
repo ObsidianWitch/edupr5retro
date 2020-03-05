@@ -1,3 +1,5 @@
+from src.sprite import Sprite
+
 class Stage(Sprite):
     # Héritage
 

@@ -1,5 +1,14 @@
 #!/bin/sh
 
+set -o errexit -o nounset
+
+mypy() {
+    env mypy \
+        --namespace-packages --ignore-missing-imports \
+        --disallow-untyped-calls \
+        "$@"
+}
+
 dnewlines() { cat -s ; }
 dimports() { sed -e '/^import/d' -e '/^from .* import/d' ; }
 dcomments() { sed '/^\s*#/d' ; }
@@ -17,7 +26,12 @@ for f in 'src/math.py' \
          'src/events.py' \
          'src/sprite.py' \
          'src/stage.py'
-do cat "$f" | dimports | dnewlines | decorate >> "$out1"; done
+do
+    mypy --module="$(sed -e "s:/:\.:" -e "s/\.py//" <<< "$f")"
+    cat "$f" | dimports | dnewlines | decorate >> "$out1"
+done
+mypy "$out1"
+
 
 out2='out/retro.py'
 cat "$out1" | dcomments | dnewlines > "$out2"

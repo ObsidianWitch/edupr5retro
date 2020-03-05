@@ -865,6 +865,7 @@ class AnimatedSprite(Sprite):
     ## Affiche la frame actuelle de l'animation en cours.
     def update(self): self.image = self.images[self.animations.frame]
 
+
 class Stage(Sprite):
     # Héritage
 
