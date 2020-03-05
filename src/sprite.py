@@ -58,14 +58,16 @@ class Sprite:
     ## ~~~
     ## Met à jour le sprite. Ne fait rien par défaut, à redéfinir.<br>
     ## **Note**: Cette méthode est appelée par `Group.update()`.
-    def update(self): pass
+    def update(self):
+        pass
 
     ## ~~~{.python .prototype}
     ## draw(Image image)
     ## ~~~
     ## Dessine le sprite sur la surface spécifiée (`image`) à la position
     ## définie par le rectangle du sprite (`rect`).
-    def draw(self, image): image.draw_img(self.image, self.rect)
+    def draw(self, image):
+        image.draw_img(self.image, self.rect.lt)
 
 class Counter:
     # Constructeur

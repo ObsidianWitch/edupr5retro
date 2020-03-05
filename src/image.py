@@ -101,14 +101,14 @@ class Image:
     ## l'image actuelle. `area` correspond à la zone à extraire de l'image
     ## actuelle.
     def subimage(self, area):
-        return self.__class__(self.pygsurface.subsurface(area))
+        return self.__class__(self.pygsurface.subsurface(*area))
 
     ## ~~~{.python .prototype}
     ## rect() -> Rect
     ## ~~~
     ## Retourne un nouveau rectangle positionné en (0, 0) et de la taille de
     ## l'image actuelle.
-    def rect(self): return Rect(self.pygsurface.get_rect())
+    def rect(self): return Rect(*self.pygsurface.get_rect())
 
     ## ~~~{.python .prototype}
     ## [int x, int y] -> pygame.Color

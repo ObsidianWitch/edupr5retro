@@ -1,12 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 
 set -o errexit -o nounset
 
-mypy() {
-    env mypy \
-        --namespace-packages --ignore-missing-imports \
-        --disallow-untyped-calls \
-        "$@"
+mypy.main() {
+    env mypy --namespace-packages --ignore-missing-imports \
+        --disallow-untyped-calls "$@"
+}
+
+mypy.strict() {
+    mypy.main --disallow-untyped-defs "$@"
 }
 
 dimports() { sed -e '/^import/d' -e '/^from .* import/d' ; }
@@ -23,8 +25,8 @@ for f in 'src/math.py' \
          'src/sprite.py' \
          'src/stage.py'
 do
-    mypy --module="$(sed -e "s:/:\.:" -e "s/\.py//" <<< "$f")"
+    mypy.main --module="$(sed -e "s:/:\.:" -e "s/\.py//" <<< "$f")"
     cat "$f" | dimports >> "$out"
 done
 cat -s "$out" | sponge "$out"
-mypy "$out"
+mypy.main "$out"

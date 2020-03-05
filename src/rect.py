@@ -1,127 +1,132 @@
-import pygame
+from __future__ import annotations
+import typing
 
-class Rect(pygame.Rect):
-    # Constructeur
+# Returns a property to an equation which depends on and sets `attr`, and
+# depends on `mod`. By default `mod` is a lambda returning 0, meaning that
+# `property_eqn` acts as an alias for the `attr` attribute.
+#
+# Example:
+# cx = property_eqn('x', lambda self: self.w // 2)
+# self.cx         -> self.x + (self.w // 2)
+# self.cx = value -> self.cx = value - (self.w // 2)
+def property_eqn(
+    attr: str, mod: typing.Callable = lambda self: 0
+) -> property:
+    def fget(self: typing.Any) -> typing.Any:
+        return getattr(self, attr) + mod(self)
+    def fset(self: typing.Any, value: typing.Any) -> None:
+        setattr(self, attr, value - mod(self))
+    return property(fget, fset)
 
-    ## ~~~{.python .prototype}
-    ## Rect(int left, int top, int width, int height) -> Rect
-    ## Rect(2-tuple topleft, 2-tuple size) -> Rect
-    ## Rect(Rect rect) -> Rect
-    ## ~~~
-    ## Crée un rectangle.
-    ##
-    ## Les propriétés ci-dessous permettent de bouger et d'aligner le rectangle.
-    ##
-    ## ~~~
-    ## x, y
-    ## top, left, bottom, right
-    ## topleft, bottomleft, topright, bottomright
-    ## midtop, midleft, midbottom, midright
-    ## center, centerx, centery
-    ## size, width, height, w, h
-    ## ~~~
-    ##
-    ## ~~~python
-    ## # Exemple
-    ## r = Rect((0, 0), (7, 7)) # -> <rect(0, 0, 7, 7)>
-    ## r = Rect(0, 0, 7, 7)     # -> <rect(0, 0, 7, 7)>
-    ## r.topleft = (1, 1)       # -> <rect(1, 1, 7, 7)>
-    ## r.size                   # -> (7, 7)
-    ## r.center                 # -> (4, 4)
-    ## r.bottomright            # -> (8, 8)
-    ## r.topleft = r.center     # -> <rect(4, 4, 7, 7)>
-    ## ~~~
-    ##
-    ## Il faut noter que les propriétés `bottom` et `right` décrivent des
-    ## positions en dehors du rectangle. Ci-dessous un schéma des
-    ## propriétés de position.
-    ##
-    ## ~~~{ .interpunct }
-    ## a---b---+c   | a: topleft     == (left, top) == (x, y)
-    ## |·······|·   | b: midtop      == (centerx, top)
-    ## |·······|·   | c: topright    == (right, top)
-    ## d···e···|f   | d: midleft     == (left, centery)
-    ## |·······|·   | e: center      == (centerx, centery)
-    ## |·······|·   | f: midright    == (right, centery)
-    ## +-------+·   | g: bottomleft  == (left, bottom)
-    ## g···h····i   | h: midbottom   == (centerx, bottom)
-    ##              | i: bottomright == (right, bottom)
-    ## ~~~
-    def __init__(self, *args):
-        pygame.Rect.__init__(self, args)
+# Returns a property to a tuple of attributes `attrs`.
+def property_tuple(*attrs: str) -> property:
+    def fget(self: typing.Any) -> typing.Tuple:
+        return tuple(getattr(self, attr) for attr in attrs)
+    def fset(self: typing.Any, value: typing.Tuple) -> None:
+        for i, attr in enumerate(attrs):
+            setattr(self, attr, value[i])
+    return property(fget, fset)
 
-    # Méthodes
+class Rect:
+    # a---b---+c   | a: lefttop     == lt == xy == (left, top) == (x, y)
+    # |·······|·   | b: centertop   == ct == (centerx, top)
+    # |·······|·   | c: righttop    == rt == (right, top)
+    # d···e···|f   | d: leftcenter  == lc == (left, centery)
+    # |·······|·   | e: center      == cc == (centerx, centery)
+    # |·······|·   | f: rightcenter == rc == (right, centery)
+    # +-------+·   | g: leftbottom  == lb == (left, bottom)
+    # g···h····i   | h: leftcenter  == lc == (centerx, bottom)
+    #              | i: rightbottom == rb == (right, bottom)
+    #              | size == wh == (w, h)
+    def __init__(self, x: int, y: int, w: int, h: int) -> None:
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
 
-    ## ~~~{.python .prototype}
-    ## copy() -> Rect
-    ## ~~~
-    ## Retourne un nouveau rectangle possédant la même position et la même
-    ## taille que l'original.
-    def copy(self): return pygame.Rect.copy(self)
+    left    = l  = property_eqn('x')
+    right   = r  = property_eqn('x', lambda self: self.w)
+    centerx = cx = property_eqn('x', lambda self: self.w // 2)
+    top     = t  = property_eqn('y')
+    bottom  = b  = property_eqn('y', lambda self: self.h)
+    centery = cy = property_eqn('y', lambda self: self.h // 2)
 
-    ## ~~~{.python .prototype}
-    ## move(2-tuple v)
-    ## move(int x, int y)
-    ## ~~~
-    ## Déplace le rectangle de `x` et `y`.
-    def move(self, *v): pygame.Rect.move_ip(self, v)
+    lefttop = xy = lt = property_tuple('l',  't')
+    leftcenter   = lc = property_tuple('l',  'cy')
+    leftbottom   = lb = property_tuple('l',  'b')
+    centertop    = ct = property_tuple('cx', 't')
+    center       = cc = property_tuple('cx', 'cy')
+    centerbottom = cb = property_tuple('cx', 'b')
+    righttop     = rt = property_tuple('r',  't')
+    rightcenter  = rc = property_tuple('r',  'cy')
+    rightbottom  = rb = property_tuple('r',  'b')
 
-    ## ~~~{.python .prototype}
-    ## clamp(Rect rect)
-    ## ~~~
-    ## Déplace le rectangle actuel dans `rect`. Si le rectangle actuel est
-    ## trop grand pour rentrer dans `rect`, il sera centré à l'intérieur et sa
-    ## taille ne changera pas.
-    def clamp(self, rect): pygame.Rect.clamp_ip(self, rect)
+    width  = property_eqn('w')
+    height = property_eqn('h')
 
-    ## ~~~{.python .prototype}
-    ## union(Rect rect) -> Rect
-    ## ~~~
-    ## Retourne un nouveau rectangle étant l'union du rectangle actuel et de
-    ## `rect`.
-    def union(self, rect): return pygame.Rect.union(self, rect)
+    size = wh = property_tuple('w', 'h')
 
-    ## ~~~{.python .prototype}
-    ## intersection(Rect rect) -> Rect
-    ## ~~~
-    ## Retourne un nouveau rectangle étant l'intersection du rectangle actuel
-    ## et de `rect`.
-    def intersection(self, rect): return pygame.Rect.clip(self, rect)
+    def copy(self) -> Rect:
+        return self.__class__(self.x, self.y, self.w, self.h)
 
-    ## ~~~{.python .prototype}
-    ## contains(Rect rect) -> bool
-    ## ~~~
-    ## Teste si `rect` est complétement à l'intérieur du rectangle actuel.
-    def contains(self, rect): return pygame.Rect.contains(self, rect)
+    def move(self, dx: int, dy: int) -> None:
+        self.x += dx
+        self.y += dy
 
-    ## ~~~{.python .prototype}
-    ## collidepoint(2-tuple p) -> bool
-    ## collidepoint(int x, int y) -> bool
-    ## ~~~
-    ## Teste si `p` est à l'intérieur du rectangle actuel.
-    def collidepoint(self, *p): return pygame.Rect.collidepoint(self, p)
+    # Moves `self` to the nearest corner of `other` if `self` isn't completely
+    # inside `other`. If `self` is too large to fit inside `other`, center it
+    # horizontally and/or vertically. Returns whether `self` has been
+    # clamped/centered or not.
+    def clamp(self, other: Rect) -> bool:
+        clamped = ((self.x < other.x) or (other.r < self.r)
+                or (self.y < other.y) or (other.b < self.b))
 
-    ## ~~~{.python .prototype}
-    ## colliderect(Rect rect) -> bool
-    ## ~~~
-    ## Teste s'il y intersection entre `rect` et le rectangle actuel.
-    def colliderect(self, rect): return pygame.Rect.colliderect(self, rect)
+        if self.x < other.x and other.r < self.r:
+            self.cx = other.cx
+        elif self.x < other.x:
+            self.x = other.x
+        elif other.r < self.r:
+            self.r = other.r
 
-    __lt__ = property()
-    __le__ = property()
-    __gt__ = property()
-    __ge__ = property()
-    move_ip = property()
-    inflate = property()
-    inflate_ip = property()
-    clamp_ip = property()
-    clip = property()
-    union_ip = property()
-    unionall = property()
-    unionall_ip = property()
-    fit = property()
-    normalize = property()
-    collidelist = property()
-    collidelistall = property()
-    collidedict = property()
-    collidedictall = property()
+        if self.y < other.y and other.b < self.b:
+            self.cy = other.cy
+        elif self.y < other.y:
+            self.y = other.y
+        elif other.b < self.b:
+            self.b = other.b
+
+        return clamped
+
+    def collide(self, shape: typing.Any) -> bool:
+        if isinstance(shape, Rect):
+            return not ((shape.r <= self.l) or (shape.l >= self.r)
+                     or (shape.b <= self.t) or (shape.t >= self.b))
+        else:
+            raise NotImplementedError
+
+    def __contains__(self, shape: typing.Any) -> bool:
+        if isinstance(shape, typing.Sequence):
+            return ((self.l <= shape[0] < self.r)
+                and (self.t <= shape[1] < self.b))
+        elif isinstance(shape, Rect):
+            return ((self.l <= shape.l) and (shape.r <= self.r)
+                and (self.t <= shape.t) and (shape.b <= self.b))
+        else:
+            raise NotImplementedError
+
+    def __eq__(self, other: typing.Any) -> bool:
+        if not isinstance(other, Rect):
+            raise NotImplementedError
+        return (self.x == other.x) \
+           and (self.y == other.y) \
+           and (self.w == other.w) \
+           and (self.h == other.h)
+
+    def __iter__(self) -> typing.Generator[int, None, None]:
+        yield self.x
+        yield self.y
+        yield self.w
+        yield self.h
+
+    def __repr__(self) -> str:
+        return f'<rect({self.x}, {self.y}, {self.w}, {self.h})>'

@@ -1,9 +1,9 @@
 import itertools
+from src.rect import Rect
 from tests.path import assets
 from src.constants import *
 from src.window import Window
 from src.image import Image
-from src.rect import Rect
 
 window = Window(
     title     = "window",
@@ -78,11 +78,11 @@ subimages = list(itertools.chain(*subimages))
 
 def main():
     window.fill(WHITE) \
-          .draw_img(s1, s1_rect) \
-          .draw_img(s2, s2_rect, s2_area) \
-          .draw_img(s3, s3_rect) \
-          .draw_img(s4, s4_rect) \
-          .draw_img(s5, s5_rect)
+          .draw_img(s1, s1_rect.lt) \
+          .draw_img(s2, s2_rect.lt, s2_area) \
+          .draw_img(s3, s3_rect.lt) \
+          .draw_img(s4, s4_rect.lt) \
+          .draw_img(s5, s5_rect.lt)
 
     for i, s in enumerate(subimages):
         x = (i % 10) * (s.rect().width + 10) + 150
