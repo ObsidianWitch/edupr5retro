@@ -7,13 +7,11 @@ python module extending [pygame](https://www.pygame.org).
 
 * (lib) [pygame](https://www.pygame.org)
 * (lib) [numpy](http://www.numpy.org/)
-* (doc) [pandoc](https://pandoc.org/)
 
 ## Build & doc
 
 ~~~sh
 ./build.sh
-./doc.py
 ~~~
 
 ## Tests

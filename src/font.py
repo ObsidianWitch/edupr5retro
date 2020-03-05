@@ -1,6 +1,7 @@
 import pygame
 from src.constants import *
 from src.image import Image
+
 class Font:
     # Constructeur
 

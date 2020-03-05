@@ -1,6 +1,7 @@
 import pygame
 import numpy
 from src.rect import Rect
+
 class Image:
     # Constructeur
 

@@ -3,6 +3,7 @@ import pygame
 from src.image import Image
 from src.events import Events
 from src.font import Font
+
 class Window(Image):
     # Héritage
 
