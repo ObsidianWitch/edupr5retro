@@ -16,7 +16,7 @@ class Sprite(retro.Sprite):
     def scale(self, ratio):
         self.image.scale(ratio)
         newrect = self.image.rect()
-        newrect.move(self.rect.topleft)
+        newrect.move_ip(self.rect.topleft)
         self.rect = newrect
 
     def colorkey(self, color):
@@ -49,7 +49,7 @@ class AnimatedSprite(retro.AnimatedSprite):
         self.images = [img.scale(ratio) for img in self.images]
         self.image = self.images[0]
         newrect = self.image.rect()
-        newrect.move(self.rect.topleft)
+        newrect.move_ip(self.rect.topleft)
         self.rect = newrect
 
     def flip(self, xflip = False, yflip = False):

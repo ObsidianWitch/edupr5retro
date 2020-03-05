@@ -17,10 +17,10 @@ class Walk:
     def walk(self, collisions):
         if collisions.side:
             self.dx *= -1
-            self.lemming.rect.move(-self.dx * 20, 0)
+            self.lemming.rect.move_ip(-self.dx * 20, 0)
 
         self.lemming.set_animation("WALK")
-        self.lemming.rect.move(self.dx, 0)
+        self.lemming.rect.move_ip(self.dx, 0)
 
     def slope(self):
         c = self.lemming.collisions(self.lemming.bg.image)
@@ -28,14 +28,14 @@ class Walk:
         else:          self.slope_down()
 
     def slope_up(self):
-        self.lemming.rect.move(0, -2)
+        self.lemming.rect.move_ip(0, -2)
         c = self.lemming.collisions(self.lemming.bg.image)
-        if c.fall: self.lemming.rect.move(0, 2)
+        if c.fall: self.lemming.rect.move_ip(0, 2)
 
     def slope_down(self):
-        self.lemming.rect.move(0, 2)
+        self.lemming.rect.move_ip(0, 2)
         c = self.lemming.collisions(self.lemming.bg.image)
-        if c.fall: self.lemming.rect.move(0, -2)
+        if c.fall: self.lemming.rect.move_ip(0, -2)
 
 class Fall:
     def __init__(self, lemming):
@@ -50,13 +50,13 @@ class Fall:
         return self
 
     def run(self):
-        self.lemming.rect.move(0, 3)
+        self.lemming.rect.move_ip(0, 3)
         self.fallcount += 3
 
     def clamp(self):
-        self.lemming.rect.move(0, -1)
+        self.lemming.rect.move_ip(0, -1)
         c = self.lemming.collisions(self.lemming.bg.image)
-        if c.fall: self.lemming.rect.move(0, 1)
+        if c.fall: self.lemming.rect.move_ip(0, 1)
         else: self.clamp()
 
 class Float:
@@ -73,7 +73,7 @@ class Float:
         if not self.enabled:
             self.lemming.start_animation("FLOAT")
             self.enabled = True
-        self.lemming.rect.move(0, 1)
+        self.lemming.rect.move_ip(0, 1)
 
 class Stop:
     ICON  = retro.Image.from_path(asset("ui_stop.png"))
@@ -149,7 +149,7 @@ class Build:
 
         self.lemming.bg.original.draw_rect(retro.GREY, rect)
 
-        self.lemming.rect.move(dx * rect.width // 2, -rect.height)
+        self.lemming.rect.move_ip(dx * rect.width // 2, -rect.height)
 
         self.count += 1
         self.lemming.start_animation("BUILD")
@@ -173,7 +173,7 @@ class DigV:
         rect.size = (20, 2)
 
         self.lemming.bg.original.draw_rect(retro.BLACK, rect)
-        self.lemming.rect.move(0, 1)
+        self.lemming.rect.move_ip(0, 1)
 
 class DigH:
     ICON  = retro.Image.from_path(asset("ui_digh.png"))
@@ -198,7 +198,7 @@ class DigH:
 
 
         self.lemming.bg.original.draw_rect(retro.BLACK, rect)
-        self.lemming.rect.move(dx, 0)
+        self.lemming.rect.move_ip(dx, 0)
 
 class Mine:
     ICON  = retro.Image.from_path(asset("ui_mine.png"))
@@ -225,7 +225,7 @@ class Mine:
         )
 
         dx = self.lemming.actions.walk.dx
-        self.lemming.rect.move(3 * dx, 3)
+        self.lemming.rect.move_ip(3 * dx, 3)
         self.lemming.start_animation("MINE")
 
 class Dead:

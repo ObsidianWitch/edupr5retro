@@ -10,7 +10,7 @@ class StateRun:
 
         self.stage = retro.Stage(asset("map.png"))
         self.stage.camera = self.window.rect()
-        self.stage.camera.move(350, 170)
+        self.stage.camera.move_ip(350, 170)
 
         self.player = Player(self.window, self.stage)
         self.spawner = Spawner(self.stage)

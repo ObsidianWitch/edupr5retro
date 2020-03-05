@@ -17,7 +17,7 @@ class Runner(Enemy):
         if not self.stage.image.rect().contains(self.rect):
             self.dx *= -1
             self.flip(xflip = True)
-            self.rect.clamp(self.stage.image.rect())
+            self.rect.clamp_ip(self.stage.image.rect())
 
     def update(self, target):
         Enemy.update(self, target)

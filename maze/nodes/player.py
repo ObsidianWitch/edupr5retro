@@ -85,7 +85,7 @@ class Player(AnimatedSprite):
             move_vec[i] -= collision_vec[i]
             move_vec[i] = retro.Math.clamp(move_vec[i], -1, 1)
 
-        self.rect.move(move_vec)
+        self.rect.move_ip(move_vec)
 
         if move_vec[0] != 0: self.facing_x = move_vec[0]
         walking = any(d != 0 for d in move_vec)

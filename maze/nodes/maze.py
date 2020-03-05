@@ -118,7 +118,7 @@ class Maze:
                 txt        = self.EXIT_ASCII,
                 dictionary = SPRITE_PALETTE,
             )
-            self.exit.rect.move(xsq, ysq)
+            self.exit.rect.move_ip(xsq, ysq)
             self.items.append(self.exit)
 
         def init_treasure(code, color, xsq, ysq):
@@ -126,7 +126,7 @@ class Maze:
                 txt        = self.TREASURE_ASCII,
                 dictionary = SPRITE_PALETTE,
             )
-            sprite.rect.move(xsq, ysq)
+            sprite.rect.move_ip(xsq, ysq)
             self.items.append(sprite)
             self.treasures.append(sprite)
 
@@ -135,7 +135,7 @@ class Maze:
                 txt        = self.TRAP_ASCII,
                 dictionary = SPRITE_PALETTE,
             )
-            sprite.rect.move(xsq, ysq)
+            sprite.rect.move_ip(xsq, ysq)
             self.items.append(sprite)
             self.traps.append(sprite)
 

@@ -31,7 +31,7 @@ class StateRun:
             color = retro.GREEN,
         ))
         score.rect.midtop = self.window.rect().midtop
-        score.rect.move(0, 10)
+        score.rect.move_ip(0, 10)
         score.draw(self.window)
 
     def run(self):

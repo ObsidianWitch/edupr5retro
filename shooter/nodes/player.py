@@ -43,17 +43,17 @@ class Crosshair(Sprite):
             move_vec[i] -= scroll_vec[i]
             move_vec[i] = retro.Math.clamp(move_vec[i], -1, 1)
 
-        self.rect.move(
+        self.rect.move_ip(
             move_vec[0] * self.speed,
             move_vec[1] * self.speed,
         )
 
         # move camera
-        stage.camera.move(
+        stage.camera.move_ip(
             scroll_vec[0] * self.speed,
             scroll_vec[1] * self.speed,
         )
-        stage.camera.clamp(stage.image.rect())
+        stage.camera.clamp_ip(stage.image.rect())
 
 class Ammunitions(Sprite):
     IMG = retro.Image.from_path(asset("bullet.png"))
@@ -141,7 +141,7 @@ class Player:
         if not self.window.events.key_press(retro.K_SPACE): return
 
         self.ammunitions.count -= 1
-        self.crosshair.rect.move(
+        self.crosshair.rect.move_ip(
             random.randint(-2, 2),
             random.randint(-2, 2)
         )
@@ -156,7 +156,7 @@ class Player:
         elif killed == -1: self.ammunitions.count -= 3
 
     def update(self, target):
-        self.crosshair.move(self.stage)
+        self.crosshair.move_ip(self.stage)
         self.shoot(target)
         self.explosions.update()
         self.hide.update()

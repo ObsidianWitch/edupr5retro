@@ -24,7 +24,7 @@ class Fish(Sprite):
         limits = range(50, 3 * rect.w // 4)
         if xnew not in limits: self.flip(xflip = True)
 
-        self.rect.move(self.dx, 0)
+        self.rect.move_ip(self.dx, 0)
 
     # Moves diagonally, constrained by `rect`.
     def move2(self, rect):
@@ -35,7 +35,7 @@ class Fish(Sprite):
         if xnew not in limits(rect.w):  self.flip(xflip = True)
         if ynew not in limits(rect.h): self.flip(yflip = True)
 
-        self.rect.move(self.dx, self.dy)
+        self.rect.move_ip(self.dx, self.dy)
 
     # Moves randomly, constrained by rect.
     def move3(self, rect):
