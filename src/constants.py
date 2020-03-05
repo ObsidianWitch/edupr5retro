@@ -1,7 +1,8 @@
 import sys
+import typing
+from numbers import Number
 import pygame
 import numpy
-from numbers import Number
 from pygame.locals import *
 
 M_LEFT   = 1

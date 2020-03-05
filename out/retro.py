@@ -1,7 +1,8 @@
 import sys
+import typing
+from numbers import Number
 import pygame
 import numpy
-from numbers import Number
 from pygame.locals import *
 
 M_LEFT   = 1
@@ -268,52 +269,52 @@ class Window(Image):
 
 class Events:
 
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
-    def update(self):
+    def update(self) -> None:
         self.events = pygame.event.get()
         self.keyheld = pygame.key.get_pressed()
         self.mouseheld = pygame.mouse.get_pressed()
 
-    def event(self, type):
+    def event(self, type: int) -> pygame.event.Event:
         for e in self.events:
             if e.type == type: return e
 
-    def key_press(self, key):
+    def key_press(self, key: int) -> bool:
         for e in self.events:
             if (e.type == pygame.KEYDOWN) and (e.key == key): return True
         return False
 
-    def key_hold(self, key):
+    def key_hold(self, key: int) -> bool:
         return self.keyheld[key]
 
-    def key_release(self, key):
+    def key_release(self, key: int) -> bool:
         for e in self.events:
             if (e.type == pygame.KEYUP) and (e.key == key): return True
         return False
 
-    def mouse_press(self, button = None):
+    def mouse_press(self, button: int = None) -> bool:
         for e in self.events:
             if (e.type == pygame.MOUSEBUTTONDOWN):
                 if button is None: return True
                 elif e.button == button: return True
         return False
 
-    def mouse_hold(self, button = None):
+    def mouse_hold(self, button: int = None) -> bool:
         if any(self.mouseheld):
             if button is None: return True
             else: return self.mouseheld[button - 1]
         return False
 
-    def mouse_release(self, button = None):
+    def mouse_release(self, button: int = None) -> bool:
         for e in self.events:
             if (e.type == pygame.MOUSEBUTTONUP):
                 if button is None: return True
                 elif e.button == button: return True
         return False
 
-    def mouse_pos(self):
+    def mouse_pos(self) -> typing.Tuple[int, int]:
         return pygame.mouse.get_pos()
 
 class Group(list):
