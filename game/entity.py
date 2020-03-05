@@ -33,7 +33,7 @@ class Entity(retro.AnimatedSprite):
         raise NotImplementedError
 
     def update(self, maze):
-        if not self.collide_maze(maze): self.rect.move(
+        if not self.collide_maze(maze): self.rect.move_ip(
             retro.Vec.mul(self.speed, self.curdir)
         )
         retro.AnimatedSprite.update(self)
