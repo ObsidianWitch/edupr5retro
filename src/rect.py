@@ -1,5 +1,5 @@
 from __future__ import annotations
-import typing
+import typing as typ
 
 # Returns a property to an equation which depends on and sets `attr`, and
 # depends on `mod`. By default `mod` is a lambda returning 0, meaning that
@@ -10,19 +10,19 @@ import typing
 # self.cx         -> self.x + (self.w // 2)
 # self.cx = value -> self.cx = value - (self.w // 2)
 def property_eqn(
-    attr: str, mod: typing.Callable = lambda self: 0
+    attr: str, mod: typ.Callable = lambda self: 0
 ) -> property:
-    def fget(self: typing.Any) -> typing.Any:
+    def fget(self: typ.Any) -> typ.Any:
         return getattr(self, attr) + mod(self)
-    def fset(self: typing.Any, value: typing.Any) -> None:
+    def fset(self: typ.Any, value: typ.Any) -> None:
         setattr(self, attr, value - mod(self))
     return property(fget, fset)
 
 # Returns a property to a tuple of attributes `attrs`.
 def property_tuple(*attrs: str) -> property:
-    def fget(self: typing.Any) -> typing.Tuple:
+    def fget(self: typ.Any) -> typ.Tuple:
         return tuple(getattr(self, attr) for attr in attrs)
-    def fset(self: typing.Any, value: typing.Tuple) -> None:
+    def fset(self: typ.Any, value: typ.Tuple) -> None:
         for i, attr in enumerate(attrs):
             setattr(self, attr, value[i])
     return property(fget, fset)
@@ -97,15 +97,15 @@ class Rect:
 
         return clamped
 
-    def collide(self, shape: typing.Any) -> bool:
+    def collide(self, shape: typ.Any) -> bool:
         if isinstance(shape, Rect):
             return not ((shape.r <= self.l) or (shape.l >= self.r)
                      or (shape.b <= self.t) or (shape.t >= self.b))
         else:
             raise NotImplementedError
 
-    def __contains__(self, shape: typing.Any) -> bool:
-        if isinstance(shape, typing.Sequence):
+    def __contains__(self, shape: typ.Any) -> bool:
+        if isinstance(shape, typ.Sequence):
             return ((self.l <= shape[0] < self.r)
                 and (self.t <= shape[1] < self.b))
         elif isinstance(shape, Rect):
@@ -114,7 +114,7 @@ class Rect:
         else:
             raise NotImplementedError
 
-    def __eq__(self, other: typing.Any) -> bool:
+    def __eq__(self, other: typ.Any) -> bool:
         if not isinstance(other, Rect):
             raise NotImplementedError
         return (self.x == other.x) \
@@ -122,7 +122,7 @@ class Rect:
            and (self.w == other.w) \
            and (self.h == other.h)
 
-    def __iter__(self) -> typing.Generator[int, None, None]:
+    def __iter__(self) -> typ.Generator[int, None, None]:
         yield self.x
         yield self.y
         yield self.w

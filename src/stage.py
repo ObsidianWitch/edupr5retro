@@ -1,66 +1,36 @@
+import typing as typ
+from src.Image import Image
 from src.sprite import Sprite
+from src.rect import Rect
 
 class Stage(Sprite):
-    # Héritage
-
-    ## > [Sprite](#classe-sprite)
-
-    # Constructeur
-
-    ## ~~~{.python .prototype}
-    ## Stage(path:str) -> Stage
-    ## ~~~
-    ## Un Stage est un Sprite qui peut être altéré et restauré dans son état
-    ## d'origine (`original:Image`). Il est possible de se focaliser sur une
-    ## portion restreinte de l'image du sprite en manipulant `rect`/`camera`.
-    def __init__(self, path):
+    # A Stage is a Sprite which can be modified and then restored to its
+    # original state (`self.original`). A specific portion of the sprite image
+    # can be focused by manipulated `self.camera`.
+    def __init__(self, path: str):
         self.original = Image.from_path(path)
         Sprite.__init__(self, self.original.copy())
 
-    # Propriétés
-
-    ## ~~~{.python .prototype}
-    ## camera -> Rect
-    ## camera = rect:Rect
-    ## ~~~
     @property
-    def camera(self):
+    def camera(self) -> Rect:
         return self.rect
     @camera.setter
-    def camera(self, rect):
+    def camera(self, rect: Rect) -> None:
         self.rect = rect
 
-    # Méthodes
-
-    ## ~~~{.python .prototype}
-    ## camera2stage(p: Tuple[int, int]) -> Tuple[int, int]
-    ## ~~~
     ## Transform point `p` from camera space to stage space.
-    def camera2stage(self, p): return (
-        p[0] + self.camera.x,
-        p[1] + self.camera.y,
-    )
+    def camera2stage(self, p: typ.Tuple[int, int]) -> typ.Tuple[int, int]:
+        return (p[0] + self.camera.x, p[1] + self.camera.y)
 
-    ## ~~~{.python .prototype}
-    ## stage2camera(p: Tuple[int, int]) -> Tuple[int, int]
-    ## ~~~
     ## Transform point `p` from stage space to camera space.
-    def stage2camera(self, p): return (
-        p[0] - self.rect.x,
-        p[1] - self.rect.y,
-    )
+    def stage2camera(self, p: typ.Tuple[int, int]) -> typ.Tuple[int, int]:
+        return (p[0] - self.rect.x, p[1] - self.rect.y)
 
-    ## ~~~{.python .prototype}
-    ## clear_all()
-    ## ~~~
     ## Restore stage to its `self.original` state.
-    def clear_all(self):
+    def clear_all(self) -> None:
         self.image.draw_img(self.original, (0, 0))
 
-    ## ~~~{.python .prototype}
-    ## clear_focus()
-    ## ~~~
     ## Restore a portion (`self.camera`) of the stage to its `self.original`
     ## state.
-    def clear_focus(self):
-        self.image.draw_img(self.original, self.camera.topleft, self.camera)
+    def clear_focus(self) -> None:
+        self.image.draw_img(self.original, self.camera.lt, self.camera)

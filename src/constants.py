@@ -1,7 +1,7 @@
 from __future__ import annotations
 import sys
-import typing
-from numbers import Number
+import typing as typ
+from numbers import Real
 import pygame
 import numpy
 from pygame.locals import *
