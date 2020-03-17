@@ -72,7 +72,7 @@ class Image:
     # Create a new Image that references its parent. Modifications to either
     # images will effect each other. `area` is the zone to extract from `self`.
     def subimage(self, area: Rect) -> Image:
-        return self.__class__(self.pygsurface.subsurface(*area))
+        return self.__class__(self.pygsurface.subsurface(area))
 
     # Return a new rectangle at (0, 0) covering the entire image.
     def rect(self) -> Rect:
