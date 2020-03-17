@@ -17,7 +17,7 @@ class StateRun:
         else: return 0
 
     def ball_paddle_collision(self, paddle):
-        collision = self.ball.circle.colliderect(paddle.rect)
+        collision = self.ball.circle.collide(paddle.rect)
         if (collision == -1):
             self.ball.circle.left = paddle.rect.right
             self.ball.dx *= -1

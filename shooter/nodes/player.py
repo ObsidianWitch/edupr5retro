@@ -116,7 +116,7 @@ class Hints:
     def draw(self, player, enemy, dest):
         if not enemy.alive: return
 
-        enemy_visible = self.stage.camera.colliderect(enemy.rect)
+        enemy_visible = self.stage.camera.collide(enemy.rect)
         if enemy_visible: return
 
         arrow_i = (self.stage.camera2stage(
@@ -156,7 +156,7 @@ class Player:
         elif killed == -1: self.ammunitions.count -= 3
 
     def update(self, target):
-        self.crosshair.move_ip(self.stage)
+        self.crosshair.move(self.stage)
         self.shoot(target)
         self.explosions.update()
         self.hide.update()

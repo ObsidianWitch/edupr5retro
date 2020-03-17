@@ -1,3 +1,5 @@
+from shared import retro
+
 class Circle:
     def __init__(self, center, radius):
         self.center = center
@@ -36,7 +38,10 @@ class Circle:
     # Returns  1 when `self`'s right side collides `rect`'s left side.
     # Returns -1 when `self`'s left side collides `rect`'s right side.
     # Returns  0 when no collision happens.
-    def colliderect(self, rect):
-        right = rect.collidepoint(self.right, self.y)
-        left  = rect.collidepoint(self.left, self.y)
-        return (right - left)
+    def collide(self, shape):
+        if isinstance(shape, retro.Rect):
+            right = (self.right, self.y) in shape
+            left  = (self.left, self.y)  in shape
+            return (right - left)
+        else:
+            raise NotImplementedError
