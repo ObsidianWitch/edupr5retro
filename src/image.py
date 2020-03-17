@@ -1,3 +1,4 @@
+from __future__ import annotations
 import pygame
 import numpy
 import typing as typ
@@ -5,15 +6,15 @@ from src.constants import *
 from src.rect import Rect
 
 class Image:
-    def __init__(self,
-        arg: typ.Union[Image, pygame.Surface, typ.Sequence]
-    ) -> None:
+    def __init__(self, arg: typ.Any) -> None:
         if isinstance(arg, Image):
             self.pygsurface: pygame.Surface = arg.pygsurface.copy()
         elif isinstance(arg, pygame.Surface):
             self.pygsurface = arg
-        else:
+        elif isinstance(arg, typ.Sequence):
             Image.__init__(self, pygame.Surface(arg))
+        else:
+            raise NotImplementedError
 
     @classmethod
     def from_path(cls, path: str) -> Image:

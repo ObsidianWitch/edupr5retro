@@ -32,6 +32,4 @@ def main():
             width   = 4,
         )
 
-    print(window.events.mouse_pos())
-
 window.loop(main)

@@ -89,6 +89,4 @@ def main():
         y = (i // 10) * (s.rect().height + 10)
         window.draw_img(s, (x, y))
 
-    print(window.events.mouse_pos())
-
 window.loop(main)

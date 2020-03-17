@@ -60,6 +60,4 @@ def main():
           .draw_img(obj4, obj4_rect.lt) \
           .draw_img(obj5, obj5_rect.lt)
 
-    print(window.events.mouse_pos())
-
 window.loop(main)

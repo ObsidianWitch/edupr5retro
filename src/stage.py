@@ -1,5 +1,5 @@
 import typing as typ
-from src.Image import Image
+from src.image import Image
 from src.sprite import Sprite
 from src.rect import Rect
 
