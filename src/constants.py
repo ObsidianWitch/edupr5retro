@@ -5,6 +5,7 @@ from numbers import Real
 import pygame
 import numpy
 from pygame.locals import *
+from pygame import Rect
 
 M_LEFT   = 1
 M_MIDDLE = 2

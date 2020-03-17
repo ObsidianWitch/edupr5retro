@@ -1,7 +1,7 @@
 import typing as typ
 from src.image import Image
 from src.sprite import Sprite
-from src.rect import Rect
+from pygame import Rect
 
 class Stage(Sprite):
     # A Stage is a Sprite which can be modified and then restored to its
@@ -33,4 +33,4 @@ class Stage(Sprite):
     ## Restore a portion (`self.camera`) of the stage to its `self.original`
     ## state.
     def clear_focus(self) -> None:
-        self.image.draw_img(self.original, self.camera.lt, self.camera)
+        self.image.draw_img(self.original, self.camera.topleft, self.camera)

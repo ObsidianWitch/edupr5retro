@@ -1,4 +1,4 @@
-from numbers import Number
+from numbers import Real
 
 class Math:
     @classmethod
@@ -45,9 +45,9 @@ class Vec:
 
     @classmethod
     def iterator(cls, a, b):
-        if isinstance(a, Number):
+        if isinstance(a, Real):
             for i, _ in enumerate(b): yield a, b[i]
-        elif isinstance(b, Number):
+        elif isinstance(b, Real):
             for i, _ in enumerate(a): yield a[i], b
         else:
             for i, _ in enumerate(a): yield a[i], b[i]

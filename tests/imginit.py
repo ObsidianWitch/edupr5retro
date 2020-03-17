@@ -1,5 +1,5 @@
 import itertools
-from src.rect import Rect
+from pygame import Rect
 from tests.path import assets
 from src.constants import *
 from src.window import Window
@@ -48,8 +48,6 @@ ASCII_IMG = (
 s1 = Image((100, 100))
 s1_rect = s1.rect()
 s1_rect.move_ip(10, 10)
-print(s1.rect)
-print(s1_rect)
 
 s2 = Image.from_path(assets("img.png"))
 s2_rect = s2.rect()
@@ -78,11 +76,11 @@ subimages = list(itertools.chain(*subimages))
 
 def main():
     window.fill(WHITE) \
-          .draw_img(s1, s1_rect.lt) \
-          .draw_img(s2, s2_rect.lt, s2_area) \
-          .draw_img(s3, s3_rect.lt) \
-          .draw_img(s4, s4_rect.lt) \
-          .draw_img(s5, s5_rect.lt)
+          .draw_img(s1, s1_rect.topleft) \
+          .draw_img(s2, s2_rect.topleft, s2_area) \
+          .draw_img(s3, s3_rect.topleft) \
+          .draw_img(s4, s4_rect.topleft) \
+          .draw_img(s5, s5_rect.topleft)
 
     for i, s in enumerate(subimages):
         x = (i % 10) * (s.rect().width + 10) + 150

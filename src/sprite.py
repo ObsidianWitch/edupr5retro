@@ -33,9 +33,9 @@ class Sprite:
     def update(self) -> None:
         pass
 
-    # Draw the sprite on the specified `image` at `self.rect.lt`.
+    # Draw the sprite on the specified `image` at `self.rect.topleft`.
     def draw(self, image: Image) -> None:
-        image.draw_img(self.image, self.rect.lt)
+        image.draw_img(self.image, self.rect.topleft)
 
 class Counter:
     # A counter counts from 0 to `end`. Its value is incremented periodically

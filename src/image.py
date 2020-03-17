@@ -3,7 +3,7 @@ import pygame
 import numpy
 import typing as typ
 from src.constants import *
-from src.rect import Rect
+from pygame import Rect
 
 class Image:
     def __init__(self, arg: typ.Any) -> None:

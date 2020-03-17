@@ -15,7 +15,7 @@ txt1 = font1.render(
     text = "Example 1",
 )
 txt1_rect = txt1.rect()
-txt1_rect.ct = window.rect().ct
+txt1_rect.midtop = window.rect().midtop
 
 txt2 = font1.render(
     text      = "Example 2",
@@ -24,7 +24,7 @@ txt2 = font1.render(
     bgcolor   = BLACK,
 )
 txt2_rect = txt2.rect()
-txt2_rect.cc = window.rect().cc
+txt2_rect.center = window.rect().center
 
 txt3 = font2.render(
     text      = "Example 3",
@@ -33,12 +33,12 @@ txt3 = font2.render(
     bgcolor   = GREEN,
 )
 txt3_rect = txt3.rect()
-txt3_rect.cb = window.rect().cb
+txt3_rect.midbottom = window.rect().midbottom
 
 def main():
     window.fill(WHITE) \
-          .draw_img(txt1, txt1_rect.lt) \
-          .draw_img(txt2, txt2_rect.lt) \
-          .draw_img(txt3, txt3_rect.rt)
+          .draw_img(txt1, txt1_rect.topleft) \
+          .draw_img(txt2, txt2_rect.topleft) \
+          .draw_img(txt3, txt3_rect.topright)
 
 window.loop(main)

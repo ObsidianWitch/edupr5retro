@@ -32,18 +32,18 @@ s2 = AnimatedSprite(
     ),
 )
 s2.animations.set("WALK_R")
-s2.rect.t = s1.rect.b
+s2.rect.top = s1.rect.bottom
 s2.dx = 1
 
 def main():
-    if   s1.rect.t < 0: s1.dy = 1
-    elif s1.rect.b >= window.rect().h: s1.dy = -1
+    if   s1.rect.top < 0: s1.dy = 1
+    elif s1.rect.bottom >= window.rect().h: s1.dy = -1
     s1.rect.move_ip(0, s1.dy)
 
-    if s2.rect.l < 0:
+    if s2.rect.left < 0:
         s2.animations.set("WALK_R")
         s2.dx = 1
-    elif s2.rect.r >= window.rect().w:
+    elif s2.rect.right >= window.rect().w:
         s2.animations.set("WALK_L")
         s2.dx = -1
     s2.rect.move_ip(s2.dx, 0)

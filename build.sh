@@ -17,7 +17,6 @@ mkdir -p 'out'
 out='out/retro.py'
 cat 'src/constants.py' > "$out"
 for f in 'src/math.py' \
-         'src/rect.py' \
          'src/image.py' \
          'src/font.py' \
          'src/window.py' \
