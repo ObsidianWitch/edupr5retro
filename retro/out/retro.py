@@ -385,30 +385,27 @@ class Counter:
     def restart(self) -> None:
         self.t0 = pygame.time.get_ticks()
 
-class Animations:
-    # Animations are contained in `data`. Each entry map a name to frames.
-    # Frames are represented by a list of indexes. Each index references an
-    # image stored somewhere else. `period` specified the time necessary in
-    # milliseconds to switch to the next frame. By default, the first animation
-    # defined in `data` is started.
+class Animations(typ.Dict[str, typ.Sequence[int]]):
+    # Animations are stored as entries in this dictionary. Each entry map a name
+    # to frames. Frames are represented by a list of indexes. Each index
+    # references an image stored somewhere else. `period` specified the time
+    # necessary in milliseconds to switch to the next frame. By default, the
+    # first animation defined in `self` is started.
     #
     # # Example
     # animations = retro.Animations(
-    #     data = {
-    #         "WALK_L":  range(0, 8),
-    #         "WALK_R":  range(0 + 133, 8 + 133),
-    #         "FALL_L":  range(8, 12),
-    #         "FALL_R":  range(8 + 133, 12 + 133),
-    #         ...
-    #     },
-    #     period  = 100,
+    #     period = 100,
+    #     WALK_L = range(0, 8),
+    #     WALK_R = range(0 + 133, 8 + 133),
+    #     FALL_L = range(8, 12),
+    #     FALL_R = range(8 + 133, 12 + 133),
+    #     ...
     # )
-    def __init__(self,
-        data: typ.Dict[str, typ.Sequence[int]], period: int
-    ) -> None:
-        self.data   = data
+    def __init__(self, period: int, **kwargs: typ.Sequence[int]) -> None:
+        dict.__init__(self, **kwargs)
         self.period = period
-        if len(data) > 0: self.start(name = next(iter(self.data)))
+        if len(self) > 0:
+            self.start(name = next(iter(self)))
 
     # Return the currently played frame's index.
     @property
@@ -423,7 +420,7 @@ class Animations:
 
     # Sets the animation to play by specifying its `name`.
     def set(self, name: str) -> None:
-        self.current = self.data[name]
+        self.current = self[name]
 
     # Specify the animation to play by its `name` and starts it.
     def start(self, name: str) -> None:

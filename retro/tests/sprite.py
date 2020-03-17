@@ -24,11 +24,9 @@ i2 = [img.copy() for img in i2] \
 s2 = AnimatedSprite(
     images     = i2,
     animations = Animations(
-        data = {
-            "WALK_L":  range(0, 8),
-            "WALK_R":  range(0 + 8, 8 + 8),
-        },
         period  = 100,
+        WALK_L = range(0, 8),
+        WALK_R = range(0 + 8, 8 + 8),
     ),
 )
 s2.animations.set("WALK_R")

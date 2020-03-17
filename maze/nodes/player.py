@@ -60,13 +60,11 @@ class Player(AnimatedSprite):
             txts       = self.PLAYER_ASCII,
             dictionary = SPRITE_PALETTE,
             animations = retro.Animations(
-                data = {
-                    "IDLE_R": [1],
-                    "IDLE_L": [4],
-                    "WALK_R": [0, 1, 2, 1],
-                    "WALK_L": [3, 4, 5, 4],
-                },
                 period  = 500,
+                IDLE_R = [1],
+                IDLE_L = [4],
+                WALK_R = [0, 1, 2, 1],
+                WALK_L = [3, 4, 5, 4],
             ),
         )
         AnimatedSprite.__init__(self, sprite.images, sprite.animations)

@@ -10,7 +10,7 @@ class Lemming(AnimatedSprite):
         path          = asset("planche.png"),
         sprite_size   = (30, 30),
         discard_color = retro.RED,
-        animations    = retro.Animations({}, 0),
+        animations    = retro.Animations(period = 0),
     ).images
     IMGS = [img.copy() for img in IMGS] \
          + [img.flip(x = True, y = False) for img in IMGS]
@@ -23,29 +23,17 @@ class Lemming(AnimatedSprite):
             self       = self,
             images     = self.IMGS,
             animations = retro.Animations(
-                data = {
-                    "WALK_L":  range(0, 8),
-                    "WALK_R":  range(0 + 133, 8 + 133),
-                    "FALL_L":  range(8, 12),
-                    "FALL_R":  range(8 + 133, 12 + 133),
-                    "FLOAT_L": range(20, 26),
-                    "FLOAT_R": range(20 + 133, 26 + 133),
-                    "STOP_L":  range(26, 42),
-                    "STOP_R":  range(26 + 133, 42 + 133),
-                    "BOMB_L":  range(42, 56),
-                    "BOMB_R":  range(42 + 133, 56 + 133),
-                    "BUILD_L": range(56, 72),
-                    "BUILD_R": range(56 + 133, 72 + 133),
-                    "DIGV_L":  range(72, 88),
-                    "DIGV_R":  range(72 + 133, 88 + 133),
-                    "DIGH_L":  range(88, 100),
-                    "DIGH_R":  range(88 + 133, 100 + 133),
-                    "MINE_L":  range(100, 117),
-                    "MINE_R":  range(100 + 133, 117 + 133),
-                    "DEAD_L":  range(117, 133),
-                    "DEAD_R":  range(117 + 133, 133 + 133),
-                },
                 period  = 100,
+                WALK_L  = range(0, 8),     WALK_R  = range(0 + 133, 8 + 133),
+                FALL_L  = range(8, 12),    FALL_R  = range(8 + 133, 12 + 133),
+                FLOAT_L = range(20, 26),   FLOAT_R = range(20 + 133, 26 + 133),
+                STOP_L  = range(26, 42),   STOP_R  = range(26 + 133, 42 + 133),
+                BOMB_L  = range(42, 56),   BOMB_R  = range(42 + 133, 56 + 133),
+                BUILD_L = range(56, 72),   BUILD_R = range(56 + 133, 72 + 133),
+                DIGV_L  = range(72, 88),   DIGV_R  = range(72 + 133, 88 + 133),
+                DIGH_L  = range(88, 100),  DIGH_R  = range(88 + 133, 100 + 133),
+                MINE_L  = range(100, 117), MINE_R  = range(100 + 133, 117 + 133),
+                DEAD_L  = range(117, 133), DEAD_R  = range(117 + 133, 133 + 133),
             ),
         )
         self.colorkey(retro.BLACK)

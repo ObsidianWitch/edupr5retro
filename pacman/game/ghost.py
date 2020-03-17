@@ -59,13 +59,11 @@ class Ghost(Entity):
             sprite = retro.AnimatedSprite(
                 images     = self.IMGS,
                 animations = retro.Animations(
-                    data = {
-                        "WALK_L": [0], "WALK_U": [0],
-                        "WALK_R": [0], "WALK_D": [0],
-                        "FEAR_L": [1], "FEAR_U": [1],
-                        "FEAR_R": [1], "FEAR_D": [1],
-                    },
                     period = 50,
+                    WALK_L = [0], WALK_U = [0],
+                    WALK_R = [0], WALK_D = [0],
+                    FEAR_L = [1], FEAR_U = [1],
+                    FEAR_R = [1], FEAR_D = [1],
                 ),
             ),
             pos   = pos,

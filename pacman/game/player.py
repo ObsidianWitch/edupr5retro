@@ -34,17 +34,11 @@ class Player(Entity):
             sprite = retro.AnimatedSprite(
                 images     = self.IMGS,
                 animations = retro.Animations(
-                    data = {
-                        "STOP_L":  [0],
-                        "STOP_U":  [2],
-                        "STOP_R":  [4],
-                        "STOP_D":  [6],
-                        "WALK_L":  range(0, 2),
-                        "WALK_U":  range(2, 4),
-                        "WALK_R":  range(4, 6),
-                        "WALK_D":  range(6, 8),
-                    },
                     period = 50,
+                    STOP_L = [0], STOP_U = [2],
+                    STOP_R = [4], STOP_D = [6],
+                    WALK_L = range(0, 2), WALK_U = range(2, 4),
+                    WALK_R = range(4, 6), WALK_D = range(6, 8),
                 ),
             ),
             pos   = pos,
