@@ -40,8 +40,8 @@ class Circle:
     # Returns  0 when no collision happens.
     def collide(self, shape):
         if isinstance(shape, retro.Rect):
-            right = (self.right, self.y) in shape
-            left  = (self.left, self.y)  in shape
+            right = shape.collidepoint(self.right, self.y)
+            left  = shape.collidepoint(self.left, self.y)
             return (right - left)
         else:
             raise NotImplementedError

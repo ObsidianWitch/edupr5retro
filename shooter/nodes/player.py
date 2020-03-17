@@ -116,7 +116,7 @@ class Hints:
     def draw(self, player, enemy, dest):
         if not enemy.alive: return
 
-        enemy_visible = self.stage.camera.collide(enemy.rect)
+        enemy_visible = self.stage.camera.colliderect(enemy.rect)
         if enemy_visible: return
 
         arrow_i = (self.stage.camera2stage(
