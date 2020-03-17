@@ -1,6 +1,7 @@
+from __future__ import annotations
 import sys
-import typing
-from numbers import Number
+import typing as typ
+from numbers import Real
 import pygame
 import numpy
 from pygame.locals import *
@@ -21,12 +22,6 @@ MAGENTA = (255,   0, 255)
 YELLOW  = (255, 255,   0)
 
 class Math:
-    # Méthodes de classe
-
-    ## ~~~{.python .prototype}
-    ## clamp(val: Number, minval: Number, maxval: Number) -> Number
-    ## ~~~
-    ## Restreint `val` dans [`minval`, `maxval`].
     @classmethod
     def clamp(cls, val, minval, maxval):
         return minval if val < minval \
@@ -71,56 +66,38 @@ class Vec:
 
     @classmethod
     def iterator(cls, a, b):
-        if isinstance(a, Number):
+        if isinstance(a, Real):
             for i, _ in enumerate(b): yield a, b[i]
-        elif isinstance(b, Number):
+        elif isinstance(b, Real):
             for i, _ in enumerate(a): yield a[i], b
         else:
             for i, _ in enumerate(a): yield a[i], b[i]
 
 class Image:
-    # Constructeur
-
-    ## ~~~{.python .prototype}
-    ## Image(2-tuple size) -> Image
-    ## Image(Image image) -> Image
-    ## ~~~
-    ## Crée une image.
-    def __init__(self, arg):
+    def __init__(self, arg: typ.Any) -> None:
         if isinstance(arg, Image):
-            self.pygsurface = arg.pygsurface.copy()
+            self.pygsurface: pygame.Surface = arg.pygsurface.copy()
         elif isinstance(arg, pygame.Surface):
             self.pygsurface = arg
+        elif isinstance(arg, typ.Sequence):
+            Image.__init__(self, pygame.Surface(arg))
         else:
-            self.__init__(pygame.Surface(arg))
+            raise NotImplementedError
 
-    # Méthodes de classe
-
-    ## ~~~{.python .prototype}
-    ## from_path(str path) -> Image
-    ## ~~~
-    ## Crée une image à partir d'un fichier dont le chemin est `path`.
     @classmethod
-    def from_path(cls, path):
+    def from_path(cls, path: str) -> Image:
         return cls(pygame.image.load(path))
 
-    ## ~~~{.python .prototype}
-    ## from_array(2D-array array) -> Image
-    ## ~~~
-    ## Crée une image à partir du tableau à 2 dimensions `array`.
     @classmethod
-    def from_array(cls, array):
+    def from_array(cls, array: numpy.ndarray) -> Image:
         return cls(pygame.surfarray.make_surface(array))
 
-    ## ~~~{.python .prototype}
-    ## from_ascii(list txt, dict dictionary) -> Image
-    ## ~~~
-    ## Crée une image à partir de `txt`, une liste de chaînes de caractères.
-    ## A chaque caractère possible dans `txt` est associé une couleur
-    ## correspondante dans `dictionnary`.
-    ## L'image est crée en remplaçant chaque caractère par sa couleur associée.
+    # Create an image from a list of strings `txt`. Each character encountered
+    # in `txt` is associated to a color in `dictionary`.
     @classmethod
-    def from_ascii(cls, txt, dictionary):
+    def from_ascii(cls,
+        txt: typ.Sequence[str], dictionary: typ.Dict[str, pygame.Color]
+    ) -> Image:
         height = len(txt)
         width  = len(txt[0])
 
@@ -131,18 +108,14 @@ class Image:
 
         return cls.from_array(rgb_sprite)
 
-    ## ~~~{.python .prototype}
-    ## from_spritesheet(
-    ##     str path, 2-tuple sprite_size, 3-tuple discard_color
-    ## ) -> 2D-list
-    ## ~~~
-    ## Charge une image (spritesheet) à partie de son chemin `path`, et découpe
-    ## celle-ci en sous-images de taille `sprite_size`. Les sous-images
-    ## possédant la couleur `discard_color` au pixel (0, 0) sont éliminées.
-    ## Retourne une liste contenant une liste d'images pour chaque ligne de la
-    ## spritesheet.
+    # Load a spritesheet image from its `path` and cut it in subimages of size
+    # `sprite_size`. Subimages containing the `discard_color` color at their
+    # topleft corner are discarded. Return a list containg a list of subimages
+    # for each line of the spritesheet.
     @classmethod
-    def from_spritesheet(cls, path, sprite_size, discard_color):
+    def from_spritesheet(cls,
+        path: str, sprite_size: typ.Tuple[int, int], discard_color: pygame.Color
+    ) -> typ.List[typ.List[Image]]:
         spritesheet = cls.from_path(path)
 
         images = []
@@ -161,190 +134,100 @@ class Image:
 
         return images
 
-    # Méthodes
-
-    ## ~~~{.python .prototype}
-    ## copy() -> Image
-    ## ~~~
-    ## Crée une copie complète de l'image actuelle.
-    def copy(self):
+    def copy(self) -> Image:
         return self.__class__(self)
 
-    ## ~~~{.python .prototype}
-    ## subimage(Rect area) -> Image
-    ## ~~~
-    ## Crée une nouvelle image faisant référence à une zone plus petite de
-    ## l'image actuelle. `area` correspond à la zone à extraire de l'image
-    ## actuelle.
-    def subimage(self, area):
+    # Create a new Image that references its parent. Modifications to either
+    # images will effect each other. `area` is the zone to extract from `self`.
+    def subimage(self, area: Rect) -> Image:
         return self.__class__(self.pygsurface.subsurface(area))
 
-    ## ~~~{.python .prototype}
-    ## rect() -> Rect
-    ## ~~~
-    ## Retourne un nouveau rectangle positionné en (0, 0) et de la taille de
-    ## l'image actuelle.
-    def rect(self): return Rect(self.pygsurface.get_rect())
+    # Return a new rectangle at (0, 0) covering the entire image.
+    def rect(self) -> Rect:
+        return Rect(*self.pygsurface.get_rect())
 
-    ## ~~~{.python .prototype}
-    ## [int x, int y] -> pygame.Color
-    ## ~~~
-    ## Renvoie la couleur du pixel à la position spécifiée.
-    ##
-    ## ~~~python
-    ## # Exemple
-    ## i = Image((20, 20))
-    ## print(i[0, 0]) # (0, 0, 0, 255)
-    ## ~~~
-    def __getitem__(self, pos):
+    def __getitem__(self, pos: typ.Tuple[int, int]) -> pygame.Color:
         return self.pygsurface.get_at(pos)
 
-    ## ~~~{.python .prototype}
-    ## [int x, int y] = 3-tuple color
-    ## ~~~
-    ## Définit la couleur du pixel à la position spécifiée.
-    ##
-    ## ~~~python
-    ## # Exemple
-    ## i = Image((20, 20))
-    ## i[0, 0] = (0, 255, 0)
-    ## print(i[0, 0]) # (0, 255, 0, 255)
-    ## ~~~
-    def __setitem__(self, pos, color):
+    def __setitem__(self,
+        pos: typ.Tuple[int, int], color: pygame.Color
+    ) -> None:
         self.pygsurface.set_at(pos, color)
 
-    ## ~~~{.python .prototype}
-    ## colorkey(3-tuple color)
-    ## ~~~
-    ## Définit la couleur de transparence de l'image.
-    def colorkey(self, color):
+    # Set the current transparent color key for this image.
+    def colorkey(self, color: pygame.Color) -> Image:
         self.pygsurface.set_colorkey(color)
         return self
 
-    ## ~~~{.python .prototype}
-    ## fill(3-tuple color)
-    ## ~~~
-    ## Remplit l'image d'une couleur.
-    def fill(self, color):
+    def fill(self, color: pygame.Color) -> Image:
         self.pygsurface.fill(color)
         return self
 
-    ## ~~~{.python .prototype}
-    ## draw_img(Image img, 2-tuple pos, Rect area = None)
-    ## ~~~
-    ## Dessine une image (`img`) à la position spécifiée (`pos`) sur l'image
-    ## actuelle. Une zone spécifique de `img` peut être dessinée à l'aide de
-    ## `area`.
-    def draw_img(self, img, pos, area = None):
+    # Draw `img` onto `self` at `pos`. An optional `area` can be specified can
+    # be passed to select a smaller portion of `img` to draw.
+    def draw_img(self,
+        img: Image, pos: typ.Tuple[int, int], area: typ.Optional[Rect] = None
+    ) -> Image:
         self.pygsurface.blit(img.pygsurface, pos, area)
         return self
 
-    ## ~~~{.python .prototype}
-    ## draw_rect(3-tuple color, Rect rect, int width = 0)
-    ## ~~~
-    ## Dessine un rectangle `rect` de couleur `color` et d'épaisseur de bordure
-    ## `width`. Si width est égal à 0, le rectangle sera plein.
-    def draw_rect(self, color, rect, width = 0):
+    def draw_rect(self,
+        color: pygame.Color, rect: Rect, width: int = 0
+    ) -> Image:
         pygame.draw.rect(self.pygsurface, color, rect, width)
         return self
 
-    ## ~~~{.python .prototype}
-    ## draw_circle(3-tuple color, 2-tuple center, int radius, int width = 0)
-    ## ~~~
-    ## Dessine un cercle de couleur `color`, de centre `center`, de rayon
-    ## `radius` et d'épaisseur de bordure `width`. Si `width` est égal à 0, le
-    ## cercle sera plein.
-    def draw_circle(self, color, center, radius, width = 0):
+    def draw_circle(self,
+        color: pygame.Color, center: typ.Tuple[int, int], radius: int,
+        width: int = 0
+    ) -> Image:
         pygame.draw.circle(self.pygsurface, color, center, radius, width)
         return self
 
-    ## ~~~{.python .prototype}
-    ## draw_line(
-    ##     3-tuple color, 2-tuple start_pos, 2-tuple end_pos, int width = 1
-    ## )
-    ## ~~~
-    ## Dessine une ligne de couleur `color`, de position de départ `start_pos`,
-    ## de position d'arrivée `end_pos` et d'épaisseur `width`.
-    def draw_line(self, color, start_pos, end_pos, width = 1):
+    def draw_line(self,
+        color: pygame.Color, start_pos: typ.Tuple[int, int],
+        end_pos: typ.Tuple[int, int], width: int = 1
+    ) -> Image:
         pygame.draw.line(self.pygsurface, color, start_pos, end_pos, width)
         return self
 
-    ## ~~~{.python .prototype}
-    ## flip(bool x, bool y)
-    ## ~~~
-    ## Inverse l'image horizontalement (`x`) et/ou verticalement (`y`).
-    def flip(self, x, y):
+    def flip(self, x: bool, y: bool) -> Image:
         self.pygsurface = pygame.transform.flip(self.pygsurface, x, y)
         return self
 
-    ## ~~~{.python .prototype}
-    ## resize(2-tuple size)
-    ## ~~~
-    ## Redimensionne l'image. Sa nouvelle taille sera `size`.
-    def resize(self, size):
+    def resize(self, size: typ.Tuple[int, int]) -> Image:
         self.pygsurface = pygame.transform.scale(self.pygsurface, size)
         return self
 
-    ## ~~~{.python .prototype}
-    ## scale(float ratio)
-    ## ~~~
-    ## Mise à l'échelle de l'image.
-    def scale(self, ratio):
+    def scale(self, ratio: float) -> Image:
         self.resize(size = (
                 int(self.rect().w * ratio),
                 int(self.rect().h * ratio),
         ))
         return self
 
-    ## ~~~{.python .prototype}
-    ## rotate(int angle)
-    ## ~~~
-    ## Fait pivoter l'image d'un `angle` spécifié en degrés.
-    def rotate(self, angle):
+    def rotate(self, angle: int) -> Image:
         self.pygsurface = pygame.transform.rotate(self.pygsurface, angle)
         return self
 
 class Font:
-    # Constructeur
-
-    ## ~~~{.python .prototype}
-    ## Font(2-tuple size) -> Font
-    ## ~~~
-    ## Création d'un objet permettant d'écrire du texte sur une image. La
-    ## taille de la police d'écriture est spécifiée par `size`.
-    def __init__(self, size):
+    def __init__(self, size: int) -> None:
         self.pygfont = pygame.font.SysFont(None, size)
 
-    # Méthodes
-
-    ## ~~~{.python .prototype}
-    ## render(
-    ##     str text, bool antialias = True,
-    ##     3-tuple color = BLACK, 3-tuple bgcolor = None
-    ## )
-    ## ~~~
-    ## Crée une Image avec le texte (`text`) spécifié dessus. Ce texte peut être
-    ## lissé (`antialias`), d'une couleur spécifique (`color`) et avoir une
-    ## couleur de fond (`bgcolor`). Si aucune couleur de fond n'est spécifiée,
-    ## le fond sera transparent.
-    def render(self, text, antialias = True, color = BLACK, bgcolor = None):
+    def render(self,
+        text: str,
+        antialias: bool = True,
+        color: pygame.Color = BLACK,
+        bgcolor: pygame.Color = None
+    ) -> Image:
         return Image(
             self.pygfont.render(text, antialias, color, bgcolor)
         )
 
 class Window(Image):
-    # Héritage
-
-    ## > [Image](#classe-image)
-
-    # constructeur
-
-    ## ~~~{.python .prototype}
-    ## Window(str title, 2-tuple size, int framerate = 30)
-    ## ~~~
-    ## Crée une fenêtre ayant pour titre `title` et de taille `size`. Le
-    ## `framerate` est limité à 30 FPS par défaut.
-    def __init__(self, title, size, framerate = 30):
+    def __init__(self,
+        title: str, size: typ.Tuple[int, int], framerate: int = 30
+    ) -> None:
         pygame.init()
         pygame.mixer.quit()
 
@@ -361,55 +244,24 @@ class Window(Image):
             Font(size) for size in range(18, 43, 6)
         )
 
-    # Attributs
-
-    ## ~~~{.python .prototype}
-    ## fonts -> list<Font>
-    ## ~~~
-    ## Liste de polices de tailles ascendantes (18, 24, 30, 36 et 42).
-
-    ## ~~~{.python .prototype}
-    ## events -> Events
-    ## ~~~
-
-    # Méthodes de classe
-
-    ## ~~~{.python .prototype}
-    ## time() -> int
-    ## ~~~
-    ## Retourne le temps en millisecondes qui s'est écoulé depuis
-    ## l'initialisation d'une fenêtre.
+    # Return the number of milliseconds since the window has been initialized.
     @classmethod
-    def time(cls): return pygame.time.get_ticks()
+    def time(cls) -> int:
+        return pygame.time.get_ticks()
 
-    # Méthodes
-
-    ## ~~~{.python .prototype}
-    ## cursor(bool enable)
-    ## ~~~
-    ## Active ou désactive le curseur. Par défaut, le curseur est activé.
-    def cursor(self, enable):
+    def cursor(self, enable: bool) -> None:
         pygame.mouse.set_visible(enable)
 
-    ## ~~~{.python .prototype}
-    ## update()
-    ## ~~~
-    ## Met à jour le contenu de la fenêtre et limite le framerate.
-    ## Cette méthode doit être appelée à chaque itération de la boucle
-    ## principale du jeu.
-    def update(self):
-        self.clock.tick(self.framerate)
+    # Update the content of the window and limit the runtime speed of the game
+    # to `self.framerate`.
+    def update(self) -> None:
+        self.dt = self.clock.tick(self.framerate)
         pygame.display.flip()
 
-    ## ~~~{.python .prototype}
-    ## loop(function instructions)
-    ## ~~~
-    ## Boucle principale du jeu.
-    ##
-    ## 1. récupère les nouveaux événements (`events.update()`)
-    ## 2. exécute `instructions`
-    ## 3. met à jour le contenu de la fenêtre (`update()`)
-    def loop(self, instructions):
+    # 1. retrieve new events
+    # 2. execute `instructions`
+    # 3. update the content of the window
+    def loop(self, instructions: typ.Callable) -> None:
         while 1:
             self.events.update()
             if self.events.event(pygame.QUIT): sys.exit()
@@ -419,76 +271,34 @@ class Window(Image):
             self.update()
 
 class Events:
-    # Constructeur
-
-    ## ~~~{.python .prototype}
-    ## __init__(self) -> None
-    ## ~~~
-    ## Gestion de la file d'événements, de la souris et du clavier.
-    ##
-    ## Un événement ([`pygame.event.Event`](https://www.pygame.org/docs/ref/event.html#pygame.event.Event))
-    ## est constitué d'un type et d'attributs différents en fonction du type de
-    ## l'événement. Si vous souhaitez obtenir plus de détails, veuillez vous
-    ## référer à la documentation du module
-    ## [pygame.event](https://www.pygame.org/docs/ref/event.html).
-    ## La liste des événements est disponible dans la section
-    ## [Constantes](#événements).
     def __init__(self) -> None:
         pass
 
-    # Méthodes
-
-    ## ~~~{.python .prototype}
-    ## update(self) -> None
-    ## ~~~
-    ## Récupère les nouveaux événements disponibles. Cette méthode doit être
-    ## appelée à chaque *frame* dans le jeu.
+    # Retrieve new events. This method should be called each frame.
     def update(self) -> None:
         self.events = pygame.event.get()
         self.keyheld = pygame.key.get_pressed()
         self.mouseheld = pygame.mouse.get_pressed()
 
-    ## ~~~{.python .prototype}
-    ## event(self, type: int) -> pygame.event.Event
-    ## ~~~
-    ## Cherche un événement du [`type`](#événements) spécifié.
-    ## Retourne le premier événement trouvé ou `None`.
-    def event(self, type: int) -> pygame.event.Event:
+    # Returns the first event found of the specified `type`.
+    def event(self, type: int) -> typ.Optional[pygame.event.Event]:
         for e in self.events:
             if e.type == type: return e
+        return None
 
-    ## ~~~{.python .prototype}
-    ## key_press(self, key: int) -> bool
-    ## ~~~
-    ## Retourne si la [touche du clavier](#clavier) spécifiée vient d'être
-    ## enfoncée.
     def key_press(self, key: int) -> bool:
         for e in self.events:
             if (e.type == pygame.KEYDOWN) and (e.key == key): return True
         return False
 
-    ## ~~~{.python .prototype}
-    ## key_hold(self, key: int) -> bool
-    ## ~~~
-    ## Retourne si la [touche du clavier](#clavier) spécifiée est maintenue
-    ## enfoncée.
     def key_hold(self, key: int) -> bool:
         return self.keyheld[key]
 
-    ## ~~~{.python .prototype}
-    ## key_release(self, key: int) -> bool
-    ## ~~~
-    ## Retourne si la [touche du clavier](#clavier) spécifiée vient d'être
-    ## relâchée.
     def key_release(self, key: int) -> bool:
         for e in self.events:
             if (e.type == pygame.KEYUP) and (e.key == key): return True
         return False
 
-    ## ~~~{.python .prototype}
-    ## mouse_press(self, button: int = None) -> bool
-    ## ~~~
-    ## Retourne si un [bouton de la souris](#souris) vient d'être enfoncé.
     def mouse_press(self, button: int = None) -> bool:
         for e in self.events:
             if (e.type == pygame.MOUSEBUTTONDOWN):
@@ -496,20 +306,12 @@ class Events:
                 elif e.button == button: return True
         return False
 
-    ## ~~~{.python .prototype}
-    ## mouse_hold(self, button: int = None) -> bool
-    ## ~~~
-    ## Retourne si un [bouton de la souris](#souris) est maintenu enfoncé.
     def mouse_hold(self, button: int = None) -> bool:
         if any(self.mouseheld):
             if button is None: return True
             else: return self.mouseheld[button - 1]
         return False
 
-    ## ~~~{.python .prototype}
-    ## mouse_release(self, button: int = None) -> bool
-    ## ~~~
-    ## Retourne si un [bouton de la souris](#souris) vient d'être relâché.
     def mouse_release(self, button: int = None) -> bool:
         for e in self.events:
             if (e.type == pygame.MOUSEBUTTONUP):
@@ -517,199 +319,109 @@ class Events:
                 elif e.button == button: return True
         return False
 
-    ## ~~~{.python .prototype}
-    ## mouse_pos(self) -> typing.Tuple[int, int]
-    ## ~~~
-    ## Récupère la position de la souris.
-    def mouse_pos(self) -> typing.Tuple[int, int]:
+    def mouse_pos(self) -> typ.Tuple[int, int]:
         return pygame.mouse.get_pos()
 
 class Group(list):
-    def __init__(self, *args):
+    def __init__(self, *args: Sprite) -> None:
         list.__init__(self, args)
         for e in args: e.groups.append(self)
 
-    def append(self, e):
+    def append(self, e: Sprite) -> None:
         list.append(self, e)
         e.groups.append(self)
 
-    def update(self, *args, **kwargs):
+    def update(self, *args: typ.Any, **kwargs: typ.Any) -> None:
         for e in self: e.update(*args, **kwargs)
 
-    def draw(self, surface):
+    def draw(self, surface: Image) -> None:
         for e in self: e.draw(surface)
 
 class Sprite:
-    # Constructeur
-
-    ## ~~~{.python .prototype}
-    ## Sprite(Image image) -> Sprite
-    ## ~~~
-    ## Un `Sprite` possède une `image` qui peut être dessinée sur une surface et
-    ## positionnée à l'aide d'un `rect`.
-    def __init__(self, image):
+    def __init__(self, image: Image) -> None:
         self.image = image
         self.rect = self.image.rect()
-        self.groups = []
+        self.groups: typ.List[Group] = []
 
-    # Attributs
-
-    ## ~~~{.python .prototype}
-    ## image -> Image
-    ## ~~~
-
-    ## ~~~{.python .prototype}
-    ## rect -> Rect
-    ## ~~~
-
-    ## ~~~{.python .prototype}
-    ## groups -> List<group>
-    ## ~~~
-
-    # Méthodes
-
-    ## ~~~{.python .prototype}
-    ## kill()
-    ## ~~~
-    ## Supprime le sprite de tous les groupes (`groups`) auxquels il appartient.
-    def kill(self):
+    def kill(self) -> None:
         for g in self.groups: g.remove(self)
         self.groups = []
 
-    ## ~~~{.python .prototype}
-    ## update()
-    ## ~~~
-    ## Met à jour le sprite. Ne fait rien par défaut, à redéfinir.<br>
-    ## **Note**: Cette méthode est appelée par `Group.update()`.
-    def update(self): pass
+    # Update the sprite. DOes not do anything by default. Should be redefined.
+    # Note: this method is called by `Group.update()`.
+    def update(self) -> None:
+        pass
 
-    ## ~~~{.python .prototype}
-    ## draw(Image image)
-    ## ~~~
-    ## Dessine le sprite sur la surface spécifiée (`image`) à la position
-    ## définie par le rectangle du sprite (`rect`).
-    def draw(self, image): image.draw_img(self.image, self.rect)
+    # Draw the sprite on the specified `image` at `self.rect.topleft`.
+    def draw(self, image: Image) -> None:
+        image.draw_img(self.image, self.rect.topleft)
 
 class Counter:
-    # Constructeur
-
-    ## ~~~{.python .prototype}
-    ## Counter(end: int = 0, period: int = 0) -> Counter
-    ## ~~~
-    ## Un `Counter` permet de compter de 0 jusqu'à `end` en incrémentant sa
-    ## valeur périodiquement (`period`). Par défaut, le compteur n'a pas de
-    ## valeur de fin (`end = 0`) et est incrémenté toutes les 1000 ms
-    ## (`period = 1000`).
-    def __init__(self, end = 0, period = 1000):
+    # A counter counts from 0 to `end`. Its value is incremented periodically
+    # (`period`). By default the counter does not end (`end = 0`) and is
+    # incremented every 1000 ms (`period = 1000`).
+    def __init__(self, end: int = 0, period: int = 1000) -> None:
         self.end = end
         self.period = period
         self.restart()
 
-    # Propriétés
-
-    ## ~~~{.python .prototype}
-    ## elapsed -> int
-    ## ~~~
-    ## Valeur du compteur.
     @property
-    def elapsed(self):
+    def elapsed(self) -> int:
         return (pygame.time.get_ticks() - self.t0) // self.period
 
     @property
-    def remaining(self):
+    def remaining(self) -> int:
         return (self.end - self.elapsed)
 
-    ## ~~~{.python .prototype}
-    ## finished -> bool
-    ## ~~~
-    ## Vérifie si le compteur a fini.
     @property
-    def finished(self):
+    def finished(self) -> bool:
         return (self.elapsed >= self.end)
 
-    # Méthodes
-
-    ## ~~~{.python .prototype}
-    ## restart()
-    ## ~~~
-    ## Démarre ou redémarre le compteur.
-    def restart(self):
+    def restart(self) -> None:
         self.t0 = pygame.time.get_ticks()
 
 class Animations:
-    # Constructeur
-
-    ## ~~~{.python .prototype}
-    ## Animations(dict data, int period) -> Animations
-    ## ~~~
-    ##
-    ## Les animations sont contenues dans le dictionnaire `data`. Chaque entrée
-    ## fait correspondre le nom d'une animation (clé) à des frames (valeur).
-    ## Les frames sont représentées par une liste d'indices, chaque indice
-    ## faisant référence à une image.
-    ##
-    ## Le paramètre `period` correspond au temps (en ms) nécessaire pour passer
-    ## d'une frame à la suivante.
-    ##
-    ## Par défaut, la première animation définie dans `data` est lancée.
-    ##
-    ## ~~~python
-    ## # Exemple
-    ## animations = retro.Animations(
-    ##     data = {
-    ##         "WALK_L":  range(0, 8),
-    ##         "WALK_R":  range(0 + 133, 8 + 133),
-    ##         "FALL_L":  range(8, 12),
-    ##         "FALL_R":  range(8 + 133, 12 + 133),
-    ##         ...
-    ##     },
-    ##     period  = 100,
-    ## )
-    ## ~~~
-    def __init__(self, data, period):
+    # Animations are contained in `data`. Each entry map a name to frames.
+    # Frames are represented by a list of indexes. Each index references an
+    # image stored somewhere else. `period` specified the time necessary in
+    # milliseconds to switch to the next frame. By default, the first animation
+    # defined in `data` is started.
+    #
+    # # Example
+    # animations = retro.Animations(
+    #     data = {
+    #         "WALK_L":  range(0, 8),
+    #         "WALK_R":  range(0 + 133, 8 + 133),
+    #         "FALL_L":  range(8, 12),
+    #         "FALL_R":  range(8 + 133, 12 + 133),
+    #         ...
+    #     },
+    #     period  = 100,
+    # )
+    def __init__(self,
+        data: typ.Dict[str, typ.Sequence[int]], period: int
+    ) -> None:
         self.data   = data
         self.period = period
         if len(data) > 0: self.start(name = next(iter(self.data)))
 
-    # Propriétés
-
-    ## ~~~{.python .prototype}
-    ## frame -> int
-    ## ~~~
-    ##
-    ## Retourne l'indice de la frame de l'animation actuellement jouée.
-    ## Les animations sont jouées en boucle.
+    # Return the currently played frame's index.
     @property
-    def frame(self):
+    def frame(self) -> int:
         i = self.counter.elapsed % len(self.current)
         return self.current[i]
 
-    ## ~~~{.python .prototype}
-    ## finished -> bool
-    ## ~~~
-    ##
-    ## Retourne si l'animation a été complétée au moins une fois.
+    # Return whether the animation has finished at least once.
     @property
-    def finished(self): return self.counter.finished
+    def finished(self) -> bool:
+        return self.counter.finished
 
-    # Méthodes
-
-    ## ~~~{.python .prototype}
-    ## set(str name)
-    ## ~~~
-    ##
-    ## Définit l'animation à jouer (`current`).
-    def set(self, name):
+    # Sets the animation to play by specifying its `name`.
+    def set(self, name: str) -> None:
         self.current = self.data[name]
 
-    ## ~~~{.python .prototype}
-    ## start(str name)
-    ## ~~~
-    ##
-    ## Définit et démarre l'animation à jouer (`current`). L'attribut
-    ## [`counter`](#classe-counter) permet de gérer le passage d'une frame à
-    ## l'autre.
-    def start(self, name):
+    # Specify the animation to play by its `name` and starts it.
+    def start(self, name: str) -> None:
         self.set(name)
         self.counter = Counter(
             end    = len(self.current),
@@ -717,89 +429,43 @@ class Animations:
         )
 
 class AnimatedSprite(Sprite):
-    # Constructeur
-
-    ## ~~~{.python .prototype}
-    ## AnimatedSprite(list images, Animations animations) -> AnimatedSprite
-    ## ~~~
-    ##
-    ## Crée un sprite animé à partir d'une liste d'[`images`](#¢lasse-image)
-    ## et d'[`animations`](#classe-animations).
-    def __init__(self, images, animations):
+    def __init__(self, images: typ.List[Image], animations: Animations) -> None:
         Sprite.__init__(self, images[0])
         self.images = images
         self.animations = animations
 
-    # Méthodes
-
-    ## ~~~{.python .prototype}
-    ## update()
-    ## ~~~
-    ##
-    ## Affiche la frame actuelle de l'animation en cours.
-    def update(self): self.image = self.images[self.animations.frame]
+    # Sets the current `self.image` as the current frame of the animation.
+    def update(self) -> None:
+        self.image = self.images[self.animations.frame]
 
 class Stage(Sprite):
-    # Héritage
-
-    ## > [Sprite](#classe-sprite)
-
-    # Constructeur
-
-    ## ~~~{.python .prototype}
-    ## Stage(path:str) -> Stage
-    ## ~~~
-    ## Un Stage est un Sprite qui peut être altéré et restauré dans son état
-    ## d'origine (`original:Image`). Il est possible de se focaliser sur une
-    ## portion restreinte de l'image du sprite en manipulant `rect`/`camera`.
-    def __init__(self, path):
+    # A Stage is a Sprite which can be modified and then restored to its
+    # original state (`self.original`). A specific portion of the sprite image
+    # can be focused by manipulated `self.camera`.
+    def __init__(self, path: str):
         self.original = Image.from_path(path)
         Sprite.__init__(self, self.original.copy())
 
-    # Propriétés
-
-    ## ~~~{.python .prototype}
-    ## camera -> Rect
-    ## camera = rect:Rect
-    ## ~~~
     @property
-    def camera(self):
+    def camera(self) -> Rect:
         return self.rect
     @camera.setter
-    def camera(self, rect):
+    def camera(self, rect: Rect) -> None:
         self.rect = rect
 
-    # Méthodes
-
-    ## ~~~{.python .prototype}
-    ## camera2stage(p: Tuple[int, int]) -> Tuple[int, int]
-    ## ~~~
     ## Transform point `p` from camera space to stage space.
-    def camera2stage(self, p): return (
-        p[0] + self.camera.x,
-        p[1] + self.camera.y,
-    )
+    def camera2stage(self, p: typ.Tuple[int, int]) -> typ.Tuple[int, int]:
+        return (p[0] + self.camera.x, p[1] + self.camera.y)
 
-    ## ~~~{.python .prototype}
-    ## stage2camera(p: Tuple[int, int]) -> Tuple[int, int]
-    ## ~~~
     ## Transform point `p` from stage space to camera space.
-    def stage2camera(self, p): return (
-        p[0] - self.rect.x,
-        p[1] - self.rect.y,
-    )
+    def stage2camera(self, p: typ.Tuple[int, int]) -> typ.Tuple[int, int]:
+        return (p[0] - self.rect.x, p[1] - self.rect.y)
 
-    ## ~~~{.python .prototype}
-    ## clear_all()
-    ## ~~~
     ## Restore stage to its `self.original` state.
-    def clear_all(self):
+    def clear_all(self) -> None:
         self.image.draw_img(self.original, (0, 0))
 
-    ## ~~~{.python .prototype}
-    ## clear_focus()
-    ## ~~~
     ## Restore a portion (`self.camera`) of the stage to its `self.original`
     ## state.
-    def clear_focus(self):
+    def clear_focus(self) -> None:
         self.image.draw_img(self.original, self.camera.topleft, self.camera)
