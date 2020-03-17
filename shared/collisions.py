@@ -3,11 +3,10 @@ import math
 from shared.directions import Directions
 
 def pixel_checker(surface, color):
-    def inside(p): return surface.rect().collidepoint(p)
-
     def check(p, offset):
         p = (p[0] + offset[0], p[1] + offset[1])
-        if not inside(p): return None
+        if not surface.rect().collidepoint(p):
+            return None
         return (surface[p] == color)
 
     return check
@@ -43,12 +42,6 @@ def pixel_vertices(surface, rect, color):
         right = check(rect.topright,    ( 0,  0))
              or check(rect.bottomright, ( 0, -1)),
     )
-
-def distance(p1, p2, threshold):
-    return math.sqrt(
-            math.pow(p2[0] - p1[0], 2)
-          + math.pow(p2[1] - p1[1], 2)
-    ) < threshold
 
 # Returns a list containing all Sprites in `lst` that intersect with `sprite`.
 # If `kill` is set to True, all Sprites that collide will be removed from `lst`.

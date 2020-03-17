@@ -209,11 +209,6 @@ class Maze(retro.Sprite):
     @classmethod
     def tile_pos(cls, pos): return (pos[0] // 16, pos[1] // 16)
 
-    @classmethod
-    def distance(cls, p1, p2): return \
-        abs(p2[0] - p1[0]) \
-      + abs(p2[1] - p1[1])
-
     # Returns a Maze iterator.
     # If `window` is specified, iterates over the neighborhood centered on
     # `window.center` and of reach `window.reach`.

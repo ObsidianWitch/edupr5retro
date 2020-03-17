@@ -36,7 +36,7 @@ class Game:
     def target(self, iterable):
         target = sorted(
             iterable,
-            key = lambda elem: Maze.distance(
+            key = lambda elem: retro.Math.distance(
                 self.player.rect.center,
                 elem.rect.center
             )

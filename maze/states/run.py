@@ -54,11 +54,10 @@ class StateRun:
         ): self.player.score += 100
 
         ## Exit
-        self.win = shared.collisions.distance(
+        self.win = retro.Math.distance(
             p1 = self.player.rect.center,
             p2 = self.maze.exit.rect.center,
-            threshold = 5
-        )
+        ) < 10
 
         # Draw
         self.maze.draw()

@@ -45,7 +45,7 @@ def follow_wall(player):
         return [-player.nxtdir[0], -player.nxtdir[1]]
 
 def avoid(player, sprite):
-    distance = Maze.distance(player.rect.center, sprite.rect.center)
+    distance = retro.Math.distance(player.rect.center, sprite.rect.center)
     if distance > 50 : return False
     else: return direction(sprite, player, invert = True)
 
