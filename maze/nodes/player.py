@@ -80,7 +80,7 @@ class Player(retro.AnimatedSprite):
         for i,_ in enumerate(move_vec):
             if move_vec[i] == 0: continue
             move_vec[i] -= collision_vec[i]
-            move_vec[i] = retro.Math.clamp(move_vec[i], -1, 1)
+        move_vec = numpy.clip(move_vec, -1, 1)
 
         self.rect.move_ip(move_vec)
 
