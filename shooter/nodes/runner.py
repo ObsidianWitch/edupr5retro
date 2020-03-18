@@ -1,4 +1,4 @@
-import shared.retro as retro
+from retro.out import retro
 from shooter.path import asset
 from shooter.nodes.enemy import Enemy
 

@@ -1,7 +1,6 @@
 import random
 import numpy
-import shared.retro as retro
-from shared.directions import Directions
+from retro.out import retro
 from shooter.path import asset
 
 class Crosshair(retro.Sprite):
@@ -20,7 +19,7 @@ class Crosshair(retro.Sprite):
         offset = 20
         w = self.window.rect().w
         h = self.window.rect().h
-        return Directions(
+        return retro.Directions(
             up    = (0 <= p[1] <= offset),
             down  = (h - offset <= p[1] <= h),
             left  = (0 <= p[0] <= offset),
@@ -32,7 +31,7 @@ class Crosshair(retro.Sprite):
 
         # move crosshair
         key_hold = self.window.events.key_hold
-        move_vec = Directions(
+        move_vec = retro.Directions(
             up    = key_hold(retro.K_UP),
             down  = key_hold(retro.K_DOWN),
             left  = key_hold(retro.K_LEFT),

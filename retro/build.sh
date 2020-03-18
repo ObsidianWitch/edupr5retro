@@ -22,7 +22,9 @@ for f in 'src/math.py' \
          'src/window.py' \
          'src/events.py' \
          'src/sprite.py' \
-         'src/stage.py'
+         'src/stage.py' \
+         'src/directions.py' \
+         'src/collisions.py'
 do
     mypy.main --module="$(sed -e "s:/:\.:" -e "s/\.py//" <<< "$f")"
     cat "$f" | dimports >> "$out"

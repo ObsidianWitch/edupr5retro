@@ -1,5 +1,5 @@
 import numpy
-import shared.retro as retro
+from retro.out import retro
 from maze.nodes.palette import *
 
 class Maze:

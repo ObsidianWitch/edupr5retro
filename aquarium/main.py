@@ -1,5 +1,5 @@
 from pathlib import Path
-import shared.retro as retro
+from retro.out import retro
 from aquarium.fish import Fish
 
 def asset(filename):

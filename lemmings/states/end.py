@@ -1,4 +1,4 @@
-import shared.retro as retro
+from retro.out import retro
 
 class End:
     def __init__(self, window, win):

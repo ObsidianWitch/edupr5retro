@@ -1,4 +1,4 @@
-import shared.retro as retro
+from retro.out import retro
 from lemmings.path import asset
 
 class Walk:

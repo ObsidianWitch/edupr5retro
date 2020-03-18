@@ -1,5 +1,4 @@
-import shared.retro as retro
-import shared.collisions
+from retro.out import retro
 from lemmings.nodes.spawner import Spawner
 from lemmings.path import asset
 from lemmings.ui import UI
@@ -28,7 +27,7 @@ class Level:
         self.ui.update()
         self.spawner.update(self.ui.selection.state)
 
-        if shared.collisions.sprites(
+        if retro.Collisions.sprites(
             sprite = self.exit,
             lst    = self.spawner.group,
             kill   = True,

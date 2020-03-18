@@ -1,4 +1,4 @@
-import shared.retro as retro
+from retro.out import retro
 from shooter.nodes.spawner import Spawner
 from shooter.nodes.player import Player
 from shooter.path import asset

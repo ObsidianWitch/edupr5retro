@@ -1,6 +1,4 @@
-import shared.retro as retro
-import shared.collisions
-from shared.directions import Directions
+from retro.out import retro
 from maze.nodes.maze import Maze
 from maze.nodes.player import Player
 from maze.nodes.palette import *
@@ -25,13 +23,13 @@ class Run:
         # Update
         key = self.window.events.key_hold
         self.player.update(
-            directions = Directions(
+            directions = retro.Directions(
                 up    = key(retro.K_UP),
                 down  = key(retro.K_DOWN),
                 left  = key(retro.K_LEFT),
                 right = key(retro.K_RIGHT),
             ),
-            collisions = shared.collisions.pixel_vertices(
+            collisions = retro.pixel_vertices(
                 surface = self.window,
                 rect    = self.player.rect,
                 color   = MAZE_PALETTE["B"],
@@ -39,14 +37,14 @@ class Run:
         )
 
         ## Traps
-        if shared.collisions.sprites(
+        if retro.Collisions.sprites(
             sprite = self.player,
             lst    = self.maze.traps,
             kill   = False,
         ): self.player.reset_position()
 
         ## Treasures
-        if shared.collisions.sprites(
+        if retro.Collisions.sprites(
             sprite = self.player,
             lst    = self.maze.treasures,
             kill   = True

@@ -1,6 +1,5 @@
 import types
-import shared.retro as retro
-import shared.collisions
+from retro.out import retro
 from lemmings.nodes.actions import Actions
 from lemmings.path import asset
 
@@ -62,7 +61,7 @@ class Lemming(retro.Sprite):
         else:        self.animations.start("NONE")
 
     def collisions(self, surface):
-        directions = shared.collisions.pixel_mid(
+        directions = retro.Collisions.pixel_mid(
             surface, self.bounding_rect, retro.BLACK
         ).invert()
 

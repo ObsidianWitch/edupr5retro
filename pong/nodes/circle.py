@@ -1,4 +1,4 @@
-from shared import retro
+from retro.out import retro
 
 class Circle:
     def __init__(self, center, radius):
