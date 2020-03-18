@@ -1,6 +1,5 @@
 import shared.retro as retro
-from pong.states.run import StateRun
-from pong.states.end import StateEnd
+from pong import states
 
 class Game:
     def __init__(self, window):
@@ -9,17 +8,17 @@ class Game:
 
     def run(self):
         if self.state is None:
-            self.state = StateRun(self.window)
+            self.state = states.Run(self.window)
 
-        elif type(self.state) == StateRun:
+        elif type(self.state) == states.Run:
             if self.state.winner:
-                self.state = StateEnd(self.window, self.state.winner)
+                self.state = states.End(self.window, self.state.winner)
             else:
                 self.state.run()
 
-        elif type(self.state) == StateEnd:
+        elif type(self.state) == states.End:
             if self.state.restart:
-                self.state = StateRun(self.window)
+                self.state = states.Run(self.window)
             else:
                 self.state.run()
 
