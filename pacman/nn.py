@@ -2,6 +2,7 @@ import types
 import random
 import math
 import copy
+import numpy
 import retro
 
 class NN(list):
@@ -21,9 +22,8 @@ class NN(list):
     def predict(self, *inputs):
         values = inputs
         for w in self: values = [
-            math.tanh(
-                retro.Vec.dot(values, n)
-            ) for n in w
+            math.tanh( numpy.dot(values, n).tolist() )
+            for n in w
         ]
 
         return values

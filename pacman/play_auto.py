@@ -1,5 +1,6 @@
 import sys
 import random
+import numpy
 import retro
 from game.parameters import Parameters
 from game.game import Game
@@ -15,7 +16,8 @@ class RandImpulse:
     def start(self, player):
         self.i = 50
         dirs = [[-1, 0], [ 0, -1], [ 1,  0], [ 0,  1]]
-        if player.curdir in dirs: dirs.remove(player.curdir)
+        if player.curdir in dirs:
+            dirs.remove(player.curdir)
         return random.choice(dirs)
 
     def run(self, player):
@@ -29,8 +31,9 @@ class RandImpulse:
             return player.nxtdir
 
 def direction(s1, s2, invert = False):
-    dv = retro.Vec.sub(s1.rect.center, s2.rect.center)
-    if invert: dv = retro.Vec.neg(dv)
+    dv = numpy.subtract(s1.rect.center, s2.rect.center).tolist()
+    if invert:
+        dv = numpy.negative(dv).tolist()
     if   dv[0] < 0: return [-1,  0]
     elif dv[0] > 0: return [ 1,  0]
     elif dv[1] < 0: return [ 0, -1]

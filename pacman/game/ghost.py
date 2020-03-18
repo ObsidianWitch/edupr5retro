@@ -1,5 +1,6 @@
 import enum
 import random
+import numpy
 import retro
 from game.entity import Entity
 from game.assets import assets
@@ -38,7 +39,7 @@ class State:
         if self.current == self.WALK:
             if player.powerup.started:
                 self.ghost.set_animation("FEAR")
-                self.ghost.curdir = retro.Vec.neg(self.ghost.curdir)
+                self.ghost.curdir = numpy.negative(self.ghost.curdir).tolist()
                 self.current = self.FEAR
         elif self.current == self.FEAR:
             if not player.powerup.enabled:
@@ -79,7 +80,7 @@ class Ghost(Entity):
 
     def next_dir(self):
         dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]]
-        opdir = retro.Vec.neg(self.curdir)
+        opdir = numpy.negative(self.curdir).tolist()
         if opdir in dirs: dirs.remove(opdir)
         self.nxtdir = random.choice(dirs)
 
@@ -87,7 +88,8 @@ class Ghost(Entity):
         if not self.nxtcol:
             self.curdir = self.nxtdir
         elif self.curcol is None:
-            self.curdir = retro.Vec.neg(self.curdir)
+            self.curdir = numpy.negative(self.curdir).tolist()
+
         elif self.curcol:
             self.next_dir()
             return True
@@ -100,5 +102,6 @@ class Ghost(Entity):
 
     def update(self, maze, player):
         self.state.update(player)
-        if (self.curdir == self.nxtdir): self.next_dir()
+        if (self.curdir == self.nxtdir):
+            self.next_dir()
         Entity.update(self, maze)

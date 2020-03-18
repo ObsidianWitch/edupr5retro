@@ -1,6 +1,7 @@
 import math
 import types
 import itertools
+import numpy
 import retro
 from game.assets import assets
 
@@ -27,7 +28,7 @@ class Bonus(retro.Sprite):
 
         self = retro.Sprite.__new__(cls)
         retro.Sprite.__init__(self, bonus.img)
-        self.rect.topleft = retro.Vec.add(pos, bonus.offset)
+        self.rect.topleft = numpy.add(pos, bonus.offset).tolist()
         self.id = bonus.id
         self.value = bonus.value
 
@@ -116,7 +117,7 @@ class Walls(list):
         def inside(p): return image.rect().collidepoint(p)
 
         def check(p, offset):
-            p = retro.Vec.add(p, offset)
+            p = numpy.add(p, offset).tolist()
             if not inside(p): return None
             return (image[p] == color)
 
@@ -236,7 +237,7 @@ class Maze(retro.Sprite):
     def symbols(self, player, ghosts, transpose = False, reach = -1):
         def process_player(i, j):
             player_ij = self.tile_pos(player.rect.center)
-            if retro.Vec.eq((i, j), player_ij): return 1
+            if numpy.equal((i, j), player_ij): return 1
 
         def process_walls(i, j):
             if self.walls[i][j]: return 2
@@ -244,7 +245,7 @@ class Maze(retro.Sprite):
         def process_ghosts(i, j):
             for ghost in ghosts:
                 ghost_ij = self.tile_pos(ghost.rect.center)
-                if retro.Vec.eq((i, j), ghost_ij):
+                if numpy.equal((i, j), ghost_ij):
                     return 5 + ghost.state.current
 
         def process_bonuses(i, j):

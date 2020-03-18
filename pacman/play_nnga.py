@@ -3,6 +3,7 @@ import itertools
 import types
 import time
 import sys
+import numpy
 import retro
 from game.parameters import Parameters
 from game.game import Game, Games
@@ -18,11 +19,11 @@ def update_one(game, nn):
     bonus  = maze.bonuses.nearest(player)
 
     p = nn.predict(
-        *retro.Vec.sub(
+        *numpy.subtract(
             ghost.rect.center, player.rect.center
         ) if ghost else (-1.0, -1.0),
         ghost.state.current if ghost else -1,
-        *retro.Vec.sub(
+        *numpy.subtract(
             bonus.rect.center, player.rect.center
         ) if bonus else (-1.0, -1.0),
         maze.bonuses.count,

@@ -1,3 +1,4 @@
+import numpy
 import retro
 from game.maze import Walls
 
@@ -17,7 +18,7 @@ class Entity(retro.AnimatedSprite):
 
     def bounding_rect(self, offset):
         r = self.rect.copy()
-        r.size = retro.Vec.sub(r.size, offset)
+        r.size = numpy.subtract(r.size, offset).tolist()
         r.center = self.rect.center
         return r
 
@@ -33,7 +34,6 @@ class Entity(retro.AnimatedSprite):
         raise NotImplementedError
 
     def update(self, maze):
-        if not self.collide_maze(maze): self.rect.move_ip(
-            retro.Vec.mul(self.speed, self.curdir)
-        )
+        if not self.collide_maze(maze):
+            self.rect.move_ip(numpy.multiply(self.speed, self.curdir))
         retro.AnimatedSprite.update(self)
