@@ -1,6 +1,5 @@
 import shared.retro as retro
-from shooter.states.run import StateRun
-from shooter.states.end import StateEnd
+from shooter import states
 
 class Game:
     def __init__(self, window):
@@ -9,17 +8,17 @@ class Game:
 
     def run(self):
         if self.state is None:
-            self.state = StateRun(window)
+            self.state = states.Run(window)
 
-        elif type(self.state) == StateRun:
+        elif type(self.state) == states.Run:
             if self.state.finished:
-                self.state = StateEnd(window)
+                self.state = states.End(window)
             else:
                 self.state.run()
 
-        elif type(self.state) == StateEnd:
+        elif type(self.state) == states.End:
             if self.state.restart:
-                self.state = StateRun(window)
+                self.state = states.Run(window)
             else:
                 self.state.run()
 
