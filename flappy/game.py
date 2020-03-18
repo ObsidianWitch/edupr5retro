@@ -123,6 +123,15 @@ class Game:
 
         self.finished = False
 
+    def draw_scores(self):
+        for i, bird in enumerate(self.birds):
+            score = retro.Sprite([self.window.fonts[0].render(
+                text  = str(bird.fitness),
+                color = retro.WHITE,
+            )])
+            score.rect.move_ip(10, 10 + (i * score.rect.h))
+            score.draw(self.window)
+
     def run(self):
         # Update
         self.pipes.update()
@@ -146,5 +155,7 @@ class Game:
         self.pipes.draw()
         self.ground.draw()
         for b in self.birds: b.draw()
+        self.draw_scores()
 
-    def reset(self): self.__init__(self.window, self.nbirds)
+    def reset(self):
+        self.__init__(self.window, self.nbirds)
