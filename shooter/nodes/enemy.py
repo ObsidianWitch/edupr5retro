@@ -1,9 +1,8 @@
 import shared.retro as retro
-from shared.sprite import Sprite
 
-class Enemy(Sprite):
+class Enemy(retro.Sprite):
     def __init__(self, image):
-        Sprite.__init__(self, image)
+        retro.Sprite.__init__(self, image)
 
         self.alive = True
         self.shoot_timer = retro.Counter(3)
@@ -26,7 +25,7 @@ class Enemy(Sprite):
     def draw_shoot_timer(self, font, dest):
         if not self.alive: return
 
-        shoot_timer = Sprite(font.render(
+        shoot_timer = retro.Sprite(font.render(
             text  = f"{self.shoot_timer.remaining}",
             color = retro.WHITE,
         ))
@@ -35,4 +34,4 @@ class Enemy(Sprite):
 
     def draw(self, dest):
         if not self.alive: return
-        Sprite.draw(self, dest)
+        retro.Sprite.draw(self, dest)

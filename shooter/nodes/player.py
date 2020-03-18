@@ -1,16 +1,15 @@
 import random
 import shared.retro as retro
 from shared.directions import Directions
-from shared.sprite import Sprite
 from shooter.path import asset
 
-class Crosshair(Sprite):
+class Crosshair(retro.Sprite):
     IMG = retro.Image.from_path(asset("crosshair.png"))
 
     def __init__(self, window):
         self.window = window
 
-        Sprite.__init__(self, self.IMG)
+        retro.Sprite.__init__(self, self.IMG)
         self.rect.center = self.window.rect().center
 
         self.speed = 10
@@ -55,14 +54,14 @@ class Crosshair(Sprite):
         )
         stage.camera.clamp_ip(stage.image.rect())
 
-class Ammunitions(Sprite):
+class Ammunitions(retro.Sprite):
     IMG = retro.Image.from_path(asset("bullet.png"))
     IMG.scale(0.5)
 
     def __init__(self, window):
         self.window = window
 
-        Sprite.__init__(self, self.IMG)
+        retro.Sprite.__init__(self, self.IMG)
         self.rect.bottomleft = self.window.rect().bottomleft
 
         self.count = 12
@@ -70,15 +69,15 @@ class Ammunitions(Sprite):
     def draw(self, dest):
         for i in range(self.count):
             self.rect.left = i * self.rect.width
-            Sprite.draw(self, dest)
+            retro.Sprite.draw(self, dest)
 
-class Hide(Sprite):
+class Hide(retro.Sprite):
     IMG = retro.Image.from_path(asset("hide.png"))
 
     def __init__(self, window):
         self.window = window
 
-        Sprite.__init__(self, self.IMG)
+        retro.Sprite.__init__(self, self.IMG)
         self.rect.center = self.window.rect().center
 
         self.hidden = False
@@ -88,13 +87,13 @@ class Hide(Sprite):
 
     def draw(self, dest):
         if self.hidden:
-            Sprite.draw(self, dest)
+            retro.Sprite.draw(self, dest)
 
-class Explosion(Sprite):
+class Explosion(retro.Sprite):
     IMG = retro.Image.from_path(asset("bang.png"))
 
     def __init__(self, center):
-        Sprite.__init__(self, self.IMG)
+        retro.Sprite.__init__(self, self.IMG)
         self.rect.center = center
         self.timer = retro.Counter(2)
 
@@ -107,8 +106,8 @@ class Hints:
         self.stage = stage
 
         self.sprites = (
-            Sprite.from_path(asset("arrow_left.png")),
-            Sprite.from_path(asset("arrow_right.png")),
+            retro.Sprite.from_path(asset("arrow_left.png")),
+            retro.Sprite.from_path(asset("arrow_right.png")),
         )
         self.sprites[0].rect.midleft  = self.window.rect().midleft
         self.sprites[1].rect.midright = self.window.rect().midright

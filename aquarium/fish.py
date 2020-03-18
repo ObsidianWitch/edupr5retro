@@ -1,11 +1,10 @@
 import random
 import shared.retro as retro
-from shared.sprite import Sprite
 
-class Fish(Sprite):
+class Fish(retro.Sprite):
     def __init__(self, path, speed, move):
         sprite = retro.Image.from_path(path)
-        Sprite.__init__(self, sprite)
+        retro.Sprite.__init__(self, sprite)
         self.dx, self.dy = speed
         self.move = move
 
@@ -15,7 +14,7 @@ class Fish(Sprite):
     def flip(self, xflip = False, yflip = False):
         if xflip: self.dx *= -1
         if yflip: self.dy *= -1
-        Sprite.flip(self, xflip, False)
+        retro.Sprite.flip(self, xflip, False)
 
     # Moves from left to right, constrained by `rect`.
     def move1(self, rect):

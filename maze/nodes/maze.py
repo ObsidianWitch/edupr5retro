@@ -1,6 +1,5 @@
 import numpy
 import shared.retro as retro
-from shared.sprite import Sprite
 from maze.nodes.palette import *
 
 class Maze:
@@ -114,7 +113,7 @@ class Maze:
         self.traps     = retro.Group()
 
         def init_exit(code, color, xsq, ysq):
-            self.exit = Sprite.from_ascii(
+            self.exit = retro.Sprite.from_ascii(
                 txt        = self.EXIT_ASCII,
                 dictionary = SPRITE_PALETTE,
             )
@@ -122,7 +121,7 @@ class Maze:
             self.items.append(self.exit)
 
         def init_treasure(code, color, xsq, ysq):
-            sprite = Sprite.from_ascii(
+            sprite = retro.Sprite.from_ascii(
                 txt        = self.TREASURE_ASCII,
                 dictionary = SPRITE_PALETTE,
             )
@@ -131,7 +130,7 @@ class Maze:
             self.treasures.append(sprite)
 
         def init_trap(code, color, xsq, ysq):
-            sprite = Sprite.from_ascii(
+            sprite = retro.Sprite.from_ascii(
                 txt        = self.TRAP_ASCII,
                 dictionary = SPRITE_PALETTE,
             )
@@ -147,7 +146,7 @@ class Maze:
         self.traverse(init_one)
 
     def init_maze(self):
-        self.maze = Sprite.from_ascii(self.MAZE_ASCII, MAZE_PALETTE)
+        self.maze = retro.Sprite.from_ascii(self.MAZE_ASCII, MAZE_PALETTE)
         self.maze.scale(self.tile_size)
 
     # Traverses the MAZE_ASCII array and executes the given `function` on each

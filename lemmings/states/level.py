@@ -1,6 +1,5 @@
 import shared.retro as retro
 import shared.collisions
-from shared.sprite import Sprite
 from lemmings.nodes.spawner import Spawner
 from lemmings.path import asset
 from lemmings.ui import UI
@@ -13,7 +12,7 @@ class Level:
         self.ui = UI(self.window)
 
         self.spawner = Spawner(self.window, self.bg, startp)
-        self.exit = Sprite.from_path(asset("sortie.png"))
+        self.exit = retro.Sprite.from_path(asset("sortie.png"))
         self.exit.rect.topleft = endp
 
     @property

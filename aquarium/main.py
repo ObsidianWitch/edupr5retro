@@ -1,7 +1,6 @@
 from pathlib import Path
 import shared.retro as retro
 from aquarium.fish import Fish
-from shared.sprite import Sprite
 
 def asset(filename):
     return str(Path('aquarium/data') / filename)
@@ -10,7 +9,7 @@ class Game:
     def __init__(self, window):
         self.window = window
 
-        bg = Sprite.from_path(asset("fond.png"))
+        bg = retro.Sprite.from_path(asset("fond.png"))
 
         fish1 = Fish(
             speed  = (-2, 0),
@@ -38,22 +37,22 @@ class Game:
         fish3.scale(1.1)
         fish3.rect.move_ip(200, 200)
 
-        plant1 = Sprite.from_path(asset("plant1.bmp"))
+        plant1 = retro.Sprite.from_path(asset("plant1.bmp"))
         plant1.colorkey((255, 7, 0))
         plant1.scale(0.5)
         plant1.rect.move_ip(100, 170)
 
-        plant2 = Sprite.from_path(asset("plant2.bmp"))
+        plant2 = retro.Sprite.from_path(asset("plant2.bmp"))
         plant2.colorkey((255, 7, 0))
         plant2.scale(0.7)
         plant2.rect.move_ip(360, 170)
 
-        decor1 = Sprite.from_path(asset("decor1.bmp"))
+        decor1 = retro.Sprite.from_path(asset("decor1.bmp"))
         decor1.colorkey((255, 0, 0))
         decor1.scale(0.7)
         decor1.rect.move_ip(500, 175)
 
-        decor2 = Sprite.from_path(asset("decor2.bmp"))
+        decor2 = retro.Sprite.from_path(asset("decor2.bmp"))
         decor2.colorkey((255, 7, 0))
         decor2.scale(0.3)
         decor2.rect.move_ip(260, 260)

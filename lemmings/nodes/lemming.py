@@ -1,12 +1,11 @@
 import types
 import shared.retro as retro
 import shared.collisions
-from shared.sprite import AnimatedSprite
 from lemmings.nodes.actions import Actions
 from lemmings.path import asset
 
-class Lemming(AnimatedSprite):
-    IMGS = AnimatedSprite.from_spritesheet(
+class Lemming(retro.AnimatedSprite):
+    IMGS = retro.AnimatedSprite.from_spritesheet(
         path          = asset("planche.png"),
         sprite_size   = (30, 30),
         discard_color = retro.RED,
@@ -19,7 +18,7 @@ class Lemming(AnimatedSprite):
         self.window = window
         self.bg = bg
 
-        AnimatedSprite.__init__(
+        retro.AnimatedSprite.__init__(
             self       = self,
             images     = self.IMGS,
             animations = retro.Animations(
@@ -161,16 +160,16 @@ class Lemming(AnimatedSprite):
         elif self.state == self.actions.dead:
             self.actions.dead.run()
 
-        AnimatedSprite.update(self)
+        retro.AnimatedSprite.update(self)
 
     def draw_bg(self):
         if self.state != self.actions.stop: return
 
-        AnimatedSprite.draw(self, self.bg.image)
+        retro.AnimatedSprite.draw(self, self.bg.image)
 
     def draw_screen(self):
         if self.state == self.actions.stop: return
         elif self.state == self.actions.bomb:
             self.actions.bomb.draw_timer()
 
-        AnimatedSprite.draw(self, self.window)
+        retro.AnimatedSprite.draw(self, self.window)

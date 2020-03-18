@@ -1,5 +1,4 @@
 import shared.retro as retro
-from shared.sprite import Sprite
 from lemmings.nodes.actions import Actions
 
 class UI:
@@ -12,9 +11,9 @@ class UI:
         self.position_icons()
 
     def populate_icons(self):
-        for A in Actions.USABLE:
-            sprite = Sprite(A.ICON)
-            sprite.state = A
+        for action in Actions.USABLE:
+            sprite = retro.Sprite(action.ICON)
+            sprite.state = action
             self.icons.append(sprite)
 
     def position_icons(self):

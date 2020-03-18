@@ -2,6 +2,7 @@ from __future__ import annotations
 import sys
 import typing as typ
 from numbers import Real
+import itertools
 import pygame
 import numpy
 from pygame.locals import *

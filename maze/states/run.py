@@ -1,7 +1,6 @@
 import shared.retro as retro
 import shared.collisions
 from shared.directions import Directions
-from shared.sprite import Sprite
 from maze.nodes.maze import Maze
 from maze.nodes.player import Player
 from maze.nodes.palette import *
@@ -14,7 +13,7 @@ class StateRun:
         self.win = False
 
     def draw_score(self):
-        score = Sprite(self.window.fonts[0].render(
+        score = retro.Sprite(self.window.fonts[0].render(
             text  = f"Score: {self.player.score}",
             color = retro.WHITE,
         ))

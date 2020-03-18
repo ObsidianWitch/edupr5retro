@@ -1,12 +1,11 @@
 import shared.retro as retro
-from shared.sprite import Sprite
 
 class StateEnd:
     def __init__(self, window):
         self.window = window
         self.restart = False
 
-        self.txt = Sprite(self.window.fonts[4].render(
+        self.txt = retro.Sprite(self.window.fonts[4].render(
             text    = "DEAD",
             color   = retro.WHITE,
             bgcolor = retro.BLACK,

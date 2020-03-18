@@ -1,6 +1,5 @@
 import random
 import shared.retro as retro
-from shared.sprite import Sprite
 from shooter.nodes.enemy import Enemy
 from shooter.nodes.kidnaper import Kidnaper
 from shooter.nodes.runner import Runner

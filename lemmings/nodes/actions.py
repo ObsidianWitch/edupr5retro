@@ -1,5 +1,4 @@
 import shared.retro as retro
-from shared.sprite import Sprite
 from lemmings.path import asset
 
 class Walk:
@@ -116,7 +115,7 @@ class Bomb:
         if self.explode: return
 
         window = self.lemming.window
-        timer_surface = Sprite(window.fonts[0].render(
+        timer_surface = retro.Sprite(window.fonts[0].render(
             text  = f"{self.timer.remaining}",
             color = retro.WHITE,
         ))

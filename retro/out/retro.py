@@ -2,6 +2,7 @@ from __future__ import annotations
 import sys
 import typing as typ
 from numbers import Real
+import itertools
 import pygame
 import numpy
 from pygame.locals import *
@@ -348,6 +349,26 @@ class Sprite:
         self.rect = self.image.rect()
         self.groups: typ.List[Group] = []
 
+    @classmethod
+    def from_path(cls, path):
+        return cls(Image.from_path(path))
+
+    @classmethod
+    def from_ascii(cls, txt, dictionary):
+        return cls(Image.from_ascii(txt, dictionary))
+
+    def flip(self, xflip = False, yflip = False):
+        self.image.flip(xflip, yflip)
+
+    def scale(self, ratio):
+        self.image.scale(ratio)
+        newrect = self.image.rect()
+        newrect.move_ip(self.rect.topleft)
+        self.rect = newrect
+
+    def colorkey(self, color):
+        self.image.colorkey(color)
+
     def kill(self) -> None:
         for g in self.groups: g.remove(self)
         self.groups = []
@@ -388,7 +409,7 @@ class Counter:
 class Animations(typ.Dict[str, typ.Sequence[int]]):
     # Animations are stored as entries in this dictionary. Each entry map a name
     # to frames. Frames are represented by a list of indexes. Each index
-    # references an image stored somewhere else. `period` specified the time
+    # references an image stored somewhere else. `period` specifies the time
     # necessary in milliseconds to switch to the next frame. By default, the
     # first animation defined in `self` is started.
     #
@@ -435,6 +456,42 @@ class AnimatedSprite(Sprite):
         Sprite.__init__(self, images[0])
         self.images = images
         self.animations = animations
+
+    @classmethod
+    def from_path(cls, paths, animations):
+        return cls(
+            images     = [Sprite.from_path(p).image for p in paths],
+            animations = animations,
+        )
+
+    @classmethod
+    def from_ascii(cls, txts, dictionary, animations):
+        return cls(
+            images     = [Sprite.from_ascii(t, dictionary).image for t in txts],
+            animations = animations,
+        )
+
+    @classmethod
+    def from_spritesheet(cls, path, sprite_size, discard_color, animations):
+        images = Image.from_spritesheet(
+            path, sprite_size, discard_color
+        )
+        images = list(itertools.chain(*images))
+        return cls(images, animations)
+
+    def scale(self, ratio):
+        self.images = [img.scale(ratio) for img in self.images]
+        self.image = self.images[0]
+        newrect = self.image.rect()
+        newrect.move_ip(self.rect.topleft)
+        self.rect = newrect
+
+    def flip(self, xflip = False, yflip = False):
+        self.images = [img.flip(xflip, yflip) for img in self.images]
+        self.image  = self.images[0]
+
+    def colorkey(self, color):
+        for img in self.images: img.colorkey(color)
 
     # Sets the current `self.image` as the current frame of the animation.
     def update(self) -> None:
