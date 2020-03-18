@@ -13,10 +13,10 @@ class Run:
         self.win = False
 
     def draw_score(self):
-        score = retro.Sprite(self.window.fonts[0].render(
+        score = retro.Sprite([self.window.fonts[0].render(
             text  = f"Score: {self.player.score}",
             color = retro.WHITE,
-        ))
+        )])
         score.rect.topright = self.window.rect().topright
         score.rect.move_ip(-10, 10)
         score.draw(self.window)
@@ -68,11 +68,11 @@ class End:
         self.window = window
         self.restart = False
 
-        self.txt = retro.Sprite(self.window.fonts[4].render(
+        self.txt = retro.Sprite([self.window.fonts[4].render(
             text    = f"WIN",
             color   = retro.WHITE,
             bgcolor = retro.BLACK,
-        ))
+        )])
         self.txt.rect.center = self.window.rect().center
 
     def run(self):

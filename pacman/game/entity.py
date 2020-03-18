@@ -2,9 +2,9 @@ import numpy
 import retro
 from game.maze import Walls
 
-class Entity(retro.AnimatedSprite):
+class Entity(retro.Sprite):
     def __init__(self, sprite, pos, speed, curdir = [0, 0], nxtdir = [0, 0]):
-        retro.AnimatedSprite.__init__(self, sprite.images, sprite.animations)
+        retro.Sprite.__init__(self, sprite.images, sprite.animations)
         self.rect.topleft = pos
         self.speed  = speed
         self.curdir = curdir
@@ -36,4 +36,4 @@ class Entity(retro.AnimatedSprite):
     def update(self, maze):
         if not self.collide_maze(maze):
             self.rect.move_ip(numpy.multiply(self.speed, self.curdir))
-        retro.AnimatedSprite.update(self)
+        retro.Sprite.update(self)

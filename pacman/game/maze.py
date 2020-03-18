@@ -27,7 +27,7 @@ class Bonus(retro.Sprite):
         else: return None
 
         self = retro.Sprite.__new__(cls)
-        retro.Sprite.__init__(self, bonus.img)
+        retro.Sprite.__init__(self, [bonus.img])
         self.rect.topleft = numpy.add(pos, bonus.offset).tolist()
         self.id = bonus.id
         self.value = bonus.value
@@ -196,7 +196,7 @@ class Maze(retro.Sprite):
         return retro.Sprite.__new__(cls)
 
     def __init__(self, parameters):
-        retro.Sprite.__init__(self, self.IMG.copy())
+        retro.Sprite.__init__(self, [self.IMG.copy()])
         self.bonuses = self.BONUSES.copy()
         self.walls = self.WALLS
 

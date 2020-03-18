@@ -9,7 +9,7 @@ class Stage(Sprite):
     # can be focused by manipulated `self.camera`.
     def __init__(self, path: str):
         self.original = Image.from_path(path)
-        Sprite.__init__(self, self.original.copy())
+        Sprite.__init__(self, [self.original.copy()])
 
     @property
     def camera(self) -> Rect:

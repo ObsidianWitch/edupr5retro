@@ -362,63 +362,54 @@ class Animations(typ.Dict[str, typ.Sequence[int]]):
         )
 
 class Sprite:
-    def __init__(self, image: Image) -> None:
-        self.image = image
+    def __init__(self,
+        images: typ.List[Image], animations: Animations = None
+    ) -> None:
+        self.image = images[0]
         self.rect = self.image.rect()
         self.groups: typ.List[Group] = []
 
-    @classmethod
-    def from_path(cls, path):
-        return cls(Image.from_path(path))
-
-    @classmethod
-    def from_ascii(cls, txt, dictionary):
-        return cls(Image.from_ascii(txt, dictionary))
-
-    def kill(self) -> None:
-        for g in self.groups: g.remove(self)
-        self.groups = []
-
-    # Update the sprite. DOes not do anything by default. Should be redefined.
-    # Note: this method is called by `Group.update()`.
-    def update(self) -> None:
-        pass
-
-    # Draw the sprite on the specified `image` at `self.rect.topleft`.
-    def draw(self, image: Image) -> None:
-        image.draw_img(self.image, self.rect.topleft)
-
-class AnimatedSprite(Sprite):
-    def __init__(self, images: typ.List[Image], animations: Animations) -> None:
-        Sprite.__init__(self, images[0])
         self.images = images
         self.animations = animations
 
     @classmethod
-    def from_path(cls, paths, animations):
+    def from_path(cls, paths, animations = None):
         return cls(
-            images     = [Sprite.from_path(p).image for p in paths],
+            images     = [Image.from_path(p) for p in paths],
             animations = animations,
         )
 
     @classmethod
-    def from_ascii(cls, txts, dictionary, animations):
+    def from_ascii(cls, txts, dictionary, animations = None):
         return cls(
-            images     = [Sprite.from_ascii(t, dictionary).image for t in txts],
+            images     = [Image.from_ascii(t, dictionary) for t in txts],
             animations = animations,
         )
 
     @classmethod
-    def from_spritesheet(cls, path, sprite_size, discard_color, animations):
+    def from_spritesheet(cls,
+        path, sprite_size, discard_color, animations = None
+    ):
         images = Image.from_spritesheet(
             path, sprite_size, discard_color
         )
         images = list(itertools.chain(*images))
         return cls(images, animations)
 
+    def kill(self) -> None:
+        for g in self.groups: g.remove(self)
+        self.groups = []
+
     # Sets the current `self.image` as the current frame of the animation.
+    # Note: this method is called by `Group.update()`.
     def update(self) -> None:
-        self.image = self.images[self.animations.frame]
+        if self.animations:
+            self.image = self.images[self.animations.frame]
+
+    # Draw the sprite's current frame on the specified `image` at
+    # `self.rect.topleft`.
+    def draw(self, image: Image) -> None:
+        image.draw_img(self.image, self.rect.topleft)
 
 class Stage(Sprite):
     # A Stage is a Sprite which can be modified and then restored to its
@@ -426,7 +417,7 @@ class Stage(Sprite):
     # can be focused by manipulated `self.camera`.
     def __init__(self, path: str):
         self.original = Image.from_path(path)
-        Sprite.__init__(self, self.original.copy())
+        Sprite.__init__(self, [self.original.copy()])
 
     @property
     def camera(self) -> Rect:

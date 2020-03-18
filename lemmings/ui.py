@@ -12,7 +12,7 @@ class UI:
 
     def populate_icons(self):
         for action in Actions.USABLE:
-            sprite = retro.Sprite(action.ICON)
+            sprite = retro.Sprite([action.ICON])
             sprite.state = action
             self.icons.append(sprite)
 

@@ -57,7 +57,7 @@ class Ghost(Entity):
 
     def __init__(self, pos):
         Entity.__init__(self,
-            sprite = retro.AnimatedSprite(
+            sprite = retro.Sprite(
                 images     = self.IMGS,
                 animations = retro.Animations(
                     period = 50,

@@ -10,7 +10,7 @@ class Crosshair(retro.Sprite):
     def __init__(self, window):
         self.window = window
 
-        retro.Sprite.__init__(self, self.IMG)
+        retro.Sprite.__init__(self, [self.IMG])
         self.rect.center = self.window.rect().center
 
         self.speed = 10
@@ -62,7 +62,7 @@ class Ammunitions(retro.Sprite):
     def __init__(self, window):
         self.window = window
 
-        retro.Sprite.__init__(self, self.IMG)
+        retro.Sprite.__init__(self, [self.IMG])
         self.rect.bottomleft = self.window.rect().bottomleft
 
         self.count = 12
@@ -78,7 +78,7 @@ class Hide(retro.Sprite):
     def __init__(self, window):
         self.window = window
 
-        retro.Sprite.__init__(self, self.IMG)
+        retro.Sprite.__init__(self, [self.IMG])
         self.rect.center = self.window.rect().center
 
         self.hidden = False
@@ -94,7 +94,7 @@ class Explosion(retro.Sprite):
     IMG = retro.Image.from_path(asset("bang.png"))
 
     def __init__(self, center):
-        retro.Sprite.__init__(self, self.IMG)
+        retro.Sprite.__init__(self, [self.IMG])
         self.rect.center = center
         self.timer = retro.Counter(2)
 
@@ -107,8 +107,8 @@ class Hints:
         self.stage = stage
 
         self.sprites = (
-            retro.Sprite.from_path(asset("arrow_left.png")),
-            retro.Sprite.from_path(asset("arrow_right.png")),
+            retro.Sprite.from_path([asset("arrow_left.png")]),
+            retro.Sprite.from_path([asset("arrow_right.png")]),
         )
         self.sprites[0].rect.midleft  = self.window.rect().midleft
         self.sprites[1].rect.midright = self.window.rect().midright

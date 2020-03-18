@@ -31,7 +31,7 @@ class Player(Entity):
 
     def __init__(self, pos):
         Entity.__init__(self,
-            sprite = retro.AnimatedSprite(
+            sprite = retro.Sprite(
                 images     = self.IMGS,
                 animations = retro.Animations(
                     period = 50,
@@ -96,10 +96,10 @@ class Player(Entity):
 
     def draw_score(self, image):
         font = retro.Font(36)
-        txt = retro.Sprite(font.render(
+        txt = retro.Sprite([font.render(
             text    = f"SCORE: {self.score}",
             color   = retro.WHITE,
             bgcolor = retro.BLACK,
-        ))
+        )])
         txt.rect.bottomleft = image.rect().bottomleft
         txt.draw(image)

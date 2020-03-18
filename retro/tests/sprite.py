@@ -3,7 +3,7 @@ from tests.path import assets
 from src.constants import *
 from src.window import Window
 from src.image import Image
-from src.sprite import Sprite, AnimatedSprite, Animations
+from src.sprite import Sprite, Sprite, Animations
 
 window = Window(
     title     = "window",
@@ -11,7 +11,7 @@ window = Window(
     framerate = 60,
 )
 
-s1 = Sprite(Image.from_path(assets("img.png")))
+s1 = Sprite.from_path([assets("img.png")])
 s1.dy = 1
 
 i2 = Image.from_spritesheet(
@@ -21,7 +21,7 @@ i2 = Image.from_spritesheet(
 )[0]
 i2 = [img.copy() for img in i2] \
      + [img.flip(x = True, y = False) for img in i2]
-s2 = AnimatedSprite(
+s2 = Sprite(
     images     = i2,
     animations = Animations(
         period  = 100,

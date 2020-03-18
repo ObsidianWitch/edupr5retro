@@ -2,7 +2,7 @@ import numpy
 import shared.retro as retro
 from maze.nodes.palette import *
 
-class Player(retro.AnimatedSprite):
+class Player(retro.Sprite):
     PLAYER_ASCII = [
         ( # 0
             '   RRR    ',
@@ -55,7 +55,7 @@ class Player(retro.AnimatedSprite):
         self.facing_x = 1
         self.score = 0
 
-        sprite = retro.AnimatedSprite.from_ascii(
+        sprite = retro.Sprite.from_ascii(
             txts       = self.PLAYER_ASCII,
             dictionary = SPRITE_PALETTE,
             animations = retro.Animations(
@@ -66,7 +66,7 @@ class Player(retro.AnimatedSprite):
                 WALK_L = [3, 4, 5, 4],
             ),
         )
-        retro.AnimatedSprite.__init__(self, sprite.images, sprite.animations)
+        retro.Sprite.__init__(self, sprite.images, sprite.animations)
         self.image.colorkey(SPRITE_PALETTE[' '])
         self.reset_position()
 
@@ -98,7 +98,7 @@ class Player(retro.AnimatedSprite):
 
     def update(self, directions, collisions):
         self.move(directions, collisions)
-        retro.AnimatedSprite.update(self)
+        retro.Sprite.update(self)
 
     def draw(self):
-        retro.AnimatedSprite.draw(self, self.window)
+        retro.Sprite.draw(self, self.window)

@@ -3,8 +3,8 @@ import shared.retro as retro
 
 class Fish(retro.Sprite):
     def __init__(self, path, speed, move):
-        sprite = retro.Image.from_path(path)
-        retro.Sprite.__init__(self, sprite)
+        image = retro.Image.from_path(path)
+        retro.Sprite.__init__(self, [image])
         self.dx, self.dy = speed
         self.move = move
 

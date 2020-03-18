@@ -25,10 +25,10 @@ class Run:
             self.ball.dx *= -1
 
     def draw_score(self):
-        score = retro.Sprite(self.window.fonts[1].render(
+        score = retro.Sprite([self.window.fonts[1].render(
             text  = f"{self.p1.score} - {self.p2.score}",
             color = retro.GREEN,
-        ))
+        )])
         score.rect.midtop = self.window.rect().midtop
         score.rect.move_ip(0, 10)
         score.draw(self.window)
@@ -58,11 +58,11 @@ class End:
         self.window = window
         self.restart = False
 
-        self.txt = retro.Sprite(self.window.fonts[4].render(
+        self.txt = retro.Sprite([self.window.fonts[4].render(
             text    = f"JOUEUR {winner} GAGNANT",
             color   = retro.YELLOW,
             bgcolor = retro.RED,
-        ))
+        )])
         self.txt.rect.center = self.window.rect().center
 
     def run(self):

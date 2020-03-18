@@ -5,11 +5,11 @@ class End:
         self.window = window
         self.restart = False
 
-        self.txt = retro.Sprite(self.window.fonts[4].render(
+        self.txt = retro.Sprite([self.window.fonts[4].render(
             text    = "WIN" if win else "LOST",
             color   = retro.WHITE,
             bgcolor = retro.BLACK,
-        ))
+        )])
         self.txt.rect.center = self.window.rect().center
 
     def run(self):

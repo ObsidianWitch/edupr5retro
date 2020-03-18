@@ -115,10 +115,10 @@ class Bomb:
         if self.explode: return
 
         window = self.lemming.window
-        timer_surface = retro.Sprite(window.fonts[0].render(
+        timer_surface = retro.Sprite([window.fonts[0].render(
             text  = f"{self.timer.remaining}",
             color = retro.WHITE,
-        ))
+        )])
         timer_surface.rect.midbottom = self.lemming.bounding_rect.midtop
         timer_surface.draw(window)
 

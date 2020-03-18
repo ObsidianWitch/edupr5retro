@@ -114,16 +114,14 @@ class Maze:
 
         def init_exit(code, color, xsq, ysq):
             self.exit = retro.Sprite.from_ascii(
-                txt        = self.EXIT_ASCII,
-                dictionary = SPRITE_PALETTE,
+                [self.EXIT_ASCII], SPRITE_PALETTE,
             )
             self.exit.rect.move_ip(xsq, ysq)
             self.items.append(self.exit)
 
         def init_treasure(code, color, xsq, ysq):
             sprite = retro.Sprite.from_ascii(
-                txt        = self.TREASURE_ASCII,
-                dictionary = SPRITE_PALETTE,
+                [self.TREASURE_ASCII], SPRITE_PALETTE,
             )
             sprite.rect.move_ip(xsq, ysq)
             self.items.append(sprite)
@@ -131,8 +129,7 @@ class Maze:
 
         def init_trap(code, color, xsq, ysq):
             sprite = retro.Sprite.from_ascii(
-                txt        = self.TRAP_ASCII,
-                dictionary = SPRITE_PALETTE,
+                [self.TRAP_ASCII], SPRITE_PALETTE,
             )
             sprite.rect.move_ip(xsq, ysq)
             self.items.append(sprite)
@@ -146,7 +143,7 @@ class Maze:
         self.traverse(init_one)
 
     def init_maze(self):
-        self.maze = retro.Sprite.from_ascii(self.MAZE_ASCII, MAZE_PALETTE)
+        self.maze = retro.Sprite.from_ascii([self.MAZE_ASCII], MAZE_PALETTE)
         self.maze.image.scale(self.tile_size)
 
     # Traverses the MAZE_ASCII array and executes the given `function` on each
