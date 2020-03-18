@@ -14,7 +14,7 @@ class Fish(retro.Sprite):
     def flip(self, xflip = False, yflip = False):
         if xflip: self.dx *= -1
         if yflip: self.dy *= -1
-        retro.Sprite.flip(self, xflip, False)
+        self.image.flip(xflip, False)
 
     # Moves from left to right, constrained by `rect`.
     def move1(self, rect):

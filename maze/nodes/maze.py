@@ -147,7 +147,7 @@ class Maze:
 
     def init_maze(self):
         self.maze = retro.Sprite.from_ascii(self.MAZE_ASCII, MAZE_PALETTE)
-        self.maze.scale(self.tile_size)
+        self.maze.image.scale(self.tile_size)
 
     # Traverses the MAZE_ASCII array and executes the given `function` on each
     # element.

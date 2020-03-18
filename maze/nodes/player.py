@@ -67,7 +67,7 @@ class Player(retro.AnimatedSprite):
             ),
         )
         retro.AnimatedSprite.__init__(self, sprite.images, sprite.animations)
-        self.colorkey(SPRITE_PALETTE[' '])
+        self.image.colorkey(SPRITE_PALETTE[' '])
         self.reset_position()
 
     def reset_position(self):

@@ -13,6 +13,7 @@ class Lemming(retro.AnimatedSprite):
     ).images
     IMGS = [img.copy() for img in IMGS] \
          + [img.flip(x = True, y = False) for img in IMGS]
+    IMGS = [img.colorkey(retro.BLACK) for img in IMGS]
 
     def __init__(self, window, bg, position):
         self.window = window
@@ -35,7 +36,6 @@ class Lemming(retro.AnimatedSprite):
                 DEAD_L  = range(117, 133), DEAD_R  = range(117 + 133, 133 + 133),
             ),
         )
-        self.colorkey(retro.BLACK)
         self.rect.topleft = position
 
         self.actions = Actions(self)

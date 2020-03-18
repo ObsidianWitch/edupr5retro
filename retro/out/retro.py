@@ -343,45 +343,6 @@ class Group(list):
     def draw(self, surface: Image) -> None:
         for e in self: e.draw(surface)
 
-class Sprite:
-    def __init__(self, image: Image) -> None:
-        self.image = image
-        self.rect = self.image.rect()
-        self.groups: typ.List[Group] = []
-
-    @classmethod
-    def from_path(cls, path):
-        return cls(Image.from_path(path))
-
-    @classmethod
-    def from_ascii(cls, txt, dictionary):
-        return cls(Image.from_ascii(txt, dictionary))
-
-    def flip(self, xflip = False, yflip = False):
-        self.image.flip(xflip, yflip)
-
-    def scale(self, ratio):
-        self.image.scale(ratio)
-        newrect = self.image.rect()
-        newrect.move_ip(self.rect.topleft)
-        self.rect = newrect
-
-    def colorkey(self, color):
-        self.image.colorkey(color)
-
-    def kill(self) -> None:
-        for g in self.groups: g.remove(self)
-        self.groups = []
-
-    # Update the sprite. DOes not do anything by default. Should be redefined.
-    # Note: this method is called by `Group.update()`.
-    def update(self) -> None:
-        pass
-
-    # Draw the sprite on the specified `image` at `self.rect.topleft`.
-    def draw(self, image: Image) -> None:
-        image.draw_img(self.image, self.rect.topleft)
-
 class Counter:
     # A counter counts from 0 to `end`. Its value is incremented periodically
     # (`period`). By default the counter does not end (`end = 0`) and is
@@ -451,6 +412,33 @@ class Animations(typ.Dict[str, typ.Sequence[int]]):
             period = self.period,
         )
 
+class Sprite:
+    def __init__(self, image: Image) -> None:
+        self.image = image
+        self.rect = self.image.rect()
+        self.groups: typ.List[Group] = []
+
+    @classmethod
+    def from_path(cls, path):
+        return cls(Image.from_path(path))
+
+    @classmethod
+    def from_ascii(cls, txt, dictionary):
+        return cls(Image.from_ascii(txt, dictionary))
+
+    def kill(self) -> None:
+        for g in self.groups: g.remove(self)
+        self.groups = []
+
+    # Update the sprite. DOes not do anything by default. Should be redefined.
+    # Note: this method is called by `Group.update()`.
+    def update(self) -> None:
+        pass
+
+    # Draw the sprite on the specified `image` at `self.rect.topleft`.
+    def draw(self, image: Image) -> None:
+        image.draw_img(self.image, self.rect.topleft)
+
 class AnimatedSprite(Sprite):
     def __init__(self, images: typ.List[Image], animations: Animations) -> None:
         Sprite.__init__(self, images[0])
@@ -478,20 +466,6 @@ class AnimatedSprite(Sprite):
         )
         images = list(itertools.chain(*images))
         return cls(images, animations)
-
-    def scale(self, ratio):
-        self.images = [img.scale(ratio) for img in self.images]
-        self.image = self.images[0]
-        newrect = self.image.rect()
-        newrect.move_ip(self.rect.topleft)
-        self.rect = newrect
-
-    def flip(self, xflip = False, yflip = False):
-        self.images = [img.flip(xflip, yflip) for img in self.images]
-        self.image  = self.images[0]
-
-    def colorkey(self, color):
-        for img in self.images: img.colorkey(color)
 
     # Sets the current `self.image` as the current frame of the animation.
     def update(self) -> None:
