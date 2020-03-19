@@ -4,12 +4,11 @@ from lemmings.nodes.actions import Actions
 from lemmings.path import asset
 
 class Lemming(retro.Sprite):
-    IMGS = retro.Sprite.from_spritesheet(
+    IMGS = retro.Image.from_spritesheet(
         path          = asset("planche.png"),
         sprite_size   = (30, 30),
         discard_color = retro.RED,
-        animations    = retro.Animations(period = 0),
-    ).images
+    )
     IMGS = [img.copy() for img in IMGS] \
          + [img.flip(x = True, y = False) for img in IMGS]
     IMGS = [img.colorkey(retro.BLACK) for img in IMGS]

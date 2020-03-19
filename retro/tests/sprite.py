@@ -18,15 +18,15 @@ i2 = Image.from_spritesheet(
     path          = assets("spritesheet.png"),
     sprite_size   = (30, 30),
     discard_color = RED,
-)[0]
+)
 i2 = [img.copy() for img in i2] \
-     + [img.flip(x = True, y = False) for img in i2]
+   + [img.flip(x = True, y = False) for img in i2]
 s2 = Sprite(
     images     = i2,
     animations = Animations(
         period  = 100,
         WALK_L = range(0, 8),
-        WALK_R = range(0 + 8, 8 + 8),
+        WALK_R = range(0 + 133, 8 + 133),
     ),
 )
 s2.animations.set("WALK_R")

@@ -100,26 +100,19 @@ class Sprite:
 
     @classmethod
     def from_path(cls, paths, animations = None):
-        return cls(
-            images     = [Image.from_path(p) for p in paths],
-            animations = animations,
-        )
+        images = [ Image.from_path(p) for p in paths ]
+        return cls(images, animations)
 
     @classmethod
     def from_ascii(cls, txts, dictionary, animations = None):
-        return cls(
-            images     = [Image.from_ascii(t, dictionary) for t in txts],
-            animations = animations,
-        )
+        images = [ Image.from_ascii(t, dictionary) for t in txts ]
+        return cls(images, animations)
 
     @classmethod
     def from_spritesheet(cls,
         path, sprite_size, discard_color, animations = None
     ):
-        images = Image.from_spritesheet(
-            path, sprite_size, discard_color
-        )
-        images = list(itertools.chain(*images))
+        images = Image.from_spritesheet(path, sprite_size, discard_color)
         return cls(images, animations)
 
     def kill(self) -> None:

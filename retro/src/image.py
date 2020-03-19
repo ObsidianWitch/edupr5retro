@@ -1,4 +1,5 @@
 from __future__ import annotations
+import itertools
 import pygame
 import numpy
 import typing as typ
@@ -47,7 +48,7 @@ class Image:
     @classmethod
     def from_spritesheet(cls,
         path: str, sprite_size: typ.Tuple[int, int], discard_color: pygame.Color
-    ) -> typ.List[typ.List[Image]]:
+    ) -> typ.List[Image]:
         spritesheet = cls.from_path(path)
 
         images = []
@@ -64,7 +65,7 @@ class Image:
                 line.append(img)
             images.append(line)
 
-        return images
+        return list(itertools.chain(*images))
 
     def copy(self) -> Image:
         return self.__class__(self)

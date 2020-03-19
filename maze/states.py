@@ -29,7 +29,7 @@ class Run:
                 left  = key(retro.K_LEFT),
                 right = key(retro.K_RIGHT),
             ),
-            collisions = retro.pixel_vertices(
+            collisions = retro.Collisions.pixel_vertices(
                 surface = self.window,
                 rect    = self.player.rect,
                 color   = MAZE_PALETTE["B"],

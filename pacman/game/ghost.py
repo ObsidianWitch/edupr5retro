@@ -51,7 +51,7 @@ class Ghost(Entity):
         path          = assets("ghost.png"),
         sprite_size   = (32, 32),
         discard_color = retro.RED,
-    )[0]
+    )
 
     BONUS = 200
 

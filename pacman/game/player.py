@@ -23,7 +23,7 @@ class Player(Entity):
         path          = assets("pacman.png"),
         sprite_size   = (32, 32),
         discard_color = retro.RED,
-    )[0]
+    )
     IMGS = [img.copy() for img in IMGS] \
          + [img.copy().rotate(90) for img in IMGS] \
          + [img.copy().rotate(180) for img in IMGS] \

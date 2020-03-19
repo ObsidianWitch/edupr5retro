@@ -72,7 +72,6 @@ subimages = Image.from_spritesheet(
     sprite_size = (30, 30),
     discard_color = RED,
 )
-subimages = list(itertools.chain(*subimages))
 
 def main():
     window.fill(WHITE) \
