@@ -1,82 +1,94 @@
+import math
 from pathlib import Path
 from retro.out import retro
 from aquarium.fish import Fish
 
 def asset(filename):
-    return str(Path('aquarium/data') / filename)
+    return str(Path('aquarium/assets') / filename)
+
+class Background(retro.Sprite):
+    def __init__(self, path):
+        image = retro.Image.from_path(path)
+        retro.Sprite.__init__(self, [image])
+
+    def tilex(self, target):
+        image = retro.Image((target.rect().width, self.rect.height))
+        repeat = math.ceil(target.rect().width / self.rect.width)
+
+        for i in range(repeat):
+            image.draw_img(self.image, (i * self.rect.width, 0))
+
+        self.image = image
+        self.rect.size = image.rect().size
 
 class Game:
     def __init__(self, window):
         self.window = window
 
-        bg = retro.Sprite.from_path([asset("fond.png")])
+        self.bg0 = Background(asset('underwater-fantasy/far.png'))
+        self.bg0.rect.bottom = self.window.rect().bottom - 40
+        self.bg0.tilex(window)
 
-        fish1 = Fish(
-            speed  = (-2, 0),
-            move   = lambda self: Fish.move1(self, window.rect()),
-            path   = asset("fish1.bmp"),
+        self.bg1 = Background(asset('underwater-fantasy/mid.png'))
+        self.bg1.rect.bottom = self.window.rect().bottom - 30
+        self.bg1.tilex(window)
+        self.bg1.image.colorkey(retro.RED)
+
+        self.bg2 = Background(asset('underwater-fantasy/near.png'))
+        self.bg2.rect.bottom = self.window.rect().bottom
+        self.bg2.tilex(window)
+        self.bg2.image.colorkey(retro.RED)
+
+        self.fish1 = Fish(
+            speed = (2, 0),
+            path  = asset('underwater-diving/fish1.png'),
         )
-        fish1.image.colorkey((170, 238, 255))
-        fish1.image.scale(0.5)
-        fish1.rect.move_ip(100, 200)
+        self.fish1.rect.move_ip(100, 80)
 
-        fish2 = Fish(
+        self.fish2 = Fish(
             speed  = (2, 1),
-            move   = lambda self: Fish.move2(self, window.rect()),
-            path   = asset("fish2.bmp"),
+            path   = asset('underwater-diving/fish2.png'),
         )
-        fish2.image.colorkey((170, 238, 255))
-        fish2.rect.move_ip(200, 300)
+        self.fish2.rect.move_ip(200, 100)
 
-        fish3 = Fish(
+        self.fish3 = Fish(
             speed  = (2, 2),
-            move   = lambda self: Fish.move3(self, window.rect()),
-            path   = asset("fish3.bmp"),
+            path   = asset('underwater-diving/fish3.png'),
         )
-        fish3.image.colorkey((170, 255, 238))
-        fish3.image.scale(1.1)
-        fish3.rect.move_ip(200, 200)
+        self.fish3.image.scale(1.25)
+        self.fish3.rect.move_ip(200, 100)
 
-        plant1 = retro.Sprite.from_path([asset("plant1.bmp")])
-        plant1.image.colorkey((255, 7, 0))
-        plant1.image.scale(0.5)
-        plant1.rect.move_ip(100, 170)
-
-        plant2 = retro.Sprite.from_path([asset("plant2.bmp")])
-        plant2.image.colorkey((255, 7, 0))
-        plant2.image.scale(0.7)
-        plant2.rect.move_ip(360, 170)
-
-        decor1 = retro.Sprite.from_path([asset("decor1.bmp")])
-        decor1.image.colorkey((255, 0, 0))
-        decor1.image.scale(0.7)
-        decor1.rect.move_ip(500, 175)
-
-        decor2 = retro.Sprite.from_path([asset("decor2.bmp")])
-        decor2.image.colorkey((255, 7, 0))
-        decor2.image.scale(0.3)
-        decor2.rect.move_ip(260, 260)
-
-        self.layers = (
-            retro.Group(bg),
-            retro.Group(fish1, fish2),
-            retro.Group(plant1, plant2),
-            retro.Group(fish3),
-            retro.Group(decor1, decor2),
+        self.bubbles = retro.Sprite.from_spritesheet(
+            path          = asset('underwater-diving/bubbles.png'),
+            sprite_size   = (23, 40),
+            discard_color = None,
+            animations    = retro.Animations(
+                period = 200,
+                MAIN = (0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4),
+            )
         )
 
     def run(self):
         # Update
-        for layer in self.layers:
-            layer.update()
+        self.fish1.move1(self.window)
+        self.fish2.move2(self.window)
+        self.fish3.move3(self.window)
+        self.bubbles.update()
 
         # Draw
-        for layer in self.layers:
-            layer.draw(self.window)
+        self.window.fill((62, 121, 221))
+        self.bg0.draw(self.window)
+        self.fish1.draw(self.window)
+        self.bg1.draw(self.window)
+        self.fish2.draw(self.window)
+        self.bg2.draw(self.window)
+        self.fish3.draw(self.window)
+        self.window.draw_img(self.bubbles.image, (40, 200))
+        self.window.draw_img(self.bubbles.image, (550, 200))
 
 window = retro.Window(
-    title = "Aquarium",
-    size  = (800, 400),
+    title = 'Underwater',
+    size  = (600, 250),
 )
 window.cursor(False)
 game = Game(window)

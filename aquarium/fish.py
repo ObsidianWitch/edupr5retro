@@ -2,44 +2,40 @@ import random
 from retro.out import retro
 
 class Fish(retro.Sprite):
-    def __init__(self, path, speed, move):
+    def __init__(self, path, speed):
         image = retro.Image.from_path(path)
         retro.Sprite.__init__(self, [image])
         self.dx, self.dy = speed
-        self.move = move
-
-    def update(self):
-        self.move(self)
 
     def flip(self, xflip = False, yflip = False):
         if xflip: self.dx *= -1
         if yflip: self.dy *= -1
         self.image.flip(xflip, False)
 
-    # Moves from left to right, constrained by `rect`.
-    def move1(self, rect):
+    # Moves from left to right, constrained by `target.rect`.
+    def move1(self, target):
         xnew = self.rect.x + self.dx
 
-        limits = range(50, 3 * rect.w // 4)
+        limits = range(50, 3 * target.rect().w // 4)
         if xnew not in limits: self.flip(xflip = True)
 
         self.rect.move_ip(self.dx, 0)
 
-    # Moves diagonally, constrained by `rect`.
-    def move2(self, rect):
+    # Moves diagonally, constrained by `target.rect`.
+    def move2(self, target):
         xnew = self.rect.x + self.dx
         ynew = self.rect.y + self.dy
 
         limits = lambda upper: range(20, upper - 100)
-        if xnew not in limits(rect.w):  self.flip(xflip = True)
-        if ynew not in limits(rect.h): self.flip(yflip = True)
+        if xnew not in limits(target.rect().w):  self.flip(xflip = True)
+        if ynew not in limits(target.rect().h): self.flip(yflip = True)
 
         self.rect.move_ip(self.dx, self.dy)
 
-    # Moves randomly, constrained by rect.
-    def move3(self, rect):
+    # Moves randomly, constrained by `target.rect`.
+    def move3(self, target):
         self.flip(
             xflip = (random.randrange(0, 100) == 0),
             yflip = (random.randrange(0, 100) == 0),
         )
-        self.move2(rect)
+        self.move2(target)
