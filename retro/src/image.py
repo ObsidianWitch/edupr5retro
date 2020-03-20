@@ -126,3 +126,12 @@ class Image:
     def rotate(self, angle: int) -> Image:
         self.pygsurface = pygame.transform.rotate(self.pygsurface, angle)
         return self
+
+    def __eq__(self, other):
+        return numpy.array_equal(
+            pygame.surfarray.pixels3d(self.pygsurface),
+            pygame.surfarray.pixels3d(other.pygsurface)
+        )
+
+    def save(self, out):
+        pygame.image.save(self.pygsurface, out)

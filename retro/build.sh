@@ -2,32 +2,18 @@
 
 set -o errexit -o nounset
 
-mypy.main() {
-    env mypy --namespace-packages --ignore-missing-imports \
-        --disallow-untyped-calls "$@"
-}
-
-mypy.strict() {
-    mypy.main --disallow-untyped-defs "$@"
-}
-
-dimports() { sed -e '/^import/d' -e '/^from .* import/d' ; }
+python -m tests.font
+python -m tests.image
 
 mkdir -p 'out'
 out='out/retro.py'
 cat 'src/constants.py' > "$out"
-for f in 'src/math.py' \
-         'src/image.py' \
-         'src/font.py' \
-         'src/window.py' \
-         'src/events.py' \
-         'src/sprite.py' \
-         'src/stage.py' \
-         'src/directions.py' \
-         'src/collisions.py'
+for f in 'math.py' 'image.py' 'font.py' 'window.py' 'events.py' 'sprite.py' \
+         'stage.py' 'directions.py' 'collisions.py'
 do
-    mypy.main --module="$(sed -e "s:/:\.:" -e "s/\.py//" <<< "$f")"
-    cat "$f" | dimports >> "$out"
+    module="$(sed -e "s/\.py//" <<< "$f")"
+    mypy --namespace-packages --ignore-missing-imports \
+         --disallow-untyped-calls --module="src.$module"
+    sed -e '/^import/d' -e '/^from .* import/d' "src/$f" >> "$out"
 done
 cat -s "$out" | sponge "$out"
-mypy.main "$out"

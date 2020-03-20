@@ -7,13 +7,17 @@ from src.font import Font
 
 class Window(Image):
     def __init__(self,
-        title: str, size: typ.Tuple[int, int], framerate: int = 30
+        title: str, size: typ.Tuple[int, int], framerate: int = 30,
+        headless: bool = False
     ) -> None:
         pygame.init()
-        pygame.mixer.quit()
 
-        pygame.display.set_caption(title)
-        surface = pygame.display.set_mode(size)
+        self.headless = headless
+        if self.headless:
+            surface = pygame.Surface(size)
+        else:
+            pygame.display.set_caption(title)
+            surface = pygame.display.set_mode(size)
         Image.__init__(self, surface)
 
         self.clock = pygame.time.Clock()

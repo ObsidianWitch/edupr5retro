@@ -149,6 +149,15 @@ class Image:
         self.pygsurface = pygame.transform.rotate(self.pygsurface, angle)
         return self
 
+    def __eq__(self, other):
+        return numpy.array_equal(
+            pygame.surfarray.pixels3d(self.pygsurface),
+            pygame.surfarray.pixels3d(other.pygsurface)
+        )
+
+    def save(self, out):
+        pygame.image.save(self.pygsurface, out)
+
 class Font:
     def __init__(self, size: int) -> None:
         self.pygfont = pygame.font.SysFont(None, size)
@@ -165,13 +174,17 @@ class Font:
 
 class Window(Image):
     def __init__(self,
-        title: str, size: typ.Tuple[int, int], framerate: int = 30
+        title: str, size: typ.Tuple[int, int], framerate: int = 30,
+        headless: bool = False
     ) -> None:
         pygame.init()
-        pygame.mixer.quit()
 
-        pygame.display.set_caption(title)
-        surface = pygame.display.set_mode(size)
+        self.headless = headless
+        if self.headless:
+            surface = pygame.Surface(size)
+        else:
+            pygame.display.set_caption(title)
+            surface = pygame.display.set_mode(size)
         Image.__init__(self, surface)
 
         self.clock = pygame.time.Clock()
