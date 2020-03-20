@@ -11,40 +11,6 @@ window = Window(
     framerate = 30,
 )
 
-PALETTE = {
-    ' ': BLACK,
-    'W': WHITE,
-    'R': RED,
-    'G': GREEN,
-    'B': BLUE,
-    'C': CYAN,
-    'Y': YELLOW,
-}
-
-ASCII_IMG = (
-    '                    ',
-    '                    ',
-    '          RRRR      ',
-    '        RRYRRRR     ',
-    '       RRYRR   R    ',
-    '       RYYRRRR      ',
-    '     RRRYYRYYRRR    ',
-    '    RYRRYRYYYYRRR   ',
-    '    RYYYYRRRYYYRR   ',
-    '    RRYYRRRRYRRRR   ',
-    '  R RRYRRRRRRYRR    ',
-    '  R  RRYRRRRRYR     ',
-    '  RRRRYYYRRRYYYR    ',
-    '   RRRRYYYRYRRYR    ',
-    '     RRRRRYYRRRR    ',
-    '    R  RRYYRR RR    ',
-    '     RRRRRRR  R     ',
-    '       RRRR  R      ',
-    '                    ',
-    '                    ',
-)
-
-
 s1 = Image((100, 100))
 s1_rect = s1.rect()
 s1_rect.move_ip(10, 10)
@@ -54,7 +20,7 @@ s2_rect = s2.rect()
 s2_rect.move_ip(10, 110)
 s2_area = Rect(20, 10, 30, 30)
 
-s3 = Image.from_ascii(ASCII_IMG, PALETTE)
+s3 = Image.from_path(assets("trap.png"))
 s3_rect = s3.rect()
 s3_rect.move_ip(10, 150)
 

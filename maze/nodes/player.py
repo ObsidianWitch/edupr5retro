@@ -1,65 +1,18 @@
 import numpy
 from retro.out import retro
-from maze.nodes.palette import *
+from maze.path import asset
 
 class Player(retro.Sprite):
-    PLAYER_ASCII = [
-        ( # 0
-            '   RRR    ',
-            '  RRWWR   ',
-            '   RRR    ',
-            '   YY     ',
-            '   YYY    ',
-            '   YY YG  ',
-            '   GG     ',
-            '   CC     ',
-            '   CC     ',
-            '  C  C    ',
-            ' C    C   ',
-        ),
-        ( # 1
-            '   RRR    ',
-            '  RRWWR   ',
-            '   RRR    ',
-            '   YY     ',
-            '   YYY    ',
-            '   YY YG  ',
-            '   GG     ',
-            '   CC     ',
-            '   CC     ',
-            '  C  C    ',
-            '  C  C    ',
-        ),
-        ( # 2
-            '   RRR    ',
-            '  RRWWR   ',
-            '   RRR    ',
-            '   YY     ',
-            '   YYY    ',
-            '   YY YG  ',
-            '   GG     ',
-            '   CC     ',
-            '   CC     ',
-            '   CC     ',
-            '   CC     ',
-        )
-    ]
-    PLAYER_ASCII += tuple( # flipped ascii frames (3, 4, 5)
-        tuple(line[::-1] for line in frame_ascii)
-        for frame_ascii in PLAYER_ASCII
-    )
-
-    def __init__(self, window):
-        self.window = window
-
+    def __init__(self):
         self.facing_x = 1
         self.score = 0
 
-        sprite = retro.Sprite.from_ascii(
-            txts       = self.PLAYER_ASCII,
-            dictionary = SPRITE_PALETTE,
-            animations = retro.Animations(
-                period  = 500,
+        sprite = retro.Sprite.from_spritesheet(
+            path          = asset('player.png'),
+            sprite_size   = (10, 11),
+            discard_color = None,
+            animations    = retro.Animations(
+                period = 500,
                 IDLE_R = [1],
                 IDLE_L = [4],
                 WALK_R = [0, 1, 2, 1],
@@ -67,7 +20,7 @@ class Player(retro.Sprite):
             ),
         )
         retro.Sprite.__init__(self, sprite.images, sprite.animations)
-        self.image.colorkey(SPRITE_PALETTE[' '])
+        for img in self.images: img.colorkey(retro.BLACK)
         self.reset_position()
 
     def reset_position(self):
@@ -99,6 +52,3 @@ class Player(retro.Sprite):
     def update(self, directions, collisions):
         self.move(directions, collisions)
         retro.Sprite.update(self)
-
-    def draw(self):
-        retro.Sprite.draw(self, self.window)

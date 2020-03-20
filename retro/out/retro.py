@@ -47,22 +47,6 @@ class Image:
     def from_array(cls, array: numpy.ndarray) -> Image:
         return cls(pygame.surfarray.make_surface(array))
 
-    # Create an image from a list of strings `txt`. Each character encountered
-    # in `txt` is associated to a color in `dictionary`.
-    @classmethod
-    def from_ascii(cls,
-        txt: typ.Sequence[str], dictionary: typ.Dict[str, pygame.Color]
-    ) -> Image:
-        height = len(txt)
-        width  = len(txt[0])
-
-        rgb_sprite = numpy.zeros((width, height, 3))
-        for y, x in numpy.ndindex(height, width):
-            c = txt[y][x]
-            rgb_sprite[x,y] = dictionary[c]
-
-        return cls.from_array(rgb_sprite)
-
     # Load a spritesheet image from its `path` and cut it in subimages of size
     # `sprite_size`. Subimages containing the `discard_color` color at their
     # topleft corner are discarded. Return a list containg a list of subimages
@@ -375,11 +359,6 @@ class Sprite:
     @classmethod
     def from_path(cls, paths, animations = None):
         images = [ Image.from_path(p) for p in paths ]
-        return cls(images, animations)
-
-    @classmethod
-    def from_ascii(cls, txts, dictionary, animations = None):
-        images = [ Image.from_ascii(t, dictionary) for t in txts ]
         return cls(images, animations)
 
     @classmethod

@@ -1,13 +1,12 @@
 from retro.out import retro
 from maze.nodes.maze import Maze
 from maze.nodes.player import Player
-from maze.nodes.palette import *
 
 class Run:
     def __init__(self, window):
         self.window = window
-        self.player = Player(window)
-        self.maze = Maze(window)
+        self.player = Player()
+        self.maze = Maze()
         self.win = False
 
     def draw_score(self):
@@ -24,15 +23,13 @@ class Run:
         key = self.window.events.key_hold
         self.player.update(
             directions = retro.Directions(
-                up    = key(retro.K_UP),
-                down  = key(retro.K_DOWN),
-                left  = key(retro.K_LEFT),
-                right = key(retro.K_RIGHT),
+                up    = key(retro.K_UP),   down  = key(retro.K_DOWN),
+                left  = key(retro.K_LEFT), right = key(retro.K_RIGHT),
             ),
             collisions = retro.Collisions.pixel_vertices(
                 surface = self.window,
                 rect    = self.player.rect,
-                color   = MAZE_PALETTE["B"],
+                color   = retro.BLUE,
             ),
         )
 
@@ -57,8 +54,8 @@ class Run:
         ) < 10
 
         # Draw
-        self.maze.draw()
-        self.player.draw()
+        self.maze.draw(self.window)
+        self.player.draw(self.window)
         self.draw_score()
 
 class End:

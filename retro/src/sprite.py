@@ -104,11 +104,6 @@ class Sprite:
         return cls(images, animations)
 
     @classmethod
-    def from_ascii(cls, txts, dictionary, animations = None):
-        images = [ Image.from_ascii(t, dictionary) for t in txts ]
-        return cls(images, animations)
-
-    @classmethod
     def from_spritesheet(cls,
         path, sprite_size, discard_color, animations = None
     ):
