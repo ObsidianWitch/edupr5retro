@@ -1,29 +1,26 @@
 import os
-from retro.src.constants import *
-from retro.src.window import Window
-from retro.src.image import Image
-from retro.src.sprite import Sprite, Sprite, Animations
+from retro.src import retro
 from retro.tests.path import assets
 
-window = Window(
+window = retro.Window(
     title     = "window",
     size      = (320, 240),
     framerate = 60,
 )
 
-s1 = Sprite.from_path([assets("img.png")])
+s1 = retro.Sprite.from_path([assets("img.png")])
 s1.dy = 1
 
-i2 = Image.from_spritesheet(
+i2 = retro.Image.from_spritesheet(
     path          = assets("spritesheet.png"),
     sprite_size   = (30, 30),
-    discard_color = RED,
+    discard_color = retro.RED,
 )
 i2 = [img.copy() for img in i2] \
    + [img.flip(x = True, y = False) for img in i2]
-s2 = Sprite(
+s2 = retro.Sprite(
     images     = i2,
-    animations = Animations(
+    animations = retro.Animations(
         period  = 100,
         WALK_L = range(0, 8),
         WALK_R = range(0 + 133, 8 + 133),
@@ -47,7 +44,7 @@ def main():
     s2.rect.move_ip(s2.dx, 0)
     s2.update()
 
-    window.fill(WHITE)
+    window.fill(retro.WHITE)
     s1.draw(window)
     s2.draw(window)
 

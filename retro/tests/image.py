@@ -1,34 +1,31 @@
 import sys
-import pygame
-from retro.src.constants import *
-from retro.src.window import Window
-from retro.src.image import Image
+from retro.src import retro
 from retro.tests.path import assets
 
 def TestDraw():
     def draw(target):
         target.draw_line(
-            color     = GREEN,
+            color     = retro.GREEN,
             start_pos = (10, 0),
             end_pos   = (60, 30),
             width     = 5,
         )
         target.draw_rect(
-            color = BLACK,
+            color = retro.BLACK,
             rect  = (10, 40, 50, 20),
             width = 2,
         )
         target.draw_rect(
-            color = BLACK,
+            color = retro.BLACK,
             rect  = (10, 70, 50, 20),
         )
         target.draw_circle(
-            color  = BLUE,
+            color  = retro.BLUE,
             center = (50, 150),
             radius  = 40,
         )
         target.draw_circle(
-            color  = BLUE,
+            color  = retro.BLUE,
             center = (50, 250),
             radius  = 40,
             width   = 4,
@@ -37,16 +34,16 @@ def TestDraw():
     return draw
 
 def TestInit():
-    s1 = Image((100, 100))
+    s1 = retro.Image((100, 100))
     s1_rect = s1.rect()
     s1_rect.move_ip(100, 10)
 
-    s2 = Image.from_path(assets("img.png"))
+    s2 = retro.Image.from_path(assets("img.png"))
     s2_rect = s2.rect()
-    s2_area = pygame.Rect(20, 10, 30, 30)
+    s2_area = retro.Rect(20, 10, 30, 30)
     s2_rect.move_ip(100, 110)
 
-    s3 = Image.from_path(assets("trap.png"))
+    s3 = retro.Image.from_path(assets("trap.png"))
     s3_rect = s3.rect()
     s3_rect.move_ip(100, 150)
 
@@ -57,12 +54,12 @@ def TestInit():
     s5 = s4
     s5_rect = s4_rect.copy()
     s5_rect.move_ip(50, 0)
-    s5.draw_line(GREEN, (0, 0), (30, 30))
+    s5.draw_line(retro.GREEN, (0, 0), (30, 30))
 
-    subimages = Image.from_spritesheet(
+    subimages = retro.Image.from_spritesheet(
         path = assets("spritesheet.png"),
         sprite_size = (30, 30),
-        discard_color = RED,
+        discard_color = retro.RED,
     )
 
     def draw(target):
@@ -80,8 +77,8 @@ def TestInit():
     return draw
 
 def TestTransform():
-    obj1 = Image((50, 50)).draw_line(
-        color     = GREEN,
+    obj1 = retro.Image((50, 50)).draw_line(
+        color     = retro.GREEN,
         start_pos = (0, 0),
         end_pos   = (25, 25),
         width     = 5,
@@ -90,16 +87,16 @@ def TestTransform():
     obj1_rect.move_ip(10, 300)
 
     obj2 = obj1.copy()
-    obj2.colorkey(color = BLACK)
+    obj2.colorkey(color = retro.BLACK)
     obj2.flip(x = True, y = False)
     obj2_rect = obj2.rect()
     obj2_rect.topleft = obj1_rect.topright
 
-    obj3 = Image((50, 50))
-    obj3.fill(color = BLUE)
+    obj3 = retro.Image((50, 50))
+    obj3.fill(color = retro.BLUE)
     obj3.draw_rect(
-        color = WHITE,
-        rect  = pygame.Rect(10, 10, 25, 25),
+        color = retro.WHITE,
+        rect  = retro.Rect(10, 10, 25, 25),
         width = 4,
     )
     obj3.rotate(45)
@@ -126,7 +123,7 @@ def TestTransform():
 
 # ---
 
-window = Window(
+window = retro.Window(
     title    = 'test',
     size     = (800, 600),
     headless = '--display' not in sys.argv,
@@ -136,7 +133,7 @@ test_init = TestInit()
 test_tf = TestTransform()
 
 def main(target):
-    target.fill(WHITE)
+    target.fill(retro.WHITE)
     test_draw(target)
     test_init(target)
     test_tf(target)
@@ -144,6 +141,6 @@ def main(target):
 if window.headless:
     main(window)
     # window.save('out.png')
-    assert window == Image.from_path(assets('expectation_image.png'))
+    assert window == retro.Image.from_path(assets('expectation_image.png'))
 else:
     window.loop(lambda: main(window))
