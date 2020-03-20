@@ -6,9 +6,9 @@ from pacman.game.game import Game
 small_maze = any(arg == "--small" for arg in sys.argv)
 parameters = Parameters.small() if small_maze else Parameters.classic()
 window = retro.Window(
-    title     = "Pacman",
-    size      = parameters.window_size,
-    framerate = 60,
+    title = "Pacman",
+    size  = parameters.window_size,
+    fps   = 60,
 )
 game = Game(window, parameters)
 

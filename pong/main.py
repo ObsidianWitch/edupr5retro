@@ -23,9 +23,9 @@ class Game:
                 self.state.run()
 
 window = retro.Window(
-    size      = (600, 400),
-    title     = "Pong",
-    framerate = 60,
+    size  = (600, 400),
+    title = "Pong",
+    fps   = 60,
 )
 window.cursor(False)
 game = Game(window)

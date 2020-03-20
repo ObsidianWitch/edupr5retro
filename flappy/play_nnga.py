@@ -6,9 +6,9 @@ from flappy.game import Game
 ANALYSIS = sys.argv[1] if len(sys.argv) > 1 else False
 
 window = retro.Window(
-    title     = "Flappy Bird",
-    size      = (288, 512),
-    framerate = 0,
+    title = "Flappy Bird",
+    size  = (288, 512),
+    fps   = 0,
 )
 game = Game(window, nbirds = 10)
 pool = NNGAPool(size = len(game.birds), arch = (2, 1))

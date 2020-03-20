@@ -1,9 +1,9 @@
 from retro.src import retro
 
 window = retro.Window(
-    title     = "window",
-    size      = (640, 480),
-    framerate = 30,
+    title = "window",
+    size  = (640, 480),
+    fps   = 30,
 )
 
 def main():

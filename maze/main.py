@@ -25,7 +25,7 @@ class Game:
 window = retro.Window(
     title = "Maze",
     size  = (400, 400),
-    framerate = 60,
+    fps   = 60,
 )
 window.cursor(False)
 game = Game(window)

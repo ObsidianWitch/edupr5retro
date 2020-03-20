@@ -3,9 +3,9 @@ from retro.src import retro
 from retro.tests.path import assets
 
 window = retro.Window(
-    title     = "window",
-    size      = (320, 240),
-    framerate = 60,
+    title = "window",
+    size  = (320, 240),
+    fps   = 60,
 )
 
 s1 = retro.Sprite.from_path([assets("img.png")])

@@ -7,7 +7,7 @@ from retro.src.font import Font
 
 class Window(Image):
     def __init__(self,
-        title: str, size: typ.Tuple[int, int], framerate: int = 30,
+        title: str, size: typ.Tuple[int, int], fps: int = 30,
         headless: bool = False
     ) -> None:
         pygame.init()
@@ -21,7 +21,7 @@ class Window(Image):
         Image.__init__(self, surface)
 
         self.clock = pygame.time.Clock()
-        self.framerate = framerate
+        self.fps = fps
 
         self.events = Events()
 
@@ -38,9 +38,9 @@ class Window(Image):
         pygame.mouse.set_visible(enable)
 
     # Update the content of the window and limit the runtime speed of the game
-    # to `self.framerate`.
+    # to `self.fps`.
     def update(self) -> None:
-        self.dt = self.clock.tick(self.framerate)
+        self.dt = self.clock.tick(self.fps)
         pygame.display.flip()
 
     # 1. retrieve new events

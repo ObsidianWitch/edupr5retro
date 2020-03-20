@@ -63,9 +63,9 @@ def seek_sprite(player, sprite):
 small_maze = any(arg == "--small" for arg in sys.argv)
 parameters = Parameters.small() if small_maze else Parameters.classic()
 window = retro.Window(
-    title     = "Pacman",
-    size      = parameters.window_size,
-    framerate = 0,
+    title = "Pacman",
+    size  = parameters.window_size,
+    fps   = 0,
 )
 game = Game(window, parameters)
 rand_impulse = RandImpulse()
