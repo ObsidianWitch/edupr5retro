@@ -1,6 +1,6 @@
 import numpy
-import retro
-from game.maze import Walls
+from retro.src import retro
+from pacman.game.maze import Walls
 
 class Entity(retro.Sprite):
     def __init__(self, sprite, pos, speed, curdir = [0, 0], nxtdir = [0, 0]):

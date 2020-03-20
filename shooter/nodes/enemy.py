@@ -1,4 +1,4 @@
-from retro.out import retro
+from retro.src import retro
 
 class Enemy(retro.Sprite):
     def __init__(self, image):

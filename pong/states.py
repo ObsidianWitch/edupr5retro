@@ -1,4 +1,4 @@
-from retro.out import retro
+from retro.src import retro
 from pong.nodes.ball import Ball
 from pong.nodes.paddle import Paddle
 

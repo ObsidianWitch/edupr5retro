@@ -4,11 +4,11 @@ import types
 import time
 import sys
 import numpy
-import retro
-from game.parameters import Parameters
-from game.game import Game, Games
-from game.maze import Maze
-from nn import NNGAPool
+from retro.src import retro
+from pacman.game.parameters import Parameters
+from pacman.game.game import Game, Games
+from pacman.game.maze import Maze
+from pacman.nn import NNGAPool
 
 def update_one(game, nn):
     if game.finished: return False

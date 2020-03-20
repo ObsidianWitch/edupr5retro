@@ -1,4 +1,4 @@
-from retro.out import retro
+from retro.src import retro
 from shooter import states
 
 class Game:

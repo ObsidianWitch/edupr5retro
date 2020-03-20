@@ -1,8 +1,8 @@
-import os
 import random
-import retro
+from pathlib import Path
+from retro.src import retro
 
-def assets(filename): return os.path.join("assets", filename)
+def assets(filename): return str(Path("flappy/assets") / filename)
 
 class Ground(retro.Sprite):
     IMG = retro.Image.from_path(assets("ground.png"))

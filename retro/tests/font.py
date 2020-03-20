@@ -1,9 +1,9 @@
 import sys
-from src.constants import *
-from src.window import Window
-from src.font import Font
-from src.image import Image
-from tests.path import assets
+from retro.src.constants import *
+from retro.src.window import Window
+from retro.src.font import Font
+from retro.src.image import Image
+from retro.tests.path import assets
 
 def TestFont(target):
     txt1 = Font(size = 64).render(

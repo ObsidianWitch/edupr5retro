@@ -1,9 +1,9 @@
 import sys
 import typing as typ
 import pygame
-from src.image import Image
-from src.events import Events
-from src.font import Font
+from retro.src.image import Image
+from retro.src.events import Events
+from retro.src.font import Font
 
 class Window(Image):
     def __init__(self,

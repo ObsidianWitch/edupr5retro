@@ -1,9 +1,9 @@
 import os
-from tests.path import assets
-from src.constants import *
-from src.window import Window
-from src.image import Image
-from src.sprite import Sprite, Sprite, Animations
+from retro.src.constants import *
+from retro.src.window import Window
+from retro.src.image import Image
+from retro.src.sprite import Sprite, Sprite, Animations
+from retro.tests.path import assets
 
 window = Window(
     title     = "window",

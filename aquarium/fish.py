@@ -1,5 +1,5 @@
 import random
-from retro.out import retro
+from retro.src import retro
 
 class Fish(retro.Sprite):
     def __init__(self, path, speed):

@@ -1,6 +1,6 @@
 import random
 import numpy
-from retro.out import retro
+from retro.src import retro
 from shooter.path import asset
 
 class Crosshair(retro.Sprite):

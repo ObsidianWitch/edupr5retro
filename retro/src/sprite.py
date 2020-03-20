@@ -1,7 +1,7 @@
 from __future__ import annotations
 import typing as typ
 import pygame
-from src.image import Image
+from retro.src.image import Image
 
 class Group(list):
     def __init__(self, *args: Sprite) -> None:

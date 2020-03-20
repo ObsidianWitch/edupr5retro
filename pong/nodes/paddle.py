@@ -1,5 +1,5 @@
 import enum
-from retro.out import retro
+from retro.src import retro
 
 class Paddle:
     SIDE = enum.Enum("SIDE", "LEFT RIGHT")

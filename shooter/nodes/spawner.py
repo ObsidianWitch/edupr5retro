@@ -1,5 +1,5 @@
 import random
-from retro.out import retro
+from retro.src import retro
 from shooter.nodes.enemy import Enemy
 from shooter.nodes.kidnaper import Kidnaper
 from shooter.nodes.runner import Runner

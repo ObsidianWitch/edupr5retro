@@ -1,4 +1,4 @@
-from retro.out import retro
+from retro.src import retro
 from pong import states
 
 class Game:

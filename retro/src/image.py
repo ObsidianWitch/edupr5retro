@@ -3,7 +3,7 @@ import itertools
 import pygame
 import numpy
 import typing as typ
-from src.constants import *
+from retro.src.constants import *
 from pygame import Rect
 
 class Image:

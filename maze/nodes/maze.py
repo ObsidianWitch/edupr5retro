@@ -1,5 +1,5 @@
 import numpy
-from retro.out import retro
+from retro.src import retro
 from maze.path import asset
 
 class Maze(retro.Sprite):

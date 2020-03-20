@@ -1,4 +1,4 @@
-from retro.out import retro
+from retro.src import retro
 from maze.nodes.maze import Maze
 from maze.nodes.player import Player
 

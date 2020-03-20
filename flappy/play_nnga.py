@@ -1,7 +1,7 @@
 import sys
-import retro
-from nn import NNGAPool
-from game import Game
+from retro.src import retro
+from flappy.nn import NNGAPool
+from flappy.game import Game
 
 ANALYSIS = sys.argv[1] if len(sys.argv) > 1 else False
 

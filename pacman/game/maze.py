@@ -2,8 +2,8 @@ import math
 import types
 import itertools
 import numpy
-import retro
-from game.assets import assets
+from retro.src import retro
+from pacman.game.assets import assets
 
 class Bonus(retro.Sprite):
     BONUS1 = types.SimpleNamespace(

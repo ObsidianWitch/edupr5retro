@@ -3,7 +3,6 @@ import random
 import math
 import copy
 import numpy
-import retro
 
 class NN(list):
     def __init__(self, arch):

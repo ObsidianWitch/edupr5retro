@@ -1,9 +1,9 @@
 import enum
 import random
 import numpy
-import retro
-from game.entity import Entity
-from game.assets import assets
+from retro.src import retro
+from pacman.game.entity import Entity
+from pacman.game.assets import assets
 
 class Ghosts(retro.Group):
     def __init__(self, num, pos):

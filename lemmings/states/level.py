@@ -1,4 +1,4 @@
-from retro.out import retro
+from retro.src import retro
 from lemmings.nodes.spawner import Spawner
 from lemmings.path import asset
 from lemmings.ui import UI

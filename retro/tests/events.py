@@ -1,5 +1,5 @@
-from src.constants import *
-from src.window import Window
+from retro.src.constants import *
+from retro.src.window import Window
 
 window = Window(
     title     = "window",

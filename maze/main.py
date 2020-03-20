@@ -1,4 +1,4 @@
-from retro.out import retro
+from retro.src import retro
 from maze import states
 
 class Game:

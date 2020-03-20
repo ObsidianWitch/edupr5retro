@@ -1,10 +1,10 @@
 import sys
 import random
 import numpy
-import retro
-from game.parameters import Parameters
-from game.game import Game
-from game.maze import Maze
+from retro.src import retro
+from pacman.game.parameters import Parameters
+from pacman.game.game import Game
+from pacman.game.maze import Maze
 
 class RandImpulse:
     def __init__(self):

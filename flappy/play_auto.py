@@ -1,5 +1,5 @@
-import retro
-from game import Game
+from retro.src import retro
+from flappy.game import Game
 
 window = retro.Window(
     title     = "Flappy Bird",

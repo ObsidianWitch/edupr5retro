@@ -1,4 +1,4 @@
-from src.directions import Directions
+from retro.src.directions import Directions
 
 class Collisions:
     @classmethod

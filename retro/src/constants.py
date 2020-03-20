@@ -1,13 +1,3 @@
-from __future__ import annotations
-import sys
-import typing as typ
-from numbers import Real
-import itertools
-import pygame
-import numpy
-from pygame.locals import *
-from pygame import Rect
-
 M_LEFT   = 1
 M_MIDDLE = 2
 M_RIGHT  = 3

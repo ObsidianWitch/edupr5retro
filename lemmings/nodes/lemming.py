@@ -1,5 +1,5 @@
 import types
-from retro.out import retro
+from retro.src import retro
 from lemmings.nodes.actions import Actions
 from lemmings.path import asset
 

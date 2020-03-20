@@ -1,9 +1,9 @@
 import sys
 import pygame
-from src.constants import *
-from src.window import Window
-from src.image import Image
-from tests.path import assets
+from retro.src.constants import *
+from retro.src.window import Window
+from retro.src.image import Image
+from retro.tests.path import assets
 
 def TestDraw():
     def draw(target):

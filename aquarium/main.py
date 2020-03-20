@@ -1,6 +1,6 @@
 import math
 from pathlib import Path
-from retro.out import retro
+from retro.src import retro
 from aquarium.fish import Fish
 
 def asset(filename):

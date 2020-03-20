@@ -1,6 +1,6 @@
 import typing as typ
-from src.image import Image
-from src.sprite import Sprite
+from retro.src.image import Image
+from retro.src.sprite import Sprite
 from pygame import Rect
 
 class Stage(Sprite):

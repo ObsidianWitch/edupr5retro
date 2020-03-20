@@ -23,10 +23,7 @@ extending [pygame](https://www.pygame.org).
 ### Build & tests
 
 ~~~sh
-cd retro
-
-./build.sh
-python -m tests.{test} # e.g. python -m tests.sprite
+retro/build.sh
 ~~~
 
 ## Flappy NNGA
@@ -34,24 +31,22 @@ python -m tests.{test} # e.g. python -m tests.sprite
 ~~~sh
 cd flappy
 
-python play_manual.py # play with space bar
-python play_auto.py   # play automatically (simple condition)
-python play_nnga.py   # play automatically (ANN with GA)
+python -m flappy.play_manual # play with space bar
+python -m flappy.play_auto   # play automatically (simple condition)
+python -m flappy.play_nnga   # play automatically (ANN with GA)
 ~~~
 
 ## Pacman NNGA
 
 ~~~sh
-cd pacman
-
 # play with arrow keys
-python play_manual.py [--small]
+python -m pacman.play_manual [--small]
 
 # play automatically (heuristic)
-python play_auto.py [--small]
+python -m pacman.play_auto [--small]
 
 # play automatically (ANN with GA)
-python play_nnga.py [--small] [--parallel]
+python -m pacman.play_nnga [--small] [--parallel]
 
 # Options
 # --small: small maze

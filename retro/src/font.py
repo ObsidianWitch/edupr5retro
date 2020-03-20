@@ -1,7 +1,7 @@
 import typing as typ
 import pygame
-from src.constants import *
-from src.image import Image
+from retro.src.constants import *
+from retro.src.image import Image
 
 class Font:
     def __init__(self, size: int) -> None:

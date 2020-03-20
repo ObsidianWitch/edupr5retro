@@ -1,8 +1,8 @@
 import types
-import retro
-from game.maze import Maze
-from game.player import Player
-from game.ghost import Ghost, Ghosts
+from retro.src import retro
+from pacman.game.maze import Maze
+from pacman.game.player import Player
+from pacman.game.ghost import Ghost, Ghosts
 
 class Games(list):
     def __init__(self, window, parameters, size):
