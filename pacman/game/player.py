@@ -19,26 +19,19 @@ class Powerup:
         self.timer = retro.Counter(end = 50, period = 100)
 
 class Player(Entity):
-    IMGS = retro.Image.from_spritesheet(
-        path          = assets("pacman.png"),
-        sprite_size   = (32, 32),
-        discard_color = retro.RED,
-    )
-    IMGS = [img.copy() for img in IMGS] \
-         + [img.copy().rotate(90) for img in IMGS] \
-         + [img.copy().rotate(180) for img in IMGS] \
-         + [img.copy().rotate(270) for img in IMGS]
+    IMG = retro.Image.from_path(assets("pacman.png"))
 
     def __init__(self, pos):
         Entity.__init__(self,
             sprite = retro.Sprite(
-                images     = self.IMGS,
+                image = self.IMG,
                 animations = retro.Animations(
+                    frame_size = (32, 32),
                     period = 50,
-                    STOP_L = [0], STOP_U = [2],
-                    STOP_R = [4], STOP_D = [6],
-                    WALK_L = range(0, 2), WALK_U = range(2, 4),
-                    WALK_R = range(4, 6), WALK_D = range(6, 8),
+                    STOP_L = ([2], 0), STOP_U = ([3], 0),
+                    STOP_R = ([0], 0), STOP_D = ([4], 0),
+                    WALK_L = ([2, 1], 0), WALK_U = ([3, 1], 0),
+                    WALK_R = ([0, 1], 0), WALK_D = ([4, 1], 0),
                 ),
             ),
             pos   = pos,
@@ -96,10 +89,10 @@ class Player(Entity):
 
     def draw_score(self, image):
         font = retro.Font(36)
-        txt = retro.Sprite([font.render(
+        txt = retro.Sprite(font.render(
             text    = f"SCORE: {self.score}",
             color   = retro.WHITE,
             bgcolor = retro.BLACK,
-        )])
+        ))
         txt.rect.bottomleft = image.rect().bottomleft
         txt.draw(image)

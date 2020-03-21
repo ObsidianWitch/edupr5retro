@@ -30,11 +30,7 @@ class Run:
         self.player.explosions.draw(self.stage.image)
 
         ## screen drawing
-        self.window.draw_img(
-            img  = self.stage.image,
-            pos  = (0, 0),
-            area = self.stage.camera,
-        )
+        self.stage.draw(self.window)
         self.player.crosshair.draw(self.window)
         self.player.hide.draw(self.window)
         self.player.ammunitions.draw(self.window)
@@ -46,11 +42,11 @@ class End:
         self.window = window
         self.restart = False
 
-        self.txt = retro.Sprite([self.window.fonts[4].render(
+        self.txt = retro.Sprite(self.window.fonts[4].render(
             text    = "DEAD",
             color   = retro.WHITE,
             bgcolor = retro.BLACK,
-        )])
+        ))
         self.txt.rect.center = self.window.rect().center
 
     def run(self):

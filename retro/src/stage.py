@@ -9,14 +9,8 @@ class Stage(Sprite):
     # can be focused by manipulated `self.camera`.
     def __init__(self, path: str):
         self.original = Image.from_path(path)
-        Sprite.__init__(self, [self.original.copy()])
-
-    @property
-    def camera(self) -> Rect:
-        return self.rect
-    @camera.setter
-    def camera(self, rect: Rect) -> None:
-        self.rect = rect
+        Sprite.__init__(self, self.original.copy())
+        self.camera = self.rect.copy()
 
     ## Transform point `p` from camera space to stage space.
     def camera2stage(self, p: typ.Tuple[int, int]) -> typ.Tuple[int, int]:
@@ -24,7 +18,7 @@ class Stage(Sprite):
 
     ## Transform point `p` from stage space to camera space.
     def stage2camera(self, p: typ.Tuple[int, int]) -> typ.Tuple[int, int]:
-        return (p[0] - self.rect.x, p[1] - self.rect.y)
+        return (p[0] - self.camera.x, p[1] - self.camera.y)
 
     ## Restore stage to its `self.original` state.
     def clear_all(self) -> None:
@@ -34,3 +28,6 @@ class Stage(Sprite):
     ## state.
     def clear_focus(self) -> None:
         self.image.draw_img(self.original, self.camera.topleft, self.camera)
+
+    def draw(self, target: Image) -> None:
+        Sprite.draw(self, target, area = self.camera)

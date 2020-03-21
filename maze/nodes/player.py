@@ -8,19 +8,17 @@ class Player(retro.Sprite):
         self.score = 0
 
         sprite = retro.Sprite.from_spritesheet(
-            path          = asset('player.png'),
-            sprite_size   = (10, 11),
-            discard_color = None,
-            animations    = retro.Animations(
+            path = asset('player.png'),
+            animations = retro.Animations(
+                frame_size = (10, 11),
                 period = 500,
-                IDLE_R = [1],
-                IDLE_L = [4],
-                WALK_R = [0, 1, 2, 1],
-                WALK_L = [3, 4, 5, 4],
+                IDLE_R = ([1], 0),
+                IDLE_L = ([4], 0),
+                WALK_R = ([0, 1, 2, 1], 0),
+                WALK_L = ([3, 4, 5, 4], 0),
             ),
         )
-        retro.Sprite.__init__(self, sprite.images, sprite.animations)
-        for img in self.images: img.colorkey(retro.BLACK)
+        retro.Sprite.__init__(self, sprite.image, sprite.animations)
         self.reset_position()
 
     def reset_position(self):
@@ -51,4 +49,3 @@ class Player(retro.Sprite):
 
     def update(self, directions, collisions):
         self.move(directions, collisions)
-        retro.Sprite.update(self)

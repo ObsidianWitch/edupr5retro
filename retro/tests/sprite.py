@@ -8,31 +8,25 @@ window = retro.Window(
     fps   = 60,
 )
 
-s1 = retro.Sprite.from_path([assets("img.png")])
+s1 = retro.Sprite.from_path(assets("img.png"))
 s1.dy = 1
 
-i2 = retro.Image.from_spritesheet(
-    path          = assets("spritesheet.png"),
-    sprite_size   = (30, 30),
-    discard_color = retro.RED,
-)
-i2 = [img.copy() for img in i2] \
-   + [img.flip(x = True, y = False) for img in i2]
-s2 = retro.Sprite(
-    images     = i2,
+s2 = retro.Sprite.from_spritesheet(
+    path = assets("spritesheet.png"),
     animations = retro.Animations(
-        period  = 100,
-        WALK_L = range(0, 8),
-        WALK_R = range(0 + 133, 8 + 133),
+        frame_size = (30, 30),
+        period = 100,
+        WALK_R = (tuple(reversed(range(0, 8))), 11),
+        WALK_L = (range(0, 8), 0),
     ),
 )
-s2.animations.set("WALK_R")
-s2.rect.top = s1.rect.bottom
 s2.dx = 1
 
 def main():
-    if   s1.rect.top < 0: s1.dy = 1
-    elif s1.rect.bottom >= window.rect().h: s1.dy = -1
+    if s1.rect.top < 0:
+        s1.dy = 1
+    elif s1.rect.bottom >= window.rect().h:
+        s1.dy = -1
     s1.rect.move_ip(0, s1.dy)
 
     if s2.rect.left < 0:
@@ -42,10 +36,9 @@ def main():
         s2.animations.set("WALK_L")
         s2.dx = -1
     s2.rect.move_ip(s2.dx, 0)
-    s2.update()
 
     window.fill(retro.WHITE)
     s1.draw(window)
-    s2.draw(window)
+    s2.draw(window, area = retro.Rect(15, 10, 100, 100))
 
 window.loop(main)

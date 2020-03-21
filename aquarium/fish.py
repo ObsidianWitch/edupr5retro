@@ -4,7 +4,7 @@ from retro.src import retro
 class Fish(retro.Sprite):
     def __init__(self, path, speed):
         image = retro.Image.from_path(path)
-        retro.Sprite.__init__(self, [image])
+        retro.Sprite.__init__(self, image)
         self.dx, self.dy = speed
 
     def flip(self, xflip = False, yflip = False):

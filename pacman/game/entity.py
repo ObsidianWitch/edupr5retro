@@ -4,15 +4,15 @@ from pacman.game.maze import Walls
 
 class Entity(retro.Sprite):
     def __init__(self, sprite, pos, speed, curdir = [0, 0], nxtdir = [0, 0]):
-        retro.Sprite.__init__(self, sprite.images, sprite.animations)
+        retro.Sprite.__init__(self, sprite.image, sprite.animations)
         self.rect.topleft = pos
         self.speed  = speed
         self.curdir = curdir
         self.nxtdir = nxtdir
 
     def set_animation(self, name):
-        if   self.curdir[0] == -1: self.animations.set(f"{name}_R")
-        elif self.curdir[0] ==  1: self.animations.set(f"{name}_L")
+        if   self.curdir[0] == -1: self.animations.set(f"{name}_L")
+        elif self.curdir[0] ==  1: self.animations.set(f"{name}_R")
         elif self.curdir[1] == -1: self.animations.set(f"{name}_U")
         elif self.curdir[1] ==  1: self.animations.set(f"{name}_D")
 
@@ -36,4 +36,3 @@ class Entity(retro.Sprite):
     def update(self, maze):
         if not self.collide_maze(maze):
             self.rect.move_ip(numpy.multiply(self.speed, self.curdir))
-        retro.Sprite.update(self)

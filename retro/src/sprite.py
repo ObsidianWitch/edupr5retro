@@ -42,33 +42,40 @@ class Counter:
     def restart(self) -> None:
         self.t0 = pygame.time.get_ticks()
 
-class Animations(typ.Dict[str, typ.Sequence[int]]):
-    # Animations are stored as entries in this dictionary. Each entry map a name
-    # to frames. Frames are represented by a list of indexes. Each index
-    # references an image stored somewhere else. `period` specifies the time
+Animation = typ.Tuple[typ.Sequence[int], int]
+class Animations(typ.Dict[str, Animation]):
+
+    # Animations are stored as entries in this dictionary. Each entry maps a
+    # name to frame coordinates (row, col). Each tuple of coordinates references
+    # a position in an image stored somewhere else. `period` specifies the time
     # necessary in milliseconds to switch to the next frame. By default, the
     # first animation defined in `self` is started.
     #
     # # Example
-    # animations = retro.Animations(
+    # Animations(
+    #     frame_size = (30, 30),
     #     period = 100,
-    #     WALK_L = range(0, 8),
-    #     WALK_R = range(0 + 133, 8 + 133),
-    #     FALL_L = range(8, 12),
-    #     FALL_R = range(8 + 133, 12 + 133),
+    #     WALK_L = (range(0, 8), 0),
+    #     WALK_R = (tuple(reversed(range(0, 8))), 11),
     #     ...
     # )
-    def __init__(self, period: int, **kwargs: typ.Sequence[int]) -> None:
+    def __init__(self,
+        frame_size: typ.Tuple[int, int], period: int, **kwargs: Animation,
+    ) -> None:
         dict.__init__(self, **kwargs)
+        self.frame_size = frame_size
         self.period = period
-        if len(self) > 0:
-            self.start(name = next(iter(self)))
+        self.start(next(iter(self)))
 
-    # Return the currently played frame's index.
+    # Return the currently played frame's rect.
     @property
-    def frame(self) -> int:
-        i = self.counter.elapsed % len(self.current)
-        return self.current[i]
+    def frame(self) -> pygame.Rect:
+        i = self.counter.elapsed % len(self.current[0])
+        return pygame.Rect(
+            self.current[0][i] * self.frame_size[0],
+            self.current[1]    * self.frame_size[1],
+            *self.frame_size
+        )
 
     # Return whether the animation has finished at least once.
     @property
@@ -83,44 +90,50 @@ class Animations(typ.Dict[str, typ.Sequence[int]]):
     def start(self, name: str) -> None:
         self.set(name)
         self.counter = Counter(
-            end    = len(self.current),
+            end    = len(self.current[0]),
             period = self.period,
         )
 
 class Sprite:
-    def __init__(self,
-        images: typ.List[Image], animations: Animations = None
-    ) -> None:
-        self.image = images[0]
+    def __init__(self, image: Image, animations: Animations = None) -> None:
+        self.image = image
         self.rect = self.image.rect()
         self.groups: typ.List[Group] = []
-
-        self.images = images
         self.animations = animations
+        if self.animations:
+            self.rect.size = self.animations.frame_size
 
     @classmethod
-    def from_path(cls, paths, animations = None):
-        images = [ Image.from_path(p) for p in paths ]
-        return cls(images, animations)
+    def from_path(cls, path: str) -> Sprite:
+        return cls(Image.from_path(path))
 
     @classmethod
-    def from_spritesheet(cls,
-        path, sprite_size, discard_color, animations = None
-    ):
-        images = Image.from_spritesheet(path, sprite_size, discard_color)
-        return cls(images, animations)
+    def from_spritesheet(cls, path: str, animations: Animations) -> Sprite:
+        return cls(Image.from_path(path), animations)
 
+    # Remove `self` from all the `self.groups` it is in.
     def kill(self) -> None:
         for g in self.groups: g.remove(self)
         self.groups = []
 
-    # Sets the current `self.image` as the current frame of the animation.
+    # Does nothing by default, should be overriden.
     # Note: this method is called by `Group.update()`.
     def update(self) -> None:
-        if self.animations:
-            self.image = self.images[self.animations.frame]
+        pass
 
-    # Draw the sprite's current frame on the specified `image` at
-    # `self.rect.topleft`.
-    def draw(self, image: Image) -> None:
-        image.draw_img(self.image, self.rect.topleft)
+    # Draw the sprite's `self.image` on the specified `target` at
+    # `self.rect.topleft` or `position` if specified. If `self.animations`
+    # exists, the current frame is drawn instead. A smaller portion of the
+    # image/frame can be drawn by specifying `area`.
+    def draw(self, target: Image, position: typ.Tuple[int, int] = None,
+        area: pygame.Rect = None,
+    ) -> None:
+        if self.animations and area:
+            area = area.move(self.animations.frame.topleft)
+            area = area.clip(self.animations.frame)
+        elif self.animations:
+            area = self.animations.frame
+
+        position = position or self.rect.topleft
+
+        target.draw_img(self.image, position, area)

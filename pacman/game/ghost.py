@@ -47,24 +47,20 @@ class State:
                 self.current = self.WALK
 
 class Ghost(Entity):
-    IMGS = retro.Image.from_spritesheet(
-        path          = assets("ghost.png"),
-        sprite_size   = (32, 32),
-        discard_color = retro.RED,
-    )
-
+    IMG = retro.Image.from_path(assets("ghost.png"))
     BONUS = 200
 
     def __init__(self, pos):
         Entity.__init__(self,
             sprite = retro.Sprite(
-                images     = self.IMGS,
+                image = self.IMG,
                 animations = retro.Animations(
+                    frame_size = (32, 32),
                     period = 50,
-                    WALK_L = [0], WALK_U = [0],
-                    WALK_R = [0], WALK_D = [0],
-                    FEAR_L = [1], FEAR_U = [1],
-                    FEAR_R = [1], FEAR_D = [1],
+                    WALK_L = ([0], 0), WALK_U = ([0], 0),
+                    WALK_R = ([0], 0), WALK_D = ([0], 0),
+                    FEAR_L = ([1], 0), FEAR_U = ([1], 0),
+                    FEAR_R = ([1], 0), FEAR_D = ([1], 0),
                 ),
             ),
             pos   = pos,

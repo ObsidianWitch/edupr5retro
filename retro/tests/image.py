@@ -56,23 +56,12 @@ def TestInit():
     s5_rect.move_ip(50, 0)
     s5.draw_line(retro.GREEN, (0, 0), (30, 30))
 
-    subimages = retro.Image.from_spritesheet(
-        path = assets("spritesheet.png"),
-        sprite_size = (30, 30),
-        discard_color = retro.RED,
-    )
-
     def draw(target):
         target.draw_img(s1, s1_rect.topleft)
         target.draw_img(s2, s2_rect.topleft, s2_area)
         target.draw_img(s3, s3_rect.topleft)
         target.draw_img(s4, s4_rect.topleft)
         target.draw_img(s5, s5_rect.topleft)
-
-        for i, s in enumerate(subimages):
-            x = (i % 10) * (s.rect().width + 10) + 230
-            y = (i // 10) * (s.rect().height + 10)
-            target.draw_img(s, (x, y))
 
     return draw
 
@@ -140,7 +129,7 @@ def main(target):
 
 if window.headless:
     main(window)
-    # window.save('out.png')
+    # window.save(assets('expectation_image.png'))
     assert window == retro.Image.from_path(assets('expectation_image.png'))
 else:
     window.loop(lambda: main(window))

@@ -5,7 +5,7 @@ from maze.path import asset
 class Maze(retro.Sprite):
     def __init__(self):
         self.tile_size = 20
-        retro.Sprite.__init__(self, [retro.Image.from_path(asset('maze.png'))])
+        retro.Sprite.__init__(self, retro.Image.from_path(asset('maze.png')))
         self.image.scale(self.tile_size)
         self.init_items()
 
@@ -20,19 +20,19 @@ class Maze(retro.Sprite):
         self.traps     = retro.Group()
 
         def init_exit(xsq, ysq):
-            self.exit = retro.Sprite.from_path([asset('exit.png')])
+            self.exit = retro.Sprite.from_path(asset('exit.png'))
             self.exit.rect.move_ip(xsq, ysq)
             self.items.append(self.exit)
 
         def init_treasure(xsq, ysq):
-            sprite = retro.Sprite.from_path([asset('treasure.png')])
+            sprite = retro.Sprite.from_path(asset('treasure.png'))
             sprite.rect.move_ip(xsq, ysq)
             self.image.draw_rect(retro.BLACK, sprite.rect)
             self.items.append(sprite)
             self.treasures.append(sprite)
 
         def init_trap(xsq, ysq):
-            sprite = retro.Sprite.from_path([asset('trap.png')])
+            sprite = retro.Sprite.from_path(asset('trap.png'))
             sprite.rect.move_ip(xsq, ysq)
             self.items.append(sprite)
             self.traps.append(sprite)

@@ -42,7 +42,7 @@ test_font = TestFont(window)
 
 if window.headless:
     test_font()
-    # window.save('out.png')
+    # window.save(assets('expectation_font.png'))
     assert window == retro.Image.from_path(assets('expectation_font.png'))
 else:
     window.loop(test_font)

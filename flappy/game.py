@@ -9,7 +9,7 @@ class Ground(retro.Sprite):
     SPEED = 4
 
     def __init__(self, window):
-        retro.Sprite.__init__(self, [self.IMG])
+        retro.Sprite.__init__(self, self.IMG)
         self.window = window
         self.shift = (self.rect.width - self.window.rect().width)
         self.rect.bottom = self.window.rect().bottom
@@ -54,11 +54,11 @@ class Pipes(list):
             - self.OFFSET_HEIGHT
         )
 
-        ptop = retro.Sprite([self.IMG_TOP])
+        ptop = retro.Sprite(self.IMG_TOP)
         ptop.rect.bottom = ptop.rect.top + y
         ptop.rect.left = x
 
-        pbot = retro.Sprite([self.IMG_BOTTOM])
+        pbot = retro.Sprite(self.IMG_BOTTOM)
         pbot.rect.top = y + self.GAP_HEIGHT
         pbot.rect.left = x
 
@@ -86,7 +86,7 @@ class Bird(retro.Sprite):
     MAX_SPEED = 9
 
     def __init__(self, window):
-        retro.Sprite.__init__(self, [self.IMG])
+        retro.Sprite.__init__(self, self.IMG)
         self.window = window
         self.fitness = 0
         self.alive = True
@@ -125,10 +125,10 @@ class Game:
 
     def draw_scores(self):
         for i, bird in enumerate(self.birds):
-            score = retro.Sprite([self.window.fonts[0].render(
+            score = retro.Sprite(self.window.fonts[0].render(
                 text  = str(bird.fitness),
                 color = retro.WHITE,
-            )])
+            ))
             score.rect.move_ip(10, 10 + (i * score.rect.h))
             score.draw(self.window)
 

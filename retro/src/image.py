@@ -25,32 +25,6 @@ class Image:
     def from_array(cls, array: numpy.ndarray) -> Image:
         return cls(pygame.surfarray.make_surface(array))
 
-    # Load a spritesheet image from its `path` and cut it in subimages of size
-    # `sprite_size`. Subimages containing the `discard_color` color at their
-    # topleft corner are discarded. Return a list containg a list of subimages
-    # for each line of the spritesheet.
-    @classmethod
-    def from_spritesheet(cls,
-        path: str, sprite_size: typ.Tuple[int, int], discard_color: pygame.Color
-    ) -> typ.List[Image]:
-        spritesheet = cls.from_path(path)
-
-        images = []
-        for y in range(spritesheet.rect().h // sprite_size[1]):
-            line = []
-            for x in range(spritesheet.rect().w // sprite_size[0]):
-                img = spritesheet.subimage(Rect(
-                    x * sprite_size[0], # x
-                    y * sprite_size[1], # y
-                    sprite_size[0],     # width
-                    sprite_size[1],     # height
-                ))
-                if img[0, 0] == discard_color: break
-                line.append(img)
-            images.append(line)
-
-        return list(itertools.chain(*images))
-
     def copy(self) -> Image:
         return self.__class__(self)
 
@@ -83,7 +57,7 @@ class Image:
     # Draw `img` onto `self` at `pos`. An optional `area` can be specified can
     # be passed to select a smaller portion of `img` to draw.
     def draw_img(self,
-        img: Image, pos: typ.Tuple[int, int], area: typ.Optional[Rect] = None
+        img: Image, pos: typ.Tuple[int, int], area: Rect = None
     ) -> Image:
         self.pygsurface.blit(img.pygsurface, pos, area)
         return self

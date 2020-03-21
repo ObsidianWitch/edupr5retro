@@ -4,34 +4,29 @@ from lemmings.nodes.actions import Actions
 from lemmings.path import asset
 
 class Lemming(retro.Sprite):
-    IMGS = retro.Image.from_spritesheet(
-        path          = asset("planche.png"),
-        sprite_size   = (30, 30),
-        discard_color = retro.RED,
-    )
-    IMGS = [img.copy() for img in IMGS] \
-         + [img.flip(x = True, y = False) for img in IMGS]
-    IMGS = [img.colorkey(retro.BLACK) for img in IMGS]
+    IMG = retro.Image.from_path(asset("lemming.png"))
 
     def __init__(self, window, bg, position):
         self.window = window
         self.bg = bg
 
+        revrange = lambda start, end: range(end - 1, start - 1, -1)
         retro.Sprite.__init__(
             self       = self,
-            images     = self.IMGS,
+            image      = self.IMG,
             animations = retro.Animations(
-                period  = 100,
-                WALK_L  = range(0, 8),     WALK_R  = range(0 + 133, 8 + 133),
-                FALL_L  = range(8, 12),    FALL_R  = range(8 + 133, 12 + 133),
-                FLOAT_L = range(20, 26),   FLOAT_R = range(20 + 133, 26 + 133),
-                STOP_L  = range(26, 42),   STOP_R  = range(26 + 133, 42 + 133),
-                BOMB_L  = range(42, 56),   BOMB_R  = range(42 + 133, 56 + 133),
-                BUILD_L = range(56, 72),   BUILD_R = range(56 + 133, 72 + 133),
-                DIGV_L  = range(72, 88),   DIGV_R  = range(72 + 133, 88 + 133),
-                DIGH_L  = range(88, 100),  DIGH_R  = range(88 + 133, 100 + 133),
-                MINE_L  = range(100, 117), MINE_R  = range(100 + 133, 117 + 133),
-                DEAD_L  = range(117, 133), DEAD_R  = range(117 + 133, 133 + 133),
+                frame_size = (30, 30),
+                period = 100,
+                WALK_L  = (range(0, 8), 0),   WALK_R  = (revrange(0, 8), 11),
+                FALL_L  = (range(0, 4), 1),   FALL_R  = (revrange(0, 4), 12),
+                FLOAT_L = (range(0, 6), 3),   FLOAT_R = (revrange(0, 6), 14),
+                STOP_L  = (range(0, 16), 4),  STOP_R  = (revrange(0, 16), 15),
+                BOMB_L  = (range(0, 14), 5),  BOMB_R  = (revrange(0, 14), 16),
+                BUILD_L = (range(0, 16), 6),  BUILD_R = (revrange(0, 16), 17),
+                DIGV_L  = (range(0, 16), 7),  DIGV_R  = (revrange(0, 16), 18),
+                DIGH_L  = (range(0, 12), 8),  DIGH_R  = (revrange(0, 12), 19),
+                MINE_L  = (range(0, 17), 9),  MINE_R  = (revrange(0, 17), 20),
+                DEAD_L  = (range(0, 16), 10), DEAD_R  = (revrange(0, 16), 21),
             ),
         )
         self.rect.topleft = position
@@ -157,8 +152,6 @@ class Lemming(retro.Sprite):
 
         elif self.state == self.actions.dead:
             self.actions.dead.run()
-
-        retro.Sprite.update(self)
 
     def draw_bg(self):
         if self.state != self.actions.stop: return

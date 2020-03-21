@@ -9,7 +9,7 @@ def asset(filename):
 class Background(retro.Sprite):
     def __init__(self, path):
         image = retro.Image.from_path(path)
-        retro.Sprite.__init__(self, [image])
+        retro.Sprite.__init__(self, image)
 
     def tilex(self, target):
         image = retro.Image((target.rect().width, self.rect.height))
@@ -32,12 +32,12 @@ class Game:
         self.bg1 = Background(asset('underwater-fantasy/mid.png'))
         self.bg1.rect.bottom = self.window.rect().bottom - 30
         self.bg1.tilex(window)
-        self.bg1.image.colorkey(retro.RED)
+        self.bg1.image.colorkey(retro.BLACK)
 
         self.bg2 = Background(asset('underwater-fantasy/near.png'))
         self.bg2.rect.bottom = self.window.rect().bottom
         self.bg2.tilex(window)
-        self.bg2.image.colorkey(retro.RED)
+        self.bg2.image.colorkey(retro.BLACK)
 
         self.fish1 = Fish(
             speed = (2, 0),
@@ -59,12 +59,11 @@ class Game:
         self.fish3.rect.move_ip(200, 100)
 
         self.bubbles = retro.Sprite.from_spritesheet(
-            path          = asset('underwater-diving/bubbles.png'),
-            sprite_size   = (23, 40),
-            discard_color = None,
-            animations    = retro.Animations(
+            path = asset('underwater-diving/bubbles.png'),
+            animations = retro.Animations(
+                frame_size = (23, 40),
                 period = 200,
-                MAIN = (0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4),
+                MAIN = ((0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4), 0),
             )
         )
 
@@ -73,7 +72,6 @@ class Game:
         self.fish1.move1(self.window)
         self.fish2.move2(self.window)
         self.fish3.move3(self.window)
-        self.bubbles.update()
 
         # Draw
         self.window.fill((62, 121, 221))
@@ -83,8 +81,8 @@ class Game:
         self.fish2.draw(self.window)
         self.bg2.draw(self.window)
         self.fish3.draw(self.window)
-        self.window.draw_img(self.bubbles.image, (40, 200))
-        self.window.draw_img(self.bubbles.image, (550, 200))
+        self.bubbles.draw(self.window, (40, 200))
+        self.bubbles.draw(self.window, (550, 200))
 
 window = retro.Window(
     title = 'Underwater',
