@@ -12,7 +12,7 @@ python -m lemmings.main
 
 ## Retro Module
 
-Retro is a python module extending [pygame](https://www.pygame.org).
+Retro is a module containing tools shared between this repository's games.
 
 ### Dependencies
 

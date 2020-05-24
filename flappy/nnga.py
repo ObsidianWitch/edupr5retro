@@ -1,34 +1,15 @@
 import random
 import math
 import copy
-
-class NN(list):
-    def __init__(self, *args):
-        def genw(): return [
-            genw_neurons(i) for i,_ in enumerate(args[0:-1])
-        ]
-        def genw_neurons(i): return [
-            genw_values(i) for _ in range(args[i + 1])
-        ]
-        def genw_values(i): return [
-            random.uniform(-1.0, 1.0) for _ in range(args[i])
-        ]
-        list.__init__(self, genw())
-
-    def predict(self, *inputs):
-        def sigmoid(x): return 1 / (1 + math.exp(-x))
-        def dot(v1, v2): return sum(v1[i] * v2[i] for i, _ in enumerate(v1))
-
-        values = inputs
-        for w in self: values = [
-            sigmoid(dot(values, n)) for n in w
-        ]
-
-        return values
+from retro.src import retro
 
 class NNGAPool(list):
     def __init__(self, size, arch):
-        list.__init__(self, [NN(*arch) for i in range(size)])
+        finit = lambda: random.uniform(-1.0, 1.0)
+        sigmoid = lambda x: 1 / (1 + math.exp(-x))
+        list.__init__(self, [
+            retro.NN(arch, finit, sigmoid) for i in range(size)
+        ])
         self.arch = arch
         self.generation = 1
 

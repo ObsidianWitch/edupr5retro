@@ -2,34 +2,16 @@ import types
 import random
 import math
 import copy
-import numpy
-
-class NN(list):
-    def __init__(self, arch):
-        def genw_layers(): return [
-            genw_neurons(i) for i,_ in enumerate(arch[0:-1])
-        ]
-        def genw_neurons(i): return [
-            genw_weights(i) for _ in range(arch[i + 1])
-        ]
-        def genw_weights(i): return [
-            random.uniform(-5.0, 5.0) for _ in range(arch[i])
-        ]
-
-        list.__init__(self, genw_layers())
-
-    def predict(self, *inputs):
-        values = inputs
-        for w in self: values = [
-            math.tanh( numpy.dot(values, n).tolist() )
-            for n in w
-        ]
-
-        return values
+from retro.src import retro
 
 class NNGAPool(list):
     def __init__(self, size, arch):
-        list.__init__(self, [NN(arch) for i in range(size)])
+        finit = lambda: random.uniform(-5.0, 5.0)
+        factivate = math.tanh
+        list.__init__(self, [
+            retro.NN(arch, finit, factivate)
+            for i in range(size)
+        ])
         self.arch = arch
         self.generation = 1
 

@@ -1,9 +1,7 @@
 import sys
 from retro.src import retro
-from flappy.nn import NNGAPool
+from flappy.nnga import NNGAPool
 from flappy.game import Game
-
-ANALYSIS = sys.argv[1] if len(sys.argv) > 1 else False
 
 window = retro.Window(
     title = "Flappy Bird",
@@ -16,7 +14,7 @@ pool = NNGAPool(size = len(game.birds), arch = (2, 1))
 def main():
     if not game.finished:
         for i, b in enumerate(game.birds):
-            if ANALYSIS and b.fitness >= 10000:
+            if b.fitness >= 10000:
                 print(pool.generation, b.fitness)
                 sys.exit()
 
@@ -28,9 +26,8 @@ def main():
     else:
         best_fitness = pool.evolve(game.birds)
 
-        if ANALYSIS:
-            print(pool.generation - 1, best_fitness)
-            if pool.generation - 1 >= 50: sys.exit()
+        print(pool.generation - 1, best_fitness)
+        if pool.generation - 1 >= 50: sys.exit()
 
         game.reset()
 

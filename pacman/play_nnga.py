@@ -7,7 +7,7 @@ import numpy
 from retro.src import retro
 from pacman.game.game import Game, Games
 from pacman.game.maze import Maze
-from pacman.nn import NNGAPool
+from pacman.nnga import NNGAPool
 
 def update_one(game, nn):
     if game.finished: return False
