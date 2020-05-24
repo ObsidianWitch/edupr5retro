@@ -2,7 +2,6 @@ import sys
 import random
 import numpy
 from retro.src import retro
-from pacman.game.parameters import Parameters
 from pacman.game.game import Game
 from pacman.game.maze import Maze
 
@@ -32,15 +31,12 @@ class RandImpulse:
 
 class PlayAuto:
     def __init__(self):
-        small_maze = any(arg == "--small" for arg in sys.argv)
-        parameters = Parameters.small() if small_maze \
-                else Parameters.classic()
         self.window = retro.Window(
             title = "Pacman",
-            size  = parameters.window_size,
+            size  = (448, 528),
             fps   = 0,
         )
-        self.game = Game(self.window, parameters)
+        self.game = Game(self.window)
         self.rand_impulse = RandImpulse()
 
     @classmethod

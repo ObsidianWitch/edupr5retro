@@ -5,7 +5,6 @@ import time
 import sys
 import numpy
 from retro.src import retro
-from pacman.game.parameters import Parameters
 from pacman.game.game import Game, Games
 from pacman.game.maze import Maze
 from pacman.nn import NNGAPool
@@ -46,10 +45,10 @@ def update_one(game, nn):
 def update_parallel(icore):
     window = retro.Window(
         title = "Pacman",
-        size  = parameters.window_size,
+        size  = (448, 528),
         fps   = 0,
     )
-    games = Games(window, parameters, size = len(nn_pool) // cores)
+    games = Games(window, size = len(nn_pool) // cores)
     while not games.finished:
         for igame, game in enumerate(games):
             ipool = (len(games) * icore) + igame
@@ -91,10 +90,10 @@ def main_sequential(window = None, games = None):
 
     window = window or retro.Window(
         title = "Pacman",
-        size  = parameters.window_size,
+        size  = (448, 528),
         fps   = 0,
     )
-    games = games or Games(window, parameters, size = len(nn_pool))
+    games = games or Games(window, size = len(nn_pool))
 
     # Update
     start = time.time()
@@ -111,8 +110,7 @@ nn_pool = NNGAPool(size = 200, arch = (10, 10, 10, 4))
 cores = multiprocessing.cpu_count()
 parallel = any(arg == "--parallel" for arg in sys.argv)
 small_maze = any(arg == "--small" for arg in sys.argv)
-parameters = Parameters.small() if small_maze else Parameters.classic()
-Game(None, parameters) # set up constants in shared memory
+Game(None) # set up constants in shared memory
 
 if __name__ == '__main__':
     if parallel: main_parallel()

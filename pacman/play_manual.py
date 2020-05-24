@@ -1,16 +1,13 @@
 import sys
 from retro.src import retro
-from pacman.game.parameters import Parameters
 from pacman.game.game import Game
 
-small_maze = any(arg == "--small" for arg in sys.argv)
-parameters = Parameters.small() if small_maze else Parameters.classic()
 window = retro.Window(
     title = "Pacman",
-    size  = parameters.window_size,
+    size  = (448, 528),
     fps   = 60,
 )
-game = Game(window, parameters)
+game = Game(window)
 
 def main():
     if not game.finished:

@@ -37,7 +37,7 @@ class Bonus(retro.Sprite):
     def __init__(self, pos, color): pass
 
 class Bonuses(list):
-    IMG = None
+    IMG = retro.Image.from_path(assets('bonuses.png'))
 
     def __init__(self):
         self.count = 0
@@ -173,29 +173,19 @@ class Walls(list):
         )
 
 class Maze(retro.Sprite):
-    IMG = None
-    RANGEW = None
-    RANGEH = None
+    IMG = retro.Image.from_path(assets('maze.png'))
+    RANGEW = range(0, IMG.rect().w, 16)
+    RANGEH = range(0, IMG.rect().h, 16)
     WALLS = None
     BONUSES = None
 
-    # Defer constants initialization to avoid circular dependency and to be able
-    # to configure them torugh `parameters`.
-    def __new__(cls, name):
-        if not cls.IMG:
-            cls.IMG = retro.Image.from_path(
-                assets(name + "_maze.png")
-            )
-            cls.RANGEW = range(0, cls.IMG.rect().w, 16)
-            cls.RANGEH = range(0, cls.IMG.rect().h, 16)
-            Bonuses.IMG = retro.Image.from_path(
-                assets(name + "_bonuses.png")
-            )
+    # Defer constants initialization to avoid circular dependency.
+    def __new__(cls):
         if not cls.WALLS: cls.WALLS = Walls()
         if not cls.BONUSES: cls.BONUSES = Bonuses()
         return retro.Sprite.__new__(cls)
 
-    def __init__(self, parameters):
+    def __init__(self):
         retro.Sprite.__init__(self, self.IMG.copy())
         self.bonuses = self.BONUSES.copy()
         self.walls = self.WALLS
@@ -230,6 +220,6 @@ class Maze(retro.Sprite):
             if transpose: ix, jy = jy, ix
             yield ix, jy
 
-    def draw(self, image):
-        retro.Sprite.draw(self, image)
-        self.bonuses.draw(image)
+    def draw(self, target):
+        retro.Sprite.draw(self, target)
+        self.bonuses.draw(target)

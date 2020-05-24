@@ -12,8 +12,7 @@ python -m lemmings.main
 
 ## Retro Module
 
-Retro ([doc](https://obsidienne.gitlab.io/prretrolib)) is a python module
-extending [pygame](https://www.pygame.org).
+Retro is a python module extending [pygame](https://www.pygame.org).
 
 ### Dependencies
 
@@ -39,16 +38,8 @@ python -m flappy.play_nnga   # play automatically (ANN with GA)
 ## Pacman NNGA
 
 ~~~sh
-# play with arrow keys
-python -m pacman.play_manual [--small]
 
-# play automatically (heuristic)
-python -m pacman.play_auto [--small]
-
-# play automatically (ANN with GA)
-python -m pacman.play_nnga [--small] [--parallel]
-
-# Options
-# --small: small maze
-# --parallel: split computations between CPU cores
+python -m pacman.play_manual # play with arrow keys
+python -m pacman.play_auto # play automatically (heuristic)
+python -m pacman.play_nnga [--parallel] # play automatically (ANN with GA)
 ~~~
