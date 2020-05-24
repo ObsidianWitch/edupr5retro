@@ -208,7 +208,8 @@ class Maze(retro.Sprite):
     )
 
     @classmethod
-    def tile_pos(cls, pos): return (pos[0] // 16, pos[1] // 16)
+    def tile_pos(cls, pos):
+        return (pos[0] // 16, pos[1] // 16)
 
     # Returns a Maze iterator.
     # If `window` is specified, iterates over the neighborhood centered on
@@ -229,61 +230,6 @@ class Maze(retro.Sprite):
             if transpose: ix, jy = jy, ix
             yield ix, jy
 
-    # Iterator returning integers each representing an element in the maze.
-    # If `reach` is a positive integer, iterates over the neighborhood
-    # centered on `player` with the specified `reach`.
-    # floor: 0 ; player: 1 ; walls: 2 ; bonus: 3 ; powerup: 4
-    # ghost normal: 5 ; ghost fear: 6
-    def symbols(self, player, ghosts, transpose = False, reach = -1):
-        def process_player(i, j):
-            player_ij = self.tile_pos(player.rect.center)
-            if numpy.equal((i, j), player_ij): return 1
-
-        def process_walls(i, j):
-            if self.walls[i][j]: return 2
-
-        def process_ghosts(i, j):
-            for ghost in ghosts:
-                ghost_ij = self.tile_pos(ghost.rect.center)
-                if numpy.equal((i, j), ghost_ij):
-                    return 5 + ghost.state.current
-
-        def process_bonuses(i, j):
-            bonus = self.bonuses[i][j]
-            if bonus: return 3 + bonus.id
-
-        window = None if reach < 0 else types.SimpleNamespace(
-            center = self.tile_pos(player.rect.center),
-            reach  = reach,
-        )
-        for (i, _), (j, _) in self.iterator(transpose, window):
-            code = process_ghosts(i, j) \
-                or process_player(i, j) \
-                or process_walls(i, j) \
-                or process_bonuses(i, j) \
-                or 0
-            yield i, j, code
-
     def draw(self, image):
         retro.Sprite.draw(self, image)
         self.bonuses.draw(image)
-
-    def print(self, player, ghosts, reach = -1):
-        symchars = (
-            " ", # 0 - floor
-            "P", # 1 - player
-            "▒", # 2 - wall
-            "•", # 3 - bonus
-            "●", # 4 - powerup
-            "△", # 5 - ghost (normal)
-            "▲", # 6 - ghost (fear)
-        )
-
-        oldj = -1
-        for i, j, s in self.symbols(
-            player, ghosts, transpose = True, reach = reach
-        ):
-            if j != oldj: print()
-            oldj = j
-            print(symchars[s], end = '')
-        print()

@@ -23,11 +23,6 @@ def main():
         elif key(retro.K_DOWN):  player.nxtdir = [ 0,  1]
         elif key(retro.K_LEFT):  player.nxtdir = [-1,  0]
         elif key(retro.K_RIGHT): player.nxtdir = [ 1,  0]
-        elif key(retro.K_SPACE):
-            maze.print(player, ghosts)
-            print(maze.walls.floor_cells(
-                *maze.tile_pos(player.rect.center)
-            ))
 
         game.update()
         game.draw()
