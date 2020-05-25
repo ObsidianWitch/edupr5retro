@@ -7,7 +7,7 @@ window = retro.Window(
     size  = (448, 528),
     fps   = 60,
 )
-game = Game(window)
+game = Game()
 
 def main():
     if not game.finished:
@@ -22,7 +22,7 @@ def main():
         elif key(retro.K_RIGHT): player.nxtdir = [ 1,  0]
 
         game.update()
-        game.draw()
+        game.draw(window)
     else:
         game.reset()
 
