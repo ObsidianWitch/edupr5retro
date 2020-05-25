@@ -3,6 +3,7 @@ import types
 import time
 import sys
 import numpy
+import pygame
 from retro.src import retro
 from pacman.game.game import Game, Games
 from pacman.game.maze import Maze
@@ -52,8 +53,13 @@ class PlayNNGA:
 
     def update_many(self):
         while not self.games.finished:
+            self.window.events.update()
+            if self.window.events.event(pygame.QUIT):
+                sys.exit()
+
             for i, game in enumerate(self.games):
                 self.update_one(game, self.nn_pool[i])
+
             self.games.best.draw(self.window)
             self.window.update()
 
