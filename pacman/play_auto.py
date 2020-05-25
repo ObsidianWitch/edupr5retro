@@ -36,7 +36,7 @@ class PlayAuto:
             size  = (448, 528),
             fps   = 0,
         )
-        self.game = Game(self.window)
+        self.game = Game()
         self.rand_impulse = RandImpulse()
 
     @classmethod
@@ -97,7 +97,7 @@ class PlayAuto:
                 player.nxtdir = nxtdir_bonus
 
             self.game.update()
-            self.game.draw()
+            self.game.draw(self.window)
         else:
             print(self.game.fitness)
             self.game.reset()
