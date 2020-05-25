@@ -1,4 +1,3 @@
-import multiprocessing
 import itertools
 import types
 import time
@@ -9,109 +8,65 @@ from pacman.game.game import Game, Games
 from pacman.game.maze import Maze
 from pacman.nnga import NNGAPool
 
-def update_one(game, nn):
-    if game.finished: return False
-
-    maze   = game.maze
-    player = game.player
-    ghost  = game.target(game.ghosts)
-    bonus  = maze.bonuses.nearest(player)
-
-    p = nn.predict(
-        *numpy.subtract(
-            ghost.rect.center, player.rect.center
-        ) if ghost else (-1.0, -1.0),
-        ghost.state.current if ghost else -1,
-        *numpy.subtract(
-            bonus.rect.center, player.rect.center
-        ) if bonus else (-1.0, -1.0),
-        maze.bonuses.count,
-        *maze.walls.floor_cells(
-            *maze.tile_pos(player.rect.center)
+class PlayNNGA:
+    def __init__(self):
+        self.nn_pool = NNGAPool(size = 200, arch = (10, 10, 10, 4))
+        self.games = Games(size = len(self.nn_pool))
+        self.window = retro.Window(
+            title = "Pacman",
+            size  = (448, 528),
+            fps   = 0,
         )
-    )
 
-    dirs = ([-1, 0], [ 0, -1], [ 1,  0], [ 0,  1])
-    i = sorted(
-        range(len(p)),
-        key = lambda i: p[i],
-        reverse = True,
-    )[0]
-    player.nxtdir = dirs[i]
+    def update_one(self, game, nn):
+        if game.finished: return False
 
-    game.update()
-    return True
+        maze   = game.maze
+        player = game.player
+        ghost  = game.target(game.ghosts)
+        bonus  = maze.bonuses.nearest(player)
 
-def update_parallel(icore):
-    window = retro.Window(
-        title = "Pacman",
-        size  = (448, 528),
-        fps   = 0,
-    )
-    games = Games(window, size = len(nn_pool) // cores)
-    while not games.finished:
-        for igame, game in enumerate(games):
-            ipool = (len(games) * icore) + igame
-            update_one(game, nn_pool[ipool])
-        games.best.draw()
-        window.update()
+        p = nn.predict(
+            *numpy.subtract(
+                ghost.rect.center, player.rect.center
+            ) if ghost else (-1.0, -1.0),
+            ghost.state.current if ghost else -1,
+            *numpy.subtract(
+                bonus.rect.center, player.rect.center
+            ) if bonus else (-1.0, -1.0),
+            maze.bonuses.count,
+            *maze.walls.floor_cells(
+                *maze.tile_pos(player.rect.center)
+            )
+        )
 
-    return tuple(g.fitness for g in games)
+        dirs = ([-1, 0], [ 0, -1], [ 1,  0], [ 0,  1])
+        i = sorted(
+            range(len(p)),
+            key = lambda i: p[i],
+            reverse = True,
+        )[0]
+        player.nxtdir = dirs[i]
 
-def main_parallel():
-    if nn_pool.generation > 50: return
+        game.update()
 
-    # Update
-    start = time.time()
-    with multiprocessing.Pool(cores) as mp_pool:
-        scores = mp_pool.map(update_parallel, range(cores))
-    end = time.time()
+    def update_many(self):
+        while not self.games.finished:
+            for i, game in enumerate(self.games):
+                self.update_one(game, self.nn_pool[i])
+            self.games.best.draw(self.window)
+            self.window.update()
 
-    # Adapt
-    units = tuple(
-        types.SimpleNamespace(fitness = score)
-        for score in itertools.chain.from_iterable(scores)
-    )
+    def main(self):
+        while self.nn_pool.generation <= 50:
+            # Update
+            start = time.time()
+            self.update_many()
+            end = time.time()
 
-    # Evolve
-    best = nn_pool.evolve(units)
-    print(nn_pool.generation - 1, best.fitness, end - start)
-    main_parallel()
+            # Evolve
+            best = self.nn_pool.evolve(self.games)
+            print(self.nn_pool.generation - 1, best.fitness, end - start)
+            self.games.reset()
 
-def update_sequential(window, games):
-    while not games.finished:
-        for i, game in enumerate(games):
-            update_one(game, nn_pool[i])
-        games.best.draw()
-        window.update()
-
-def main_sequential(window = None, games = None):
-    if nn_pool.generation > 50: return
-
-    window = window or retro.Window(
-        title = "Pacman",
-        size  = (448, 528),
-        fps   = 0,
-    )
-    games = games or Games(window, size = len(nn_pool))
-
-    # Update
-    start = time.time()
-    update_sequential(window, games)
-    end = time.time()
-
-    # Evolve
-    best = nn_pool.evolve(games)
-    print(nn_pool.generation - 1, best.fitness, end - start)
-    games.reset()
-    main_sequential(window, games)
-
-nn_pool = NNGAPool(size = 200, arch = (10, 10, 10, 4))
-cores = multiprocessing.cpu_count()
-parallel = any(arg == "--parallel" for arg in sys.argv)
-small_maze = any(arg == "--small" for arg in sys.argv)
-Game(None) # set up constants in shared memory
-
-if __name__ == '__main__':
-    if parallel: main_parallel()
-    else: main_sequential()
+PlayNNGA().main()

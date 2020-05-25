@@ -5,8 +5,8 @@ from pacman.game.player import Player
 from pacman.game.ghost import Ghost, Ghosts
 
 class Games(list):
-    def __init__(self, window, size):
-        list.__init__(self, [Game(window) for _ in range(size)])
+    def __init__(self, size):
+        list.__init__(self, [Game() for _ in range(size)])
 
     @property
     def finished(self): return all(g.finished for g in self)
@@ -22,8 +22,7 @@ class Games(list):
         for g in self: g.reset()
 
 class Game:
-    def __init__(self, window):
-        self.window   = window
+    def __init__(self):
         self.maze     = Maze()
         self.player   = Player(pos = (208, 264))
         self.ghosts   = Ghosts(num = 4, pos = (208, 168))
@@ -49,12 +48,12 @@ class Game:
         self.finished = (self.maze.bonuses.count <= 0) \
                      or (self.player.collide_ghost(self.ghosts) == -1)
 
-    def draw(self):
-        self.window.fill(retro.BLACK)
-        self.maze.draw(self.window)
-        self.ghosts.draw(self.window)
-        self.player.draw(self.window)
-        self.player.draw_score(self.window)
+    def draw(self, target):
+        target.fill(retro.BLACK)
+        self.maze.draw(target)
+        self.ghosts.draw(target)
+        self.player.draw(target)
+        self.player.draw_score(target)
 
     def reset(self):
-        self.__init__(self.window)
+        self.__init__()

@@ -45,8 +45,8 @@ class NN(list):
         self.factivate = factivate
 
     def predict(self, *inputs):
-        outputs = inputs
+        out = inputs
         for wcol in self:
-            outputs = [ self.factivate(numpy.dot(values, wnext))
+            out = [ self.factivate(numpy.dot(out, wnext))
                        for wnext in wcol ]
-        return outputs
+        return out
