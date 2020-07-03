@@ -19,17 +19,15 @@ Retro is a module containing tools shared between this repository's games.
 * (lib) [pygame](https://www.pygame.org)
 * (lib) [numpy](http://www.numpy.org/)
 
-### Build & tests
+### Tests
 
 ~~~sh
-retro/build.sh
+retro/test.sh
 ~~~
 
 ## Flappy NNGA
 
 ~~~sh
-cd flappy
-
 python -m flappy.play_manual # play with space bar
 python -m flappy.play_auto   # play automatically (simple condition)
 python -m flappy.play_nnga   # play automatically (ANN with GA)
