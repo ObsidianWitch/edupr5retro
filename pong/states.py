@@ -24,10 +24,18 @@ class Run:
             self.ball.circle.right = paddle.rect.left
             self.ball.dx *= -1
 
+    def draw_line(self):
+        self.window.draw_line(
+            start_pos = self.window.rect().midtop,
+            end_pos   = self.window.rect().midbottom,
+            color     = (200, 200, 200),
+            width     = 2,
+        )
+
     def draw_score(self):
-        score = retro.Sprite(self.window.fonts[1].render(
-            text  = f"{self.p1.score} - {self.p2.score}",
-            color = retro.GREEN,
+        score = retro.Sprite(self.window.fonts[4].render(
+            text  = f"{self.p1.score}   {self.p2.score}",
+            color = (200, 200, 200),
         ))
         score.rect.midtop = self.window.rect().midtop
         score.rect.move_ip(0, 10)
@@ -48,6 +56,7 @@ class Run:
 
         # Draw
         self.window.fill(retro.BLACK)
+        self.draw_line()
         self.p1.draw()
         self.p2.draw()
         self.ball.draw()
@@ -59,9 +68,9 @@ class End:
         self.restart = False
 
         self.txt = retro.Sprite(self.window.fonts[4].render(
-            text    = f"JOUEUR {winner} GAGNANT",
-            color   = retro.YELLOW,
-            bgcolor = retro.RED,
+            text    = f"P{winner} WINS",
+            color   = retro.WHITE,
+            bgcolor = retro.BLACK,
         ))
         self.txt.rect.center = self.window.rect().center
 
