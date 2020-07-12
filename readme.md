@@ -1,4 +1,17 @@
-# PR5 Retrogaming
+# PR5 Pygame
+
+## Setup
+
+```shell
+# Setup virtual environment
+$ python -m venv env
+$ source env/bin/activate
+$ pip install -r requirements.txt
+```
+
+## Retro Module
+
+Retro is a module containing tools shared between this repository's games. Automated test can be run with `retro/test.sh`.
 
 ## Atelier
 
@@ -8,21 +21,6 @@ python -m aquarium.main
 python -m maze.main
 python -m shooter.main
 python -m lemmings.main
-~~~
-
-## Retro Module
-
-Retro is a module containing tools shared between this repository's games.
-
-### Dependencies
-
-* (lib) [pygame](https://www.pygame.org)
-* (lib) [numpy](http://www.numpy.org/)
-
-### Tests
-
-~~~sh
-retro/test.sh
 ~~~
 
 ## Flappy NNGA
@@ -36,7 +34,6 @@ python -m flappy.play_nnga   # play automatically (ANN with GA)
 ## Pacman NNGA
 
 ~~~sh
-
 python -m pacman.play_manual # play with arrow keys
 python -m pacman.play_auto # play automatically (heuristic)
 python -m pacman.play_nnga [--parallel] # play automatically (ANN with GA)
