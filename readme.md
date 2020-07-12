@@ -17,7 +17,6 @@ Retro is a module containing tools shared between this repository's games. Autom
 
 ~~~sh
 python -m pong.main
-python -m aquarium.main
 python -m maze.main
 python -m shooter.main
 python -m lemmings.main
