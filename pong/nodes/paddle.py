@@ -16,7 +16,7 @@ class Paddle:
             self.rect.right = window.rect().w - offset
         self.rect.centery = window.rect().h // 2
 
-        self.dy = 2
+        self.dy = 4
         self.score = 0
 
     def move(self):
