@@ -42,8 +42,9 @@ def TestSprite(target):
     return update
 
 window = retro.Window(
-    title = "test",
-    size  = (320, 240),
+    title    = "test",
+    size     = (320, 240),
+    fps      = 30,
     headless = '--display' not in sys.argv,
 )
 test_sprite = TestSprite(window)

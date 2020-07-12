@@ -36,6 +36,7 @@ def TestFont(target):
 window = retro.Window(
     title    = 'test',
     size     = (640, 480),
+    fps      = 30,
     headless = '--display' not in sys.argv,
 )
 test_font = TestFont(window)

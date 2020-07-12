@@ -4,6 +4,7 @@ from flappy.game import Game
 window = retro.Window(
     title = "Flappy Bird",
     size  = (288, 512),
+    fps   = 30,
 )
 
 game = Game(window, nbirds = 1)

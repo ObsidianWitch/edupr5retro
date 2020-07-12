@@ -7,8 +7,7 @@ from retro.src.font import Font
 
 class Window(Image):
     def __init__(self,
-        title: str, size: typ.Tuple[int, int], fps: int = 30,
-        headless: bool = False
+        title: str, size: typ.Tuple[int, int], fps: int, headless: bool = False,
     ) -> None:
         pygame.init()
 
@@ -37,15 +36,6 @@ class Window(Image):
     def cursor(self, enable: bool) -> None:
         pygame.mouse.set_visible(enable)
 
-    # Update the content of the window and limit the runtime speed of the game
-    # to `self.fps`.
-    def update(self) -> None:
-        self.dt = self.clock.tick(self.fps)
-        pygame.display.flip()
-
-    # 1. retrieve new events
-    # 2. execute `instructions`
-    # 3. update the content of the window
     def loop(self, instructions: typ.Callable) -> None:
         while 1:
             self.events.update()
@@ -53,4 +43,6 @@ class Window(Image):
 
             instructions()
 
-            self.update()
+            if not self.headless:
+                pygame.display.flip()
+            self.clock.tick(self.fps)

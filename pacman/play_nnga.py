@@ -61,7 +61,9 @@ class PlayNNGA:
                 self.update_one(game, self.nn_pool[i])
 
             self.games.best.draw(self.window)
-            self.window.update()
+
+            pygame.display.flip()
+            self.window.clock.tick(self.window.fps)
 
     def main(self):
         while self.nn_pool.generation <= 50:

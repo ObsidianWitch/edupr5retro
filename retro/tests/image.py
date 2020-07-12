@@ -115,6 +115,7 @@ def TestTransform():
 window = retro.Window(
     title    = 'test',
     size     = (800, 600),
+    fps      = 30,
     headless = '--display' not in sys.argv,
 )
 test_draw = TestDraw()

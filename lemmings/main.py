@@ -38,6 +38,7 @@ class Game:
 window = retro.Window(
     title  = "Lemmings",
     size   = (800, 400),
+    fps    = 30,
 )
 pygame.mouse.set_cursor(*pygame.cursors.diamond)
 game = Game(window)

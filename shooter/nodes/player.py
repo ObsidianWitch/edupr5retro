@@ -12,7 +12,7 @@ class Crosshair(retro.Sprite):
         retro.Sprite.__init__(self, self.IMG)
         self.rect.center = self.window.rect().center
 
-        self.speed = 10
+        self.speed = 5
 
     def scroll_vec(self):
         p = self.rect.center
