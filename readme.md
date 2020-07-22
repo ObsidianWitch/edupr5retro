@@ -35,5 +35,5 @@ python -m flappy.play_nnga   # play automatically (ANN with GA)
 ~~~sh
 python -m pacman.play_manual # play with arrow keys
 python -m pacman.play_auto # play automatically (heuristic)
-python -m pacman.play_nnga [--parallel] # play automatically (ANN with GA)
+python -m pacman.play_nnga # play automatically (ANN with GA)
 ~~~
