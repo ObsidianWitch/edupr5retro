@@ -26,4 +26,5 @@ def main():
     else:
         game.reset()
 
-window.loop(main)
+while 1:
+    window.update(main)

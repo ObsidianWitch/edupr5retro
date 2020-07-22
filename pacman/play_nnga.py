@@ -52,24 +52,17 @@ class PlayNNGA:
         game.update()
 
     def update_many(self):
-        while not self.games.finished:
-            self.window.events.update()
-            if self.window.events.event(pygame.QUIT):
-                sys.exit()
+        for i, game in enumerate(self.games):
+            self.update_one(game, self.nn_pool[i])
 
-            for i, game in enumerate(self.games):
-                self.update_one(game, self.nn_pool[i])
-
-            self.games.best.draw(self.window)
-
-            pygame.display.flip()
-            self.window.clock.tick(self.window.fps)
+        self.games.best.draw(self.window)
 
     def main(self):
         while self.nn_pool.generation <= 50:
             # Update
             start = time.time()
-            self.update_many()
+            while not self.games.finished:
+                self.window.update(self.update_many)
             end = time.time()
 
             # Evolve

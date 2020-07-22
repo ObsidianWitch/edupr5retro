@@ -36,4 +36,5 @@ def main():
     if e: print("release M_LEFT")
     # print(window.events.mouse_pos())
 
-window.loop(main)
+while 1:
+    window.update(main)

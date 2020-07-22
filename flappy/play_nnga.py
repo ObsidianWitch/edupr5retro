@@ -31,4 +31,5 @@ def main():
 
         game.reset()
 
-window.loop(main)
+while 1:
+    window.update(main)

@@ -103,6 +103,7 @@ class PlayAuto:
             self.game.reset()
 
     def loop(self):
-        self.window.loop(self.main)
+        while 1:
+            self.window.update(self.main)
 
 PlayAuto().loop()

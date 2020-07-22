@@ -46,4 +46,5 @@ if window.headless:
     # window.save(assets('expectation_font.png'))
     assert window == retro.Image.from_path(assets('expectation_font.png'))
 else:
-    window.loop(test_font)
+    while 1:
+        window.update(test_font)

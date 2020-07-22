@@ -35,13 +35,13 @@ class Window(Image):
             pygame.mouse.set_visible(True)
             pygame.mouse.set_cursor(*cursor)
 
-    def loop(self, instructions: T.Callable) -> None:
-        while 1:
-            self.events.update()
-            if self.events.event(pygame.QUIT): sys.exit()
+    def update(self, instructions: T.Callable) -> None:
+        self.events.update()
+        if self.events.event(pygame.QUIT):
+            sys.exit()
 
-            instructions()
+        instructions()
 
-            if not self.headless:
-                pygame.display.flip()
-            self.clock.tick(self.fps)
+        if not self.headless:
+            pygame.display.flip()
+        self.clock.tick(self.fps)

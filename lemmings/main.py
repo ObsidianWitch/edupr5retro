@@ -42,4 +42,6 @@ window = retro.Window(
 )
 window.cursor(pygame.cursors.diamond)
 game = Game(window)
-window.loop(game.run)
+
+while 1:
+    window.update(game.run)
