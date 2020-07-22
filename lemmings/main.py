@@ -40,6 +40,6 @@ window = retro.Window(
     size   = (800, 400),
     fps    = 30,
 )
-pygame.mouse.set_cursor(*pygame.cursors.diamond)
+window.cursor(pygame.cursors.diamond)
 game = Game(window)
 window.loop(game.run)

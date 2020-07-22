@@ -1,5 +1,5 @@
 import sys
-import typing as typ
+import typing as T
 import pygame
 from retro.src.image import Image
 from retro.src.events import Events
@@ -7,7 +7,7 @@ from retro.src.font import Font
 
 class Window(Image):
     def __init__(self,
-        title: str, size: typ.Tuple[int, int], fps: int, headless: bool = False,
+        title: str, size: T.Tuple[int, int], fps: int, headless: bool = False,
     ) -> None:
         pygame.init()
 
@@ -28,10 +28,14 @@ class Window(Image):
             Font(size) for size in range(18, 43, 6)
         )
 
-    def cursor(self, enable: bool) -> None:
-        pygame.mouse.set_visible(enable)
+    def cursor(self, cursor: T.Union[bool, tuple]) -> None:
+        if type(cursor) is bool:
+            pygame.mouse.set_visible(cursor)
+        else:
+            pygame.mouse.set_visible(True)
+            pygame.mouse.set_cursor(*cursor)
 
-    def loop(self, instructions: typ.Callable) -> None:
+    def loop(self, instructions: T.Callable) -> None:
         while 1:
             self.events.update()
             if self.events.event(pygame.QUIT): sys.exit()
