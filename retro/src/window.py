@@ -28,11 +28,6 @@ class Window(Image):
             Font(size) for size in range(18, 43, 6)
         )
 
-    # Return the number of milliseconds since the window has been initialized.
-    @classmethod
-    def time(cls) -> int:
-        return pygame.time.get_ticks()
-
     def cursor(self, enable: bool) -> None:
         pygame.mouse.set_visible(enable)
 
