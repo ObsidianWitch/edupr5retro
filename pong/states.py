@@ -41,8 +41,7 @@ class Run:
         score.rect.move_ip(0, 10)
         score.draw(self.window)
 
-    def run(self):
-        # Update
+    def update(self):
         self.p1.update()
         self.p2.update()
         self.ball.update()
@@ -54,7 +53,7 @@ class Run:
         if   edge < 0: self.p2.score += 1
         elif edge > 0: self.p1.score += 1
 
-        # Draw
+    def render(self):
         self.window.fill(retro.BLACK)
         self.draw_line()
         self.p1.draw()
@@ -74,10 +73,9 @@ class End:
         ))
         self.txt.rect.center = self.window.rect().center
 
-    def run(self):
-        # Update
+    def update(self):
         key = self.window.events.key_press
         self.restart = key(retro.K_SPACE)
 
-        # Draw
+    def render(self):
         self.txt.draw(self.window)

@@ -132,7 +132,7 @@ class Game:
             score.rect.move_ip(10, 10 + (i * score.rect.h))
             score.draw(self.window)
 
-    def run(self):
+    def update(self):
         # Update
         self.pipes.update()
         self.ground.update()
@@ -150,7 +150,7 @@ class Game:
         )
         self.finished = all(not b.alive for b in self.birds)
 
-        # Draw
+    def render(self):
         self.window.draw_img(self.bg, (0, 0))
         self.pipes.draw()
         self.ground.draw()

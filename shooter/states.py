@@ -18,18 +18,17 @@ class Run:
     def finished(self):
         return (self.player.ammunitions.count <= 0)
 
-    def run(self):
-        # Update
+    def update(self):
         self.player.update(self.spawner)
         self.spawner.update(self.player)
 
-        # Draw
-        ## bg drawing
+    def render(self):
+        # bg
         self.stage.clear_focus()
         self.spawner.mob.draw(self.stage.image)
         self.player.explosions.draw(self.stage.image)
 
-        ## screen drawing
+        # screen
         self.stage.draw(self.window)
         self.player.crosshair.draw(self.window)
         self.player.hide.draw(self.window)
@@ -49,10 +48,9 @@ class End:
         ))
         self.txt.rect.center = self.window.rect().center
 
-    def run(self):
-        # Update
+    def update(self):
         key = self.window.events.key_press
         self.restart = key(retro.K_SPACE)
 
-        # Draw
+    def render(self):
         self.txt.draw(self.window)

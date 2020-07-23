@@ -4,8 +4,9 @@ set -o errexit -o nounset
 
 retro/test.sh
 python -m retro.tests.events
-python -m retro.tests.image --display
-python -m retro.tests.sprite --display
+python -m retro.tests.scheduler --interactive
+python -m retro.tests.image --interactive
+python -m retro.tests.sprite --interactive
 
 python -m pong.main
 python -m maze.main

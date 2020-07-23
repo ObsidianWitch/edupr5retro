@@ -22,8 +22,7 @@ class Level:
         self.spawner.generated and (len(self.spawner.group) <= 0)
     )
 
-    def run(self):
-        # update
+    def update(self):
         self.ui.update()
         self.spawner.update(self.ui.selection.state)
 
@@ -33,7 +32,7 @@ class Level:
             kill   = True,
         ): self.spawner.escaped += 1
 
-        # Draw
+    def render(self):
         self.bg.clear_all()
         self.spawner.draw_bg()
 

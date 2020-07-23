@@ -48,7 +48,7 @@ class Game:
         self.finished = (self.maze.bonuses.count <= 0) \
                      or (self.player.collide_ghost(self.ghosts) == -1)
 
-    def draw(self, target):
+    def render(self, target):
         target.fill(retro.BLACK)
         self.maze.draw(target)
         self.ghosts.draw(target)

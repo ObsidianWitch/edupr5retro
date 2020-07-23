@@ -14,9 +14,7 @@ class PlayNNGA:
         self.nn_pool = NNGAPool(size = 200, arch = (10, 10, 10, 4))
         self.games = Games(size = len(self.nn_pool))
         self.window = retro.Window(
-            title = "Pacman",
-            size  = (448, 528),
-            fps   = 0,
+            title='Pacman', size=(448, 528), ups=-1, fps=-1
         )
 
     def update_one(self, game, nn):
@@ -55,14 +53,15 @@ class PlayNNGA:
         for i, game in enumerate(self.games):
             self.update_one(game, self.nn_pool[i])
 
-        self.games.best.draw(self.window)
+    def render(self):
+        self.games.best.render(self.window)
 
     def main(self):
         while self.nn_pool.generation <= 50:
             # Update
             start = time.time()
             while not self.games.finished:
-                self.window.step(self.update_many)
+                self.window.step(self.update_many, self.render)
             end = time.time()
 
             # Evolve

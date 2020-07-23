@@ -113,24 +113,22 @@ def TestTransform():
 # ---
 
 window = retro.Window(
-    title    = 'test',
-    size     = (800, 600),
-    fps      = 30,
-    headless = '--display' not in sys.argv,
+    title='image', size=(800, 600), ups=30, fps=30,
+    headless='--interactive' not in sys.argv,
 )
 test_draw = TestDraw()
 test_init = TestInit()
 test_tf = TestTransform()
 
-def main(target):
+def render(target):
     target.fill(retro.WHITE)
     test_draw(target)
     test_init(target)
     test_tf(target)
 
 if window.headless:
-    main(window)
+    render(window)
     # window.save(assets('expectation_image.png'))
     assert window == retro.Image.from_path(assets('expectation_image.png'))
 else:
-    window.loop(lambda: main(window))
+    window.loop(None, lambda: render(window))

@@ -18,8 +18,7 @@ class Run:
         score.rect.move_ip(-10, 10)
         score.draw(self.window)
 
-    def run(self):
-        # Update
+    def update(self):
         key = self.window.events.key_hold
         self.player.update(
             directions = retro.Directions(
@@ -53,7 +52,7 @@ class Run:
             p2 = self.maze.exit.rect.center,
         ) < 10
 
-        # Draw
+    def render(self):
         self.maze.draw(self.window)
         self.player.draw(self.window)
         self.draw_score()
@@ -70,10 +69,9 @@ class End:
         ))
         self.txt.rect.center = self.window.rect().center
 
-    def run(self):
-        # Update
+    def update(self):
         key = self.window.events.key_press
         self.restart = key(retro.K_SPACE)
 
-        # Draw
+    def render(self):
         self.txt.draw(self.window)

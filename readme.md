@@ -9,7 +9,7 @@ $ source env/bin/activate
 $ pip install -r requirements.txt
 ```
 
-## Retro Module
+## Retro
 
 Retro is a module containing tools shared between this repository's games. Automated test can be run with `retro/test.sh`.
 

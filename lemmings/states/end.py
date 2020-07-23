@@ -12,9 +12,8 @@ class End:
         ))
         self.txt.rect.center = self.window.rect().center
 
-    def run(self):
-        # Update
+    def update(self):
         self.restart = self.window.events.key_press(retro.K_SPACE)
 
-        # Draw
+    def render(self):
         self.txt.draw(self.window)

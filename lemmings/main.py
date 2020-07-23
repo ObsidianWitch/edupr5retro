@@ -9,7 +9,7 @@ class Game:
         self.window = window
         self.state = None
 
-    def run(self):
+    def update(self):
         if self.state is None:
             self.state = Level1(self.window)
 
@@ -19,7 +19,7 @@ class Game:
             elif self.state.lost:
                 self.state = End(window, win = False)
             else:
-                self.state.run()
+                self.state.update()
 
         elif type(self.state) == Level2:
             if self.state.win:
@@ -27,20 +27,19 @@ class Game:
             elif self.state.lost:
                 self.state = End(window, win = False)
             else:
-                self.state.run()
+                self.state.update()
 
         elif type(self.state) == End:
             if self.state.restart:
                 self.state = Level1(window)
             else:
-                self.state.run()
+                self.state.update()
 
-window = retro.Window(
-    title  = "Lemmings",
-    size   = (800, 400),
-    fps    = 30,
-)
+    def render(self):
+        self.state.render()
+
+window = retro.Window(title='Lemmings', size=(800, 400), ups=30, fps=30)
 window.cursor(pygame.cursors.diamond)
 game = Game(window)
 
-window.loop(game.run)
+window.loop(game.update, game.render)

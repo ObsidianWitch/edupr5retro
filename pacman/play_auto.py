@@ -32,9 +32,7 @@ class RandImpulse:
 class PlayAuto:
     def __init__(self):
         self.window = retro.Window(
-            title = "Pacman",
-            size  = (448, 528),
-            fps   = 0,
+            title='Pacman', size=(448, 528), ups=-1, fps=-1
         )
         self.game = Game()
         self.rand_impulse = RandImpulse()
@@ -74,7 +72,7 @@ class PlayAuto:
         if not sprite: return False
         else: return cls.direction(sprite, player)
 
-    def main(self):
+    def update(self):
         if not self.game.finished:
             player = self.game.player
             bonus  = self.game.maze.bonuses.nearest(player)
@@ -97,12 +95,14 @@ class PlayAuto:
                 player.nxtdir = nxtdir_bonus
 
             self.game.update()
-            self.game.draw(self.window)
         else:
             print(self.game.fitness)
             self.game.reset()
 
+    def render(self):
+        self.game.render(self.window)
+
     def loop(self):
-        self.window.loop(self.main)
+        self.window.loop(self.update, self.render)
 
 PlayAuto().loop()

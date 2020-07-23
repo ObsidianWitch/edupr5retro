@@ -6,7 +6,7 @@ class Game:
         self.window = window
         self.state = None
 
-    def run(self):
+    def update(self):
         if self.state is None:
             self.state = states.Run(window)
 
@@ -14,20 +14,19 @@ class Game:
             if self.state.win:
                 self.state = states.End(window)
             else:
-                self.state.run()
+                self.state.update()
 
         elif type(self.state) == states.End:
             if self.state.restart:
                 self.state = states.Run(window)
             else:
-                self.state.run()
+                self.state.update()
 
-window = retro.Window(
-    title = "Maze",
-    size  = (400, 400),
-    fps   = 60,
-)
+    def render(self):
+        self.state.render()
+
+window = retro.Window(title='Maze', size=(400, 400), ups=60, fps=60)
 window.cursor(False)
 game = Game(window)
 
-window.loop(game.run)
+window.loop(game.update, game.render)

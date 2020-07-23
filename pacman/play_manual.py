@@ -2,14 +2,10 @@ import sys
 from retro.src import retro
 from pacman.game.game import Game
 
-window = retro.Window(
-    title = "Pacman",
-    size  = (448, 528),
-    fps   = 60,
-)
+window = retro.Window(title='Pacman', size=(448, 528), ups=60, fps=60)
 game = Game()
 
-def main():
+def update():
     if not game.finished:
         maze = game.maze
         player = game.player
@@ -22,8 +18,10 @@ def main():
         elif key(retro.K_RIGHT): player.nxtdir = [ 1,  0]
 
         game.update()
-        game.draw(window)
     else:
         game.reset()
 
-window.loop(main)
+def render():
+    game.render(window)
+
+window.loop(update, render)
