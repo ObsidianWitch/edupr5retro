@@ -24,9 +24,7 @@ class Window(Image):
 
         self.events = Events()
 
-        self.fonts = list(
-            Font(size) for size in range(18, 43, 6)
-        )
+        self.fonts = list( Font(size) for size in range(18, 43, 6) )
 
     def cursor(self, cursor: T.Union[bool, tuple]) -> None:
         if type(cursor) is bool:
@@ -35,7 +33,7 @@ class Window(Image):
             pygame.mouse.set_visible(True)
             pygame.mouse.set_cursor(*cursor)
 
-    def update(self, instructions: T.Callable) -> None:
+    def step(self, instructions: T.Callable) -> None:
         self.events.update()
         if self.events.event(pygame.QUIT):
             sys.exit()
@@ -45,3 +43,7 @@ class Window(Image):
         if not self.headless:
             pygame.display.flip()
         self.clock.tick(self.fps)
+
+    def loop(self, instructions: T.Callable) -> None:
+        while 1:
+            self.step(instructions)

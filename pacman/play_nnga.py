@@ -62,7 +62,7 @@ class PlayNNGA:
             # Update
             start = time.time()
             while not self.games.finished:
-                self.window.update(self.update_many)
+                self.window.step(self.update_many)
             end = time.time()
 
             # Evolve

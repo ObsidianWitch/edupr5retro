@@ -54,5 +54,4 @@ if window.headless:
     # window.save(assets('expectation_sprite.png'))
     assert window == retro.Image.from_path(assets('expectation_sprite.png'))
 else:
-    while 1:
-        window.update(test_sprite)
+    window.loop(test_sprite)

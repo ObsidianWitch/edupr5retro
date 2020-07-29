@@ -30,5 +30,4 @@ window = retro.Window(
 window.cursor(False)
 game = Game(window)
 
-while 1:
-    window.update(game.run)
+window.loop(game.run)

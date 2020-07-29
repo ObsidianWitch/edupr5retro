@@ -133,5 +133,4 @@ if window.headless:
     # window.save(assets('expectation_image.png'))
     assert window == retro.Image.from_path(assets('expectation_image.png'))
 else:
-    while 1:
-        window.update(lambda: main(window))
+    window.loop(lambda: main(window))
