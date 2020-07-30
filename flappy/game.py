@@ -33,7 +33,8 @@ class Pipe:
 
 class Pipes(list):
     IMG_BOTTOM = retro.Image.from_path(assets("pipe.png"))
-    IMG_TOP = IMG_BOTTOM.copy().flip(x = True, y = True)
+    IMG_TOP = IMG_BOTTOM.copy()
+    IMG_TOP.flip(x = True, y = True)
     GAP_HEIGHT = 100
     OFFSET_HEIGHT = 80
 

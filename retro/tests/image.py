@@ -66,7 +66,8 @@ def TestInit():
     return draw
 
 def TestTransform():
-    obj1 = retro.Image((50, 50)).draw_line(
+    obj1 = retro.Image((50, 50))
+    obj1.draw_line(
         color     = retro.GREEN,
         start_pos = (0, 0),
         end_pos   = (25, 25),
@@ -76,7 +77,6 @@ def TestTransform():
     obj1_rect.move_ip(10, 300)
 
     obj2 = obj1.copy()
-    obj2.colorkey(color = retro.BLACK)
     obj2.flip(x = True, y = False)
     obj2_rect = obj2.rect()
     obj2_rect.topleft = obj1_rect.topright
@@ -92,7 +92,8 @@ def TestTransform():
     obj3_rect = obj3.rect()
     obj3_rect.topleft = obj1_rect.bottomleft
 
-    obj4 = obj3.copy().resize((25, 25))
+    obj4 = obj3.copy()
+    obj4.resize((25, 25))
     obj4_rect = obj4.rect()
     obj4_rect.topleft = obj3_rect.topright
 
@@ -128,7 +129,7 @@ def render(target):
 
 if window.headless:
     render(window)
-    # window.save(assets('expectation_image.png'))
+    # window.save(assets('expectation_image2.png'))
     assert window == retro.Image.from_path(assets('expectation_image.png'))
 else:
     window.loop(None, lambda: render(window))
