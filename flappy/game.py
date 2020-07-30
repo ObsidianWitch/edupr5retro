@@ -2,10 +2,11 @@ import random
 from pathlib import Path
 from retro.src import retro
 
-def assets(filename): return str(Path("flappy/assets") / filename)
+def assets(filename):
+    return Path("flappy/assets") / filename
 
 class Ground(retro.Sprite):
-    IMG = retro.Image.from_path(assets("ground.png"))
+    IMG = retro.Image(assets("ground.png"))
     SPEED = 4
 
     def __init__(self, window):
@@ -32,7 +33,7 @@ class Pipe:
     def centery(self): return (self.ptop.rect.bottom + self.pbot.rect.top) // 2
 
 class Pipes(list):
-    IMG_BOTTOM = retro.Image.from_path(assets("pipe.png"))
+    IMG_BOTTOM = retro.Image(assets("pipe.png"))
     IMG_TOP = IMG_BOTTOM.copy()
     IMG_TOP.flip(x = True, y = True)
     GAP_HEIGHT = 100
@@ -81,7 +82,7 @@ class Pipes(list):
             pipe.pbot.draw(self.window)
 
 class Bird(retro.Sprite):
-    IMG = retro.Image.from_path(assets("bird.png"))
+    IMG = retro.Image(assets("bird.png"))
     ACCEL = 1
     DEFAULT_SPEED = -9
     MAX_SPEED = 9
@@ -116,7 +117,7 @@ class Game:
         self.window = window
         self.nbirds = nbirds
 
-        self.bg = retro.Image.from_path(assets("bg.png"))
+        self.bg = retro.Image(assets("bg.png"))
         self.ground = Ground(window)
         self.pipes = Pipes(window)
         self.target = self.pipes[0]

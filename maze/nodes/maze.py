@@ -5,7 +5,7 @@ from maze.path import asset
 class Maze(retro.Sprite):
     def __init__(self):
         self.tile_size = 20
-        retro.Sprite.__init__(self, retro.Image.from_path(asset('maze.png')))
+        retro.Sprite.__init__(self, retro.Image(asset('maze.png')))
         self.image.scale(self.tile_size)
         self.init_items()
 

@@ -7,7 +7,7 @@ class Stage(Sprite):
     # original state (`self.original`). A specific portion of the sprite image
     # can be focused by manipulated `self.camera`.
     def __init__(self, path):
-        self.original = Image.from_path(path)
+        self.original = Image(path)
         Sprite.__init__(self, self.original.copy())
         self.camera = self.rect.copy()
 

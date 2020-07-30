@@ -50,6 +50,6 @@ test_sprite = TestSprite(window)
 if window.headless:
     for _ in range(10): test_sprite()
     # window.save(assets('expectation_sprite.png'))
-    assert window == retro.Image.from_path(assets('expectation_sprite.png'))
+    assert window == retro.Image(assets('expectation_sprite.png'))
 else:
     window.loop(None, test_sprite)

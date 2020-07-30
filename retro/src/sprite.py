@@ -101,11 +101,11 @@ class Sprite:
 
     @classmethod
     def from_path(cls, path):
-        return cls(Image.from_path(path))
+        return cls(Image(path))
 
     @classmethod
     def from_spritesheet(cls, path, animations):
-        return cls(Image.from_path(path), animations)
+        return cls(Image(path), animations)
 
     # Remove `self` from all the `self.groups` it is in.
     def kill(self):

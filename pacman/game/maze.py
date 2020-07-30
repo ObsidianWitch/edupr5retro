@@ -8,14 +8,14 @@ from pacman.game.assets import assets
 class Bonus(retro.Sprite):
     BONUS1 = types.SimpleNamespace(
         id     = 0,
-        img    = retro.Image.from_path(assets("bonus1.png")),
+        img    = retro.Image(assets("bonus1.png")),
         color  = (255, 184, 151),
         value  = 10,
         offset = (0, 0),
     )
     BONUS2 = types.SimpleNamespace(
         id     = 1,
-        img    = retro.Image.from_path(assets("bonus2.png")),
+        img    = retro.Image(assets("bonus2.png")),
         color  = (255, 136, 84),
         value  = 50,
         offset = (-6, -6),
@@ -37,7 +37,7 @@ class Bonus(retro.Sprite):
     def __init__(self, pos, color): pass
 
 class Bonuses(list):
-    IMG = retro.Image.from_path(assets('bonuses.png'))
+    IMG = retro.Image(assets('bonuses.png'))
 
     def __init__(self):
         self.count = 0
@@ -173,7 +173,7 @@ class Walls(list):
         )
 
 class Maze(retro.Sprite):
-    IMG = retro.Image.from_path(assets('maze.png'))
+    IMG = retro.Image(assets('maze.png'))
     RANGEW = range(0, IMG.rect().w, 16)
     RANGEH = range(0, IMG.rect().h, 16)
     WALLS = None

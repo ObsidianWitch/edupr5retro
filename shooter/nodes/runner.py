@@ -3,7 +3,7 @@ from shooter.path import asset
 from shooter.nodes.enemy import Enemy
 
 class Runner(Enemy):
-    RUNNER_IMG = retro.Image.from_path(
+    RUNNER_IMG = retro.Image(
         asset("bandit_street3.png"),
     )
 

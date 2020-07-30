@@ -1,3 +1,4 @@
 from pathlib import Path
 
-def assets(filename): return str(Path("pacman/assets") / filename)
+def assets(filename):
+    return Path("pacman/assets") / filename

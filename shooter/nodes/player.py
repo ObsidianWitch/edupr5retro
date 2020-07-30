@@ -4,7 +4,7 @@ from retro.src import retro
 from shooter.path import asset
 
 class Crosshair(retro.Sprite):
-    IMG = retro.Image.from_path(asset("crosshair.png"))
+    IMG = retro.Image(asset("crosshair.png"))
 
     def __init__(self, window):
         self.window = window
@@ -55,7 +55,7 @@ class Crosshair(retro.Sprite):
         stage.camera.clamp_ip(stage.image.rect())
 
 class Ammunitions(retro.Sprite):
-    IMG = retro.Image.from_path(asset("bullet.png"))
+    IMG = retro.Image(asset("bullet.png"))
     IMG.scale(0.5)
 
     def __init__(self, window):
@@ -72,7 +72,7 @@ class Ammunitions(retro.Sprite):
             retro.Sprite.draw(self, dest)
 
 class Hide(retro.Sprite):
-    IMG = retro.Image.from_path(asset("hide.png"))
+    IMG = retro.Image(asset("hide.png"))
 
     def __init__(self, window):
         self.window = window
@@ -90,7 +90,7 @@ class Hide(retro.Sprite):
             retro.Sprite.draw(self, dest)
 
 class Explosion(retro.Sprite):
-    IMG = retro.Image.from_path(asset("bang.png"))
+    IMG = retro.Image(asset("bang.png"))
 
     def __init__(self, center):
         retro.Sprite.__init__(self, self.IMG)

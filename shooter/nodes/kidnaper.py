@@ -3,7 +3,7 @@ from shooter.path import asset
 from shooter.nodes.enemy import Enemy
 
 class Kidnaper(Enemy):
-    KIDNAPER_IMG = retro.Image.from_path(
+    KIDNAPER_IMG = retro.Image(
         asset("bandit_kidnaper.png"),
     )
 

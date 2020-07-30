@@ -1,4 +1,4 @@
 from pathlib import Path
 
 def asset(filename):
-    return str(Path('shooter/data') / filename)
+    return Path('shooter/data') / filename

@@ -47,7 +47,7 @@ class State:
                 self.current = self.WALK
 
 class Ghost(Entity):
-    IMG = retro.Image.from_path(assets("ghost.png"))
+    IMG = retro.Image(assets("ghost.png"))
     BONUS = 200
 
     def __init__(self, pos):

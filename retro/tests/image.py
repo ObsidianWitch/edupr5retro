@@ -38,12 +38,12 @@ def TestInit():
     s1_rect = s1.rect()
     s1_rect.move_ip(100, 10)
 
-    s2 = retro.Image.from_path(assets("img.png"))
+    s2 = retro.Image(assets("img.png"))
     s2_rect = s2.rect()
     s2_area = retro.Rect(20, 10, 30, 30)
     s2_rect.move_ip(100, 110)
 
-    s3 = retro.Image.from_path(assets("trap.png"))
+    s3 = retro.Image(assets("trap.png"))
     s3_rect = s3.rect()
     s3_rect.move_ip(100, 150)
 
@@ -130,6 +130,6 @@ def render(target):
 if window.headless:
     render(window)
     # window.save(assets('expectation_image2.png'))
-    assert window == retro.Image.from_path(assets('expectation_image.png'))
+    assert window == retro.Image(assets('expectation_image.png'))
 else:
     window.loop(None, lambda: render(window))

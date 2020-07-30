@@ -6,31 +6,31 @@ from shooter.nodes.runner import Runner
 from shooter.path import asset
 
 class Spawner:
-    STREET_IMGS = tuple(retro.Image.from_path(p) for p in (
+    STREET_IMGS = tuple(retro.Image(p) for p in (
         asset("bandit_street1.png"),
         asset("bandit_street2.png"),
         asset("bandit_street4.png"),
     ))
 
-    WINDOW_IMGS = tuple(retro.Image.from_path(p) for p in (
+    WINDOW_IMGS = tuple(retro.Image(p) for p in (
         asset("bandit_window1.png"),
         asset("bandit_window2.png"),
         asset("bandit_window3.png"),
         asset("bandit_window4.png"),
     ))
 
-    WALL_IMGS = tuple(retro.Image.from_path(p) for p in (
+    WALL_IMGS = tuple(retro.Image(p) for p in (
         asset("bandit_wall1.png"),
         asset("bandit_wall2.png"),
     ))
 
-    TOP_IMGS = tuple(retro.Image.from_path(p) for p in (
+    TOP_IMGS = tuple(retro.Image(p) for p in (
         asset("bandit_support1.png"),
         asset("bandit_support2.png"),
         asset("bandit_support3.png"),
     ))
 
-    SEWER_IMG = retro.Image.from_path(
+    SEWER_IMG = retro.Image(
         asset("bandit_sewer.png"),
     )
 

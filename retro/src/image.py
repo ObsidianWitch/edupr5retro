@@ -1,22 +1,18 @@
 import pygame
 import numpy
-import typing as T
-from retro.src.constants import *
+from pathlib import Path
 
 class Image:
-    def __init__(self, arg):
+    def __init__(self, *args, **kwargs):
+        arg = args[0]
         if isinstance(arg, Image):
-            self.pygsurface: pygame.Surface = arg.pygsurface.copy()
+            self.pygsurface = arg.pygsurface.copy()
         elif isinstance(arg, pygame.Surface):
             self.pygsurface = arg
-        elif isinstance(arg, T.Sequence):
-            Image.__init__(self, pygame.Surface(arg))
+        elif isinstance(arg, Path):
+            self.__init__(pygame.image.load(str(arg)))
         else:
-            raise NotImplementedError
-
-    @classmethod
-    def from_path(cls, path):
-        return cls(pygame.image.load(path))
+            self.__init__(pygame.Surface(*args, *kwargs))
 
     def copy(self):
         return self.__class__(self)

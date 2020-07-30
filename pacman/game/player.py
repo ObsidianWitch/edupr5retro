@@ -19,7 +19,7 @@ class Powerup:
         self.timer = retro.Counter(end = 50, period = 100)
 
 class Player(Entity):
-    IMG = retro.Image.from_path(assets("pacman.png"))
+    IMG = retro.Image(assets("pacman.png"))
 
     def __init__(self, pos):
         Entity.__init__(self,

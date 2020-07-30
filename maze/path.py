@@ -1,4 +1,4 @@
 from pathlib import Path
 
 def asset(filename):
-    return str(Path('maze/assets') / filename)
+    return Path('maze/assets') / filename

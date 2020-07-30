@@ -4,7 +4,7 @@ from lemmings.nodes.actions import Actions
 from lemmings.path import asset
 
 class Lemming(retro.Sprite):
-    IMG = retro.Image.from_path(asset("lemming.png"))
+    IMG = retro.Image(asset("lemming.png"))
 
     def __init__(self, window, bg, position):
         self.window = window
