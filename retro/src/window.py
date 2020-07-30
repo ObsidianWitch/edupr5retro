@@ -1,6 +1,5 @@
 import sys
 import math
-import typing as T
 import pygame
 from retro.src.image import Image
 from retro.src.events import Events
@@ -28,7 +27,7 @@ class Window(Image):
 
         self.fonts = list( Font(size) for size in range(18, 43, 6) )
 
-    def cursor(self, cursor: T.Union[bool, tuple]) -> None:
+    def cursor(self, cursor):
         if type(cursor) is bool:
             pygame.mouse.set_visible(cursor)
         else:
