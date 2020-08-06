@@ -1,6 +1,6 @@
 import pygame
 from retro.src import retro
-from lemmings.states.level import Level1, Level2
+from lemmings.states.level import Level, Level1, Level2
 from lemmings.states.end import End
 
 class Game:
@@ -9,9 +9,14 @@ class Game:
         self.state = None
 
     def update(self):
+        # reset
+        if (self.window.events.key_release(retro.K_BACKSPACE)
+            and isinstance(self.state, Level)
+        ):
+            self.state = type(self.state)(self.window)
+
         if self.state is None:
             self.state = Level1(self.window)
-
         elif type(self.state) == Level1:
             if self.state.win:
                 self.state = Level2(window)
@@ -19,7 +24,6 @@ class Game:
                 self.state = End(window, win = False)
             else:
                 self.state.update()
-
         elif type(self.state) == Level2:
             if self.state.win:
                 self.state = End(window, win = True)
@@ -27,7 +31,6 @@ class Game:
                 self.state = End(window, win = False)
             else:
                 self.state.update()
-
         elif type(self.state) == End:
             if self.state.restart:
                 self.state = Level1(window)
