@@ -21,14 +21,14 @@ class Game:
             if self.state.win:
                 self.state = Level2(window)
             elif self.state.lost:
-                self.state = End(window, win = False)
+                self.state = type(self.state)(self.window)
             else:
                 self.state.update()
         elif type(self.state) == Level2:
             if self.state.win:
-                self.state = End(window, win = True)
+                self.state = End(window)
             elif self.state.lost:
-                self.state = End(window, win = False)
+                self.state = type(self.state)(self.window)
             else:
                 self.state.update()
         elif type(self.state) == End:
@@ -40,7 +40,7 @@ class Game:
     def render(self):
         self.state.render()
 
-window = retro.Window(title='Lemmings', size=(800, 400), ups=30, fps=30)
+window = retro.Window(title='Lemmings', size=(800, 400), ups=45, fps=45)
 window.cursor(pygame.cursors.diamond)
 game = Game(window)
 
