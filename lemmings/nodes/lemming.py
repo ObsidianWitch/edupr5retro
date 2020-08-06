@@ -154,9 +154,8 @@ class Lemming(retro.Sprite):
             self.actions.dead.run()
 
     def draw_bg(self):
-        if self.state != self.actions.stop: return
-
-        retro.Sprite.draw(self, self.bg.image)
+        if self.state == self.actions.stop:
+            retro.Sprite.draw(self, self.bg.image)
 
     def draw_screen(self):
         if self.state == self.actions.stop: return
