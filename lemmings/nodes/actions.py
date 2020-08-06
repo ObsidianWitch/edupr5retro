@@ -9,22 +9,21 @@ class Walk:
     def start(self):
         return self
 
-    def run(self, collisions):
-        self.walk(collisions)
-        self.slope()
-
-    def walk(self, collisions):
+    def run(self, collisions, pending_action=False):
+        # walk
         if collisions.side:
             self.dx *= -1
             self.lemming.rect.move_ip(-self.dx * 20, 0)
 
-        self.lemming.set_animation("WALK")
+        self.lemming.set_animation("WALKA" if pending_action else "WALK")
         self.lemming.rect.move_ip(self.dx, 0)
 
-    def slope(self):
+        # slope
         c = self.lemming.collisions(self.lemming.bg.image)
-        if not c.fall: self.slope_up()
-        else:          self.slope_down()
+        if not c.fall:
+            self.slope_up()
+        else:
+            self.slope_down()
 
     def slope_up(self):
         self.lemming.rect.move_ip(0, -2)
