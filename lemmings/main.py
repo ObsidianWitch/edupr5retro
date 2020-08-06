@@ -1,7 +1,6 @@
 import pygame
 from retro.src import retro
-from lemmings.states.level1 import Level1
-from lemmings.states.level2 import Level2
+from lemmings.states.level import Level1, Level2
 from lemmings.states.end import End
 
 class Game:

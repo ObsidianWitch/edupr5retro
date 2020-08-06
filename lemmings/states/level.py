@@ -40,3 +40,23 @@ class Level:
         self.exit.draw(self.window)
         self.ui.draw()
         self.spawner.draw_screen()
+
+class Level1(Level):
+    def __init__(self, window):
+        Level.__init__(
+            self   = self,
+            window = window,
+            map    = "map1.png",
+            startp = (250, 100),
+            endp   = (622, 252),
+        )
+
+class Level2(Level):
+    def __init__(self, window):
+        Level.__init__(
+            self   = self,
+            window = window,
+            map    = "map2.png",
+            startp = (72, 14),
+            endp   = (669, 66),
+        )
