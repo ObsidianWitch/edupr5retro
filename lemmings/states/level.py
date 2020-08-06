@@ -32,10 +32,10 @@ class Level:
             kill   = True,
         ): self.spawner.escaped += 1
 
-    def render(self):
         self.bg.clear_all()
         self.spawner.draw_bg()
 
+    def render(self):
         self.bg.draw(self.window)
         self.exit.draw(self.window)
         self.ui.draw()
