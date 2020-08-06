@@ -1,5 +1,6 @@
 import sys
 import math
+import itertools
 import pygame
 from retro.src.image import Image
 from retro.src.events import Events
@@ -20,7 +21,6 @@ class Window(Image):
         self.clock = pygame.time.Clock()
         self.ups = ups
         self.fps = fps
-        self.tick = 0
         self.schedule = self.scheduler(self.ups, self.fps)
 
         self.events = Events()
@@ -50,7 +50,7 @@ class Window(Image):
     @classmethod
     def scheduler(cls, ups, fps):
         if (ups <= 0 or fps <= 0) or (ups == fps):
-            return lambda tick: (ups, True, True)
+            return lambda: (ups, True, True)
 
         slots, remaining = (ups, fps) if ups >= fps else (fps, ups)
         schedule = [ False for _ in range(slots) ]
@@ -65,10 +65,11 @@ class Window(Image):
                     slots -= 1
                     remaining -= 1
 
+        schedulecycle = itertools.cycle(schedule)
         if ups > fps:
-            return lambda tick: (ups, True, schedule[tick % ups])
+            return lambda: (ups, True, next(schedulecycle))
         else:
-            return lambda tick: (fps, schedule[tick % fps], True)
+            return lambda: (fps, next(schedulecycle), True)
 
     # Execute update and/or render each step of the application loop depending
     # on their schedule. They can be disabled by setting them to None.
@@ -77,7 +78,7 @@ class Window(Image):
         if self.events.event(pygame.QUIT):
             sys.exit()
 
-        limitrate, isUpdating, isRendering = self.schedule(self.tick)
+        limitrate, isUpdating, isRendering = self.schedule()
         if update and isUpdating:
             update()
         if render and isRendering:
@@ -85,7 +86,6 @@ class Window(Image):
             pygame.display.flip()
 
         self.clock.tick(limitrate)
-        self.tick += 1
 
     def loop(self, update, render):
         while True:

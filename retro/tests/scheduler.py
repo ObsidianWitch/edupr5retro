@@ -41,7 +41,7 @@ class TestScheduler(unittest.TestCase):
         highps = ups if ups >= fps else fps
         control = self.str2schedule(ctrl_ustr, ctrl_rstr) * 4
         schedule = retro.Window.scheduler(ups, fps)
-        schedule = tuple( schedule(tick)[1:] for tick, _ in enumerate(control) )
+        schedule = tuple( schedule()[1:] for _ in control )
         self.assertEqual(control, schedule)
 
     def test_signature(self):
