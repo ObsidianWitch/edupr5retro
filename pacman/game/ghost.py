@@ -1,4 +1,3 @@
-import enum
 import random
 import numpy
 from retro.src import retro
@@ -6,24 +5,24 @@ from pacman.game.entity import Entity
 from pacman.game.assets import assets
 
 class Ghosts(retro.Group):
-    def __init__(self, num, pos):
+    def __init__(self, max, pos):
         retro.Group.__init__(self, Ghost(pos))
-        self.num = num
+        self.max = max
         self.pos = pos
-        self.spawn_timer = retro.Counter(end = 50, period = 100)
+        self.spawn_ticker = retro.Ticker(end=300)
 
     def notify_kill(self):
-        self.spawn_timer.restart()
+        # countermeasure to avoid instant repop
+        if len(self) == self.max:
+            self.spawn_ticker.restart()
 
     def update(self, maze, player):
         retro.Group.update(self, maze, player)
 
-        if len(self) == self.num: return
-        elif self.spawn_timer.elapsed > 50:
-            self.spawn_timer.restart()
-        elif self.spawn_timer.finished:
+        if len(self) == self.max: return
+        elif self.spawn_ticker.finished:
             self.append(Ghost(self.pos))
-            self.spawn_timer.restart()
+            self.spawn_ticker.restart()
 
 class State:
     WALK = 0
@@ -56,7 +55,7 @@ class Ghost(Entity):
                 image = self.IMG,
                 animations = retro.Animations(
                     frame_size = (32, 32),
-                    period = 50,
+                    period = 3,
                     WALK_L = ([0], 0), WALK_U = ([0], 0),
                     WALK_R = ([0], 0), WALK_D = ([0], 0),
                     FEAR_L = ([1], 0), FEAR_U = ([1], 0),

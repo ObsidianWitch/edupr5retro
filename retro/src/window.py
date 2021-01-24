@@ -5,10 +5,12 @@ import pygame
 from retro.src.image import Image
 from retro.src.events import Events
 from retro.src.font import Font
+from retro.src.counter import Ticker
 
 class Window(Image):
     def __init__(self, title, size, fps, headless = False):
         pygame.init()
+        Ticker.inject(self)
 
         self.headless = headless
         if self.headless:
@@ -20,6 +22,7 @@ class Window(Image):
 
         self.clock = pygame.time.Clock()
         self.fps = fps
+        self.ftick = 0
 
         self.events = Events()
 
@@ -43,6 +46,7 @@ class Window(Image):
             render()
             pygame.display.flip()
 
+        self.ftick += 1
         self.clock.tick(self.fps)
 
     def loop(self, update, render):

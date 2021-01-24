@@ -16,7 +16,7 @@ class Lemming(retro.Sprite):
             image      = self.IMG,
             animations = retro.Animations(
                 frame_size = (30, 30),
-                period = 100,
+                period  = 4,
                 WALK_L  = (range(0, 8), 0),   WALK_R  = (revrange(0, 8), 12),
                 WALKA_L = (range(0, 8), 11),  WALKA_R = (revrange(0, 8), 23),
                 FALL_L  = (range(0, 4), 1),   FALL_R  = (revrange(0, 4), 13),
@@ -110,7 +110,7 @@ class Lemming(retro.Sprite):
             self.actions.stop.run()
 
         elif self.state == self.actions.bomb:
-            if self.actions.bomb.timer.finished or collisions_all.fall:
+            if self.actions.bomb.ticker.finished or collisions_all.fall:
                 self.actions.bomb.run()
             else:
                 self.actions.walk.run(collisions_all, pending_action=True)
@@ -161,6 +161,6 @@ class Lemming(retro.Sprite):
     def draw_screen(self):
         if self.state == self.actions.stop: return
         elif self.state == self.actions.bomb:
-            self.actions.bomb.draw_timer()
+            self.actions.bomb.draw_ticker()
 
         retro.Sprite.draw(self, self.window)

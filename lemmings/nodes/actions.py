@@ -93,7 +93,7 @@ class Bomb:
         self.lemming = lemming
 
     def start(self):
-        self.timer = retro.Counter(end = 3, period = 1000)
+        self.ticker = retro.Ticker(end = 135)
         self.explode = False
         return self
 
@@ -110,16 +110,16 @@ class Bomb:
         elif self.lemming.animations.finished:
             self.lemming.kill()
 
-    def draw_timer(self):
+    def draw_ticker(self):
         if self.explode: return
 
         window = self.lemming.window
-        timer_surface = retro.Sprite(window.fonts[0].render(
-            text  = f"{self.timer.remaining}",
+        ticker_surface = retro.Sprite(window.fonts[0].render(
+            text  = f"{self.ticker.remaining}",
             color = retro.WHITE,
         ))
-        timer_surface.rect.midbottom = self.lemming.bounding_rect.midtop
-        timer_surface.draw(window)
+        ticker_surface.rect.midbottom = self.lemming.bounding_rect.midtop
+        ticker_surface.draw(window)
 
 class Build:
     ICON  = retro.Image(asset("ui_build.png"))

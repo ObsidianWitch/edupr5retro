@@ -1,5 +1,6 @@
 import pygame
 from retro.src.image import Image
+from retro.src.counter import Ticker
 
 class Group(list):
     def __init__(self, *args):
@@ -16,30 +17,6 @@ class Group(list):
 
     def draw(self, surface):
         for e in self: e.draw(surface)
-
-class Counter:
-    # A Counter counts from 0 to `end`. Its value is incremented periodically
-    # (`period`). By default the counter does not end (`end = 0`) and is
-    # incremented every 1000 ms (`period = 1000`).
-    def __init__(self, end = 0, period = 1000):
-        self.end = end
-        self.period = period
-        self.restart()
-
-    @property
-    def elapsed(self):
-        return (pygame.time.get_ticks() - self.t0) // self.period
-
-    @property
-    def remaining(self):
-        return (self.end - self.elapsed)
-
-    @property
-    def finished(self):
-        return (self.elapsed >= self.end)
-
-    def restart(self):
-        self.t0 = pygame.time.get_ticks()
 
 class Animations(dict):
 
@@ -66,7 +43,7 @@ class Animations(dict):
     # Return the currently played frame's rect.
     @property
     def frame(self):
-        i = self.counter.elapsed % len(self.current[0])
+        i = self.ticker.elapsed % len(self.current[0])
         return pygame.Rect(
             self.current[0][i] * self.frame_size[0],
             self.current[1]    * self.frame_size[1],
@@ -76,7 +53,7 @@ class Animations(dict):
     # Return whether the animation has finished at least once.
     @property
     def finished(self):
-        return self.counter.finished
+        return self.ticker.finished
 
     # Sets the animation to play by specifying its `name`.
     def set(self, name):
@@ -85,7 +62,7 @@ class Animations(dict):
     # Specify the animation to play by its `name` and starts it.
     def start(self, name):
         self.set(name)
-        self.counter = Counter(
+        self.ticker = Ticker(
             end    = len(self.current[0]),
             period = self.period,
         )

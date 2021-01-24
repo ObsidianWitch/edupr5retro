@@ -12,17 +12,17 @@ class Spawner:
 
         self.counter = 0
         self.max = 15
-        self.pop_timer = retro.Counter(end = 1, period = 1500)
+        self.pop_ticker = retro.Ticker(end=67)
 
     @property
     def generated(self): return (self.counter >= self.max)
 
     def generate(self):
-        if (not self.generated) and self.pop_timer.finished:
+        if (not self.generated) and self.pop_ticker.finished:
             l = Lemming(self.window, self.bg, self.position)
             self.group.append(l)
             self.counter += 1
-            self.pop_timer.restart()
+            self.pop_ticker.restart()
 
     def update(self, ui_action):
         self.generate()

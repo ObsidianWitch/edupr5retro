@@ -95,10 +95,10 @@ class Explosion(retro.Sprite):
     def __init__(self, center):
         retro.Sprite.__init__(self, self.IMG)
         self.rect.center = center
-        self.timer = retro.Counter(2)
+        self.ticker = retro.Ticker(end=120)
 
     def update(self):
-        if self.timer.finished: self.kill()
+        if self.ticker.finished: self.kill()
 
 class Hints:
     def __init__(self, window, stage):

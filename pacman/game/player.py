@@ -4,19 +4,19 @@ from pacman.game.assets import assets
 
 class Powerup:
     def __init__(self):
-        self.timer = retro.Counter()
+        self.ticker = None
 
     @property
     def enabled(self):
-        return not self.timer.finished
+        return self.ticker is not None and not self.ticker.finished
 
     @property
     def started(self):
-        return self.enabled and (0 <= self.timer.elapsed <= 1)
+        return self.enabled and (0 <= self.ticker.elapsed <= 1)
 
     def start(self):
-        self.mul   = 1
-        self.timer = retro.Counter(end = 50, period = 100)
+        self.mul = 1
+        self.ticker = retro.Ticker(end=300)
 
 class Player(Entity):
     IMG = retro.Image(assets("pacman.png"))
@@ -27,7 +27,7 @@ class Player(Entity):
                 image = self.IMG,
                 animations = retro.Animations(
                     frame_size = (32, 32),
-                    period = 50,
+                    period = 3,
                     STOP_L = ([2], 0), STOP_U = ([3], 0),
                     STOP_R = ([0], 0), STOP_D = ([4], 0),
                     WALK_L = ([2, 1], 0), WALK_U = ([3, 1], 0),

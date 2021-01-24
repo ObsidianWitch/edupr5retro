@@ -11,7 +11,7 @@ def TestSprite(target):
         path = assets('spritesheet.png'),
         animations = retro.Animations(
             frame_size = (30, 30),
-            period = 100,
+            period = 3,
             WALK_R = (tuple(reversed(range(0, 8))), 11),
         ),
     )

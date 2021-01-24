@@ -7,7 +7,8 @@ from retro.src.directions import Directions
 from retro.src.collisions import Collisions
 from retro.src.image import Image
 from retro.src.font import Font
-from retro.src.sprite import Group, Counter, Animations, Sprite
+from retro.src.counter import Timer, Ticker
+from retro.src.sprite import Group, Animations, Sprite
 from retro.src.stage import Stage
 from retro.src.events import Events
 from retro.src.window import Window

@@ -48,7 +48,7 @@ class Spawner:
         )
         self.next()
         self.mob.alive = False
-        self.repop_timer = retro.Counter(3)
+        self.repop_ticker = retro.Ticker(end=180)
 
     def street_position(self, sprite):
         sprite.rect.x = random.randint(100, 1900)
@@ -98,13 +98,13 @@ class Spawner:
 
     def kill(self, p):
         killed = self.mob.kill(p)
-        if killed: self.repop_timer.restart()
+        if killed: self.repop_ticker.restart()
         return killed
 
     def update(self, target):
         repop = (
             not self.mob.alive
-            and self.repop_timer.finished
+            and self.repop_ticker.finished
         )
         if repop: self.next()
 

@@ -25,7 +25,7 @@ class Game:
     def __init__(self):
         self.maze     = Maze()
         self.player   = Player(pos = (208, 264))
-        self.ghosts   = Ghosts(num = 4, pos = (208, 168))
+        self.ghosts   = Ghosts(max = 4, pos = (208, 168))
         self.finished = False
 
     @property

@@ -11,7 +11,7 @@ class Player(retro.Sprite):
             path = asset('player.png'),
             animations = retro.Animations(
                 frame_size = (10, 11),
-                period = 500,
+                period = 30,
                 IDLE_R = ([1], 0),
                 IDLE_L = ([4], 0),
                 WALK_R = ([0, 1, 2, 1], 0),

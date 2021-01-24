@@ -34,7 +34,7 @@ class Run:
         self.player.hide.draw(self.window)
         self.player.ammunitions.draw(self.window)
         self.player.hints.draw(self.player, self.spawner.mob, self.window)
-        self.spawner.mob.draw_shoot_timer(self.window.fonts[1], self.window)
+        self.spawner.mob.draw_shoot_ticker(self.window.fonts[1], self.window)
 
 class End:
     def __init__(self, window):
