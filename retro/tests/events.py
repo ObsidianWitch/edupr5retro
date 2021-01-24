@@ -1,6 +1,6 @@
 from retro.src import retro
 
-window = retro.Window(title='events', size=(640, 480), ups=30, fps=30)
+window = retro.Window(title='events', size=(640, 480), fps=30)
 
 def update():
     # key - event

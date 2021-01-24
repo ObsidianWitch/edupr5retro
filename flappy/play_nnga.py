@@ -3,7 +3,7 @@ from retro.src import retro
 from flappy.nnga import NNGAPool
 from flappy.game import Game
 
-window = retro.Window(title='Flappy Bird', size=(288, 512), ups=-1, fps=-1)
+window = retro.Window(title='Flappy Bird', size=(288, 512), fps=-1)
 game = Game(window, nbirds = 10)
 pool = NNGAPool(size = len(game.birds), arch = (2, 1))
 

@@ -2,11 +2,11 @@
 
 set -o errexit -o nounset
 
-retro/test.sh
 python -m retro.tests.events
-python -m retro.tests.scheduler --interactive
 python -m retro.tests.image --interactive
+python -m retro.tests.image
 python -m retro.tests.sprite --interactive
+python -m retro.tests.sprite
 
 python -m pong.main
 python -m maze.main

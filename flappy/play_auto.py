@@ -1,7 +1,7 @@
 from retro.src import retro
 from flappy.game import Game
 
-window = retro.Window(title='Flappy Bird', size=(288, 512), ups=100, fps=100)
+window = retro.Window(title='Flappy Bird', size=(288, 512), fps=100)
 
 game = Game(window, nbirds = 1)
 

@@ -25,7 +25,7 @@ class Game:
     def render(self):
         self.state.render()
 
-window = retro.Window(title='Maze', size=(400, 400), ups=60, fps=60)
+window = retro.Window(title='Maze', size=(400, 400), fps=60)
 window.cursor(False)
 game = Game(window)
 

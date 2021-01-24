@@ -114,7 +114,7 @@ def TestTransform():
 # ---
 
 window = retro.Window(
-    title='image', size=(800, 600), ups=30, fps=30,
+    title='image', size=(800, 600), fps=30,
     headless='--interactive' not in sys.argv,
 )
 test_draw = TestDraw()
@@ -129,7 +129,7 @@ def render(target):
 
 if window.headless:
     render(window)
-    # window.save(assets('expectation_image2.png'))
+    # window.save(assets('expectation_image.png'))
     assert window == retro.Image(assets('expectation_image.png'))
 else:
     window.loop(None, lambda: render(window))

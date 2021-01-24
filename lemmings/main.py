@@ -40,7 +40,7 @@ class Game:
     def render(self):
         self.state.render()
 
-window = retro.Window(title='Lemmings', size=(800, 400), ups=45, fps=45)
+window = retro.Window(title='Lemmings', size=(800, 400), fps=45)
 window.cursor(pygame.cursors.diamond)
 game = Game(window)
 

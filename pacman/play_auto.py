@@ -32,7 +32,7 @@ class RandImpulse:
 class PlayAuto:
     def __init__(self):
         self.window = retro.Window(
-            title='Pacman', size=(448, 528), ups=-1, fps=-1
+            title='Pacman', size=(448, 528), fps=-1
         )
         self.game = Game()
         self.rand_impulse = RandImpulse()

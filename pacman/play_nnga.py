@@ -13,9 +13,7 @@ class PlayNNGA:
     def __init__(self):
         self.nn_pool = NNGAPool(size = 200, arch = (10, 10, 10, 4))
         self.games = Games(size = len(self.nn_pool))
-        self.window = retro.Window(
-            title='Pacman', size=(448, 528), ups=-1, fps=-1
-        )
+        self.window = retro.Window(title='Pacman', size=(448, 528), fps=-1)
 
     def update_one(self, game, nn):
         if game.finished: return False

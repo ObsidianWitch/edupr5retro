@@ -2,7 +2,7 @@ import sys
 from retro.src import retro
 from pacman.game.game import Game
 
-window = retro.Window(title='Pacman', size=(448, 528), ups=60, fps=60)
+window = retro.Window(title='Pacman', size=(448, 528), fps=60)
 game = Game()
 
 def update():
