@@ -10,7 +10,7 @@ class Image:
         elif isinstance(arg, pygame.Surface):
             self.pygsurface = arg
         elif isinstance(arg, Path):
-            self.__init__(pygame.image.load(str(arg)))
+            self.__init__(pygame.image.load(arg))
         else:
             self.__init__(pygame.Surface(*args, *kwargs))
 
